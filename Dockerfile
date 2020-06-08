@@ -1,6 +1,15 @@
-FROM node:9-slim
+FROM node:14-slim
+
+RUN mkdir /app
 WORKDIR /app
-COPY package.json /app
+
+ADD package.json /app
+
+# RUN apk add --update python make g++\
+#    && rm -rf /var/cache/apk/*
+
 RUN npm install
-COPY . /app
-CMD ["npm", "start"]
+
+ADD . /app
+
+# CMD ["npm", "start"]
