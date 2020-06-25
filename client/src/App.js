@@ -1,17 +1,19 @@
-import React, { Fragment } from 'react';
+import React, { Component } from 'react';
 import './App.scss';
-import InputTodo from './components/input-todo';
-import ListTodo from './components/list-todo';
-// import 'https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.0/TweenMax.min.js';
-// import './tween-max.js';
+// import Todo from './components/todo';
+// import Theme from './components/theme';
+import Nav from './components/nav';
 
-function App() {
-  return (
-    <Fragment>
-      <InputTodo />
-      <ListTodo />
-    </Fragment>
-  );
+class App extends Component {
+  render() {
+      return  (
+        <div className="App">
+          <Nav />
+          {/* <Todo /> */}
+          {/* <Theme /> */}
+        </div>
+      )        
+  }
 }
 
 export default App;
