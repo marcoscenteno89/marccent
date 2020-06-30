@@ -63,18 +63,18 @@ const db = require("./models/models.js");
 //     }
 // });
 
-//THEMES
-// app.get('/api/theme', async (req, res) => {
-//     try {
-//         db.all('SELECT * FROM theme', (err, all) => { 
-//             if (err) console.log(err.message);
-//             console.log(all);
-//             res.json(all);
-//         });
-//     } catch (err) {
-//         console.log(err.message);
-//     }
-// });
+// THEMES
+app.get('/api/theme', async (req, res) => {
+    try {
+        db.all('SELECT * FROM theme', (err, all) => { 
+            if (err) console.log(err.message);
+            console.log(all);
+            res.json(all);
+        });
+    } catch (err) {
+        console.log(err.message);
+    }
+});
 
 app.use(express.static(path.join(__dirname, 'static')));
 

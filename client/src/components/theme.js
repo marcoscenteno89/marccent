@@ -7,24 +7,24 @@ class Theme extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            themes: '',
-            active: ''
+            themes: false,
+            active: false
         }
     }
 
-    get() {
+    async componentDidMount() {
         try {
             const res = await fetch(url);
             const jsonData = await res.json();
             this.setState({
                 themes: jsonData,
                 active: jsonData.filter(single => single.active > 0)[0]
-            })
+            });
         } catch (err) {
-            console.log(err.message)
+            console.log(err.message);
         }
     }
-
+    
     // const active = theme.filter(single => single.active > 0)[0];
 
     // const bgstyle = styled.button`
@@ -35,17 +35,20 @@ class Theme extends Component {
     //     margin: 0 1em;
     //     padding: 0.25em 1em;
     // `
-    render() {
+    render() {;
+        
+        if (this.state.themes === false) return <footer className="theme">No theme found</footer>
+
         return (
         <footer className="theme">
             <div className="container">
-            {/* {theme.map(single => (
-                <div key={single.id} className="single">
-                    <i className="fas fa-fan small" style={{color: single.primary_color}}></i>
-                    <i className="fas fa-globe median" style={{color: single.primary_color}}></i>
-                    <i className="fab fa-hornbill large" style={{color: single.primary_color}}></i>
-                </div>
-            ))} */}
+                {this.state.themes.map(single => (
+                    <div key={single.id} className="single">
+                        <i className="fas fa-fan small" style={{color: single.primary_color}}></i>
+                        <i className="fas fa-globe median" style={{color: single.primary_color}}></i>
+                        <i className="fab fa-hornbill large" style={{color: single.primary_color}}></i>
+                    </div>
+                ))}
             </div>
         </footer>
         )

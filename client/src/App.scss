@@ -9,9 +9,8 @@ $padding: 10px 20px;
   padding: 0;
   box-sizing: border-box;
 }
-#root {
+#app {
   width: 100%;
-  background-color: $primary;
 }
 .main-nav {
   background-color: #FFFFFF;
@@ -50,14 +49,13 @@ input {
   }
   .single {
     position: relative;
-    width: 5vw;
-    height: 5vw;
   }
   i {
     position: absolute;
     left: 50%;
     top: 50%;
-    font-size: 4.5vw;
+    font-size: calc(30px + 3vw);
+
   }
   .small {
     animation: spin 10s linear infinite;
