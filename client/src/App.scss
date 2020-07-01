@@ -14,7 +14,7 @@ $padding: 10px 20px;
 }
 .main-nav {
   background-color: #FFFFFF;
-  position: sticky;
+  position: fixed;
   top: 0;
   height: 70px;
   width: 100%;
@@ -41,21 +41,29 @@ input {
 .theme {
   background-color: #30303099;
   width: 100%;
-  padding: 50px;
+  position: fixed;
+  bottom: 0;
+  padding: 20px;
   .container {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
   }
   .single {
     position: relative;
+    width: 10vw;
+    height: 10vw;
+    border-radius: 50%;
+    border: none;
+  }
+  .single.active {
+    animation: glow 1s ease-in-out infinite alternate;
   }
   i {
     position: absolute;
     left: 50%;
     top: 50%;
-    font-size: calc(30px + 3vw);
-
+    font-size: calc(30px + 4vw);
   }
   .small {
     animation: spin 10s linear infinite;
@@ -70,18 +78,17 @@ input {
   }
 }
 @keyframes spin {
-  0% {
-    transform: translate(-50%,-50%) scale(0.3) rotate(360deg);
-  }
-  100% {
-    transform: translate(-50%,-50%) scale(0.3) rotate(0);
-  }
+  from {transform: translate(-50%,-50%) scale(0.3) rotate(360deg);}
+  to {transform: translate(-50%,-50%) scale(0.3) rotate(0);}
 }
 @keyframes spin-rev {
-  0% {
-    transform: translate(-50%,-50%) rotate(0);
+  from {transform: translate(-50%,-50%) rotate(0);}
+  to {transform: translate(-50%,-50%) rotate(360deg);}
+}
+@keyframes glow {
+  from {
+    box-shadow: 0 0 10px #fff, 0 0 30px #fff, 0 0 50px #e60073, 0 0 70px #e60073, 0 0 90px #e60073, 0 0 110px #e60073;
   }
-  100% {
-    transform: translate(-50%,-50%) rotate(360deg);
-  }
+  to {
+    box-shadow: 0 0 20px #fff, 0 0 40px #fff, 0 0 60px #ff4da6, 0 0 80px #ff4da6, 0 0 100px #ff4da6, 0 0 120px #ff4da6;}
 }
