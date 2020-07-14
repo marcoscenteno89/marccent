@@ -44,6 +44,7 @@ input {
   position: fixed;
   bottom: 0;
   padding: 20px;
+
   .container {
     display: flex;
     justify-content: space-around;
@@ -56,9 +57,9 @@ input {
     border-radius: 50%;
     border: none;
   }
-  .single.active {
-    animation: glow 1s ease-in-out infinite alternate;
-  }
+  // .single.active {
+  //   animation: glow 1s ease-in-out infinite alternate;
+  // }
   i {
     position: absolute;
     left: 50%;
@@ -84,11 +85,4 @@ input {
 @keyframes spin-rev {
   from {transform: translate(-50%,-50%) rotate(0);}
   to {transform: translate(-50%,-50%) rotate(360deg);}
-}
-@keyframes glow {
-  from {
-    box-shadow: 0 0 10px #fff, 0 0 30px #fff, 0 0 50px #e60073, 0 0 70px #e60073, 0 0 90px #e60073, 0 0 110px #e60073;
-  }
-  to {
-    box-shadow: 0 0 20px #fff, 0 0 40px #fff, 0 0 60px #ff4da6, 0 0 80px #ff4da6, 0 0 100px #ff4da6, 0 0 120px #ff4da6;}
 }

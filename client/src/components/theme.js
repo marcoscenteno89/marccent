@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-// import styled, { css } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 const url = "http://localhost:5000/api/theme";
 
 class Theme extends Component {
@@ -28,39 +28,12 @@ class Theme extends Component {
     }
 
     renderActive(active) {
-        let head  = document.getElementsByTagName('head')[0];
-        let link  = document.createElement('link');
-        link.rel  = 'stylesheet';
-        link.type = 'text/css';
-        let a = active.primary_color;
-        link.innerHTML = `<style>
-            body {
-                background-color: ${a};
-                color: ${a};
-            }
-            @keyframes glow {
-                from {
-                  box-shadow: inset 0 0 60px #fff, inset 0 0 90px #fff, 0 0 10px #fff, 0 0 30px #fff, 0 0 50px ${a}, 0 0 60px ${a};                 
-                }
-                to {
-                  box-shadow: inset 0 0 90px #fff, inset 0 0 120px #fff, 0 0 20px #fff, 0 0 40px #fff, 0 0 60px ${a}, 0 0 70px ${a};
-                }
-              }
-        </style>`
-        
-        head.appendChild(link);
+        const body = document.body;
+        const a = active.primary_color;
+        body.style.background = a;
+        body.style.color = a;
     }
-    
-    // const active = theme.filter(single => single.active > 0)[0];
 
-    // const bgstyle = styled.button`
-    //     background-color: red;
-    //     border-radius: 3px;
-    //     border: 2px solid palevioletred;
-    //     color: palevioletred;
-    //     margin: 0 1em;
-    //     padding: 0.25em 1em;
-    // `
     render() {
 
         if (this.state.themes === false) return <footer className="theme">No theme found</footer>
@@ -108,13 +81,24 @@ class Choices extends Component {
 
     render() {
 
-        let classes = `single${this.state.active === 1 ? ' active' : ''}`;
-        
+        // let classes = `single${this.state.active === 1 ? ' active' : ''}`;
+        const a = this.state.primary_color;
+        // const glow = keyframes`
+        //     0% { box-shadow: inset 0 0 60px #fff, inset 0 0 90px #fff, 0 0 10px #fff, 0 0 30px #fff, 0 0 50px ${a}, 0 0 60px ${a} }
+        //     100% { box-shadow: inset 0 0 90px #fff, inset 0 0 120px #fff, 0 0 20px #fff, 0 0 40px #fff, 0 0 60px ${a}, 0 0 70px ${a}; }
+        // `;
+        const styles = css`
+            animation: glow 1s ease-in-out infinite alternate;
+            @keyframes glow {
+                0% { box-shadow: inset 0 0 60px #fff, inset 0 0 90px #fff, 0 0 10px #fff, 0 0 30px #fff, 0 0 50px ${a}, 0 0 60px ${a} }
+                100% { box-shadow: inset 0 0 90px #fff, inset 0 0 120px #fff, 0 0 20px #fff, 0 0 40px #fff, 0 0 60px ${a}, 0 0 70px ${a}; }
+            }`
+
         return (
-            <button key={this.state.id} className={classes}>
-                <i className="fas fa-fan small" style={{color: this.state.primary_color}}></i>
-                <i className="fas fa-globe median" style={{color: this.state.primary_color}}></i>
-                <i className="fab fa-hornbill large" style={{color: this.state.primary_color}}></i>
+            <button key={this.state.id} className="single">
+                <i className="fas fa-fan small" style={{color: a}}></i>
+                <i className="fas fa-globe median" style={{color: a}}></i>
+                <i className="fab fa-hornbill large" style={{color: a}}></i>
             </button>
         )
     }
