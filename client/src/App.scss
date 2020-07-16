@@ -1,10 +1,7 @@
-$primary: #1869da;
-$secondary: #505050;
 $radious: 4px;
 $padding: 10px 20px;
 *, html, body, pre, code {
   font-size: calc(13px + 0.6vw);
-  color: #FFFFFF;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -28,7 +25,6 @@ $padding: 10px 20px;
   }
   li {
     margin: 0 20px;
-    color: #1869da;
   }
 }
 
@@ -39,11 +35,11 @@ input {
 }
 
 .theme {
-  background-color: #30303099;
+  background-color: #666;
   width: 100%;
   position: fixed;
   bottom: 0;
-  padding: 20px;
+  padding: 40px 20px;
 
   .container {
     display: flex;
@@ -52,19 +48,16 @@ input {
   }
   .single {
     position: relative;
-    width: 10vw;
-    height: 10vw;
+    width: 7vw;
+    height: 7vw;
     border-radius: 50%;
     border: none;
   }
-  // .single.active {
-  //   animation: glow 1s ease-in-out infinite alternate;
-  // }
   i {
     position: absolute;
     left: 50%;
     top: 50%;
-    font-size: calc(30px + 4vw);
+    font-size: calc(30px + 3vw);
   }
   .small {
     animation: spin 10s linear infinite;
