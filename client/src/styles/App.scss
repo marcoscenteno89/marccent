@@ -1,0 +1,147 @@
+$radious: 4px;
+$padding: 10px 20px;
+*, html, body, pre, code {
+  font-size: calc(13px + 0.6vw);
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+#app {
+  width: 100%;
+}
+.container {
+  width: 100%;
+  max-width: 1140px;
+  padding: 0 15px;
+}
+.m-20 {
+  margin: 20px 0;
+}
+.flex-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+.flex-col {}
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.page {
+  overflow: hidden;
+  opacity: 0.9;
+  border-radius: 20px;
+  width: 100%;
+  margin: 100px 0;
+  position: relative;
+  z-index: 3;
+  .page-head, .page-footer {
+    width: 100%;
+    min-height: 70px;
+  }
+  .page-body {
+    width: 100%;
+    height: auto;
+    min-height: 500px;
+    padding: 20px;
+  } 
+}
+input {
+  border: none;
+  padding: $padding;
+  border-radius: $radious;
+}
+button {
+  padding: 7px 30px;
+  border: none;
+  border-radius: 3px;
+  margin: 5px;
+}
+.content {
+  width: 100%;
+  height: auto;
+  overflow: hidden;
+  svg {
+    display: none;
+  }
+  .bg {
+    position: fixed;
+    overflow: hidden;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    filter: url('#filter');
+    $size: 15vw;
+    .ball {
+      border-radius: 50%;
+      position: absolute;
+      @for $i from 1 through 4 {
+        $s: $size;
+        $pos: $size * $i;
+        &:nth-child(#{$i}) {
+          width: calc(#{$size} + #{$i * 25}px);
+          height: calc(#{$size} + #{$i * 25}px);
+          max-height: 300px;
+          max-width: 300px;
+          background-color: rgba(255, 255, 255, 0.5);
+          top: $pos;
+          left: $pos;
+          animation: x-axis-lateral 12s infinite alternate ease;
+          &:before, &:after {
+            background-color: rgba(255, 255, 255, 0.5);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            content: '';
+            border-radius: 50%;
+          }
+          &:after {
+            animation: x-axis 15s infinite alternate ease-in-out;
+          }
+          &:before {
+            animation: y-axis 20s infinite alternate ease-in-out;
+          }
+        }
+        @keyframes x-axis {
+          0% { transform: translate(-$s*1.5); }
+          100% { transform: translate($s*1.5); }
+        }
+        @keyframes y-axis {
+          0% { transform: translateY($s*1.5); }
+          100% { transform: translateY(-$s*1.5);background: rgba(255, 255, 255, 0.5);}
+        }
+        @keyframes x-axis-lateral {
+          0% { transform: translate(-$s*1.5) rotate(0); }
+          100% { transform: translate($s*1.5) rotate(360deg); }
+        }
+      }
+    }
+  }
+}
+@keyframes spin2 {
+  from {transform: rotate(360deg);}
+  to {transform: rotate(0);}
+}
+@keyframes spin {
+  from {transform: translate(-50%,-50%) scale(0.3) rotate(360deg);}
+  to {transform: translate(-50%,-50%) scale(0.3) rotate(0);}
+}
+@keyframes spin-rev {
+  from {transform: translate(-50%,-50%) rotate(0);}
+  to {transform: translate(-50%,-50%) rotate(360deg);}
+}
+@keyframes move {
+  0% {top: 0;}
+  50% {top: 20%;}
+  100% {top: 0;}
+}
+@keyframes move2 {
+  0% {top: 0;}
+  50% {top: -20%;}
+  100% {top: 0;}
+}
