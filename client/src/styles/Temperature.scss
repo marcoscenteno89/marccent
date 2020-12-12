@@ -1,0 +1,68 @@
+.circle {
+    width: 90vw;
+    height: 90vw;
+    max-width: 768px;
+    max-height: 768px;
+    border-radius: 50%;
+    opacity: 1 !important;
+    .grad {
+        width: 95%;
+        height: 95%;
+        border-radius: 50%;
+        .inner-circle {
+            width: 90%;
+            height: 90%;
+            border-radius: 50%;
+            overflow: hidden;
+            position: relative;
+            .first, .second, .third {
+                overflow: hidden;
+                width: 100%;
+                height: 100%;
+                filter: url(#filter);
+                position: absolute;
+            }
+            .first div, .second div, .third div {
+                border-radius: 45%;
+                position: absolute;
+                bottom: -5%;
+            }
+            .first div {
+                width: 45%;
+                height: 30%;
+            }
+            .second div {
+                width: 55%;
+                height: 35%;
+            }
+            .third div {
+                width: 60%;
+                height: 40%;
+            }
+            .first div:nth-child(1), .third div:nth-child(1) {
+                right: -5%;
+                animation: rotate 9s infinite reverse linear;
+            }
+            .first div:nth-child(2), .third div:nth-child(2) {
+                right: 25%;
+                animation: rotate 12s infinite linear;
+            }
+            .first div:nth-child(3), .third div:nth-child(3) {
+                right: 55%;
+                animation: rotate 15s infinite linear;
+            }
+            .second div:nth-child(1) {
+                left: -15%;
+                animation: rotate 6s infinite reverse linear;
+            }
+            .second div:nth-child(2) {
+                left: 20%;
+                animation: rotate 9s infinite linear;
+            }
+            .second div:nth-child(3) {
+                left: 60%;
+                animation: rotate 12s infinite linear;
+            }
+        }
+    }
+}

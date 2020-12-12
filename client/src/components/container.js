@@ -1,51 +1,39 @@
 import React, { Component } from "react";
-import MineSweeper from './minesweeper';
+import MineSweeper from "./minesweeper";
+import Temperature from "./temperature";
+import { Background, Title, Footer } from "./inc";
 
 class Container extends Component {
 
     render() {
-
+        const a = this.props.data;
         const styles = {}
         const page = {}
         if (this.props.data) {
-            const a = this.props.data;
             styles.backgroundImage = `linear-gradient(to right, ${a.primary}, ${a.secondary})`;
             page.backgroundImage = `linear-gradient(to left, ${a.primary}, ${a.secondary})`;
             page.color = a.mode === '#FFF' ? '#383d44' : '#FFF';
-            // body.backgroundColor = a.mode;
-            // body.color = a.mode === '#FFF' ? '#383d44' : '#FFF';
-            // head.color = a.mode === '#FFF' ? '#383d44' : '#FFF';
         } 
         
         return  (
-            <div className="content flex-center" style={styles}>
-            <div className="bg">
-                <div className="ball"></div>
-                <div className="ball"></div>
-                <div className="ball"></div>
-                <div className="ball"></div>
-            </div>
-            <svg><defs>
-                <filter id="filter">
-                <feGaussianBlur in="SourceGraphic" stdDeviation="18" result="blur" />
-                <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 28 -10" result="filter" />
-                <feComposite in="SourceGraphic" in2="filter" operator="atop" />
-                </filter>
-            </defs></svg>
-            <div className="container">
-                <div className="page" style={page}>
-                    <div className="page-head flex-center">
-                        Tittle Goes Here
-                    </div>
-                    <div className="page-body flex-center">
-                        <MineSweeper data={this.props.data} />
-                    </div>
-                    <div className="page-footer flex-center">
-                        Copyright ©2020 Marccent. All rights reserved
-                    </div>
+            <div className="page flex-center" style={styles}>
+                <Background styles={styles} />
+                <div className="container">
+                    {/* <Carousel breakPoints={breakPoints}>
+                        
+                    </Carousel> */}
+                    <Title text="Applications" style={{backgroundColor: a.mode, color: a.mode === '#FFF' ? '#383d44' : '#FFF'}} />
+                    <section className="section" style={styles}>
+                        <div className="content flex-center" >
+                            <MineSweeper data={this.props.data} />
+                        </div>
+                    </section>
+                    <section className="section flex-center" style={styles}>
+                        <Temperature data={this.props.data} />
+                    </section>
+                    <Footer  style={{backgroundColor: a.mode, color: a.mode === '#FFF' ? '#383d44' : '#FFF'}} />
                 </div>
             </div>
-          </div>
         )        
     }
 }

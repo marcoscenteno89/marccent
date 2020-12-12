@@ -12,7 +12,9 @@ $padding: 10px 20px;
 .container {
   width: 100%;
   max-width: 1140px;
-  padding: 0 15px;
+  padding: 30px 0;
+  position: relative;
+  z-index: 1;
 }
 .m-20 {
   margin: 20px 0;
@@ -29,19 +31,24 @@ $padding: 10px 20px;
   justify-content: center;
   align-items: center;
 }
-.page {
-  overflow: hidden;
-  opacity: 0.9;
-  border-radius: 20px;
+.header, .footer {
   width: 100%;
-  margin: 100px 0;
-  position: relative;
-  z-index: 3;
-  .page-head, .page-footer {
-    width: 100%;
-    min-height: 70px;
-  }
-  .page-body {
+  min-height: 70px;
+}
+.header {
+  border-top-left-radius: 25px;
+  border-top-right-radius: 25px;
+}
+.footer {
+  border-bottom-left-radius: 25px;
+  border-bottom-right-radius: 25px;
+}
+.section {
+  overflow: hidden;
+  // opacity: 0.9;
+  width: 100%;
+  padding: 30px 0;
+  .content {
     width: 100%;
     height: auto;
     min-height: 500px;
@@ -54,12 +61,12 @@ input {
   border-radius: $radious;
 }
 button {
-  padding: 7px 30px;
-  border: none;
-  border-radius: 3px;
-  margin: 5px;
+  // padding: 7px 30px;
+  // border: none;
+  // border-radius: 3px;
+  // margin: 5px;
 }
-.content {
+.page {
   width: 100%;
   height: auto;
   overflow: hidden;
@@ -86,12 +93,16 @@ button {
           height: calc(#{$size} + #{$i * 25}px);
           max-height: 300px;
           max-width: 300px;
-          background-color: rgba(255, 255, 255, 0.5);
+          background-color: rgba(255, 255, 255, 0.4);
+          // background-color: rgb(56,61,68);
+          // opacity: 0.5;
           top: $pos;
           left: $pos;
           animation: x-axis-lateral 12s infinite alternate ease;
           &:before, &:after {
-            background-color: rgba(255, 255, 255, 0.5);
+            background-color: rgba(255, 255, 255, 0.4);
+            // background: rgb(56,61,68);
+            // opacity: 0.5;
             position: absolute;
             left: 0;
             top: 0;
@@ -108,40 +119,32 @@ button {
           }
         }
         @keyframes x-axis {
-          0% { transform: translate(-$s*1.5); }
-          100% { transform: translate($s*1.5); }
+          0% { 
+            transform: translate(-$s*1.5); 
+          }
+          100% { 
+            transform: translate($s*1.5); 
+          }
         }
         @keyframes y-axis {
-          0% { transform: translateY($s*1.5); }
-          100% { transform: translateY(-$s*1.5);background: rgba(255, 255, 255, 0.5);}
+          0% { 
+            transform: translateY($s*1.5); }
+          100% { 
+            transform: translateY(-$s*1.5);
+            // background: rgb(56,61,68);
+            // opacity: 0.5;
+            background: rgba(255, 255, 255, 0.4);
+          }
         }
         @keyframes x-axis-lateral {
-          0% { transform: translate(-$s*1.5) rotate(0); }
-          100% { transform: translate($s*1.5) rotate(360deg); }
+          0% { 
+            transform: translate(-$s*1.5) rotate(0); 
+          }
+          100% { 
+            transform: translate($s*1.5) rotate(360deg); 
+          }
         }
       }
     }
   }
-}
-@keyframes spin2 {
-  from {transform: rotate(360deg);}
-  to {transform: rotate(0);}
-}
-@keyframes spin {
-  from {transform: translate(-50%,-50%) scale(0.3) rotate(360deg);}
-  to {transform: translate(-50%,-50%) scale(0.3) rotate(0);}
-}
-@keyframes spin-rev {
-  from {transform: translate(-50%,-50%) rotate(0);}
-  to {transform: translate(-50%,-50%) rotate(360deg);}
-}
-@keyframes move {
-  0% {top: 0;}
-  50% {top: 20%;}
-  100% {top: 0;}
-}
-@keyframes move2 {
-  0% {top: 0;}
-  50% {top: -20%;}
-  100% {top: 0;}
 }

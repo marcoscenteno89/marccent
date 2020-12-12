@@ -1,7 +1,15 @@
 import React, { Component } from "react";
-import '.././styles/Minesweeper.scss';
+import ".././styles/Minesweeper.scss";
+import { Button } from "./inc";
 
 class MineSweeper extends Component {
+
+    onClick() {
+        console.log('clicked');
+    }
+    onRightClick() {
+
+    }
 
     render() {
         const styles = {}
@@ -11,8 +19,8 @@ class MineSweeper extends Component {
             styles.opacity = '1';
             styles.backgroundColor = a.mode;
             styles.color = a.mode === '#FFF' ? '#383d44' : '#FFF';
-        } 
-        return  (
+        }
+        return (
             <div className="board" style={body}>
                 <div className="status flex-row">
                     <div>0</div>
@@ -22,9 +30,8 @@ class MineSweeper extends Component {
                     {[...Array(100)].map((x,i) => <Block x={x} data={this.props.data} count={i} />)}
                 </div>
                 <div className="controller flex-center">
-                    <button style={styles}>Restart</button>
-                    <button style={styles}>Cancel</button>
-                    <button style={styles}>Help</button>
+                    <Button styles={styles} onClick={() => this.onClick()} text="Start Over" />
+                    <Button styles={styles} onClick={() => this.onClick()} text="Help" />
                 </div>
             </div>
         )        

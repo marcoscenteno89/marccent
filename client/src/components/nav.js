@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Button } from "./inc";
 import '.././styles/Nav.scss';
 
 class Nav extends Component {
@@ -19,8 +20,8 @@ class Nav extends Component {
                         <li>Portfolio</li>
                         <li>About</li>
                         <li>Contact</li>
-                        <li>Quote</li>
-                    </ul>
+                        <li>Apps</li>
+                    </ul> 
                 </div>
             </nav>
         )        
