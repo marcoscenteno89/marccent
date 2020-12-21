@@ -12,13 +12,12 @@ class Footer extends Component {
             styles.backgroundColor = a.mode;
         }
         const breakPoints = [
+            {width: 368, itemsToShow: 1},
             {width: 468, itemsToShow: 2},
             {width: 568, itemsToShow: 3},
-            {width: 668, itemsToShow: 4},
-            {width: 768, itemsToShow: 5},
-            {width: 868, itemsToShow: 6},
-            {width: 968, itemsToShow: 7},
-            {width: 1068, itemsToShow: 8}
+            {width: 768, itemsToShow: 4},
+            {width: 868, itemsToShow: 5},
+            {width: 968, itemsToShow: 6},
         ]
 
         return  (

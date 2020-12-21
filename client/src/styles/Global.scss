@@ -1,0 +1,22 @@
+img {
+    width: 100%;
+    height: auto;
+}
+.circle {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    opacity: 1 !important;
+    .grad {
+        width: 90%;
+        height: 90%;
+        border-radius: 50%;
+        .inner-circle {
+            width: 85%;
+            height: 85%;
+            border-radius: 50%;
+            overflow: hidden;
+            position: relative;
+        }
+    }
+}

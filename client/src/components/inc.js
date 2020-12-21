@@ -20,19 +20,30 @@ const Background = props => {
                 <div className="ball"></div>
                 <div className="ball"></div>
             </div>
-            <svg><defs>
-                <filter id="filter">
-                <feGaussianBlur in="SourceGraphic" stdDeviation="18" result="blur" />
-                <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 28 -10" result="filter" />
-                <feComposite in="SourceGraphic" in2="filter" operator="atop" />
-                </filter>
-            </defs></svg>
+            <Blur />
         </React.Fragment>
+    )
+}
+const Blur = props => {
+    return (
+        <svg><defs>
+            <filter id="filter">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="18" result="blur" />
+            <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 28 -10" result="filter" />
+            <feComposite in="SourceGraphic" in2="filter" operator="atop" />
+            </filter>
+        </defs></svg>
     )
 }
 
 const Title = props => {
     return (<div className="header flex-center" style={props.style}>{props.text}</div>)
+}
+
+const Img = props => {
+    return (<React.Fragment key="1">
+        <img src={props.src} alt={props.alt} />
+    </React.Fragment>)
 }
 
 const Footer = props => {
@@ -49,4 +60,24 @@ const Today = () => {
     return (`${days[i.getDay()]}, ${month[i.getMonth()]} ${i.getDate()}, ${i.getFullYear()}`);
 }
 
-export { Button, Background, Title, Footer, CurrentDate, Gradient, Today }
+const Circle = props => {
+    
+    if (props.data) {
+        const a = props.data;
+        const grad = `linear-gradient(to right, ${a.primary}, ${a.secondary})`;
+        return (
+            <div className="circle flex-center" style={{backgroundColor: a.mode}}>
+                <div className="grad flex-center" style={{backgroundImage: grad}}>
+                    <div className="inner-circle flex-center" style={{backgroundColor: a.mode}}>
+                        {props.children}
+                    </div>
+                </div>
+            </div>
+        )
+    } else {
+        return (<div>No data Found</div>)
+    }
+    
+}
+
+export { Circle, Blur, Button, Background, Title, Footer, CurrentDate, Gradient, Today, Img }

@@ -1,22 +1,22 @@
 .board {
-    width: calc(230px + 15vw);
-    height: auto;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    .status {
-      width: 100%;
-        div {
-            font-size: 1.5rem;
-        }
-    }
-    .body {
-      display: flex;
-      justify-content: space-between;
-      flex-wrap: wrap;
-    }
-    .controller {
-      width: 100%;
-      flex-wrap: wrap;
-    }
+  width: calc(230px + 15vw);
+  height: auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  .status {
+    width: 100%;
+      div {
+          font-size: 1.5rem;
+      }
   }
+  .body {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+  .controller {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+}

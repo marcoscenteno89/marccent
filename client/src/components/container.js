@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import MineSweeper from "./minesweeper";
 import Temperature from "./temperature";
 import { Background, Title, Footer } from "./inc";
+import Portfolio from "./portfolio";
 
 class Container extends Component {
 
@@ -22,6 +23,9 @@ class Container extends Component {
                     {/* <Carousel breakPoints={breakPoints}>
                         
                     </Carousel> */}
+
+                    <Portfolio data={this.props.data} />
+
                     <Title text="Applications" style={{backgroundColor: a.mode, color: a.mode === '#FFF' ? '#383d44' : '#FFF'}} />
                     <section className="section" style={styles}>
                         <div className="content flex-center" >
