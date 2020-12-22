@@ -20,6 +20,7 @@
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "ini": "^2.0.0",
     "nodemon": "^2.0.4",
     "sqlite3": "^4.2.0"
   }
