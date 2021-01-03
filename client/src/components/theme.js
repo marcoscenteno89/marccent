@@ -1,7 +1,12 @@
 import React, { Component, Fragment } from 'react';
+import { BrowserRouter, Route } from 'react-router-dom';
+import { Background, RevColor, LinGrad } from "./inc";
+import About from "./pages/about";
+import Contact from "./pages/contact";
+import Apps from "./pages/apps";
 import Nav from './nav';
 import Footer from './footer';
-import Container from './container';
+// import Container from './container';
 const url = "http://localhost:5000/api/theme";
 
 class Theme extends Component {
@@ -25,7 +30,7 @@ class Theme extends Component {
         } 
         if (!active) {
             active = themes[0];
-            active.mode = '#FFF';
+            active.mode = '#FFFFFF';
             sessionStorage.setItem('active', JSON.stringify(active));
         }
         
@@ -50,11 +55,20 @@ class Theme extends Component {
             this.state.themes.map(a => (
                 text += `
                 .single-${a.id}:hover {
-                    animation: glow-${a.id} 1s ease-in-out infinite alternate;
+                    animation: glow-${a.id} 2s ease-in-out infinite alternate;
                 }
                 @keyframes glow-${a.id} {
-                    from {box-shadow: 0 0 0px #fff, 0 0 10px #fff, 0 0 20px ${a.primary}, 0 0 30px ${a.primary};}
-                    to { box-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px ${a.primary}, 0 0 40px ${a.primary};}
+                    from {
+                        filter: 
+                        drop-shadow(0 0 0.01rem #fff) 
+                        drop-shadow(0 0 0.02rem ${a.primary});
+                    }
+                    to {
+                        filter: 
+                        drop-shadow(0 0 0.1rem #fff) 
+                        drop-shadow(0 0 0.2rem #fff) 
+                        drop-shadow(0 0 0.3rem ${a.primary});
+                    }
                 }`
             ));
             link.innerHTML = `<style>${text}</style>`;
@@ -64,10 +78,31 @@ class Theme extends Component {
 
     render() {
         if (this.state.themes === false) return <Fragment>No theme found</Fragment>
+
+        const a = this.state.active;
+        const styles = {
+            backgroundImage: LinGrad(a.primary, a.secondary)
+        }
+        const page = {
+            backgroundImage: LinGrad(a.primary, a.secondary),
+            color: RevColor(a.mode)
+        }
+
         return (
             <Fragment>
-                <Nav data={this.state.active} />
-                <Container data={this.state.active} />
+                <Nav data={a} />
+                <div className="page flex-center" style={page}>
+                    <Background styles={styles} />
+                    <div className="container" style={{paddingBottom: '6rem'}}>
+                        <BrowserRouter>
+                            <Route path="/contact" render={() => <Contact data={a}/>} />
+                            {/* <Title text="Applications" style={{backgroundColor: a.mode, color: RevColor(a.mode)}} /> */}
+                            <Route path="/about" render={() => <About data={a}/>} />
+                            <Route path="/apps" render={() => <Apps data={a}/>} />
+                            {/* <FooterText style={{backgroundColor: a.mode, color: RevColor(a.mode)}} /> */}
+                        </BrowserRouter>
+                    </div>
+                </div>
                 <Footer data={this.state} update={this.update} />
             </Fragment>
         )

@@ -1,0 +1,11 @@
+.map-container {
+    height: 500px;
+    width: 100%;
+    position: relative;
+}
+.map-size {
+    > div {
+        width: 100%;
+        height: 100%;
+    }
+}

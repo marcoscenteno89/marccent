@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import ".././styles/Temperature.scss";
 import '../styles/keyframes.scss';
-import { Today, Blur, Circle } from "./inc";
+import { Today, Blur, SpCircle, RevColor } from "./inc";
 
 class Temperature extends Component {
     render() {
         const a = this.props.data;
-        const mod = a.mode === '#FFF' ? '#383d44' : '#FFF';
+        const mod = RevColor(a.mode);
         const styles = {
             width: '90vw',
             height: '90vw',
@@ -14,7 +14,7 @@ class Temperature extends Component {
             maxHeight: '768px'
         }
         return  (<div style={styles}>
-                    <Circle data={a}>
+                    <SpCircle data={a}>
                         <div className="today" style={{color: mod}} >
                             <Today />
                         </div>
@@ -34,7 +34,7 @@ class Temperature extends Component {
                             <div style={{backgroundColor: a.secondary}}></div>
                         </div>
                         <Blur />
-                    </Circle>
+                    </SpCircle>
                 </div>)        
     }
 }

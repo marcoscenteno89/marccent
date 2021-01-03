@@ -1,22 +1,23 @@
 import React, { Component } from "react";
-import './../styles/Portfolio.scss';
-import { Img, Circle, Background, Title, Footer } from "./inc";
-import header from "./../img/img2.jpg";
-import profile from "./../img/mcr.png";
+import './../../styles/About.scss';
+import { Img, SpCircle } from "./../inc";
+import header from "./../../img/img2.jpg";
+import profile from "./../../img/mcr.png";
 
-class Portfolio extends Component {
+class About extends Component {
        
     render() {
+        console.log(this.props);
         const a = this.props.data;
 
         return  (
-            <div className="portfolio" style={{backgroundColor: a.mode}}>
+            <div className="about" style={{backgroundColor: a.mode}}>
                 <Img src={header} />
                 <div className="con flex-center">
                     <div className="circle-con">
-                        <Circle data={a}>
+                        <SpCircle data={a}>
                             <Img src={profile} />
-                        </Circle>
+                        </SpCircle>
                     </div>
                 </div>
                 <section className="container">
@@ -27,4 +28,4 @@ class Portfolio extends Component {
     }
 }
 
-export default Portfolio;
+export default About;

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import ".././styles/Minesweeper.scss";
-import { Button } from "./inc";
+import { Button, RevColor } from "./inc";
 
 class MineSweeper extends Component {
 
@@ -18,20 +18,20 @@ class MineSweeper extends Component {
             const a = this.props.data;
             styles.opacity = '1';
             styles.backgroundColor = a.mode;
-            styles.color = a.mode === '#FFF' ? '#383d44' : '#FFF';
+            styles.color = RevColor(a.mode);
         }
         return (
             <div className="board" style={body}>
                 <div className="status flex-row">
-                    <div>0</div>
-                    <Counter />
+                    <Tracker data={this.props.data} />
+                    <Counter data={this.props.data} />
                 </div>
                 <div className="body">
-                    {[...Array(100)].map((x,i) => <Block x={x} data={this.props.data} count={i} />)}
+                    {[...Array(100)].map((x,i) => <Block x={x} data={this.props.data} key={i} count={i} />)}
                 </div>
                 <div className="controller flex-center">
-                    <Button styles={styles} onClick={() => this.onClick()} text="Start Over" />
-                    <Button styles={styles} onClick={() => this.onClick()} text="Help" />
+                    <Button className="btn" styles={styles} onClick={() => this.onClick()} text="Start Over" />
+                    <Button className="btn" styles={styles} onClick={() => this.onClick()} text="Help" />
                 </div>
             </div>
         )        
@@ -50,8 +50,40 @@ class Counter extends Component {
     }
        
     render() {
+
+        const styles = {}
+        if (this.props.data) {
+            const a = this.props.data;
+            styles.color = RevColor(a.mode);
+        }
+
         return  (
-            <div className="counter">{this.state.count}</div>
+            <div style={styles} className="counter">{this.state.count}</div>
+        )        
+    }
+}
+
+class Tracker extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            count: 0
+        }
+    }
+    componentDidMount() {
+        setInterval(() => this.setState({count: this.state.count + 1}), 1000);
+    }
+       
+    render() {
+
+        const styles = {}
+        if (this.props.data) {
+            const a = this.props.data;
+            styles.color = RevColor(a.mode);
+        }
+
+        return  (
+            <div style={styles} className="counter">{this.state.count}</div>
         )        
     }
 }
@@ -59,19 +91,11 @@ class Counter extends Component {
 class Block extends Component {
 
     render() {
-        const styles = {
-            width: 'calc((230px + 15vw) / 10.5)',
-            height: 'calc((230px + 15vw) / 10.5)',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            cursor: 'pointer',
-            borderRadius: '5px',
-            margin: '2px 0'
-        }
+        const styles = {}
         if (this.props.data) {
             const a = this.props.data;
             styles.backgroundColor = a.mode;
+            styles.color = RevColor(a.mode);
             // styles.backgroundImage = `linear-gradient(to right, ${a.primary}, ${a.secondary})`;
         } 
         

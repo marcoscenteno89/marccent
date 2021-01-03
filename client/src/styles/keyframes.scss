@@ -1,3 +1,11 @@
+@keyframes rotate {
+  from {
+    transform: rotate(360deg);
+  }
+  to {
+    transform: rotate(0);
+  }
+}
 @keyframes spin2 {
     from {
       transform: rotate(360deg);

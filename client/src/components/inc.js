@@ -1,14 +1,36 @@
-import React, { Component, Fragment } from "react";
+import React, {} from "react";
 
 const CurrentDate = new Date();
 
-const Gradient = props => {
-    const backgroundImage = `linear-gradient(to ${props.direcction ? props.direcction : 'left'}, ${props.primary}, ${props.secondary})`;
-    return backgroundImage;
-}
+const RevColor = (color) => color === '#FFFFFF' ? '#383d44' : '#FFFFFF';
+
+const LinGrad = (a, b) => `linear-gradient(to right, ${a}, ${b})`;
 
 const Button = props => {
-    return (<button style={props.styles} className={props.classes} onClick={() => props.onClick()}>{props.text}</button>)
+    let classList = `${props.className} flex-center`;
+    return (
+        <button style={props.styles} className={classList} onClick={() => props.onClick()}>
+            <i className="fab fa-edge rotate"></i> <span style={{marginLeft: '5px'}}>{props.text}</span>
+        </button>
+    )
+}
+
+const ColorList = color => {
+    const list = {}
+    if (color === '#FFFFFF') {
+        list.a = '#656565';
+        list.b = '#f5f5f5';
+        list.c = '#e5e5e5';
+        list.d = '#FFFFFF';
+        list.main = '#FFFFFF';
+    } else {
+        list.a = '#6b6b6b';
+        list.b = '#212121';
+        list.c = '#181818';
+        list.d = '#000000';
+        list.main = '#383d44';
+    }
+    return list;
 }
 
 const Background = props => {
@@ -24,6 +46,7 @@ const Background = props => {
         </React.Fragment>
     )
 }
+
 const Blur = props => {
     return (
         <svg><defs>
@@ -46,7 +69,7 @@ const Img = props => {
     </React.Fragment>)
 }
 
-const Footer = props => {
+const FooterText = props => {
     return (
     <div className="footer flex-center" style={props.style}>
         Copyright ©{CurrentDate.getFullYear()} Marccent. All rights reserved
@@ -60,11 +83,11 @@ const Today = () => {
     return (`${days[i.getDay()]}, ${month[i.getMonth()]} ${i.getDate()}, ${i.getFullYear()}`);
 }
 
-const Circle = props => {
+const SpCircle = props => {
     
     if (props.data) {
         const a = props.data;
-        const grad = `linear-gradient(to right, ${a.primary}, ${a.secondary})`;
+        const grad = LinGrad(a.primary, a.secondary);
         return (
             <div className="circle flex-center" style={{backgroundColor: a.mode}}>
                 <div className="grad flex-center" style={{backgroundImage: grad}}>
@@ -80,4 +103,35 @@ const Circle = props => {
     
 }
 
-export { Circle, Blur, Button, Background, Title, Footer, CurrentDate, Gradient, Today, Img }
+const MapStyle = (a) => {
+    if (a.mode) {
+        const col =  ColorList(a.mode);
+        return [
+            {elementType: 'geometry', stylers: [{color: col.main}]},
+            {elementType: 'labels.text.stroke', stylers: [{color: col.d}]},
+            {elementType: 'labels.text.fill', stylers: [{color: a.secondary}]},
+            {featureType: 'administrative.locality', elementType: 'labels.text.fill', stylers: [{color: a.secondary}]},
+            {featureType: 'poi', elementType: 'labels.text.fill', stylers: [{color: a.secondary}]},
+            {featureType: 'poi.park', elementType: 'geometry', stylers: [{color: col.c}]},
+            {featureType: 'poi.park', elementType: 'labels.text.fill', stylers: [{color: a.primary}]},
+            {featureType: 'road', elementType: 'geometry', stylers: [{color: a.secondary}]},
+            {featureType: 'road', elementType: 'geometry.stroke', stylers: [{color: col.d}]},
+            {featureType: 'road', elementType: 'labels.text.fill', stylers: [{color: a.secondary}]},
+            {featureType: 'road.highway', elementType: 'geometry', stylers: [{color: a.primary}]},
+            {featureType: 'road.highway', elementType: 'geometry.stroke', stylers: [{color: col.d}]},
+            {featureType: 'road.highway', elementType: 'labels.text.fill', stylers: [{color: a.secondary}]},
+            {featureType: 'transit', elementType: 'geometry', stylers: [{color: a.primary}]},
+            {featureType: 'transit.station', elementType: 'labels.text.fill', stylers: [{color: a.secondary}] },
+            {featureType: 'water', elementType: 'geometry', stylers: [{color: col.d}]},
+            {featureType: 'water', elementType: 'labels.text.fill', stylers: [{color: a.secondary}]},
+            {featureType: 'water', elementType: 'labels.text.stroke', stylers: [{color: col.d}]}
+        ]
+    } else {
+        return []
+    }
+}
+
+export { 
+    SpCircle, Blur, Button, Background, Title, FooterText, MapStyle,
+    CurrentDate, Today, Img, RevColor, LinGrad, ColorList
+}

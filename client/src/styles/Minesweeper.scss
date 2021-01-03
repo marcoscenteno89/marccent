@@ -14,6 +14,17 @@
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
+    .digit {
+      width: calc((230px + 15vw) / 10.5);
+      height: calc((230px + 15vw) / 10.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      border-radius: 5px;
+      margin: 2px 0;
+      font-size: 0.7rem;
+    }
   }
   .controller {
     width: 100%;
