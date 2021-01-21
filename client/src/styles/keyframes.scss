@@ -1,4 +1,4 @@
-@keyframes rotate {
+@keyframes spin2 {
   from {
     transform: rotate(360deg);
   }
@@ -6,57 +6,60 @@
     transform: rotate(0);
   }
 }
-@keyframes spin2 {
-    from {
-      transform: rotate(360deg);
-    }
-    to {
-      transform: rotate(0);
-    }
+@keyframes spin {
+  from {
+    transform: translate(-50%,-50%) scale(0.3) rotate(360deg);
   }
-  @keyframes spin {
-    from {
-      transform: translate(-50%,-50%) scale(0.3) rotate(360deg);
-    }
-    to {
-      transform: translate(-50%,-50%) scale(0.3) rotate(0);
-    }
+  to {
+    transform: translate(-50%,-50%) scale(0.3) rotate(0);
   }
-  @keyframes spin-rev {
-    from {
-      transform: translate(-50%,-50%) rotate(0);
-    }
-    to {
-      transform: translate(-50%,-50%) rotate(360deg);
-    }
+}
+@keyframes spin-rev {
+  from {
+    transform: translate(-50%,-50%) rotate(0);
   }
-  @keyframes move {
-    0% {
-      top: 0;
-    }
-    50% {
-      top: 20%;
-    }
-    100% {
-      top: 0;
-    }
+  to {
+    transform: translate(-50%,-50%) rotate(360deg);
   }
-  @keyframes move2 {
-    0% {
-      top: 0;
-    }
-    50% {
-      top: -20%;
-    }
-    100% {
-      top: 0;
-    }
+}
+@keyframes move {
+  0% {
+    top: 0;
   }
-  @keyframes rotate {
-    from {
-      transform: rotate(0);
-    }
-    to {
-      transform: rotate(360deg);
-    }
+  50% {
+    top: 20%;
   }
+  100% {
+    top: 0;
+  }
+}
+@keyframes move2 {
+  0% {
+    top: 0;
+  }
+  50% {
+    top: -20%;
+  }
+  100% {
+    top: 0;
+  }
+}
+@keyframes move3 {
+  0% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(500%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+@keyframes rotate {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

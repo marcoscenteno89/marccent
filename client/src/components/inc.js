@@ -2,46 +2,62 @@ import React, {} from "react";
 
 const CurrentDate = new Date();
 
+const RandomNum = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
+
 const RevColor = (color) => color === '#FFFFFF' ? '#383d44' : '#FFFFFF';
 
 const LinGrad = (a, b) => `linear-gradient(to right, ${a}, ${b})`;
 
 const Button = props => {
-    let classList = `${props.className} flex-center`;
     return (
-        <button style={props.styles} className={classList} onClick={() => props.onClick()}>
+        <button style={props.styles} className={props.className} onClick={() => props.onClick()}>
             <i className="fab fa-edge rotate"></i> <span style={{marginLeft: '5px'}}>{props.text}</span>
         </button>
     )
 }
+const Bomb = () => {
 
-const ColorList = color => {
-    const list = {}
-    if (color === '#FFFFFF') {
-        list.a = '#656565';
-        list.b = '#f5f5f5';
-        list.c = '#e5e5e5';
-        list.d = '#FFFFFF';
-        list.main = '#FFFFFF';
-    } else {
-        list.a = '#6b6b6b';
-        list.b = '#212121';
-        list.c = '#181818';
-        list.d = '#000000';
-        list.main = '#383d44';
+    function hover(a) {
+        a.target.style.background = 'none';
     }
-    return list;
+    return (<i 
+        className="fas fa-bomb" 
+        onMouseOver={hover.bind(this)}
+        onMouseLeave={hover.bind(this)}
+        style={{backgroundColor: 'none !important'}}
+        ></i>)
+}
+
+const Flag = () => {
+
+    function hover(a) {
+        a.target.style.background = 'none';
+    }
+    return (<i
+        className="fas fa-flag" 
+        onMouseOver={hover.bind(this)}
+        onMouseLeave={hover.bind(this)}
+        style={{backgroundColor: 'none !important'}}
+        ></i>)
 }
 
 const Background = props => {
+    const arr = [];
+    for (let i = 0; i < 40; i++) {
+        let ran = RandomNum(15, 100);
+        let ball = {
+            width: `${ran * 3}px`,
+            height: `${ran * 3}px`,
+            top: `${RandomNum(1, 100)}%`,
+            left: `${RandomNum(1, 100)}%`
+        }
+        arr.push(ball);
+    };
     return (
         <React.Fragment key="1">
-            <div className="bg">
-                <div className="ball"></div>
-                <div className="ball"></div>
-                <div className="ball"></div>
-                <div className="ball"></div>
-            </div>
+            <div className="bg"><div className="cont">
+                {arr.map((i, index) => <div key={index} className="ball" style={i}></div>)}
+            </div></div>
             <Blur />
         </React.Fragment>
     )
@@ -60,7 +76,7 @@ const Blur = props => {
 }
 
 const Title = props => {
-    return (<div className="header flex-center" style={props.style}>{props.text}</div>)
+    return (<h2 className="header flex-center" style={props.style}>{props.text}</h2>)
 }
 
 const Img = props => {
@@ -103,6 +119,24 @@ const SpCircle = props => {
     
 }
 
+const ColorList = color => {
+    const list = {}
+    if (color === '#FFFFFF') {
+        list.a = '#656565';
+        list.b = '#f5f5f5';
+        list.c = '#e5e5e5';
+        list.d = '#FFFFFF';
+        list.main = '#FFFFFF';
+    } else {
+        list.a = '#6b6b6b';
+        list.b = '#212121';
+        list.c = '#181818';
+        list.d = '#000000';
+        list.main = '#383d44';
+    }
+    return list;
+}
+
 const MapStyle = (a) => {
     if (a.mode) {
         const col =  ColorList(a.mode);
@@ -132,6 +166,6 @@ const MapStyle = (a) => {
 }
 
 export { 
-    SpCircle, Blur, Button, Background, Title, FooterText, MapStyle,
-    CurrentDate, Today, Img, RevColor, LinGrad, ColorList
+    SpCircle, Blur, Button, Background, Title, FooterText, MapStyle, Bomb,
+    CurrentDate, Today, Img, RevColor, LinGrad, ColorList, RandomNum, Flag
 }

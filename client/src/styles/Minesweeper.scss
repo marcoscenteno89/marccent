@@ -8,22 +8,37 @@
     width: 100%;
       div {
           font-size: 1.5rem;
+          i {
+            font-size: 1.5rem;
+          }
       }
   }
   .body {
     display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    .digit {
-      width: calc((230px + 15vw) / 10.5);
-      height: calc((230px + 15vw) / 10.5);
+    justify-content: center;
+    width: 100%;
+    height: auto;
+    flex-direction: column;
+    .bd-col {
       display: flex;
-      justify-content: center;
-      align-items: center;
-      cursor: pointer;
-      border-radius: 5px;
-      margin: 2px 0;
-      font-size: 0.7rem;
+      // flex-direction: column;
+      .digit {
+        width: 3vw;
+        min-width: 20px;
+        height: 3vw;
+        min-height: 20px;
+        margin: 1px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 3px;
+        cursor: pointer;
+        font-size: 0.7rem;
+        .fa-bomb {
+            background: none !important;
+            font-size: 1.3rem;
+        }
+      }
     }
   }
   .controller {

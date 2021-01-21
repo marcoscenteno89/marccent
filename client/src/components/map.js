@@ -37,29 +37,27 @@ export class Maps extends Component {
                 style={con} 
                 containerStyle={con} 
                 google={this.props.google} 
-                zoom={10} 
+                zoom={12} 
                 initialCenter={center}
                 styles={customStyle}
                 map={this}
                 onReady={(mapProps, map) => this.update(mapProps, map, customStyle)}
             >
-                <Circle
-                    radius={7000}
+                {[...Array(4)].map((x,i) => <Circle
+                    radius={i * 1000}
+                    key={i}
                     center={center}
-                    // onMouseover={() => console.log('mouseover')}
-                    // onClick={() => console.log('click')}
-                    // onMouseout={() => console.log('mouseout')}
                     strokeColor='transparent'
                     strokeOpacity={0}
                     strokeWeight={5}
                     fillColor={a.primary}
                     fillOpacity={0.5}
-                />
+                />)}
             </Map>
         )
     }
 }
 
 export default GoogleApiWrapper({
-    apiKey: 'AIzaSyABF80pQepngcW0rojqPcKQGwKRcqiPhu4'
+    apiKey: process.env.REACT_APP_GOOGLE_API
 })(Maps)

@@ -1,12 +1,11 @@
 import React, { Component, Fragment } from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
-import { Background, RevColor, LinGrad } from "./inc";
+import { Background, RevColor, LinGrad, FooterText, Title } from "./inc";
 import About from "./pages/about";
 import Contact from "./pages/contact";
 import Apps from "./pages/apps";
 import Nav from './nav';
 import Footer from './footer';
-// import Container from './container';
 const url = "http://localhost:5000/api/theme";
 
 class Theme extends Component {
@@ -80,31 +79,35 @@ class Theme extends Component {
         if (this.state.themes === false) return <Fragment>No theme found</Fragment>
 
         const a = this.state.active;
-        const styles = {
-            backgroundImage: LinGrad(a.primary, a.secondary)
-        }
+        const bg = {backgroundImage: LinGrad(a.primary, a.secondary)}
         const page = {
             backgroundImage: LinGrad(a.primary, a.secondary),
             color: RevColor(a.mode)
         }
+        const cont = {
+            // backgroundImage: LinGrad(a.primary, a.secondary),
+            margin: '3rem 5px 5rem 5px',
+            color: RevColor(a.mode), 
+        }
+        const link = {color: a.primary}
 
         return (
-            <Fragment>
+            <Fragment><BrowserRouter>
                 <Nav data={a} />
                 <div className="page flex-center" style={page}>
-                    <Background styles={styles} />
-                    <div className="container" style={{paddingBottom: '6rem'}}>
-                        <BrowserRouter>
-                            <Route path="/contact" render={() => <Contact data={a}/>} />
-                            {/* <Title text="Applications" style={{backgroundColor: a.mode, color: RevColor(a.mode)}} /> */}
-                            <Route path="/about" render={() => <About data={a}/>} />
-                            <Route path="/apps" render={() => <Apps data={a}/>} />
-                            {/* <FooterText style={{backgroundColor: a.mode, color: RevColor(a.mode)}} /> */}
-                        </BrowserRouter>
+                    <Background styles={bg} />
+                    <div className="container" style={cont}>
+                        <Route path="/portfolio"></Route>
+                        <Route path="/apps"><Apps data={a}/></Route>
+                        <Route path="/about"><About data={a}/></Route>
+                        <Route path="/contact"><Contact data={a}/></Route>
+                        <Route path="/"></Route>
                     </div>
                 </div>
                 <Footer data={this.state} update={this.update} />
-            </Fragment>
+                
+                
+            </BrowserRouter></Fragment>
         )
     }
 }

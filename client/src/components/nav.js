@@ -1,37 +1,36 @@
 import React, { Component } from "react";
-import { BrowserRouter, Link } from 'react-router-dom';
-import { Button, LinGrad } from "./inc";
+import { Link } from 'react-router-dom';
+import { LinGrad } from "./inc";
 import '.././styles/Nav.scss';
 
 class Nav extends Component {
 
     render() {
-
-        const btn = {}
-        const nav = {}
-        const link = {}
-        if (this.props.data) {
-            const a = this.props.data;
-            nav.color = a.primary;
-            nav.backgroundColor = this.props.data.mode;
-            btn.backgroundImage = LinGrad(a.primary, a.secondary);
-            btn.color = '#FFFFFF';
-            link.color = a.primary;
-        } 
+        if (!this.props.data) return (<h1>Error</h1>);
+        const a = this.props.data;
+        const btn = {
+            backgroundImage: LinGrad(a.primary, a.secondary),
+            color: '#FFFFFF'
+        }
+        const nav = {
+            color: a.primary,
+            backgroundColor: a.mode
+        }
+        // const ul = {
+        //     height: '50px'
+        // }
+        const link = {color: a.primary}
         
         return  (
             <nav className="main-nav flex-center" style={nav}>
-                <div className="container flex-row">
-                    <BrowserRouter><Link to="/">
-                        <Button className="btn" styles={btn} text="Marccent" />
-                    </Link></BrowserRouter>
+                <div className="container flex-row" style={{justifyContent: 'flex-end'}}>
+                    {/* <Link style={btn} className="btn" to="/"> <i className="fab fa-edge rotate"></i> Marccent</Link> */}
                     <ul>
-                        <BrowserRouter>
-                            <li><Link to="/portfolio" style={link}>Portfolio</Link></li>
-                            <li><Link to="/apps" style={link}>Apps</Link></li>
-                            <li><Link to="/about" style={link}>About</Link></li>
-                            <li><Link to="/contact" style={link}>Contact</Link></li>
-                        </BrowserRouter>
+                        <li className="active"><Link to="/" style={link}>Home</Link></li>
+                        <li><Link to="/portfolio" style={link}>Portfolio</Link></li>
+                        <li><Link to="/apps" style={link}>Apps</Link></li>
+                        <li><Link to="/about" style={link}>About</Link></li>
+                        <li><Link to="/contact" style={link}>Contact</Link></li>
                     </ul> 
                 </div>
             </nav>

@@ -7,7 +7,6 @@ import profile from "./../../img/mcr.png";
 class About extends Component {
        
     render() {
-        console.log(this.props);
         const a = this.props.data;
 
         return  (

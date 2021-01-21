@@ -41,7 +41,7 @@ a {
 }
 .flex-col {
     display: flex;
-    align-items: center;
+    align-items: stretch;
     justify-content: space-between;
     flex-direction: column;
 }
@@ -50,11 +50,63 @@ a {
     justify-content: center;
     align-items: center;
 }
-.btn {
-    padding: 7px 20px;
-    border: none;
-    margin: 2px;
+.select-field div {
+    font-size: 1rem !important;
+}
+.select-field {
+    width: 100%;
+    max-width: 150px;
+}
+.css-yk16xz-control {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     border-radius: 5px;
+    border: none;
+    width: 100%;
+    max-width: 150px;
+}
+react-dropdown-select-content
+form input, form select, form button, form textarea, select, option {
+    // width: 100%;
+    padding: 7px 20px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    max-width: 280px;
+    color: #666;
+}
+// .btn {
+//     padding: 7px 20px;
+//     border: none;
+//     margin: 2px;
+//     border-radius: 5px;
+// }
+.btn {
+    padding: 7px 0 7px 25px !important;
+    position: relative;
+    margin: 0 0 0.3vw 2px;
+    border-radius: 5px;
+    border: none;
+    color: #FFF;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.btn:after {
+    content: '\00bb';
+    padding-left: 10px;
+    opacity: 0;
+    transform: translateY(-0.9rem);
+    font-size: 2.2rem;
+    height: 1rem;
+    transition: all 1s;
+}
+.btn:hover::after {
+    opacity: 1;
+    padding-right: 25px;
+}
+.btn:hover {
+    color: #FFF;
 }
 .rotate {
     animation: rotate 5s linear infinite;

@@ -31,7 +31,7 @@ class Footer extends Component {
                     <div className="flex-center footer-nav-container">
                         <FooterNav data={this.props.data.active} />
                     </div>
-                    <FooterText style={footerTitle} />
+                    {/* <FooterText style={footerTitle} /> */}
                     <div className="m-20 flex-center">
                         <LightDark data={this.props.data.active} update={this.props.update} />
                     </div>
@@ -115,7 +115,7 @@ class FooterNav extends Component {
             backgroundColor: a.mode
         }
         let menu = {
-            animation: `glow-${a.id} 3s ease-in-out infinite alternate`,
+            animation: `rotate 3s linear infinite`,
             backgroundImage: LinGrad(a.primary, a.secondary)
         }
         return (
