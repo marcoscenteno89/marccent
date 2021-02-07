@@ -46,3 +46,14 @@
     flex-wrap: wrap;
   }
 }
+.modal {
+  h2 {
+    padding-bottom: 0 !important;
+  }
+  .help {
+    padding: 1rem 2rem;
+    p {
+      font-size: 0.9rem;
+    }
+  }
+}

@@ -63,6 +63,11 @@ const Background = props => {
     )
 }
 
+// const LoadImages = (ob) => {
+//     const Component = React.lazy(() => import(`./components/component${name}.jsx`));
+//     return Component;
+// }
+
 const Blur = props => {
     return (
         <svg><defs>
@@ -105,9 +110,9 @@ const SpCircle = props => {
         const a = props.data;
         const grad = LinGrad(a.primary, a.secondary);
         return (
-            <div className="circle flex-center" style={{backgroundColor: a.mode}}>
-                <div className="grad flex-center" style={{backgroundImage: grad}}>
-                    <div className="inner-circle flex-center" style={{backgroundColor: a.mode}}>
+            <div className="circle flex-center" style={{backgroundColor: a.mode, boxShadow: `inset 0 0 15px #000`}}>
+                <div className="grad flex-center" style={{backgroundImage: grad, boxShadow: `inset 0 0 15px #000`}}>
+                    <div className="inner-circle flex-center" style={{backgroundColor: a.mode, boxShadow: `inset 0 0 75px #000`}}>
                         {props.children}
                     </div>
                 </div>

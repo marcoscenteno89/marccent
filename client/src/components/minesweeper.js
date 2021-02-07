@@ -1,52 +1,86 @@
 import React, { Component } from "react";
+import { Fragment } from "react";
+import Modal from 'react-modal';
 import Select from 'react-select'
-import ".././styles/Minesweeper.scss";
-import { Button, RevColor, Bomb, RandomNum, Flag } from "./inc";
+import "../styles/Minesweeper.scss";
+import { Button, RevColor, Bomb, RandomNum, Flag, LinGrad } from "./inc";
+
+Modal.setAppElement('#app');
 
 class MineSweeper extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            over: false,
             grid: false,
             mineLocation: false,
-            mineCount: 10,
-            gameOver: false
-        } 
+            mineCount: 15,
+            popup: false,
+            gameOver: false,
+            active: false,
+            win: false,
+            time: 0,
+            revealedCount: 0,
+            help: false
+        }
+        this.getTime = this.getTime.bind(this);
     }
     async componentDidMount() {
         const game = this.createGrid(10, 10, this.state.mineCount);
         this.setState({
             grid: game.grid,
             mineLocation: game.mines,
+            mineCount: this.state.mineCount,
+            revealedCount: 100 - this.state.mineCount
         });
     }
 
     onClick = (e, cell) => {
+        if (this.state.gameOver || cell.revealed) return;
+        if (!this.state.active) {
+            this.setState({
+                active: true
+            });
+        }
         let newGrid = this.state.grid;
         if (cell.mine) {
             for( let i of this.state.mineLocation) newGrid[i.x][i.y].revealed = true;
             this.setState({
-                grid: newGrid
+                grid: newGrid,
+                gameOver: true
             });
         } else {
             let grid = this.reveal(newGrid, cell.x, cell.y, 0);
-            this.setState({
-                grid: grid.arr
-            });
+            let count = this.state.revealedCount + grid.newNonMinesCount;
+            if (count === 0) {
+                this.setState({
+                    gameOver: true,
+                    active: false,
+                    win: true
+                });
+            } else {
+                this.setState({
+                    grid: grid.arr,
+                    revealedCount: count,
+                });
+            }
         }
     }
 
     onContextMenu = (e, cell) => {
         e.preventDefault();
+        if (!this.state.active) {
+            this.setState({
+                active: true
+            });
+        }
         let mineCnt = this.state.mineCount;
         let newGrid = this.state.grid;
         if (newGrid[cell.x][cell.y].flagged) {
             newGrid[cell.x][cell.y].flagged = false;
             mineCnt = mineCnt + 1;
         } else {
-            if (mineCnt == 0) {
+            if (mineCnt === 0) {
                 alert('No more flags available.');
                 return;
             }
@@ -57,6 +91,16 @@ class MineSweeper extends Component {
             grid: newGrid,
             mineCount: mineCnt
         })
+    }
+
+    startOver() {
+        const game = this.createGrid(10, 10, this.state.mineCount);
+        this.setState({
+            gameOver: false,
+            grid: game.grid,
+            mineLocation: game.mines,
+            popup: false
+        });
     }
 
     createGrid(row, col, bombs) {
@@ -118,7 +162,6 @@ class MineSweeper extends Component {
 
         return { grid, mines };
     }
-
 
     reveal(arr, x, y, newNonMinesCount) {
         if (arr[x][y].revealed) return;
@@ -220,13 +263,33 @@ class MineSweeper extends Component {
         return { arr, newNonMinesCount };
     }
 
+    help() {
+        this.setState({
+            help: true
+        });
+    }
+
+    getTime(time) {
+        this.setState({
+            active: false,
+            gameOver: false,
+            time: time,
+            popup: true
+        }, () => console.log(this.state));
+    }
+
     dificulty = (val) => {
-        console.log(val);
-        // this.setState({mineCount: val})
+        const game = this.createGrid(10, 10, val.value);
+        this.setState({
+            mineCount: val.value,
+            gameOver: false,
+            grid: game.grid,
+            mineLocation: game.mines,
+        });
     }
 
     render() {
-        if (!this.props.data || !this.state.grid) return (<h1>There was an error</h1>);
+        if (!this.props.data || !this.state.grid) return (<h1>Loading...</h1>);
         const a = this.props.data;
         const b = this.state;
         const board = {
@@ -249,35 +312,59 @@ class MineSweeper extends Component {
             {label: 'Easy', value: 10 },
             {label: 'Medium', value: 15 },
             {label: 'Hard', value: 20 },
-            {label: 'Extra Hard', value: 25 },
+            {label: 'Extra Hard', value: 25 }
         ]
+        const popup = {
+            overlay: {
+              backgroundColor: 'rgba(56,61,68,0.2)',
+            },
+            content: {
+                color: RevColor(a.mode),
+                filter: `drop-shadow(0 0 10px rgba(0,0,0,0.8))`
+            }
+        }
+        const grad = {
+            background: LinGrad(a.primary, a.secondary)
+        }
+        const popupBody = {
+            backgroundColor: a.mode
+        }
+        const headingBreak = {
+            background: `
+                radial-gradient(circle at bottom left, rgba(0,0,0,0) 2rem, ${a.primary} 2rem) bottom left,
+                radial-gradient(circle at bottom right, rgba(0,0,0,0) 2rem, ${a.secondary} 2rem) bottom right`,
+            backgroundSize: '2rem 100%',
+            backgroundRepeat: 'no-repeat'
+        }
+        const bodyBreak = {
+            background: `
+                radial-gradient(circle at top left, rgba(0,0,0,0) 2rem, ${a.mode} 2rem) top left,
+                radial-gradient(circle at top right, rgba(0,0,0,0) 2rem, ${a.mode} 2rem) top right`,
+            backgroundSize: '50% 100%',
+            backgroundRepeat: 'no-repeat'
+        }
         return (
             <div className="board">
                 <div className="status flex-row">
                     <Select 
                         options={op}
                         styles={select}
-                        defaultValue={op[1]} 
+                        defaultValue={op[1]}
                         className="select-field"
                         onChange={(val) => this.dificulty(val)} 
                     />
-                    {/* <select style={board}>
-                        <option value="10">Easy</option>
-                        <option value="15" selected>Medium</option>
-                        <option value="20">Hard</option>
-                        <option value="25">Extra Hard</option>
-                    </select> */}
                     <div data={a}><Flag /> {b.mineCount}</div>
-                    <Counter data={a} />
+                    <div style={{ color: RevColor(a.mode) }} className="counter">
+                        <Counter getTime={this.getTime} active={b.active} data={a} gameOver={b.gameOver} />
+                    </div>
                 </div>
                 <div className="body">
                     {b.grid.map((row, index) => 
-                        <div className="bd-col" key={index} value={index}> {row.map((cell) => 
+                        <div className="bd-col" key={index}> {row.map((cell) => 
                             <Cell
                                 cell={cell}
                                 key={cell.id}
                                 data={a} 
-                                over={this.state.over}
                                 onClick={this.onClick}
                                 onContextMenu={this.onContextMenu}
                             />
@@ -286,9 +373,57 @@ class MineSweeper extends Component {
                     )}
                 </div>
                 <div className="controller flex-center">
-                    <Button className="btn" styles={board} onClick={() => this.onClick()} text="Start Over" />
-                    <Button className="btn" styles={board} onClick={() => this.onClick()} text="Help" />
+                    <Button className="btn" styles={board} onClick={() => this.startOver()} text="Start Over" />
+                    <Button className="btn" styles={board} onClick={() => this.help()} text="Help" />
                 </div>
+                <Modal style={popup} className="modal" overlayClassName="overlay" isOpen={b.popup}>
+                    {/* <div className="circle left" />
+                    <div className="circle right" /> */}
+                    <div style={grad} className="heading flex-center">
+                        <div style={{backgroundColor: a.primary}} className="left"></div>
+                        <div style={{backgroundColor: a.secondary}} className="right"></div>
+                        <h2>{b.win ? 'Winner' : 'Game Over'}</h2>
+                    </div>
+                    <div style={headingBreak} className="break">
+                        <div style={grad} className="grad"></div>
+                    </div>
+                    <div style={bodyBreak} className="break"></div>
+                    <div style={popupBody} className="body flex-center">
+                        <div>{b.win ? `Time: ${b.time}` : 'You Lost'}</div>
+                        <div className="flex-center controller">
+                            <Button styles={grad} className="btn" onClick={() => this.startOver()} text="Start Over" />
+                            <Button styles={grad} className="btn" onClick={() => this.startOver()} text="Close" />
+                        </div>
+                    </div>
+                </Modal>
+                <Modal style={popup} className="modal" overlayClassName="overlay" isOpen={b.help}>
+                    <div style={grad} className="heading flex-center">
+                        <div style={{backgroundColor: a.primary}} className="left"></div>
+                        <div style={{backgroundColor: a.secondary}} className="right"></div>
+                        <h2>Mine Sweeper Instructions</h2>
+                    </div>
+                    <div style={headingBreak} className="break">
+                        <div style={grad} className="grad"></div>
+                    </div>
+                    <div style={bodyBreak} className="break"></div>
+                    <div style={popupBody} className="body flex-center">
+                        <div className="help">
+                            <h4>About the Game</h4> 
+                            <p>The object of Minesweeper is to expose all the open areas on the board without hitting an bombs.</p>
+                            <h4>Instructions</h4>
+                            <p>Click "Play" to begin the game.</p> 
+                            <p>Use the left click button on the mouse to select a space on the grid. If you hit a bomb, you lose.</p>
+                            <p>The numbers on the board represent how many bombs are adjacent to a square. For example, if a square has a "3" on it, then there are 3 bombs next to that square. The bombs could be above, below, right left, or diagonal to the square.</p>
+                            <p>Avoid all the bombs and expose all the empty spaces to win Minesweeper.</p>
+                            <p>Tip: Use the numbers to determine where you know a bomb is.</p> 
+                            <p>Tip: You can right click a square with the mouse to place a flag where you think a bomb is. This allows you to avoid that spot.</p>
+                            <p>This game should work on all platforms including safari and mobile (we hope, but make no guarantees).</p>
+                        </div>
+                        <div className="flex-center controller">
+                            <button style={grad} className="btn" onClick={() => this.setState({help: false})}>Close</button>
+                        </div>
+                    </div>
+                </Modal>
             </div>
         )        
     }
@@ -298,25 +433,35 @@ class Counter extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            count: 0
+            count: 0,
+            active: false,
         }
     }
-    componentDidMount() {
-        setInterval(() => this.setState({count: this.state.count + 1}), 1000);
+
+    componentWillReceiveProps(e) {
+        if (e.active && this.state.count === 0) {
+                this.setState({
+                    active: true
+                }, () => {
+                        this.timer = setInterval(() => this.setState({count: this.state.count + 1}), 1000);
+                });
+        }
+        if (e.gameOver) {
+            let temp = this.state.count;
+            clearInterval(this.timer);
+            this.setState({
+                count: 0,
+                active: false
+            }, () => e.getTime(temp));
+        }
     }
-       
+
     render() {
-
-        const styles = {}
-        if (this.props.data) {
-            const a = this.props.data;
-            styles.color = RevColor(a.mode);
-        }
-
+        if (!this.props.data) return (<h1>Loading...</h1>);
         return  (
-            <div style={styles} className="counter">
+            <Fragment>
                 <i className="fas fa-stopwatch"></i> {this.state.count}
-            </div>
+            </Fragment>
         )        
     }
 }
@@ -327,21 +472,23 @@ class Cell extends Component {
         super(props);
         this.state = {
             data: this.props.data,
-            cell: this.props.cell,
-            over: this.props.over,
+            cell: this.props.cell
         }
     }
 
+    componentWillReceiveProps(props) {
+        this.setState({
+            data: props.data,
+            cell: props.cell
+        });
+    }
+
     bgStart(a, e) {
-        e.target.style.background = `linear-gradient(to right, ${a.primary}, ${a.secondary})`;
-        e.target.style.fontSize = '0.9rem';
-        e.target.style.fontWeight = '800';
+        e.target.style.background = LinGrad(a.primary, a.secondary);
     }
 
     bgLeave(a, e) {
         e.target.style.background = a.mode;
-        e.target.style.fontSize = '0.7rem';
-        e.target.style.fontWeight = '400';
     }
 
     render() {
@@ -358,7 +505,6 @@ class Cell extends Component {
             styles.opacity = '0.7';
             if (this.state.cell.value !== 0) value = this.state.cell.value;
         } else {}
-        let extra = `${this.state.cell.x}, ${this.state.cell.y}`;
         return  (
             <div className="flex-center digit" style={styles} 
                 onMouseLeave={this.bgLeave.bind(this, this.props.data)} 

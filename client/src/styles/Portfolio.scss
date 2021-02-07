@@ -1,0 +1,31 @@
+.portfolio {
+    min-height: 700px;
+    flex-wrap: wrap;
+    justify-content: center;
+    .card-container {
+        border-radius: 10px;
+        box-shadow: 0 0 15px #000;
+        margin: 1rem 0.5rem;
+        width: 22%;
+        min-width: 250px;
+        overflow: hidden;
+        align-items: center;
+        i {
+            margin: 0.3rem 0.3rem;
+            font-size: 0.8rem;
+            -webkit-text-fill-color: transparent !important;
+            -webkit-background-clip: text !important;
+        }
+        i.large {
+            font-size: 1.7rem;
+            // filter: drop-shadow(0 0 2px rgba(0,0,0,1))
+        }
+        .img-container {
+            border-radius: 10px 10px 0 0;
+            border: solid 5px;
+            height: 400px;
+            overflow: hidden;
+            img {}
+        }
+    }
+}

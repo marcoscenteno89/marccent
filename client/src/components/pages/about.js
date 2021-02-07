@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import './../../styles/About.scss';
-import { Img, SpCircle } from "./../inc";
-import header from "./../../img/img2.jpg";
-import profile from "./../../img/mcr.png";
+import '../../styles/About.scss';
+import { Img, SpCircle } from "../inc";
+import header from "./../../media/img2.jpg";
+// import profile from "./../../img/mcr.png";
 
 class About extends Component {
        
@@ -15,7 +15,7 @@ class About extends Component {
                 <div className="con flex-center">
                     <div className="circle-con">
                         <SpCircle data={a}>
-                            <Img src={profile} />
+                            {/* <Img src={profile} /> */}
                         </SpCircle>
                     </div>
                 </div>

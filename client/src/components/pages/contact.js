@@ -1,5 +1,5 @@
-import React, { Component, Fragment } from "react";
-import './../../styles/Contact.scss';
+import React, { Component } from "react";
+import '../../styles/Contact.scss';
 import Maps from "../map";
 import { RevColor, FooterText, Button, LinGrad, Title } from "../inc";
 

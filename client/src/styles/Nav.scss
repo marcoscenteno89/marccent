@@ -1,6 +1,6 @@
 .main-nav {
     z-index: 99;
-    position: sticky;
+    position: fixed;
     top: 0;
     width: 100%;
     ul {
@@ -9,6 +9,9 @@
       list-style: none;
       li {
         padding: 12px 20px;
+        a {
+          height: 100%;
+        }
       }
       li.active {
         background: #FFF;
@@ -17,4 +20,8 @@
         border-left: 2px solid;
       }
     }
+   li i, li a {
+     -webkit-text-fill-color: transparent !important;
+     -webkit-background-clip: text !important;
   }
+}

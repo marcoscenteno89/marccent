@@ -1,33 +1,29 @@
 import React, { Component } from "react";
-import { RevColor, LinGrad } from "./../inc";
-import Carousel from "react-elastic-carousel";
-import MineSweeper from "./../minesweeper";
-import Temperature from "./../temperature";
-import Maps from "./../map";
+import { BrowserRouter, Route } from 'react-router-dom';
+import AppNav from "../app-nav";
+import MineSweeper from "../minesweeper";
+import Temperature from "../temperature";
+import Maps from "../map";
+import '../../styles/About.scss';
+import { Img, SpCircle, mpCircle } from "../inc";
 
 class Apps extends Component {
-
+       
     render() {
         const a = this.props.data;
-        const styles = {}
-        const mpCircle = {
-            width: '90vw',
-            height: '90vw',
-            maxWidth: '768px',
-            maxHeight: '768px',
-            position: 'relative',
-            borderRadius: '50%',
-            overflow: 'hidden'
-        }
-        return  (
-            <section className="section flex-center" style={styles}>
+        const mpCircle = {}
 
-                <Carousel>
-                    <MineSweeper data={a} />
-                    <Temperature data={a} />
-                    <div className="map-size" style={mpCircle}><Maps data={a} /></div>
-                </Carousel>
-            </section>    
+        return  (
+            <BrowserRouter>
+                <div className="flex-center">
+                    <div className="container">
+                        <Route path="/minesweeper"><MineSweeper data={a} /></Route>
+                        <Route path="/temp"><Temperature data={a} /></Route>
+                        <Route path="/map"><div className="map-size" style={mpCircle}><Maps data={a} /></div></Route>
+                    </div>
+                    <AppNav data={a} />
+                </div>
+            </BrowserRouter>
         )        
     }
 }

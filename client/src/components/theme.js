@@ -1,11 +1,15 @@
 import React, { Component, Fragment } from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
-import { Background, RevColor, LinGrad, FooterText, Title } from "./inc";
+import { Background, RevColor, LinGrad } from "./inc";
 import About from "./pages/about";
-import Contact from "./pages/contact";
 import Apps from "./pages/apps";
-import Nav from './nav';
+import Contact from "./pages/contact";
+import Nav from './main-nav';
 import Footer from './footer';
+import Portfolio from './pages/portfolio';
+// import MineSweeper from "./minesweeper";
+// import Temperature from "./temperature";
+// import Maps from "./map";
 const url = "http://localhost:5000/api/theme";
 
 class Theme extends Component {
@@ -91,22 +95,33 @@ class Theme extends Component {
         }
         const link = {color: a.primary}
 
+        const mpCircle = {
+            width: '90vw',
+            height: '90vw',
+            maxWidth: '768px',
+            maxHeight: '768px',
+            position: 'relative',
+            borderRadius: '50%',
+            overflow: 'hidden'
+        }
+
         return (
             <Fragment><BrowserRouter>
                 <Nav data={a} />
                 <div className="page flex-center" style={page}>
                     <Background styles={bg} />
                     <div className="container" style={cont}>
-                        <Route path="/portfolio"></Route>
-                        <Route path="/apps"><Apps data={a}/></Route>
+                        <Route path="/portfolio"><Portfolio data={a}/></Route>
                         <Route path="/about"><About data={a}/></Route>
+                        <Route path="/apps"><Apps data={a}/></Route>
                         <Route path="/contact"><Contact data={a}/></Route>
+                        {/* <Route path="/minesweeper"><MineSweeper data={a} /></Route>
+                        <Route path="/temp"><Temperature data={a} /></Route>
+                        <Route path="/map"><div className="map-size" style={mpCircle}><Maps data={a} /></div></Route> */}
                         <Route path="/"></Route>
                     </div>
                 </div>
-                <Footer data={this.state} update={this.update} />
-                
-                
+                <Footer data={this.state} update={this.update} /> 
             </BrowserRouter></Fragment>
         )
     }
