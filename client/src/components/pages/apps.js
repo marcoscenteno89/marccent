@@ -15,14 +15,10 @@ class Apps extends Component {
 
         return  (
             <BrowserRouter>
-                <div className="flex-center">
-                    <div className="container">
-                        <Route path="/minesweeper"><MineSweeper data={a} /></Route>
-                        <Route path="/temp"><Temperature data={a} /></Route>
-                        <Route path="/map"><div className="map-size" style={mpCircle}><Maps data={a} /></div></Route>
-                    </div>
-                    <AppNav data={a} />
-                </div>
+                <Route path="/apps/minesweeper"><MineSweeper data={a} /></Route>
+                <Route path="/apps/temp"><Temperature data={a} /></Route>
+                <Route path="/apps/map"><div className="map-size" style={mpCircle}><Maps data={a} /></div></Route>
+                <AppNav data={a} />
             </BrowserRouter>
         )        
     }

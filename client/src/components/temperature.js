@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import "../styles/Temperature.scss";
 import '../styles/keyframes.scss';
 import { Today, Blur, SpCircle, RevColor } from "./inc";
-import AppNav from "./app-nav";
 const openWeather = `http://api.openweathermap.org/data/2.5/forecast`;
 
 class Temperature extends Component {
@@ -40,7 +39,7 @@ class Temperature extends Component {
             maxHeight: '768px'
         }
         return  (
-            <div>
+            <section className="temp">
                 <div style={styles}>
                     <SpCircle data={a}>
                         <div className="today" style={{color: mod}} >
@@ -64,8 +63,7 @@ class Temperature extends Component {
                         <Blur />
                     </SpCircle>
                 </div>
-                <AppNav data={a} />
-            </div>
+            </section>
         )        
     }
 }

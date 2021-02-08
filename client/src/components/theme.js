@@ -7,9 +7,6 @@ import Contact from "./pages/contact";
 import Nav from './main-nav';
 import Footer from './footer';
 import Portfolio from './pages/portfolio';
-// import MineSweeper from "./minesweeper";
-// import Temperature from "./temperature";
-// import Maps from "./map";
 const url = "http://localhost:5000/api/theme";
 
 class Theme extends Component {
@@ -113,11 +110,8 @@ class Theme extends Component {
                     <div className="container" style={cont}>
                         <Route path="/portfolio"><Portfolio data={a}/></Route>
                         <Route path="/about"><About data={a}/></Route>
-                        <Route path="/apps"><Apps data={a}/></Route>
+                        <Route path="/apps/minesweeper"><Apps data={a}/></Route>
                         <Route path="/contact"><Contact data={a}/></Route>
-                        {/* <Route path="/minesweeper"><MineSweeper data={a} /></Route>
-                        <Route path="/temp"><Temperature data={a} /></Route>
-                        <Route path="/map"><div className="map-size" style={mpCircle}><Maps data={a} /></div></Route> */}
                         <Route path="/"></Route>
                     </div>
                 </div>

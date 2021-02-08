@@ -13,7 +13,6 @@ class AppNav extends Component {
             // background: LinGrad(a.primary, a.secondary),
         }
         const breakPoints = [
-            {width: 468, itemsToShow: 2},
             {width: 568, itemsToShow: 3},
             {width: 768, itemsToShow: 4},
             {width: 868, itemsToShow: 5},
@@ -23,17 +22,17 @@ class AppNav extends Component {
             <ul className="appnav section flex-center" style={{width: '100%'}}>
                 <Carousel breakPoints={breakPoints}>
                     <li>
-                        <Link to="/minesweeper" style={link}>
+                        <Link to="/apps/minesweeper" style={link}>
                             <i style={link} className="fas fa-bomb"></i> Minesweeper
                         </Link>
                     </li>
                     <li style={{borderColor: a.secondary}}>
-                        <Link to="/temp" style={link}>
+                        <Link to="/apps/temp" style={link}>
                             <i style={link} className="fas fa-temperature-high"></i> Temperature
                         </Link>
                     </li>
                     <li style={{borderColor: a.secondary}}>
-                        <Link to="/map" style={link}>
+                        <Link to="/apps/map" style={link}>
                             <i style={link} className="fas fa-globe-americas"></i> Maps
                         </Link>
                     </li>

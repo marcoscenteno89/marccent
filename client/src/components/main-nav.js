@@ -17,8 +17,8 @@ class Nav extends Component {
         
         return  (
             <nav className="main-nav flex-center" style={nav}>
-                <div className="container flex-row" style={{justifyContent: 'flex-end'}}>
-                    {/* <Link style={btn} className="btn" to="/"> <i className="fab fa-edge rotate"></i> Marccent</Link> */}
+                <div className="container flex-row" style={{justifyContent: 'space-between'}}>
+                    <Link style={link} className="btn" to="/"> <i className="fab fa-edge rotate"></i> Marccent</Link>
                     <ul>
                         <li>
                             <Link to="/" style={link}>
@@ -31,7 +31,7 @@ class Nav extends Component {
                             </Link>
                         </li>
                         <li style={{borderColor: a.secondary}}>
-                            <Link to="/apps" style={link}>
+                            <Link to="/apps/minesweeper" style={link}>
                                 <i style={link} className="fab fa-windows"></i> Apps
                             </Link>
                         </li>

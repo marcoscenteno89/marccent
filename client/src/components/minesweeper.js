@@ -344,87 +344,87 @@ class MineSweeper extends Component {
             backgroundRepeat: 'no-repeat'
         }
         return (
-            <div className="board">
-                <div className="status flex-row">
-                    <Select 
-                        options={op}
-                        styles={select}
-                        defaultValue={op[1]}
-                        className="select-field"
-                        onChange={(val) => this.dificulty(val)} 
-                    />
-                    <div data={a}><Flag /> {b.mineCount}</div>
-                    <div style={{ color: RevColor(a.mode) }} className="counter">
-                        <Counter getTime={this.getTime} active={b.active} data={a} gameOver={b.gameOver} />
+            <section className="minesweeper">
+                <div className="board">
+                    <div className="status flex-row">
+                        <Select 
+                            options={op}
+                            styles={select}
+                            defaultValue={op[1]}
+                            className="select-field"
+                            onChange={(val) => this.dificulty(val)} 
+                        />
+                        <div data={a}><Flag /> {b.mineCount}</div>
+                        <div style={{ color: RevColor(a.mode) }} className="counter">
+                            <Counter getTime={this.getTime} active={b.active} data={a} gameOver={b.gameOver} />
+                        </div>
                     </div>
-                </div>
-                <div className="body">
-                    {b.grid.map((row, index) => 
-                        <div className="bd-col" key={index}> {row.map((cell) => 
-                            <Cell
-                                cell={cell}
-                                key={cell.id}
-                                data={a} 
-                                onClick={this.onClick}
-                                onContextMenu={this.onContextMenu}
-                            />
+                    <div className="body">
+                        {b.grid.map((row, index) => 
+                            <div className="bd-col" key={index}> {row.map((cell) => 
+                                <Cell
+                                    cell={cell}
+                                    key={cell.id}
+                                    data={a} 
+                                    onClick={this.onClick}
+                                    onContextMenu={this.onContextMenu}
+                                />
+                            )}
+                            </div>
                         )}
+                    </div>
+                    <div className="controller flex-center">
+                        <Button className="btn" styles={board} onClick={() => this.startOver()} text="Start Over" />
+                        <Button className="btn" styles={board} onClick={() => this.help()} text="Help" />
+                    </div>
+                    <Modal style={popup} className="modal" overlayClassName="overlay" isOpen={b.popup}>
+                        <div style={grad} className="heading flex-center">
+                            <div style={{backgroundColor: a.primary}} className="left"></div>
+                            <div style={{backgroundColor: a.secondary}} className="right"></div>
+                            <h2>{b.win ? 'Winner' : 'Game Over'}</h2>
                         </div>
-                    )}
+                        <div style={headingBreak} className="break">
+                            <div style={grad} className="grad"></div>
+                        </div>
+                        <div style={bodyBreak} className="break"></div>
+                        <div style={popupBody} className="body flex-center">
+                            <div>{b.win ? `Time: ${b.time}` : 'You Lost'}</div>
+                            <div className="flex-center controller">
+                                <Button styles={grad} className="btn" onClick={() => this.startOver()} text="Start Over" />
+                                <Button styles={grad} className="btn" onClick={() => this.startOver()} text="Close" />
+                            </div>
+                        </div>
+                    </Modal>
+                    <Modal style={popup} className="modal" overlayClassName="overlay" isOpen={b.help}>
+                        <div style={grad} className="heading flex-center">
+                            <div style={{backgroundColor: a.primary}} className="left"></div>
+                            <div style={{backgroundColor: a.secondary}} className="right"></div>
+                            <h2>Mine Sweeper Instructions</h2>
+                        </div>
+                        <div style={headingBreak} className="break">
+                            <div style={grad} className="grad"></div>
+                        </div>
+                        <div style={bodyBreak} className="break"></div>
+                        <div style={popupBody} className="body flex-center">
+                            <div className="help">
+                                <h4>About the Game</h4> 
+                                <p>The object of Minesweeper is to expose all the open areas on the board without hitting an bombs.</p>
+                                <h4>Instructions</h4>
+                                <p>Click "Play" to begin the game.</p> 
+                                <p>Use the left click button on the mouse to select a space on the grid. If you hit a bomb, you lose.</p>
+                                <p>The numbers on the board represent how many bombs are adjacent to a square. For example, if a square has a "3" on it, then there are 3 bombs next to that square. The bombs could be above, below, right left, or diagonal to the square.</p>
+                                <p>Avoid all the bombs and expose all the empty spaces to win Minesweeper.</p>
+                                <p>Tip: Use the numbers to determine where you know a bomb is.</p> 
+                                <p>Tip: You can right click a square with the mouse to place a flag where you think a bomb is. This allows you to avoid that spot.</p>
+                                <p>This game should work on all platforms including safari and mobile (we hope, but make no guarantees).</p>
+                            </div>
+                            <div className="flex-center controller">
+                                <button style={grad} className="btn" onClick={() => this.setState({help: false})}>Close</button>
+                            </div>
+                        </div>
+                    </Modal>
                 </div>
-                <div className="controller flex-center">
-                    <Button className="btn" styles={board} onClick={() => this.startOver()} text="Start Over" />
-                    <Button className="btn" styles={board} onClick={() => this.help()} text="Help" />
-                </div>
-                <Modal style={popup} className="modal" overlayClassName="overlay" isOpen={b.popup}>
-                    {/* <div className="circle left" />
-                    <div className="circle right" /> */}
-                    <div style={grad} className="heading flex-center">
-                        <div style={{backgroundColor: a.primary}} className="left"></div>
-                        <div style={{backgroundColor: a.secondary}} className="right"></div>
-                        <h2>{b.win ? 'Winner' : 'Game Over'}</h2>
-                    </div>
-                    <div style={headingBreak} className="break">
-                        <div style={grad} className="grad"></div>
-                    </div>
-                    <div style={bodyBreak} className="break"></div>
-                    <div style={popupBody} className="body flex-center">
-                        <div>{b.win ? `Time: ${b.time}` : 'You Lost'}</div>
-                        <div className="flex-center controller">
-                            <Button styles={grad} className="btn" onClick={() => this.startOver()} text="Start Over" />
-                            <Button styles={grad} className="btn" onClick={() => this.startOver()} text="Close" />
-                        </div>
-                    </div>
-                </Modal>
-                <Modal style={popup} className="modal" overlayClassName="overlay" isOpen={b.help}>
-                    <div style={grad} className="heading flex-center">
-                        <div style={{backgroundColor: a.primary}} className="left"></div>
-                        <div style={{backgroundColor: a.secondary}} className="right"></div>
-                        <h2>Mine Sweeper Instructions</h2>
-                    </div>
-                    <div style={headingBreak} className="break">
-                        <div style={grad} className="grad"></div>
-                    </div>
-                    <div style={bodyBreak} className="break"></div>
-                    <div style={popupBody} className="body flex-center">
-                        <div className="help">
-                            <h4>About the Game</h4> 
-                            <p>The object of Minesweeper is to expose all the open areas on the board without hitting an bombs.</p>
-                            <h4>Instructions</h4>
-                            <p>Click "Play" to begin the game.</p> 
-                            <p>Use the left click button on the mouse to select a space on the grid. If you hit a bomb, you lose.</p>
-                            <p>The numbers on the board represent how many bombs are adjacent to a square. For example, if a square has a "3" on it, then there are 3 bombs next to that square. The bombs could be above, below, right left, or diagonal to the square.</p>
-                            <p>Avoid all the bombs and expose all the empty spaces to win Minesweeper.</p>
-                            <p>Tip: Use the numbers to determine where you know a bomb is.</p> 
-                            <p>Tip: You can right click a square with the mouse to place a flag where you think a bomb is. This allows you to avoid that spot.</p>
-                            <p>This game should work on all platforms including safari and mobile (we hope, but make no guarantees).</p>
-                        </div>
-                        <div className="flex-center controller">
-                            <button style={grad} className="btn" onClick={() => this.setState({help: false})}>Close</button>
-                        </div>
-                    </div>
-                </Modal>
-            </div>
+            </section>
         )        
     }
 }

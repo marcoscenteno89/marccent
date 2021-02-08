@@ -33,27 +33,29 @@ export class Maps extends Component {
             lng: -112.05
         }
         return (
-            <Map 
-                style={con} 
-                containerStyle={con} 
-                google={this.props.google} 
-                zoom={12} 
-                initialCenter={center}
-                styles={customStyle}
-                map={this}
-                onReady={(mapProps, map) => this.update(mapProps, map, customStyle)}
-            >
-                {[...Array(4)].map((x,i) => <Circle
-                    radius={i * 1000}
-                    key={i}
-                    center={center}
-                    strokeColor='transparent'
-                    strokeOpacity={0}
-                    strokeWeight={5}
-                    fillColor={a.primary}
-                    fillOpacity={0.5}
-                />)}
-            </Map>
+            <section className="map">
+                <Map 
+                    style={con} 
+                    containerStyle={con} 
+                    google={this.props.google} 
+                    zoom={12} 
+                    initialCenter={center}
+                    styles={customStyle}
+                    map={this}
+                    onReady={(mapProps, map) => this.update(mapProps, map, customStyle)}
+                >
+                    {[...Array(4)].map((x,i) => <Circle
+                        radius={i * 1000}
+                        key={i}
+                        center={center}
+                        strokeColor='transparent'
+                        strokeOpacity={0}
+                        strokeWeight={5}
+                        fillColor={a.primary}
+                        fillOpacity={0.5}
+                    />)}
+                </Map>
+            </section>
         )
     }
 }

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Carousel from "react-elastic-carousel";
-import { LinGrad, RevColor } from "./inc"
+import { LinGrad, RevColor, FooterText } from "./inc"
 import '../styles/Footer.scss';
 
 class Footer extends Component {
@@ -31,7 +31,6 @@ class Footer extends Component {
                     <div className="flex-center footer-nav-container">
                         <FooterNav data={this.props.data.active} />
                     </div>
-                    {/* <FooterText style={footerTitle} /> */}
                     <div className="m-20 flex-center">
                         <LightDark data={this.props.data.active} update={this.props.update} />
                     </div>
@@ -42,6 +41,7 @@ class Footer extends Component {
                             ))}
                         </Carousel>
                     </div>
+                    <FooterText style={footerTitle} />
                 </div>
             </footer>
         )        

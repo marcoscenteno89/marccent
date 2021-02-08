@@ -1,5 +1,6 @@
 .board {
-  width: calc(230px + 15vw);
+  width: 100%;
+  max-width: 768px;
   height: auto;
   display: flex;
   flex-wrap: wrap;
@@ -16,6 +17,7 @@
   .body {
     display: flex;
     justify-content: center;
+    align-items: center;
     width: 100%;
     height: auto;
     flex-direction: column;
@@ -23,9 +25,9 @@
       display: flex;
       // flex-direction: column;
       .digit {
-        width: 3vw;
+        width: 2.5rem;
         min-width: 20px;
-        height: 3vw;
+        height: 2.5rem;
         min-height: 20px;
         margin: 1px;
         display: flex;

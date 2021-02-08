@@ -1,54 +1,63 @@
-            .first, .second, .third {
-                overflow: hidden;
-                width: 100%;
-                height: 100%;
-                filter: url(#filter);
-                position: absolute;
-            }
-            .first div, .second div, .third div {
-                border-radius: 45%;
-                position: absolute;
-                bottom: -10%;
-            }
-            .first {
-                width: 90%;
-            }
-            .third {
-                width: 115%;
-            }
-            .first div {
-                width: 35%;
-                height: 27%;
-            }
-            .second div {
-                width: 43%;
-                height: 35%;
-            }
-            .third div {
-                width: 50%;
-                height: 45%;
-            }
-            .first div:nth-child(1), .third div:nth-child(1) {
-                right: -5%;
-                animation: rotate 8s infinite reverse linear;
-            }
-            .first div:nth-child(2), .third div:nth-child(2) {
-                right: 25%;
-                animation: rotate 10s infinite linear;
-            }
-            .first div:nth-child(3), .third div:nth-child(3) {
-                right: 55%;
-                animation: rotate 12s infinite linear;
-            }
-            .second div:nth-child(1) {
-                left: -15%;
-                animation: rotate 6s infinite reverse linear;
-            }
-            .second div:nth-child(2) {
-                left: 20%;
-                animation: rotate 9s infinite linear;
-            }
-            .second div:nth-child(3) {
-                left: 60%;
-                animation: rotate 12s infinite linear;
-            }
+.first, .second, .third {
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    filter: url(#filter);
+    position: absolute;
+}
+.first div, .second div, .third div {
+    border-radius: 45%;
+    position: absolute;
+    bottom: -10%;
+}
+.first {
+    width: 90%;
+}
+.third {
+    width: 115%;
+}
+.first div {
+    width: 35%;
+    height: 27%;
+}
+.second div {
+    width: 43%;
+    height: 35%;
+}
+.third div {
+    width: 50%;
+    height: 45%;
+}
+.first div:nth-child(1), .third div:nth-child(1) {
+    right: -5%;
+    animation: rotate 8s infinite reverse linear;
+}
+.first div:nth-child(2), .third div:nth-child(2) {
+    right: 25%;
+    animation: rotate 10s infinite linear;
+}
+.first div:nth-child(3), .third div:nth-child(3) {
+    right: 55%;
+    animation: rotate 12s infinite linear;
+}
+.second div:nth-child(1) {
+    left: -15%;
+    animation: rotate 6s infinite reverse linear;
+}
+.second div:nth-child(2) {
+    left: 20%;
+    animation: rotate 9s infinite linear;
+}
+.second div:nth-child(3) {
+    left: 60%;
+    animation: rotate 12s infinite linear;
+}
+.circle {
+    box-shadow: inset 0 0 15px rgba(0,0,0,0.5);
+    .grad {
+        box-shadow: inset 0 0 15px rgba(0,0,0,0.5);
+        .inner-circle {
+            box-shadow: inset 0 0 75px rgba(0,0,0,0.5);
+        }
+    }
+}
