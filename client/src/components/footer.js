@@ -18,20 +18,18 @@ class Footer extends Component {
         }
         
         const breakPoints = [
-            {width: 468, itemsToShow: 2},
-            {width: 568, itemsToShow: 3},
-            {width: 768, itemsToShow: 4},
-            {width: 868, itemsToShow: 5},
-            {width: 968, itemsToShow: 6},
+            {width: 368, itemsToShow: 2},
+            {width: 468, itemsToShow: 3},
+            {width: 568, itemsToShow: 5},
+            {width: 668, itemsToShow: 6},
+            {width: 768, itemsToShow: 7},
         ]
 
         return  (
             <footer className="main-footer flex-center" style={footer}>
                 <div className="container" style={{paddingTop: '1rem'}}>
-                    <div className="flex-center footer-nav-container">
-                        <FooterNav data={this.props.data.active} />
-                    </div>
-                    <div className="m-20 flex-center">
+                    <FooterNav data={this.props.data.active} />
+                    <div className="m-10 flex-center">
                         <LightDark data={this.props.data.active} update={this.props.update} />
                     </div>
                     <div className="flex-row">
@@ -119,7 +117,7 @@ class FooterNav extends Component {
             backgroundImage: LinGrad(a.primary, a.secondary)
         }
         return (
-            <ul className="flex-center footer-nav" style={{color: RevColor(a.mode)}}>
+            <ul className="flex-center footer-nav w-100" style={{color: RevColor(a.mode)}}>
                 <li style={e}><i style={i} className="fab fa-facebook"></i></li>
                 <li style={e}><i style={i} className="fab fa-github"></i></li>
                 <li style={e}><i style={i} className="fas fa-envelope"></i></li>

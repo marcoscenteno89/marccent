@@ -1,6 +1,6 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import '../../styles/Portfolio.scss';
-import { Img, Title, LinGrad, FooterText, RevColor } from "../inc";
+import { Img, LinGrad, RevColor } from "../inc";
 import Site1 from "./../../media/site1.png";
 import Site2 from "./../../media/site2.png";
 import Site3 from "./../../media/site3.png";
@@ -42,21 +42,19 @@ class Portfolio extends Component {
        
     render() {
         const a = this.props.data;
-        const title = {
-            background: LinGrad(a.primary, a.secondary)
-        }
         const pg = {
             backgroundColor: a.mode,
             padding: '20px'
         }
         return  (
-            <Fragment>
-                <Title text="Portfolio" style={title} />
-                <div className="portfolio flex-center" style={pg}>
+            <section className="page-portfolio flex-center" style={pg}>
+                <div className="container">
+                    <h2 className="w-100"style={{textAlign: 'center'}}>Portfolio</h2>
+                    <div className="flex-center">
                     {images.map((img, index) => <Card data={a} key={index} content={img} />)}
+                    </div>
                 </div>
-                <FooterText style={title} />
-            </Fragment>
+            </section>
         )        
     }
 }

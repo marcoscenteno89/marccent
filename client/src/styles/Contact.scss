@@ -8,24 +8,23 @@
         .contact-info {
             justify-content: center;
             height: 100%;
-            padding: 25px;
+            padding: 1rem;
             position: absolute;
             top: 0;
             left: 0;
             z-index: 99;
             .text, input, .btn, textarea {
-                opacity: 0.7;
+                opacity: 0.8;
                 border: none;
             }
             .text {
-                font-size: 2rem;
                 -webkit-text-fill-color: transparent !important;
                 -webkit-background-clip: text !important;
             }
         }
     }
     .header, .footer {
-        min-height: 200px;
+        min-height: 10rem;
         position: relative;
         z-index: 99;
     }

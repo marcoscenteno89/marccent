@@ -9,11 +9,26 @@ export class Maps extends Component {
         super(props);
         this.state = {
             map: false,
+            mapData: this.props.mapData
         }
     }
 
-    componentDidUpdate() {
+    componentWillReceiveProps(props) {
+        this.setState({
+            mapData: props.mapData
+        }, () => this.updateMap());
+    }
+
+    updateMap() {
         this.state.map.setOptions({styles: MapStyle(this.props.data)});
+        this.state.map.setCenter({
+            lat: this.state.mapData.loc.lat, 
+            lng: this.state.mapData.loc.lng
+        });
+    }
+
+    componentDidUpdate() {
+        this.updateMap();
     }
 
     update(mapProps, map) {
@@ -22,24 +37,21 @@ export class Maps extends Component {
 
     render() {
         const a = this.props.data;
+        const d = this.state.mapData;
         const customStyle = MapStyle(a);
         const con = {
             position: 'relative',  
             width: '100%',
             height: '100%'
         }
-        const center = {
-            lat: 43.5, 
-            lng: -112.05
-        }
         return (
-            <section className="map">
+            <div className="map" style={this.props.styles}>
                 <Map 
                     style={con} 
                     containerStyle={con} 
                     google={this.props.google} 
-                    zoom={12} 
-                    initialCenter={center}
+                    zoom={d.zoom ? d.zoom : 12} 
+                    initialCenter={d.loc}
                     styles={customStyle}
                     map={this}
                     onReady={(mapProps, map) => this.update(mapProps, map, customStyle)}
@@ -47,7 +59,7 @@ export class Maps extends Component {
                     {[...Array(4)].map((x,i) => <Circle
                         radius={i * 1000}
                         key={i}
-                        center={center}
+                        center={d.loc}
                         strokeColor='transparent'
                         strokeOpacity={0}
                         strokeWeight={5}
@@ -55,7 +67,7 @@ export class Maps extends Component {
                         fillOpacity={0.5}
                     />)}
                 </Map>
-            </section>
+            </div>
         )
     }
 }

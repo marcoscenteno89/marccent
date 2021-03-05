@@ -1,14 +1,13 @@
 import React, { Component } from "react";
-import '../styles/Apps.scss';
+// import '../styles/Apps.scss';
 import Carousel from "react-elastic-carousel";
 import { Link } from 'react-router-dom';
-import { LinGrad } from "./inc";
+// import { LinGrad } from "./inc";
 
 class AppNav extends Component {
 
     render() {
         const a = this.props.data;
-        const styles = {}
         const link = {
             // background: LinGrad(a.primary, a.secondary),
         }
@@ -19,7 +18,7 @@ class AppNav extends Component {
             {width: 968, itemsToShow: 6},
         ]
         return  (
-            <ul className="appnav section flex-center" style={{width: '100%'}}>
+            <ul className="appnav section flex-center w-100">
                 <Carousel breakPoints={breakPoints}>
                     <li>
                         <Link to="/apps/minesweeper" style={link}>
@@ -29,11 +28,6 @@ class AppNav extends Component {
                     <li style={{borderColor: a.secondary}}>
                         <Link to="/apps/temp" style={link}>
                             <i style={link} className="fas fa-temperature-high"></i> Temperature
-                        </Link>
-                    </li>
-                    <li style={{borderColor: a.secondary}}>
-                        <Link to="/apps/map" style={link}>
-                            <i style={link} className="fas fa-globe-americas"></i> Maps
                         </Link>
                     </li>
                 </Carousel>

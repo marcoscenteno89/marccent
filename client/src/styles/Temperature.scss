@@ -1,3 +1,75 @@
+@import 'Variables.scss';
+.temp-cont {
+    margin-top: -3rem;
+    align-self: center;
+    align-items: center;
+    p {
+        font-size: 0.7rem;
+        font-weight: 300;
+    }
+    p, h3 {
+        padding-bottom: 0.3rem;
+    }
+}
+.temp {
+    align-items: flex-start;
+    .header {
+        h1, h3 {
+            padding: 0;
+        }
+    }
+    .history {
+        .list-outer {
+            padding: 0.7rem;
+            width: 100%;
+            margin: 5px 0;
+            border-radius: $radious;
+            .list-inner {
+                width: 100%;
+                flex-wrap: nowrap;
+                border-radius: $radious;
+                .transparent {
+                    // padding: $radius;
+                    // border: solid 0.6rem #FFF;
+                    // opacity: 0.6;
+                    // border-radius: 1rem;
+                }
+                .image {
+                    width: 50px;
+                    height: 50px;
+                }
+                .container {
+                    width: calc(100% - 170px);
+                    .table {
+                        span {
+                            font-size: 0.7rem;
+                        }
+                        .one {
+                            width: 50%;
+                        }
+                        .two {
+                            width: 50%;
+                            text-align: right;
+                        }
+                    }
+                }
+                span {
+                    line-height: 1rem;
+                }
+            }
+        }
+        .pagination {
+            padding: 10px 0 !important;
+            width: 100%;
+            display: flex !important;
+            justify-content: space-between;
+            li {
+                box-shadow: 0 0 5px rgba(0,0,0,0.5);
+                border-radius: $radious;
+            }
+        }
+    }
+}
 .first, .second, .third {
     overflow: hidden;
     width: 100%;
@@ -8,13 +80,16 @@
 .first div, .second div, .third div {
     border-radius: 45%;
     position: absolute;
-    bottom: -10%;
+    bottom: -15%;
 }
 .first {
     width: 90%;
 }
+.second {
+    width: 100%;
+}
 .third {
-    width: 115%;
+    width: 110%;
 }
 .first div {
     width: 35%;
@@ -26,7 +101,7 @@
 }
 .third div {
     width: 50%;
-    height: 45%;
+    height: 40%;
 }
 .first div:nth-child(1), .third div:nth-child(1) {
     right: -5%;
@@ -51,13 +126,4 @@
 .second div:nth-child(3) {
     left: 60%;
     animation: rotate 12s infinite linear;
-}
-.circle {
-    box-shadow: inset 0 0 15px rgba(0,0,0,0.5);
-    .grad {
-        box-shadow: inset 0 0 15px rgba(0,0,0,0.5);
-        .inner-circle {
-            box-shadow: inset 0 0 75px rgba(0,0,0,0.5);
-        }
-    }
 }

@@ -1,27 +1,37 @@
 {
-  "name": "marccent",
-  "version": "1.0.0",
-  "description": "Marcos Centeno portfolio application",
-  "main": "app.js",
+  "name": "server",
+  "private": true,
+  "version": "0.1.0",
+  "description": "A Strapi application",
   "scripts": {
-    "start": "nodemon app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "develop": "strapi develop",
+    "start": "strapi start",
+    "build": "strapi build",
+    "strapi": "strapi"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/marcoscenteno89/marccent.git"
-  },
-  "author": "Marcos Centeno",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/marcoscenteno89/marccent/issues"
-  },
-  "homepage": "https://github.com/marcoscenteno89/marccent#readme",
+  "devDependencies": {},
   "dependencies": {
-    "cors": "^2.8.5",
-    "express": "^4.17.1",
-    "ini": "^2.0.0",
-    "nodemon": "^2.0.4",
-    "sqlite3": "^4.2.0"
-  }
+    "strapi": "3.5.0",
+    "strapi-admin": "3.5.0",
+    "strapi-utils": "3.5.0",
+    "strapi-plugin-content-type-builder": "3.5.0",
+    "strapi-plugin-content-manager": "3.5.0",
+    "strapi-plugin-users-permissions": "3.5.0",
+    "strapi-plugin-email": "3.5.0",
+    "strapi-plugin-upload": "3.5.0",
+    "strapi-connector-bookshelf": "3.5.0",
+    "knex": "<0.20.0",
+    "sqlite3": "5.0.0"
+  },
+  "author": {
+    "name": "A Strapi developer"
+  },
+  "strapi": {
+    "uuid": "dd1cbbbb-9a44-4f2b-a6f9-9fbd36f8a9f2"
+  },
+  "engines": {
+    "node": ">=10.16.0 <=14.x.x",
+    "npm": "^6.0.0"
+  },
+  "license": "MIT"
 }

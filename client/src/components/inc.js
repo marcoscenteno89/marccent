@@ -43,13 +43,23 @@ const Flag = () => {
 
 const Background = props => {
     const arr = [];
-    for (let i = 0; i < 40; i++) {
-        let ran = RandomNum(15, 100);
+    for (let i = 0; i < 15; i++) {
+        let ran = RandomNum(40, 100);
         let ball = {
             width: `${ran * 3}px`,
             height: `${ran * 3}px`,
-            top: `${RandomNum(1, 100)}%`,
-            left: `${RandomNum(1, 100)}%`
+            top: `${RandomNum(60, 100)}%`,
+            left: `${RandomNum(60, 100)}%`
+        }
+        arr.push(ball);
+    };
+    for (let i = 0; i < 15; i++) {
+        let ran = RandomNum(40, 100);
+        let ball = {
+            width: `${ran * 3}px`,
+            height: `${ran * 3}px`,
+            top: `${RandomNum(0, 40)}%`,
+            left: `${RandomNum(0, 40)}%`
         }
         arr.push(ball);
     };
@@ -86,7 +96,7 @@ const Title = props => {
 
 const Img = props => {
     return (<React.Fragment key="1">
-        <img src={props.src} alt={props.alt} />
+        <img src={props.src} alt={props.alt} style={props.styles} />
     </React.Fragment>)
 }
 
@@ -107,12 +117,11 @@ const Today = () => {
 const SpCircle = props => {
     
     if (props.data) {
-        const a = props.data;
-        const grad = LinGrad(a.primary, a.secondary);
+        const o = props.styles;
         return (
-            <div className="circle flex-center" style={{backgroundColor: a.mode}}>
-                <div className="grad flex-center" style={{backgroundImage: grad}}>
-                    <div className="inner-circle flex-center" style={{backgroundColor: a.mode}}>
+            <div className="cir cir-xl flex-center" style={o.circle}>
+                <div className="cir cir-ml flex-center" style={o.grad}>
+                    <div className="cir cir-m anim flex-center" style={o.innerCircle}>
                         {props.children}
                     </div>
                 </div>

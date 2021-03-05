@@ -1,13 +1,17 @@
 import React, { Component, Fragment } from 'react';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter, Route} from 'react-router-dom';
+import '../styles/Global.scss';
+import '../styles/keyframes.scss';
 import { Background, RevColor, LinGrad } from "./inc";
 import About from "./pages/about";
-import Apps from "./pages/apps";
 import Contact from "./pages/contact";
 import Nav from './main-nav';
 import Footer from './footer';
 import Portfolio from './pages/portfolio';
-const url = "http://localhost:5000/api/theme";
+import MineSweeper from "./minesweeper";
+import Temperature from "./temperature";
+import AppNav from "./app-nav";
+const url = "http://localhost:1337/themes";
 
 class Theme extends Component {
 
@@ -16,6 +20,7 @@ class Theme extends Component {
         this.state = {
             themes: false,
             active: false,
+            // path: `${window.location.pathname}${window.location.search}`
         }
         this.update = this.update.bind(this);
     }
@@ -86,20 +91,7 @@ class Theme extends Component {
             color: RevColor(a.mode)
         }
         const cont = {
-            // backgroundImage: LinGrad(a.primary, a.secondary),
-            margin: '3rem 5px 5rem 5px',
             color: RevColor(a.mode), 
-        }
-        const link = {color: a.primary}
-
-        const mpCircle = {
-            width: '90vw',
-            height: '90vw',
-            maxWidth: '768px',
-            maxHeight: '768px',
-            position: 'relative',
-            borderRadius: '50%',
-            overflow: 'hidden'
         }
 
         return (
@@ -107,12 +99,26 @@ class Theme extends Component {
                 <Nav data={a} />
                 <div className="page flex-center" style={page}>
                     <Background styles={bg} />
-                    <div className="container" style={cont}>
+                    <div className="content" style={cont}>
                         <Route path="/portfolio"><Portfolio data={a}/></Route>
                         <Route path="/about"><About data={a}/></Route>
-                        <Route path="/apps/minesweeper"><Apps data={a}/></Route>
                         <Route path="/contact"><Contact data={a}/></Route>
-                        <Route path="/"></Route>
+                        <Route path="/apps/minesweeper"><MineSweeper data={a} /></Route>
+                        <Route path="/apps/temp"><Temperature data={a} /></Route>
+                        <Route exact path="/">
+                            <section className="hero-banner flex-center">
+                                <div className="container">
+                                    <h1>Hello,</h1>
+                                    <h1>I'm Marcos Centeno</h1>
+                                    <h2>A Web Developer that specializes in front-end development</h2>
+                                    <h4>Take a look around</h4>
+                                </div>
+                            </section>
+                            <Temperature data={a} />
+                            <Contact data={a}/>
+                            <About data={a}/>
+                            <Portfolio data={a}/>
+                        </Route>
                     </div>
                 </div>
                 <Footer data={this.state} update={this.update} /> 

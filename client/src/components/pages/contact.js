@@ -12,11 +12,6 @@ class Contact extends Component {
     render() {
         const a = this.props.data;
         const rev = RevColor(a.mode);
-        const mpSquare = {
-            width: '100%',
-            height: '500px',
-            position: 'relative',
-        }
         const text = {
             background: LinGrad(a.primary, a.secondary),
         }
@@ -32,23 +27,34 @@ class Contact extends Component {
             background: `linear-gradient(to top, ${a.mode} 30%, rgba(0,0,0,0))`,
             color: rev
         }
+        const mapData = {
+            loc: {
+                lat: 43.5, 
+                lng: -112.05
+            },
+            zoom: 11
+        }
         const cont = {backgroundImage: `linear-gradient(to bottom right, ${a.mode} 20%, rgba(0,0,0,0))`}
-        return  (<div className="page-contact">
-            <Title style={header} text="Contact" />
-            <div className="contact flex-center">
-                <div className="map-size" style={mpSquare}><Maps data={a} /></div>
-                <div className="contact-info flex-col" style={cont}>
-                    <form className="flex-col">
-                        <h2 className="text" style={text}>Get in Touch</h2>
-                        <input type="text" style={bg} id="name" name="name" value="Name" />
-                        <input type="text" style={bg} id="email" name="email" value="Email" />
-                        <textarea style={bg}>Comments</textarea>
-                        <Button className="btn" styles={bg} onClick={() => this.onClick()} text="Submit" />
-                    </form>
+        return  (
+            <section className="page-contact flex-center">
+                <div className="container">
+                    <Title style={header} text="Contact" />
+                    <div className="contact flex-center">
+                        <div className="map-size"><Maps mapData={mapData} data={a} /></div>
+                        <div className="contact-info flex-col" style={cont}>
+                            <form className="flex-col">
+                                <h2 className="text" style={text}>Get in Touch</h2>
+                                <input type="text" style={bg} id="name" name="name" value="Name" />
+                                <input type="text" style={bg} id="email" name="email" value="Email" />
+                                <textarea style={bg}>Comments</textarea>
+                                <Button className="btn" styles={bg} onClick={() => this.onClick()} text="Submit" />
+                            </form>
+                        </div>
+                    </div>
+                    <FooterText style={footer} />
                 </div>
-            </div>
-            <FooterText style={footer} />
-            </div>)        
+            </section>
+        )        
     }
 }
 

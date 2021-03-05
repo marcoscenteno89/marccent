@@ -1,11 +1,11 @@
-$radious: 4px;
-$padding: 10px 20px;
+@import 'Variables.scss';
 *, html, body, pre, code {
   font-size: calc(10px + 0.5vw);
   font-weight: 400;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  line-height: 1.3rem;
 }
 #app {
   width: 100%;
@@ -14,18 +14,20 @@ $padding: 10px 20px;
   width: 100%;
   min-height: 70px;
 }
-.header {
-  border-top-left-radius: 25px;
-  border-top-right-radius: 25px;
+.image {
+    width: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
 }
-.footer {
-  border-bottom-left-radius: 25px;
-  border-bottom-right-radius: 25px;
+.header-image {
+    min-height: 15rem;
 }
-.section {
+section {
   overflow: hidden;
   width: 100%;
-  padding: 30px 0;
+  padding: 1rem;
+  margin: 2rem 0;
   .content {
     width: 100%;
     height: auto;
@@ -37,11 +39,15 @@ input {
   border: none;
   padding: $padding;
   border-radius: $radious;
+  &:hover, &:active, &:focus, &:visited, &:focus-within, &:focus-visible {
+    outline: none !important;
+}
 }
 .page {
   width: 100%;
   height: auto;
   overflow: hidden;
+  padding: 5rem 0;
   svg {
     display: none;
   }
@@ -58,28 +64,43 @@ input {
   opacity: 0.3;
   .cont {
     position: absolute;
-    top: -5vw;
-    left: -5vw;
-    width: 110vw;
-    height: 110vw;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
     animation: 100s linear infinite rotate;
     .ball {
-      position: absolute;
-      animation: move3 30s linear 0s infinite;
-      border-radius: 50%;
-      background-color: rgba(255, 255, 255, 1);
+        @for $i from 1 through 20 {
+            &:nth-child(#{$i}) {
+                @if $i % 2 == 0 {
+                    animation: leftright 50s linear infinite;
+                } @else {
+                    animation: updown 40s linear infinite;
+                }
+                
+            }
+        }
+        position: absolute;
+        border-radius: 50%;
+        background-color: rgba(255, 255, 255, 1);
     }
   }
 }
-.container {
+.content {
     width: 100%;
-    max-width: 1140px;
     position: relative;
-    margin: 0 7px;
     z-index: 1;
 }
-.m-20 {
-    margin: 20px 0;
+.container {
+    position: relative;
+    width: 100%;
+    max-width: 1140px;
+    margin: 1rem;
+    border-radius: $radious;
+    overflow: hidden;
+}
+.m-10 {
+    margin: 10px 0;
 }
 img {
     width: 100%;
@@ -92,37 +113,112 @@ h1, h2, h3, h4, h5, h5, p {
     padding-bottom: 0.7rem;
 }
 h1 {
-    font-size: 2rem;
+    font-size: 2.5rem;
+    line-height: 2.5rem;
 }
 h2 {
-    font-size: 1.7rem;
+    font-size: 2.1rem;
+    line-height: 2.1rem;
 }
 h3 {
-    font-size: 1.5rem;
+    font-size: 1.6rem;
+    line-height: 1.3rem;
 }
 h4 {
     font-size: 1.3rem;
+    line-height: 1.3rem;
 }
 p {
     font-weight: 300;
 }
-.circle {
+strong {
+    font-weight: 900;
+}
+.shadow-xs {
+    box-shadow: 0 0 5px rgba(0,0,0,0.4);
+}
+.shadow-s {
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+.shadow-m {
+    box-shadow: 0 0 15px rgba(0,0,0,0.6);
+}
+.shadow-l {
+    box-shadow: 0 0 20px rgba(0,0,0,0.7);
+}
+.shadow-xl {
+    box-shadow: 0 0 25px rgba(0,0,0,0.8);
+}
+.w-10, .w-20, .w-30, .w-40, .w-50, .w-60, .w-60, .w-80, .w-80, .w-90 {
+    padding: 1rem;
+    border-radius: $radious;
+    margin: 1rem 0.5%;
+}
+.w-100 {
+    padding: 1rem;
+    border-radius: $radious;
+}
+.w-10 {
+    width: 9%;
+}
+.w-20 {
+    width: 19%;
+}
+.w-30 {
+    width: 29%;
+}
+.w-40 {
+    width: 39%;
+}
+.w-50 {
+    width: 49%;
+}
+.w-60 {
+    width: 59%;
+}
+.w-70 {
+    width: 69%;
+}
+.w-80 {
+    width: 79%;
+}
+.w-90 {
+    width: 89%;
+}
+.w-100 {
     width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    // opacity: 1 !important;
-    .grad {
-        width: 90%;
-        height: 90%;
-        border-radius: 50%;
-        .inner-circle {
-            width: 85%;
-            height: 85%;
-            border-radius: 50%;
-            overflow: hidden;
-            position: relative;
-        }
-    }
+}
+.cir {
+    height:0;
+    border-radius:50%;
+}
+.cir-xl {
+    width: 100%;
+    padding: 50% 0;
+}
+.cir-l {
+    width: 90%;
+    padding:  45% 0;
+}
+.cir-ml {
+    width: 85%;
+    padding:  42.5% 0;
+}
+.cir-m {
+    width: 80%;
+    padding: 40% 0;
+}
+.cir-s {
+    width: 70%;
+    padding: 35% 0;
+}
+.cir-xs {
+    width: 60%;
+    padding: 30% 0;
+}
+.anim {
+    overflow: hidden;
+    position: relative;
 }
 .modal {
     &:hover, &:active, &:focus, &:visited, &:focus-within, &:focus-visible {
@@ -132,7 +228,7 @@ p {
     border: none !important;
     width: 90%;
     max-width: 750px;
-    border-radius: 5px;
+    border-radius: $radious;
     overflow: hidden;
     .heading {
         min-height: 60px;
@@ -140,6 +236,7 @@ p {
         align-items: flex-end;
         position: relative;
         margin: 0 2rem;
+        color: #FFF;
         p {
             font-size: 1.5rem;
             margin-bottom: -0.7rem;
@@ -173,7 +270,6 @@ p {
         }
     }
 }
-
 .overlay {
     z-index: 98;
     position: fixed;
@@ -216,17 +312,16 @@ p {
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 5px;
+    border-radius: $radious;
     border: none;
     width: 100%;
     max-width: 150px;
 }
-form input, form select, form button, form textarea, select, option {
-    // width: 100%;
+form :is(input, select, button, textarea, select, option) {
     padding: 7px 20px;
     margin-bottom: 4px !important;
     margin-top: 4px !important;
-    border-radius: 5px;
+    border-radius: $radious;
     max-width: 280px;
     color: #666;
 }
@@ -234,7 +329,7 @@ form input, form select, form button, form textarea, select, option {
     padding: 7px 0 7px 25px !important;
     position: relative;
     margin: 0 0 0.3vw 2px;
-    border-radius: 5px;
+    border-radius: $radious;
     border: none;
     color: #FFF;
     display: flex;
@@ -278,5 +373,29 @@ form input, form select, form button, form textarea, select, option {
             background: none !important;
             box-shadow: none !important;
         }
+    }
+}
+.appnav {
+    list-style-type: none;
+    li {
+        a {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            i {
+                font-size: 3rem;
+            }
+        }
+    }
+}
+.hero-banner {
+    width: 100%;
+    height: 60vh;
+    justify-content: center;
+}
+@media (max-width:768px) {
+	.w-10, .w-20, .w-30, .w-40, .w-50, .w-60, .w-60, .w-80, .w-80, .w-90 {
+        width: 98%;
+        margin: 1rem 1%;
     }
 }

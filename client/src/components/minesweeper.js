@@ -3,6 +3,7 @@ import { Fragment } from "react";
 import Modal from 'react-modal';
 import Select from 'react-select'
 import "../styles/Minesweeper.scss";
+import AppNav from "./app-nav";
 import { Button, RevColor, Bomb, RandomNum, Flag, LinGrad } from "./inc";
 
 Modal.setAppElement('#app');
@@ -344,7 +345,7 @@ class MineSweeper extends Component {
             backgroundRepeat: 'no-repeat'
         }
         return (
-            <section className="minesweeper">
+            <section className="minesweeper flex-col" style={{alignItems: 'center'}}>
                 <div className="board">
                     <div className="status flex-row">
                         <Select 
@@ -424,6 +425,7 @@ class MineSweeper extends Component {
                         </div>
                     </Modal>
                 </div>
+                <AppNav data={a} />
             </section>
         )        
     }
