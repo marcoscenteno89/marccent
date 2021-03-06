@@ -1,16 +1,39 @@
 import React, { Component } from "react";
 import '../../styles/Contact.scss';
 import Maps from "../map";
-import { RevColor, FooterText, Button, LinGrad, Title } from "../inc";
+import { RevColor, FooterText, LinGrad, Title } from "../inc";
+
+const server = `http://localhost:1337/`;
 
 class Contact extends Component {
 
-
-    onClick() {
-        console.log('button clicker');
+    constructor(props) {
+        super(props);
+        this.state = {
+            name: 'Full Name',
+            email: 'Email',
+            message: 'Message'
+        }
     }
+
+    onClick = async e => {
+        e.preventDefault();
+        const res = await fetch(`${server}messages`, {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: new Headers({'Content-Type': 'application/json', 'Accept': 'application/json'}),
+            body: JSON.stringify(this.state)
+        });
+        let response = await res.json();
+        console.log(response);
+    }
+    nameChange = e => this.setState({ name: e.target.value});
+    emailChange = e => this.setState({ email: e.target.value});
+    messageChange = e => this.setState({ message: e.target.value});
+
     render() {
         const a = this.props.data;
+        const e = this.state;
         const rev = RevColor(a.mode);
         const text = {
             background: LinGrad(a.primary, a.secondary),
@@ -44,10 +67,10 @@ class Contact extends Component {
                         <div className="contact-info flex-col" style={cont}>
                             <form className="flex-col">
                                 <h2 className="text" style={text}>Get in Touch</h2>
-                                <input type="text" style={bg} id="name" name="name" value="Name" />
-                                <input type="text" style={bg} id="email" name="email" value="Email" />
-                                <textarea style={bg}>Comments</textarea>
-                                <Button className="btn" styles={bg} onClick={() => this.onClick()} text="Submit" />
+                                <input type="text" style={bg} onChange={this.nameChange} value={e.name} />
+                                <input type="text" style={bg} value={e.email} onChange={this.emailChange} />
+                                <textarea style={bg} value={e.message} onChange={this.messageChange} rows="5"></textarea>
+                                <button className="btn" style={bg} onClick={(e) => this.onClick(e)}>Submit</button>
                             </form>
                         </div>
                     </div>

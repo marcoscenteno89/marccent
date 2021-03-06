@@ -49,7 +49,6 @@ class Temperature extends Component {
     render() {
         if (!this.state.city) return (<h1>Loading...</h1>);
         const e = this.state.city;
-        console.log(e);
         const a = this.props.data;
         const sec = {
             background: a.mode,
