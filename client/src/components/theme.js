@@ -2,12 +2,13 @@ import React, { Component, Fragment } from 'react';
 import { BrowserRouter, Route} from 'react-router-dom';
 import '../styles/Global.scss';
 import '../styles/keyframes.scss';
-import { Background, RevColor, LinGrad } from "./inc";
+import { Background, RevColor, LinGrad, Notebook, toRgb } from "./inc";
 import About from "./pages/about";
 import Contact from "./pages/contact";
 import Nav from './main-nav';
 import Footer from './footer';
 import Portfolio from './pages/portfolio';
+import PrivacyPolicy from './pages/privacy-policy';
 import MineSweeper from "./minesweeper";
 import Temperature from "./temperature";
 import AppNav from "./app-nav";
@@ -93,7 +94,6 @@ class Theme extends Component {
         const cont = {
             color: RevColor(a.mode), 
         }
-
         return (
             <Fragment><BrowserRouter>
                 <Nav data={a} />
@@ -105,19 +105,22 @@ class Theme extends Component {
                         <Route path="/contact"><Contact data={a}/></Route>
                         <Route path="/apps/minesweeper"><MineSweeper data={a} /></Route>
                         <Route path="/apps/temp"><Temperature data={a} /></Route>
+                        <Route path="/privacy-policy"><PrivacyPolicy data={a} /></Route>
                         <Route exact path="/">
                             <section className="hero-banner flex-center">
-                                <div className="container">
-                                    <h1>Hello,</h1>
-                                    <h1>I'm Marcos Centeno</h1>
-                                    <h2>A Web Developer that specializes in front-end development</h2>
-                                    <h4>Take a look around</h4>
+                                <div className="container" style={{overflow: 'visible'}}>
+                                    <Notebook data={a}>
+                                        <h1>Hello,</h1>
+                                        <h1>I'm Marcos Centeno</h1>
+                                        <h2>A Web Developer that specializes in front-end development</h2>
+                                        <h4>Take a look around</h4>
+                                    </Notebook>
                                 </div>
                             </section>
-                            <Temperature data={a} />
-                            <Contact data={a}/>
                             <About data={a}/>
+                            <Temperature data={a} />
                             <Portfolio data={a}/>
+                            <Contact data={a}/>
                         </Route>
                     </div>
                 </div>

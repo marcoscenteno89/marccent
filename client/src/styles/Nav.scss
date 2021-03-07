@@ -5,6 +5,8 @@
     width: 100%;
     .container {
       margin: 0 1rem;
+      overflow: visible;
+      justify-content: flex-end;
     }
     .toggle {
       -webkit-text-fill-color: transparent !important;
@@ -21,6 +23,7 @@
         -webkit-background-clip: text !important;
     }
     .navigation {
+      padding-bottom: 0;
       display: flex;
       justify-content: space-between;
       li {

@@ -18,7 +18,11 @@
         }
       }
       li {
-        padding: 0.6rem;
+        height: 3rem;
+        width: 3rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         border-radius: 50%;
         i {
           font-size: 1.3rem;
@@ -96,6 +100,12 @@
           height: 25%;
           transform: translateY(3.3rem) rotateX(50deg);
         }
+      }
+    }
+    .footer {
+      ul {
+        list-style-type: none;
+        padding: 0 0 0 5px;
       }
     }
   }

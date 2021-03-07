@@ -74,7 +74,6 @@ class Contact extends Component {
                             </form>
                         </div>
                     </div>
-                    <FooterText style={footer} />
                 </div>
             </section>
         )        

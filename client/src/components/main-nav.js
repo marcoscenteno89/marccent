@@ -14,6 +14,7 @@ class Nav extends Component {
     }
 
     toggleMenu = () => {
+        console.log('clicked');
         this.setState({
             menuOpen: this.state.menuOpen ? false : true
         })
@@ -40,8 +41,7 @@ class Nav extends Component {
         
         return  (
             <nav className="main-nav flex-center" style={nav}>
-                <div className="container flex-row" style={{justifyContent: 'space-between'}}>
-                    <Link style={link} className="btn" to="/"> <i className="fab fa-edge rotate"></i> Marccent</Link>
+                <div className="container flex-row">
                     <ul className="navigation" style={link}>
                         <li>
                             <Link to="/"><i className="fas fa-home"></i> Home</Link>

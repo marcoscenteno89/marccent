@@ -1,4 +1,5 @@
 import React, {} from "react";
+import { Link } from 'react-router-dom';
 
 const CurrentDate = new Date();
 
@@ -73,11 +74,6 @@ const Background = props => {
     )
 }
 
-// const LoadImages = (ob) => {
-//     const Component = React.lazy(() => import(`./components/component${name}.jsx`));
-//     return Component;
-// }
-
 const Blur = props => {
     return (
         <svg><defs>
@@ -103,8 +99,50 @@ const Img = props => {
 const FooterText = props => {
     return (
     <div className="footer flex-center" style={props.style}>
-        Copyright ©{CurrentDate.getFullYear()} Marccent. All rights reserved
+        Copyright ©{CurrentDate.getFullYear()} 
+        Marccent. All rights reserved | 
+        <ul>
+            <li><Link to="/privacy-policy"> Privacy Policy</Link></li>
+        </ul>
     </div>)
+}
+
+const Notebook = props => {
+    const a = props.data;
+    const c = toRgb(a.mode)
+    const notebook = {
+        backgroundColor: `rgba(${c.r}, ${c.g}, ${c.b}, 0.3)`,
+    }
+    const full = {
+        backgroundColor: `rgba(${c.r}, ${c.g}, ${c.b}, 0.8)`,
+        color: RevColor(a.mode),
+    }
+    return (
+        <div className="notebook">
+            <div className="layer-1" style={notebook}>
+            <div className="layer-2" style={notebook}>
+            <div className="layer-3" style={notebook}>
+            <div className="layer-4" style={notebook}>
+            <div className="layer-5" style={notebook}>
+            <div className="layer-6" style={notebook}>
+                <div className="notebook-content" style={full}>{props.children}</div>
+            </div>
+            </div>
+            </div>
+            </div>
+            </div>
+            </div>
+        </div>
+    )
+}
+
+const toRgb = hex => {
+    let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return {
+      r: parseInt(result[1], 16),
+      g: parseInt(result[2], 16),
+      b: parseInt(result[3], 16)
+    }
 }
 
 const Today = () => {
@@ -180,6 +218,6 @@ const MapStyle = (a) => {
 }
 
 export { 
-    SpCircle, Blur, Button, Background, Title, FooterText, MapStyle, Bomb,
-    CurrentDate, Today, Img, RevColor, LinGrad, ColorList, RandomNum, Flag
+    SpCircle, Blur, Button, Background, Title, FooterText, MapStyle, Bomb, Notebook,
+    CurrentDate, Today, Img, RevColor, LinGrad, ColorList, RandomNum, Flag, toRgb
 }

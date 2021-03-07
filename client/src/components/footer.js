@@ -118,13 +118,37 @@ class FooterNav extends Component {
         }
         return (
             <ul className="flex-center footer-nav w-100" style={{color: RevColor(a.mode)}}>
-                <li style={e}><i style={i} className="fab fa-facebook"></i></li>
-                <li style={e}><i style={i} className="fab fa-github"></i></li>
-                <li style={e}><i style={i} className="fas fa-envelope"></i></li>
+                <li style={e}>
+                    <a href="https://www.facebook.com/marcos.centeno.75" target="_blank">
+                        <i style={i} className="fab fa-facebook"></i>
+                    </a>
+                </li>
+                <li style={e}>
+                    <a href="https://github.com/marcoscenteno89" target="_blank">
+                        <i style={i} className="fab fa-github"></i>
+                    </a>
+                </li>
+                <li style={e}>
+                    <a href="mailto:marcoscenteno89@gmail.com" target="_blank">
+                        <i style={i} className="fas fa-envelope"></i>
+                    </a>
+                </li>
                 <li style={e} className="menu flex-center"><i style={menu} className="fab fa-ethereum"></i></li>
-                <li style={e}><i style={i} className="fab fa-linkedin"></i></li>
-                <li style={e}><i style={i} className="fab fa-instagram-square"></i></li>
-                <li style={e}><i style={i} className="fab fa-pinterest-square"></i></li>
+                <li style={e}>
+                    <a href="https://www.linkedin.com/in/marcos-centeno-0b1a7b65/" target="_blank">
+                        <i style={i} className="fab fa-linkedin"></i>
+                    </a>
+                </li>
+                <li style={e}>
+                    <a href="https://www.facebook.com/marcos.centeno.75" target="_blank">
+                        <i style={i} className="fab fa-stack-overflow"></i>
+                    </a>
+                </li>
+                <li style={e}>
+                    <a href="https://www.pinterest.com/marcoscenteno75" target="_blank">
+                        <i style={i} className="fab fa-pinterest-square"></i>
+                    </a>
+                </li>
             </ul>
         )
     }
