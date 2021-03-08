@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import '../styles/Map.scss';
 import { Circle, Map, GoogleApiWrapper } from 'google-maps-react';
-import { MapStyle } from "./inc";
+import { MapStyle } from "./inc/inc";
 
 export class Maps extends Component {
 

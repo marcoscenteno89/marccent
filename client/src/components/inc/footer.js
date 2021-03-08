@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Carousel from "react-elastic-carousel";
 import { LinGrad, RevColor, FooterText } from "./inc"
-import '../styles/Footer.scss';
+import '../../styles/inc/Footer.scss';
 
 class Footer extends Component {
 

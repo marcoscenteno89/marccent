@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import '../../styles/Portfolio.scss';
-import { Img, LinGrad, RevColor } from "../inc";
+import '../../styles/pages/Portfolio.scss';
+import { Img, LinGrad, RevColor } from "../inc/inc";
 import Site1 from "./../../media/site1.png";
 import Site2 from "./../../media/site2.png";
 import Site3 from "./../../media/site3.png";

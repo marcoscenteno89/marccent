@@ -26,6 +26,9 @@
       display: flex;
       // flex-direction: column;
       .digit {
+        background-size: cover;
+        background-position: center center;
+        background-attachment: fixed;  /* <- here it is */
         width: 3rem;
         min-width: 15px;
         height: 3rem;

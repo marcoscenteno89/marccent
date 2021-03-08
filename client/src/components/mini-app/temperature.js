@@ -1,13 +1,12 @@
 import React, { Component } from "react";
 import JwPagination from 'jw-react-pagination';
-import "../styles/Temperature.scss";
-import '../styles/keyframes.scss';
-import { Today, Blur, SpCircle, RevColor, LinGrad } from "./inc";
-import AppNav from "./app-nav";
-import Maps from "./map";
+import "../../styles/mini-app/Temperature.scss";
+import '../../styles/keyframes.scss';
+import { Today, Blur, SpCircle, RevColor, LinGrad } from "../inc/inc";
+import AppNav from "../inc/app-nav";
+import Maps from "../map";
 const openWeather = `http://api.openweathermap.org/data/2.5/forecast`;
 const token = `&units=imperial&appid=${process.env.REACT_APP_OPENWEATHER}`;
-// const token = '';
 
 class Temperature extends Component {
 
@@ -52,7 +51,6 @@ class Temperature extends Component {
         const a = this.props.data;
         const sec = {
             background: a.mode,
-            borderRadius: '5px'
         }
         const bg = {
             background: LinGrad(a.primary, a.secondary),

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Link } from 'react-router-dom';
 // import { LinGrad } from "./inc";
-import '../styles/Nav.scss';
+import '../../styles/inc/Nav.scss';
 
 class Nav extends Component {
 

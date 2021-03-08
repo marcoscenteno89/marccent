@@ -1,9 +1,11 @@
 import React, { Component } from "react";
-import '../../styles/Contact.scss';
+import '../../styles/pages/Contact.scss';
 import Maps from "../map";
-import { RevColor, FooterText, LinGrad, Title } from "../inc";
+import Modal from 'react-modal';
+import { RevColor, FooterText, LinGrad, Title } from "../inc/inc";
 
 const server = `http://localhost:1337/`;
+Modal.setAppElement('#app');
 
 class Contact extends Component {
 
@@ -12,7 +14,8 @@ class Contact extends Component {
         this.state = {
             name: 'Full Name',
             email: 'Email',
-            message: 'Message'
+            message: 'Message',
+            modal: false
         }
     }
 
@@ -25,7 +28,9 @@ class Contact extends Component {
             body: JSON.stringify(this.state)
         });
         let response = await res.json();
-        console.log(response);
+        if (response.id) {
+            this.setState({ modal: true });
+        }
     }
     nameChange = e => this.setState({ name: e.target.value});
     emailChange = e => this.setState({ email: e.target.value});
@@ -57,6 +62,32 @@ class Contact extends Component {
             },
             zoom: 11
         }
+        const popup = {
+            overlay: {
+              backgroundColor: 'rgba(56,61,68,0.2)',
+            },
+            content: {
+                color: RevColor(a.mode),
+                filter: `drop-shadow(0 0 10px rgba(0,0,0,0.8))`
+            }
+        }
+        const popupBody = {
+            backgroundColor: a.mode
+        }
+        const headingBreak = {
+            background: `
+                radial-gradient(circle at bottom left, rgba(0,0,0,0) 2rem, ${a.primary} 2rem) bottom left,
+                radial-gradient(circle at bottom right, rgba(0,0,0,0) 2rem, ${a.secondary} 2rem) bottom right`,
+            backgroundSize: '2rem 100%',
+            backgroundRepeat: 'no-repeat'
+        }
+        const bodyBreak = {
+            background: `
+                radial-gradient(circle at top left, rgba(0,0,0,0) 2rem, ${a.mode} 2rem) top left,
+                radial-gradient(circle at top right, rgba(0,0,0,0) 2rem, ${a.mode} 2rem) top right`,
+            backgroundSize: '50% 100%',
+            backgroundRepeat: 'no-repeat'
+        }
         const cont = {backgroundImage: `linear-gradient(to bottom right, ${a.mode} 20%, rgba(0,0,0,0))`}
         return  (
             <section className="page-contact flex-center">
@@ -74,6 +105,25 @@ class Contact extends Component {
                             </form>
                         </div>
                     </div>
+                    <Modal style={popup} className="modal" overlayClassName="overlay" isOpen={this.state.modal}>
+                        <div style={text} className="heading flex-center">
+                            <div style={{backgroundColor: a.primary}} className="left"></div>
+                            <div style={{backgroundColor: a.secondary}} className="right"></div>
+                            <h2>Status</h2>
+                        </div>
+                        <div style={headingBreak} className="break">
+                            <div style={text} className="grad"></div>
+                        </div>
+                        <div style={bodyBreak} className="break"></div>
+                        <div style={popupBody} className="body flex-center">
+                            <div className="help">
+                                <p>Message has been received.</p>
+                            </div>
+                            <div className="flex-center controller">
+                                <button style={text} className="btn" onClick={() => this.setState({modal: false})}>Close</button>
+                            </div>
+                        </div>
+                    </Modal>
                 </div>
             </section>
         )        

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import '../../styles/About.scss';
-import { Img, SpCircle, LinGrad, RevColor } from "../inc";
-import { StatusBar } from "../inc-classes";
+import '../../styles/pages/About.scss';
+import { Img, SpCircle, LinGrad, RevColor } from "../inc/inc";
+import { StatusBar } from "../inc/inc-classes";
 import header from "../../media/img2.jpg";
 import profile from "../../media/mcr.png";
 

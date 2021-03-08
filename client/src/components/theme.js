@@ -1,17 +1,11 @@
 import React, { Component, Fragment } from 'react';
-import { BrowserRouter, Route} from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import '../styles/Global.scss';
 import '../styles/keyframes.scss';
-import { Background, RevColor, LinGrad, Notebook, toRgb } from "./inc";
-import About from "./pages/about";
-import Contact from "./pages/contact";
-import Nav from './main-nav';
-import Footer from './footer';
-import Portfolio from './pages/portfolio';
-import PrivacyPolicy from './pages/privacy-policy';
-import MineSweeper from "./minesweeper";
-import Temperature from "./temperature";
-import AppNav from "./app-nav";
+import { Background, RevColor, LinGrad, Notebook, toRgb } from "./inc/inc";
+import Nav from './inc/main-nav';
+import Footer from './inc/footer';
+import Urls from './urls';
 const url = "http://localhost:1337/themes";
 
 class Theme extends Component {
@@ -95,37 +89,18 @@ class Theme extends Component {
             color: RevColor(a.mode), 
         }
         return (
-            <Fragment><BrowserRouter>
+            <Fragment>
+                <BrowserRouter>
                 <Nav data={a} />
                 <div className="page flex-center" style={page}>
                     <Background styles={bg} />
                     <div className="content" style={cont}>
-                        <Route path="/portfolio"><Portfolio data={a}/></Route>
-                        <Route path="/about"><About data={a}/></Route>
-                        <Route path="/contact"><Contact data={a}/></Route>
-                        <Route path="/apps/minesweeper"><MineSweeper data={a} /></Route>
-                        <Route path="/apps/temp"><Temperature data={a} /></Route>
-                        <Route path="/privacy-policy"><PrivacyPolicy data={a} /></Route>
-                        <Route exact path="/">
-                            <section className="hero-banner flex-center">
-                                <div className="container" style={{overflow: 'visible'}}>
-                                    <Notebook data={a}>
-                                        <h1>Hello,</h1>
-                                        <h1>I'm Marcos Centeno</h1>
-                                        <h2>A Web Developer that specializes in front-end development</h2>
-                                        <h4>Take a look around</h4>
-                                    </Notebook>
-                                </div>
-                            </section>
-                            <About data={a}/>
-                            <Temperature data={a} />
-                            <Portfolio data={a}/>
-                            <Contact data={a}/>
-                        </Route>
+                        <Urls data={a} />
                     </div>
                 </div>
-                <Footer data={this.state} update={this.update} /> 
-            </BrowserRouter></Fragment>
+                <Footer data={this.state} update={this.update} />
+                </BrowserRouter> 
+            </Fragment>
         )
     }
 }

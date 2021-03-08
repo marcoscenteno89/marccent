@@ -158,7 +158,7 @@ strong {
         }
     }
     .notebook-content {
-        padding: 4rem;
+        padding: 2rem;
         transform: rotate(-21deg);
     }
 }
@@ -318,6 +318,20 @@ strong {
     width: 100%;
     max-width: 150px;
 }
+.rec-swipable {
+    padding-top: 1rem;
+}
+.appnav {
+    i {
+        -webkit-text-fill-color: transparent !important;
+        -webkit-background-clip: text !important;
+        padding-bottom: 1rem;
+    }
+    h4 {
+        -webkit-text-fill-color: transparent !important;
+        -webkit-background-clip: text !important;
+    }
+}
 .css-1utlbt5-control {
     border: none !important;
 }
@@ -410,5 +424,12 @@ form :is(input, select, button, textarea, select, option) {
 	.w-10, .w-20, .w-30, .w-40, .w-50, .w-60, .w-60, .w-80, .w-80, .w-90 {
         width: 98%;
         margin: 1rem 1%;
+    }
+}
+@media (max-width:568px) {
+    .notebook {
+        .notebook-content {
+            padding: 1rem;
+        }
     }
 }

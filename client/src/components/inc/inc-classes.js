@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import "../styles/Incclasses.scss";
+import "../../styles/inc/Incclasses.scss";
 import { LinGrad } from "./inc";
 
 class StatusBar extends Component {
