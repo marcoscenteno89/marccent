@@ -1,5 +1,5 @@
-import React, { Component, Fragment } from 'react';
-import { Background, RevColor, LinGrad, Notebook, toRgb } from "../inc/inc";
+import React, { Component } from 'react';
+import { Notebook } from "../inc/inc";
 
 class HeroBanner extends Component {
    

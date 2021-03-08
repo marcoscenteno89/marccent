@@ -1,8 +1,8 @@
 import React, { Component, Fragment } from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import '../styles/Global.scss';
 import '../styles/keyframes.scss';
-import { Background, RevColor, LinGrad, Notebook, toRgb } from "./inc/inc";
+import { Background, RevColor, LinGrad } from "./inc/inc";
 import Nav from './inc/main-nav';
 import Footer from './inc/footer';
 import Urls from './urls';
@@ -30,7 +30,7 @@ class Theme extends Component {
         } 
         if (!active) {
             active = themes[0];
-            active.mode = '#FFFFFF';
+            active.mode = '#383d44';
             sessionStorage.setItem('active', JSON.stringify(active));
         }
         

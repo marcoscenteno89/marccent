@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import '../../styles/pages/Contact.scss';
 import Maps from "../map";
 import Modal from 'react-modal';
-import { RevColor, FooterText, LinGrad, Title } from "../inc/inc";
+import { RevColor, LinGrad, Title } from "../inc/inc";
 
 const server = `http://localhost:1337/`;
 Modal.setAppElement('#app');
@@ -49,10 +49,6 @@ class Contact extends Component {
         }
         const header = {
             background: `linear-gradient(to bottom, ${a.mode} 30%, rgba(0,0,0,0))`,
-            color: rev
-        }
-        const footer = {
-            background: `linear-gradient(to top, ${a.mode} 30%, rgba(0,0,0,0))`,
             color: rev
         }
         const mapData = {

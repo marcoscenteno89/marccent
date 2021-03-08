@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import { RevColor, FooterText, LinGrad, Title } from "../inc/inc";
 
-const server = `http://localhost:1337/`;
-
 class PrivacyPolicy extends Component {
 
     render() {

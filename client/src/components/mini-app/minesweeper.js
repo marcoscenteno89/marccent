@@ -293,10 +293,6 @@ class MineSweeper extends Component {
         if (!this.props.data || !this.state.grid) return (<h1>Loading...</h1>);
         const a = this.props.data;
         const b = this.state;
-        const board = {
-            backgroundColor: a.mode,
-            color: RevColor(a.mode)
-        }
         const container = {
             paddingTop: '2rem',
             backgroundColor: a.mode,

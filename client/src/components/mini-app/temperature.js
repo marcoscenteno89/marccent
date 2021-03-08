@@ -81,7 +81,7 @@ class Temperature extends Component {
                     </div>
                     <div className="w-50 flex-col" style={{alignItems: 'center'}}>
                         <TempCir data={a} temp={e.list[0]} />
-                        <div className="map-size"><Maps mapData={mapData} data={a} /></div>
+                        <div className="map-size" style={{marginTop: '2rem'}}><Maps mapData={mapData} data={a} /></div>
                     </div>
                     <div className="w-50">
                         <h3>Weather History</h3>
