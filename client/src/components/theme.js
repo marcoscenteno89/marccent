@@ -6,7 +6,7 @@ import { Background, RevColor, LinGrad } from "./inc/inc";
 import Nav from './inc/main-nav';
 import Footer from './inc/footer';
 import Urls from './urls';
-const url = "http://localhost:1337/themes";
+const url = "https://localhost:1337/themes";
 
 class Theme extends Component {
 
