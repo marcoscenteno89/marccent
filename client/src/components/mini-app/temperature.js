@@ -5,7 +5,7 @@ import '../../styles/keyframes.scss';
 import { Today, Blur, SpCircle, RevColor, LinGrad } from "../inc/inc";
 import AppNav from "../inc/app-nav";
 import Maps from "../map";
-const openWeather = `https://api.openweathermap.org/data/2.5/forecast`;
+const openWeather = process.env.REACT_APP_OPENWEATHERURL;
 const token = `&units=imperial&appid=${process.env.REACT_APP_OPENWEATHER}`;
 
 class Temperature extends Component {
