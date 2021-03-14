@@ -6,7 +6,7 @@ class HeroBanner extends Component {
     render() {
         const a = this.props.data;
         return (
-            <section className="hero-banner flex-center">
+            <section className="hero-banner flex-center" style={{margin: '0'}}>
                 <div className="container" style={{overflow: 'visible', width: '75%'}}>
                     <Notebook data={a}>
                         <h1>Hello,</h1>

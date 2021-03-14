@@ -114,7 +114,7 @@ const Notebook = props => {
         backgroundColor: `rgba(${c.r}, ${c.g}, ${c.b}, 0.3)`,
     }
     const full = {
-        backgroundColor: `rgba(${c.r}, ${c.g}, ${c.b}, 0.8)`,
+        backgroundColor: `rgba(${c.r}, ${c.g}, ${c.b}, 0.5)`,
         color: RevColor(a.mode),
     }
     return (
