@@ -4,7 +4,7 @@ import Maps from "../map";
 import Modal from 'react-modal';
 import { RevColor, LinGrad, Title } from "../inc/inc";
 
-const server = `http://localhost:1337/`;
+const server = `${process.env.REACT_APP_STRAPIURL}`;
 Modal.setAppElement('#app');
 
 class Contact extends Component {
@@ -21,7 +21,7 @@ class Contact extends Component {
 
     onClick = async e => {
         e.preventDefault();
-        const res = await fetch(`${server}messages`, {
+        const res = await fetch(`${server}messages/`, {
             method: 'POST',
             credentials: 'same-origin',
             headers: new Headers({'Content-Type': 'application/json', 'Accept': 'application/json'}),
