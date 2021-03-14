@@ -6,7 +6,7 @@ import { Background, RevColor, LinGrad } from "./inc/inc";
 import Nav from './inc/main-nav';
 import Footer from './inc/footer';
 import Urls from './urls';
-const url = process.env.REACT_APP_STRAPIURL;
+const url = `${process.env.REACT_APP_STRAPIURL}themes/`;
 
 class Theme extends Component {
 
