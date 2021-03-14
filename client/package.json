@@ -2,7 +2,7 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://marccent.com",
+  "homepage": "http://marccent.com",
   "dependencies": {
     "@sentry/react": "^6.1.0",
     "@sentry/tracing": "^6.1.0",
