@@ -233,56 +233,6 @@ strong {
     overflow: hidden;
     position: relative;
 }
-.modal {
-    &:hover, &:active, &:focus, &:visited, &:focus-within, &:focus-visible {
-        border: none !important;
-        outline: none !important;
-    }
-    border: none !important;
-    width: 90%;
-    max-width: 750px;
-    border-radius: $radious;
-    overflow: hidden;
-    .heading {
-        min-height: 60px;
-        position: relative;
-        align-items: flex-end;
-        position: relative;
-        margin: 0 2rem;
-        color: #FFF;
-        p {
-            font-size: 1.5rem;
-            margin-bottom: -0.7rem;
-        }
-        .left, .right {
-            position: absolute;
-            width: 2rem;
-            height: 100%;
-            top: 0;
-        }
-        .left {
-            left: -2rem;
-        }
-        .right {
-            right: -2rem;
-        }
-    }
-    .break {
-        height: 2rem;
-        width: 100%;
-    }
-    .grad {
-        height: 100%;
-        margin: 0 2rem;
-    }
-    .body {
-        min-height: 100px;
-        flex-wrap: wrap;
-        .controller {
-            width: 100%;
-        }
-    }
-}
 .overlay {
     z-index: 98;
     position: fixed;
@@ -421,6 +371,57 @@ form :is(input, select, button, textarea, select, option, .btn) {
     margin: 0 !important;
     min-height: 500px;
     justify-content: center;
+}
+
+.modal {
+    &:hover, &:active, &:focus, &:visited, &:focus-within, &:focus-visible {
+        border: none !important;
+        outline: none !important;
+    }
+    border: none !important;
+    width: 90%;
+    max-width: 750px;
+    border-radius: $radious;
+    overflow: hidden;
+    .heading {
+        min-height: 60px;
+        position: relative;
+        align-items: flex-end;
+        position: relative;
+        margin: 0 2rem;
+        color: #FFF;
+        p {
+            font-size: 1.5rem;
+            margin-bottom: -0.7rem;
+        }
+        .left, .right {
+            position: absolute;
+            width: 2rem;
+            height: 100%;
+            top: 0;
+        }
+        .left {
+            left: -2rem;
+        }
+        .right {
+            right: -2rem;
+        }
+    }
+    .break {
+        height: 2rem;
+        width: 100%;
+    }
+    .grad {
+        height: 100%;
+        margin: 0 2rem;
+    }
+    .body {
+        min-height: 100px;
+        flex-wrap: wrap;
+        .controller {
+            width: 100%;
+        }
+    }
 }
 @media (max-width:768px) {
 	.w-10, .w-20, .w-30, .w-40, .w-50, .w-60, .w-60, .w-80, .w-80, .w-90 {

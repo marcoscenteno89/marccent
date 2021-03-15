@@ -85,7 +85,7 @@ class LightDark extends Component {
         const i = this.props.data;
         const slider = {
             backgroundImage: `linear-gradient(to right, ${i.primary}, ${i.secondary})`,
-            boxShadow: `0 0 15px ${i.primary}, 0 0 15px ${i.secondary}`
+            boxShadow: `0 0 10px ${i.primary}, 0 0 10px ${i.secondary}`
         }
         
         return (
