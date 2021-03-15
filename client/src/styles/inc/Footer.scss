@@ -10,22 +10,23 @@
       list-style-type: none;
       justify-content: space-between;
       align-items: flex-end;
+      padding: 1rem 0;
       .menu {
         width: 4.3rem;
         height: 4.3rem;
         i {
-          font-size: 2.5rem;
+          font-size: 2.8rem;
         }
       }
       li {
-        height: 3rem;
-        width: 3rem;
+        height: 3.3rem;
+        width: 3.3rem;
         display: flex;
         justify-content: center;
         align-items: center;
         border-radius: 50%;
         i {
-          font-size: 1.3rem;
+          font-size: 1.6rem;
           -webkit-text-fill-color: transparent !important;
           -webkit-background-clip: text !important;
         }
