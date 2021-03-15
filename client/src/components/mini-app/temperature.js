@@ -5,7 +5,7 @@ import '../../styles/keyframes.scss';
 import { Today, Blur, SpCircle, RevColor, LinGrad } from "../inc/inc";
 import AppNav from "../inc/app-nav";
 import Maps from "../map";
-const openWeather = process.env.REACT_APP_OPENWEATHERURL;
+const openWeather = `${process.env.REACT_APP_OPENWEATHERURL}data/2.5/forecast`;
 const token = `&units=imperial&appid=${process.env.REACT_APP_OPENWEATHER}`;
 
 class Temperature extends Component {
@@ -101,7 +101,7 @@ class List extends Component {
         const a = this.props.data;
         const o = this.props.item;
         const list = {
-            backgroundImage: `url('http://openweathermap.org/img/w/${o.weather[0].icon}.png')`,
+            backgroundImage: `url('${openWeather}img/w/${o.weather[0].icon}.png')`,
             height: '50px'
         }
         const bg = {
@@ -201,7 +201,7 @@ class TempCir extends Component {
             }
         }
         const list = {
-            backgroundImage: `url('http://openweathermap.org/img/w/${o.weather[0].icon}.png')`,
+            backgroundImage: `url('https://openweathermap.org/img/w/${o.weather[0].icon}.png')`,
             height: '3.5rem'
         }
 
