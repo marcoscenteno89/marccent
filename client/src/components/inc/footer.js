@@ -140,7 +140,7 @@ class FooterNav extends Component {
                     </a>
                 </li>
                 <li style={e}>
-                    <a href="https://www.facebook.com/marcos.centeno.75" rel="noopener noreferrer" target="_blank">
+                    <a href="https://stackoverflow.com/users/8151467/marcos-centeno" rel="noopener noreferrer" target="_blank">
                         <i style={i} className="fab fa-stack-overflow"></i>
                     </a>
                 </li>
