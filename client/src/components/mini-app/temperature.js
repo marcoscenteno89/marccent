@@ -1,8 +1,9 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
+import { ThemeContext } from "../var"
 import JwPagination from 'jw-react-pagination';
 import "../../styles/mini-app/Temperature.scss";
 import '../../styles/keyframes.scss';
-import { Today, Blur, SpCircle, RevColor, LinGrad } from "../inc/inc";
+import { Today, Blur, SpCircle, RevColor, GetMode } from "../inc/inc";
 import AppNav from "../inc/app-nav";
 import Maps from "../map";
 const openWeather = `${process.env.REACT_APP_OPENWEATHERURL}data/2.5/forecast`;
@@ -10,6 +11,7 @@ const token = `&units=imperial&appid=${process.env.REACT_APP_OPENWEATHER}`;
 
 class Temperature extends Component {
 
+    static contextType = ThemeContext;
     constructor(props) {
         super(props);
         this.state = {
@@ -46,19 +48,21 @@ class Temperature extends Component {
     }
 
     render() {
-        if (!this.state.city) return (<h1>Loading...</h1>);
+        if (!this.state.city) return <Fragment>Loading...</Fragment>
+        const a = this.context.active;
+        const mode = GetMode(a, 1);
         const e = this.state.city;
-        const a = this.props.data;
+        console.log(e);
         const sec = {
-            background: a.mode,
+            background: mode,
         }
         const bg = {
-            background: LinGrad(a.primary, a.secondary),
-            color: '#FFF'
+            background: a.grad,
+            color: a.hex.light
         }
         const input = {
-            border: `solid 1px ${a.primary}`,
-            backgroundColor: a.mode
+            border: `solid 1px ${a.hex.primary}`,
+            backgroundColor: mode
         }
         const mapData = {
             loc: {
@@ -81,7 +85,9 @@ class Temperature extends Component {
                     </div>
                     <div className="w-50 flex-col" style={{alignItems: 'center'}}>
                         <TempCir data={a} temp={e.list[0]} />
-                        <div className="map-size" style={{marginTop: '2rem'}}><Maps mapData={mapData} data={a} /></div>
+                        <div className="map-size" style={{marginTop: '2rem'}}>
+                            <Maps mapData={mapData} />
+                        </div>
                     </div>
                     <div className="w-50">
                         <h3>Weather History</h3>
@@ -96,20 +102,22 @@ class Temperature extends Component {
 
 class List extends Component {
     
+    static contextType = ThemeContext;
     render() {
-        if (!this.props.data) return (<h1>Loading...</h1>);
-        const a = this.props.data;
+        if (this.context.active.id === 0) return <Fragment>Loading...</Fragment>
+        const a = this.context.active;
         const o = this.props.item;
+        const mode = GetMode(a, 1);
         const list = {
             backgroundImage: `url('${openWeather}img/w/${o.weather[0].icon}.png')`,
             height: '50px'
         }
         const bg = {
-            background: LinGrad(a.primary, a.secondary),
-            color: '#FFF'
+            background: a.grad,
+            color: a.hex.light
         }
         return (
-            <div className="list-outer shadow-s" style={{background: a.mode}}>
+            <div className="list-outer shadow-s" style={{background: mode}}>
                 <div style={bg} className="list-inner shadow-xs">
                     <div className="transparent flex-row">
                         <div className="image" style={list} />
@@ -136,6 +144,7 @@ class List extends Component {
 
 class WeatherHistory extends Component {
 
+    static contextType = ThemeContext;
     constructor(props) {
         super(props);
         this.state = {
@@ -155,8 +164,8 @@ class WeatherHistory extends Component {
     }
     
     render() {
-        if (!this.props.data) return (<h1>Loading...</h1>);
-        const a = this.props.data;
+        if (this.context.active.id === 0) return <Fragment>Loading...</Fragment>
+        const a = this.context.active;
         return (
             <div className="flex-row history">
                 {this.state.pageOfItems.map((item, index) => (
@@ -169,6 +178,8 @@ class WeatherHistory extends Component {
 }
 
 class TempCir extends Component {
+
+    static contextType = ThemeContext;
     constructor(props) {
         super(props);
         this.state = {
@@ -183,20 +194,23 @@ class TempCir extends Component {
     }
 
     render() {
-        if (!this.props.data) return (<h1>Loading...</h1>);
-        const a = this.props.data;
+        if (this.context.active.id === 0) return <Fragment>Loading...</Fragment>
+        const a = this.context.active;
         const o = this.state.temp;
+        const mode = GetMode(a, 1);
+        const prim = a.hex.primary;
+        const sec = a.hex.secondary;
         const circle = {
             circle: {
-                backgroundColor: a.mode,
+                backgroundColor: mode,
                 boxShadow: 'inset 0 0 15px rgba(0,0,0,0.5)'
             },
             innerCircle: {
-                backgroundColor: a.mode,
+                backgroundColor: mode,
                 boxShadow: 'inset 0 0 75px rgba(0,0,0,0.5)'
             },
             grad: {
-                backgroundImage: LinGrad(a.primary, a.secondary),
+                backgroundImage: a.grad,
                 boxShadow: 'inset 0 0 15px rgba(0,0,0,0.5)'
             }
         }
@@ -207,25 +221,25 @@ class TempCir extends Component {
 
         return (
             <SpCircle styles={circle} data={a}>
-                <div className="temp-cont flex-col" style={{color: RevColor(a.mode)}}>
+                <div className="temp-cont flex-col" style={{color: RevColor(a, 1)}}>
                     <div className="image" style={list} />
                     <h3>{o.main.temp}&#176;</h3>
                     <p><Today /></p>
                 </div>
                 <div className="third">
-                    <div style={{backgroundColor: a.secondary}}></div>
-                    <div style={{backgroundColor: a.secondary}}></div>
-                    <div style={{backgroundColor: a.secondary}}></div>
+                    <div style={{backgroundColor: sec}}></div>
+                    <div style={{backgroundColor: sec}}></div>
+                    <div style={{backgroundColor: sec}}></div>
                 </div>
                 <div className="second">
-                    <div style={{backgroundColor: a.primary}}></div>
-                    <div style={{backgroundColor: a.primary}}></div>
-                    <div style={{backgroundColor: a.primary}}></div>
+                    <div style={{backgroundColor: prim}}></div>
+                    <div style={{backgroundColor: prim}}></div>
+                    <div style={{backgroundColor: prim}}></div>
                 </div>
                 <div className="first">
-                    <div style={{backgroundColor: a.secondary}}></div>
-                    <div style={{backgroundColor: a.secondary}}></div>
-                    <div style={{backgroundColor: a.secondary}}></div>
+                    <div style={{backgroundColor: sec}}></div>
+                    <div style={{backgroundColor: sec}}></div>
+                    <div style={{backgroundColor: sec}}></div>
                 </div>
                 <Blur />
             </SpCircle>

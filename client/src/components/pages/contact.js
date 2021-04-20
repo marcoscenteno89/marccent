@@ -1,8 +1,9 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
+import { ThemeContext } from "../var"
 import '../../styles/pages/Contact.scss';
 import Maps from "../map";
 import Modal from 'react-modal';
-import { RevColor, LinGrad, Title } from "../inc/inc";
+import { RevColor, GetMode, Title } from "../inc/inc";
 
 const server = `${process.env.REACT_APP_STRAPIURL}`;
 Modal.setAppElement('#app');
@@ -36,19 +37,19 @@ class Contact extends Component {
     emailChange = e => this.setState({ email: e.target.value});
     messageChange = e => this.setState({ message: e.target.value});
 
+    static contextType = ThemeContext;
     render() {
-        const a = this.props.data;
+        if (this.context.active.id === 0) return <Fragment>Loading...</Fragment>
+        const a = this.context.active;
         const e = this.state;
-        const rev = RevColor(a.mode);
-        const text = {
-            background: LinGrad(a.primary, a.secondary),
-        }
+        const rev = RevColor(a, 1);
+        const mode = GetMode(a, 1);
         const bg = {
-            background: LinGrad(a.primary, a.secondary),
-            color: a.mode
+            background: a.grad,
+            color: mode
         }
         const header = {
-            background: `linear-gradient(to bottom, ${a.mode} 30%, rgba(0,0,0,0))`,
+            background: `linear-gradient(to bottom, ${mode} 30%, rgba(0,0,0,0))`,
             color: rev
         }
         const mapData = {
@@ -63,37 +64,37 @@ class Contact extends Component {
               backgroundColor: 'rgba(56,61,68,0.2)',
             },
             content: {
-                color: RevColor(a.mode),
+                color: RevColor(a, 1),
                 filter: `drop-shadow(0 0 10px rgba(0,0,0,0.8))`
             }
         }
-        const popupBody = {
-            backgroundColor: a.mode
-        }
+
         const headingBreak = {
             background: `
-                radial-gradient(circle at bottom left, rgba(0,0,0,0) 2rem, ${a.primary} 2rem) bottom left,
-                radial-gradient(circle at bottom right, rgba(0,0,0,0) 2rem, ${a.secondary} 2rem) bottom right`,
+                radial-gradient(circle at bottom left, rgba(0,0,0,0) 2rem, ${a.hex.primary} 2rem) bottom left,
+                radial-gradient(circle at bottom right, rgba(0,0,0,0) 2rem, ${a.hex.secondary} 2rem) bottom right`,
             backgroundSize: '2rem 100%',
             backgroundRepeat: 'no-repeat'
         }
         const bodyBreak = {
             background: `
-                radial-gradient(circle at top left, rgba(0,0,0,0) 2rem, ${a.mode} 2rem) top left,
-                radial-gradient(circle at top right, rgba(0,0,0,0) 2rem, ${a.mode} 2rem) top right`,
+                radial-gradient(circle at top left, rgba(0,0,0,0) 2rem, ${mode} 2rem) top left,
+                radial-gradient(circle at top right, rgba(0,0,0,0) 2rem, ${mode} 2rem) top right`,
             backgroundSize: '50% 100%',
             backgroundRepeat: 'no-repeat'
         }
-        const cont = {backgroundImage: `linear-gradient(to bottom right, ${a.mode} 20%, rgba(0,0,0,0))`}
+        const cont = {backgroundImage: `linear-gradient(to bottom right, ${mode} 20%, rgba(0,0,0,0))`}
         return  (
             <section className="page-contact flex-center">
                 <div className="container">
                     <Title style={header} text="Contact" />
                     <div className="contact flex-center">
-                        <div className="map-size"><Maps mapData={mapData} data={a} /></div>
+                        <div className="map-size">
+                            <Maps mapData={mapData} />
+                        </div>
                         <div className="contact-info flex-col" style={cont}>
                             <form className="flex-col">
-                                <h2 className="text" style={text}>Get in Touch</h2>
+                                <h2 className="text" style={{background: a.grad}}>Get in Touch</h2>
                                 <input type="text" style={bg} onChange={this.nameChange} value={e.name} />
                                 <input type="text" style={bg} value={e.email} onChange={this.emailChange} />
                                 <textarea style={bg} value={e.message} onChange={this.messageChange} rows="5"></textarea>
@@ -102,21 +103,21 @@ class Contact extends Component {
                         </div>
                     </div>
                     <Modal style={popup} className="modal" overlayClassName="overlay" isOpen={this.state.modal}>
-                        <div style={text} className="heading flex-center">
-                            <div style={{backgroundColor: a.primary}} className="left"></div>
-                            <div style={{backgroundColor: a.secondary}} className="right"></div>
+                        <div style={{background: a.grad}} className="heading flex-center">
+                            <div style={{backgroundColor: a.hex.primary}} className="left"></div>
+                            <div style={{backgroundColor: a.hex.secondary}} className="right"></div>
                             <h2>Status</h2>
                         </div>
                         <div style={headingBreak} className="break">
-                            <div style={text} className="grad"></div>
+                            <div style={{background: a.grad}} className="grad"></div>
                         </div>
                         <div style={bodyBreak} className="break"></div>
-                        <div style={popupBody} className="body flex-center">
+                        <div style={{ backgroundColor: mode }} className="body flex-center">
                             <div className="help">
                                 <p>Message has been received.</p>
                             </div>
                             <div className="flex-center controller">
-                                <button style={text} className="btn" onClick={() => this.setState({modal: false})}>Close</button>
+                                <button style={{background: a.grad}} className="btn" onClick={() => this.setState({modal: false})}>Close</button>
                             </div>
                         </div>
                     </Modal>

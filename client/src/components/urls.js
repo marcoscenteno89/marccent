@@ -11,23 +11,34 @@ import Temperature from "./mini-app/temperature";
 class Urls extends Component {
    
     render() {
-        const a = this.props.data;
         return (
             <Fragment>
                 <Switch>
-                    <Route path="/portfolio"><Portfolio data={a}/></Route>
-                    <Route path="/about"><About data={a}/></Route>
-                    <Route path="/contact"><Contact data={a}/></Route>
-                    <Route path="/apps/minesweeper"><MineSweeper data={a} /></Route>
-                    <Route path="/apps/temp"><Temperature data={a} /></Route>
-                    <Route path="/privacy-policy"><PrivacyPolicy data={a} /></Route>
-                    <Route exact path="/">
-                        <HeroBanner data={a} />
-                        <About data={a}/>
-                        <Temperature data={a} />
-                        <Portfolio data={a}/>
-                        <Contact data={a}/>
+                    <Route path="/portfolio">
+                        <Portfolio />
                     </Route>
+                    <Route path="/about">
+                        <About />
+                    </Route>
+                    <Route path="/contact">
+                        <Contact />
+                    </Route>
+                    <Route path="/apps/minesweeper">
+                        <MineSweeper />
+                    </Route>
+                    <Route path="/apps/temp">
+                        <Temperature />
+                    </Route> 
+                    <Route path="/privacy-policy">
+                        <PrivacyPolicy />
+                    </Route>
+                    <Route exact path="/">
+                        <HeroBanner />
+                        <About />
+                        <Temperature />
+                        <Portfolio />
+                        <Contact />
+                    </Route> 
                 </Switch>
             </Fragment>
         )

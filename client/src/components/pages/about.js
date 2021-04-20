@@ -1,6 +1,7 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
+import { ThemeContext } from "../var"
 import '../../styles/pages/About.scss';
-import { Img, SpCircle, LinGrad, RevColor } from "../inc/inc";
+import { Img, SpCircle, GetMode } from "../inc/inc";
 import { StatusBar } from "../inc/inc-classes";
 import header from "../../media/img2.jpg";
 import profile from "../../media/mcr.png";
@@ -12,26 +13,25 @@ class About extends Component {
         return `${x} ${year}`;
     }
 
+    static contextType = ThemeContext;
     render() {
-        const a = this.props.data;
+        if (this.context.active.id === 0) return <Fragment>Loading Navigation...</Fragment>
+        const a = this.context.active;
+        const mode = GetMode(a, 1);
         const circle = {
             circle: {
-                backgroundColor: a.mode,
+                backgroundColor: mode,
             },
             innerCircle: {
-                backgroundColor: a.mode,
+                backgroundColor: mode,
             },
             grad: {
-                backgroundImage: LinGrad(a.primary, a.secondary),
+                backgroundImage: a.mode,
                 boxShadow: '0 0 1rem rgba(0,0,0,0.5)',
             }
         }
-        const bg = {
-            background: a.mode,
-            color: RevColor(a.mode)
-        }
         const icon = {
-            color: a.primary,
+            color: a.hex.primary,
             width: '15%'
         }
         const icons = [
@@ -51,16 +51,22 @@ class About extends Component {
             {icon: <i style={icon} className="fab fa-aws"></i>, bar: {current: 1, total: 5}}
         ]
         const yr = {
-            color: a.secondary, 
+            color: a.hex.secondary, 
             paddingLeft: '5px'
         }
         const img = {
             backgroundImage: `url('${header}')`,
             height: '15rem'
         }
+        
+        const barStyles = {
+            backgroundImage: a.grad,
+            color: a.hex.light
+        }
+
         return  (
             <section className="page-about flex-center">
-                <div className="container" style={{backgroundColor: a.mode}}>
+                <div className="container" style={{backgroundColor: mode}}>
                     <div className="image" style={img} />
                     <div className="con flex-center">
                         <div className="circle-con">
@@ -70,16 +76,18 @@ class About extends Component {
                         </div>
                     </div>
                     <div className="flex-row container">
-                        <div className="w-40 shadow-xs flex-col" style={bg}>
+                        <div className="w-40 shadow-xs flex-col">
                             {icons.map((single, index) => (
                                 <div className="flex-row" key={index}>
                                     {single.icon}
-                                    <div style={{width: '50%', paddingLeft: '5px'}}><StatusBar data={a} bar={single.bar} /></div>
+                                    <div style={{width: '50%', paddingLeft: '5px'}}>
+                                        <StatusBar bar={single.bar} styles={barStyles} />
+                                    </div>
                                     <div style={yr}> {this.time(single.bar.current)}</div>
                                 </div>
                             ))}
                         </div>
-                        <div className="w-60 shadow-xs" style={bg}>
+                        <div className="w-60 shadow-xs">
                             <div className="title">
                                 <strong>Safelink Internet</strong>, Idaho Falls, ID — <em style={{color: a.secondary}}>Web Developer</em>
                             </div>

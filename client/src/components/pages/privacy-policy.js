@@ -1,17 +1,20 @@
-import React, { Component } from "react";
-import { RevColor, FooterText, LinGrad, Title } from "../inc/inc";
+import React, { Component, Fragment } from "react";
+import { ThemeContext } from "../var";
+import { RevColor, Title, GetMode } from "../inc/inc";
 
 class PrivacyPolicy extends Component {
 
+    static contextType = ThemeContext;
     render() {
-        const a = this.props.data;
+        if (this.context.active.id === 0) return <Fragment>Loading...</Fragment>
+        const a = this.context.active;
         const pg = {
-            background: a.mode,
-            color: RevColor(a.mode)
+            background: GetMode(a, 1),
+            color: RevColor(a, 1)
         }
         const bg = {
-            background: LinGrad(a.primary, a.secondary),
-            color: '#FFF'
+            background: a.grad,
+            color: a.hex.light
         }
 
         return  (
@@ -72,7 +75,6 @@ class PrivacyPolicy extends Component {
                             <p>Marccent does not knowingly collect any Personal Identifiable Information from children under the age of 13. If you think that your child provided this kind of information on our website, we strongly encourage you to contact us immediately and we will do our best efforts to promptly remove such information from our records.</p>
                         </div>
                     </div>
-                    <FooterText style={bg} />
                 </div>
             </section>
         )        

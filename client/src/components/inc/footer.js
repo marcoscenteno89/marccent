@@ -1,20 +1,31 @@
-import React, { Component } from "react";
+import React, { Component,Fragment } from "react";
+import { ThemeContext } from "../var"
 import Carousel from "react-elastic-carousel";
-import { LinGrad, RevColor, FooterText } from "./inc"
+import { RevColor, FooterText, GetMode, GetColor, LinGrad } from "./inc"
 import '../../styles/inc/Footer.scss';
 
 class Footer extends Component {
 
+    static contextType = ThemeContext;
+
+    addTheme = () => {
+        console.log('works till here');
+    } 
+
     render() {
-        const footer = {};
-        const footerTitle = {};
-        if (this.props.data.active) {
-            const a = this.props.data.active;
-            footer.color = a.primary;
-            footer.backgroundColor = a.mode;
-            footer.filter= `drop-shadow(0 0 5px ${RevColor(a.mode)})`;
-            footerTitle.backgroundColor = a.mode;
-            footerTitle.color = RevColor(a.mode);
+        if (this.context.active.id === 0) return <Fragment>Loading...</Fragment>
+        const a = this.context.active;
+        const c = this.context;
+        const mode = GetMode(a, 1);
+        const rev = RevColor(a, 1);
+        const footerTitle = {
+            backgroundColor: mode,
+            color : rev
+        };
+        const footer = {
+            color: a.primary,
+            backgroundColor: mode,
+            filter: `drop-shadow(0 0 5px ${rev})`
         }
         
         const breakPoints = [
@@ -24,18 +35,22 @@ class Footer extends Component {
             {width: 668, itemsToShow: 6},
             {width: 768, itemsToShow: 7},
         ]
-
         return  (
             <footer className="main-footer flex-center" style={footer}>
                 <div className="container" style={{paddingTop: '1rem'}}>
-                    <FooterNav data={this.props.data.active} />
+                    <FooterNav />
                     <div className="m-10 flex-center">
-                        <LightDark data={this.props.data.active} update={this.props.update} />
+                        <LightDark data={a} />
                     </div>
                     <div className="flex-row">
                         <Carousel breakPoints={breakPoints}>
-                            {this.props.data.themes.map(single => (
-                                <Choices key={single.id} data={single} active={this.props.data.active} update={this.props.update}  />
+                            <button key={0} className="single flex-center" onClick={() => this.addTheme()}>
+                                <div className="inner flex-center">
+                                    <i style={{fontSize: '2rem'}} class="fas fa-plus"></i>
+                                </div>
+                            </button>
+                            {this.context.themeList.map(single => (
+                                <Choices key={single.id} data={single} />
                             ))}
                         </Carousel>
                     </div>
@@ -48,24 +63,30 @@ class Footer extends Component {
 
 class Choices extends Component {
     
+    static contextType = ThemeContext;
+
     render() {
-        if (this.props.active) this.props.data.mode = this.props.active.mode;
-        const btn = {}
-        const inner = {}
-        const shadow = {}
-        let classes = '';
-        if (this.props.data) {
-            const a = this.props.data;
-            classes += `single flex-center single-${a.id}`;
-            btn.backgroundImage = LinGrad(a.primary, a.secondary);
-            btn.boxShadow = `0px 0px 10px ${a.primary}, 0px 0px 10px ${a.secondary}`;
-            inner.background = a.mode;
-            inner.boxShadow = `inset 0 0 5px ${a.primary}, inset 0 0 5px ${a.secondary}`;
-            shadow.filter = `drop-shadow(-25px 0 9px ${a.primary}) drop-shadow(25px 0 9px ${a.secondary}) blur(2px)`;
-            shadow.background = a.mode;
+        if (this.context.active.id === 0) return <Fragment>Loading...</Fragment>
+        const a = this.context.active;
+        const b = this.context;
+        const c = this.props.data;
+        const mode = GetMode(a, 1);
+        const btn = {
+            backgroundImage: LinGrad(c.primary, c.secondary),
+            boxShadow: `0px 0px 10px ${c.primary}, 0px 0px 10px ${c.secondary}`
         }
+        let inner = {
+            backgroundColor:  mode,
+            boxShadow: `inset 0 0 5px ${c.primary}, inset 0 0 5px ${c.secondary}`
+        }
+
+        const shadow = {
+            filter: `drop-shadow(-25px 0 9px ${c.primary}) drop-shadow(25px 0 9px ${c.secondary}) blur(2px)`,
+            background: mode
+        }
+            
         return (
-        <button key={this.props.data.id} className={classes} style={btn} onClick={() => this.props.update(this.props.data)}>
+        <button key={c.id} className="single flex-center" style={btn} onClick={() => b.updateTheme(c.id)}>
             <div className="inner flex-center" style={inner}>
                 <div className="shadow" style={shadow}></div>
             </div>
@@ -76,25 +97,30 @@ class Choices extends Component {
 
 class LightDark extends Component {
 
-    updateMode(current) {
-        current.mode = current.mode === '#FFFFFF' ? '#383d44' : '#FFFFFF';
-        this.props.update(current);
+    updateMode(i) {
+        i.is_dark = i.is_dark === true ? false : true;
+        this.context.isDark(i.is_dark);
     }
 
+    static contextType = ThemeContext;
     render() {
-        const i = this.props.data;
+        if (this.context.active.id === 0) return <Fragment>Loading...</Fragment>
+        const a = this.context.active;
+        const primary = GetColor(a.rgb.primary, 1);
+        const secondary = GetColor(a.rgb.secondary, 1);
+        const mode = GetMode(a, 1);
         const slider = {
-            backgroundImage: `linear-gradient(to right, ${i.primary}, ${i.secondary})`,
-            boxShadow: `0 0 10px ${i.primary}, 0 0 10px ${i.secondary}`
+            backgroundImage: a.grad,
+            boxShadow: `0 0 10px ${primary}, 0 0 10px ${secondary}`
         }
         
         return (
             <label className='switch'>
-                <input type='checkbox' onChange={() => this.updateMode(this.props.data)} defaultChecked={i.mode === '#FFFFFF' ? '' : 'checked'} />
+                <input type='checkbox' onChange={() => this.updateMode(a)} defaultChecked={a.is_dark} />
                 <div className='slider' style={slider}>
-                    <div className="pointer flex-center" style={{ backgroundColor: i.mode }}>
-                        <i className="fas fa-sun" style={{ color: i.primary }}></i>
-                        <i className="fas fa-moon" style={{ color: i.secondary }}></i>
+                    <div className="pointer flex-center" style={{ backgroundColor: mode }}>
+                        <i className="fas fa-sun" style={{ color: primary }}></i>
+                        <i className="fas fa-moon" style={{ color: secondary}}></i>
                     </div>
                 </div>
             </label>
@@ -104,20 +130,22 @@ class LightDark extends Component {
 
 class FooterNav extends Component {
 
+    static contextType = ThemeContext;
     render() {
-        const a = this.props.data;
+        if (this.context.active.id === 0) return <Fragment>Loading...</Fragment>
+        const a = this.context.active;
         let i = {
-            backgroundImage: LinGrad(a.primary, a.secondary)
+            backgroundImage: a.grad
         }
         let e = {
-            backgroundColor: a.mode
+            backgroundColor: GetMode(a, 1)
         }
         let menu = {
             animation: `rotate 3s linear infinite`,
-            backgroundImage: LinGrad(a.primary, a.secondary)
+            backgroundImage: a.grad
         }
         return (
-            <ul className="flex-center footer-nav w-100" style={{color: RevColor(a.mode)}}>
+            <ul className="flex-center footer-nav w-100" style={{color: RevColor(a, 1)}}>
                 <li style={e}>
                     <a href="https://www.facebook.com/marcos.centeno.75" rel="noopener noreferrer" target="_blank">
                         <i style={i} className="fab fa-facebook"></i>

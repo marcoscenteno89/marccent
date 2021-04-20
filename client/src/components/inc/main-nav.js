@@ -1,10 +1,12 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
+import { ThemeContext } from "../var";
 import { Link } from 'react-router-dom';
-// import { LinGrad } from "./inc";
+import { GetMode } from "./inc";
 import '../../styles/inc/Nav.scss';
 
 class Nav extends Component {
 
+    static contextType = ThemeContext;
     constructor(props) {
         super(props);
         this.state = {
@@ -14,48 +16,46 @@ class Nav extends Component {
     }
 
     toggleMenu = () => {
-        console.log('clicked');
         this.setState({
             menuOpen: this.state.menuOpen ? false : true
         })
     }
 
     render() {
-        if (!this.props.data) return (<h1>Loading...</h1>);
-        const a = this.props.data;
-        const nav = {
-            backgroundColor: a.mode
-        }
+        if (this.context.active.id === 0) return <Fragment>Loading...</Fragment>
+        const a = this.context.active;
+        const mode = GetMode(a, 1);
         const link = {
-            background: `linear-gradient(to bottom, ${a.primary}, ${a.secondary})`
+            background: `linear-gradient(to bottom, ${a.hex.primary}, ${a.hex.secondary})`
         }
 
         const toggle = {
-            background: `linear-gradient(to bottom, ${a.primary}, ${a.secondary})`,
-            border: `1px solid ${a.secondary}`
+            background: `linear-gradient(to bottom, ${a.hex.primary}, ${a.hex.secondary})`,
+            border: `1px solid ${a.hex.secondary}`
         }
+        
         const mobile = {
-            background: a.mode,
+            backgroundColor: mode,
             display: this.state.menuOpen ? 'block' : 'none'
         }
         
         return  (
-            <nav className="main-nav flex-center" style={nav}>
+            <nav className="main-nav flex-center" style={{backgroundColor: mode}}>
                 <div className="container flex-row">
                     <ul className="navigation" style={link}>
                         <li>
                             <Link to="/"><i className="fas fa-home"></i> Home</Link>
                         </li>
-                        <li style={{borderColor: a.secondary}}>
+                        <li style={{borderColor: a.hex.secondary}}>
                             <Link to="/portfolio"><i className="fas fa-folder-open"></i> Portfolio</Link>
                         </li>
-                        <li style={{borderColor: a.secondary}}>
+                        <li style={{borderColor: a.hex.secondary}}>
                             <Link to="/apps/minesweeper"><i className="fab fa-windows"></i> Apps</Link>
                         </li>
-                        <li style={{borderColor: a.secondary}}>
+                        <li style={{borderColor: a.hex.secondary}}>
                             <Link to="/about"><i className="fas fa-address-card"></i> About</Link>
                         </li>
-                        <li style={{borderColor: a.secondary}}>
+                        <li style={{borderColor: a.hex.secondary}}>
                             <Link to="/contact"><i className="fas fa-comments"></i> Contact</Link>
                         </li>
                     </ul>

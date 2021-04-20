@@ -1,15 +1,17 @@
 import React, { Component } from "react";
+import { ThemeContext } from "../var";
 import { Fragment } from "react";
 import Modal from 'react-modal';
 import Select from 'react-select'
 import "../../styles/mini-app/Minesweeper.scss";
-import { Button, RevColor, Bomb, RandomNum, Flag, LinGrad } from "../inc/inc";
+import { Button, RevColor, Bomb, RandomNum, Flag, GetMode } from "../inc/inc";
 import AppNav from "../inc/app-nav";
 
 Modal.setAppElement('#app');
 
 class MineSweeper extends Component {
 
+    static contextType = ThemeContext;
     constructor(props) {
         super(props);
         this.state = {
@@ -290,24 +292,26 @@ class MineSweeper extends Component {
     }
 
     render() {
-        if (!this.props.data || !this.state.grid) return (<h1>Loading...</h1>);
-        const a = this.props.data;
+        if (!this.state.grid) return <Fragment>Loading...</Fragment>
+        const a = this.context.active;
         const b = this.state;
+        const mode = GetMode(a, 1);
+        const rev = RevColor(a, 1);
         const container = {
             paddingTop: '2rem',
-            backgroundColor: a.mode,
-            color: RevColor(a.mode),
+            backgroundColor: mode,
+            color: rev,
             alignItems: 'center'
         }
         const select = {
-            control: styles => ({ ...styles, backgroundColor: a.mode}),
-            input: styles => ({ ...styles, color: RevColor(a.mode)}),
-            placeholder: styles => ({ ...styles, color: RevColor(a.mode)}),
-            singleValue: (styles, { data }) => ({ ...styles, color: RevColor(a.mode) }),
+            control: styles => ({ ...styles, backgroundColor: mode}),
+            input: styles => ({ ...styles, color: rev}),
+            placeholder: styles => ({ ...styles, color: rev}),
+            singleValue: (styles, { data }) => ({ ...styles, color: rev }),
             option: (styles, { data, isDisabled, isFocused, isSelected }) => {
                 return {...styles, 
-                    color: RevColor(a.mode),
-                    backgroundColor: a.mode
+                    color: rev,
+                    backgroundColor: mode
                 }
             }
         }
@@ -322,34 +326,28 @@ class MineSweeper extends Component {
               backgroundColor: 'rgba(56,61,68,0.2)',
             },
             content: {
-                color: RevColor(a.mode),
+                color: rev,
                 filter: `drop-shadow(0 0 10px rgba(0,0,0,0.8))`
             }
         }
-        const grad = {
-            background: LinGrad(a.primary, a.secondary)
-        }
-        const popupBody = {
-            backgroundColor: a.mode
-        }
         const headingBreak = {
             background: `
-                radial-gradient(circle at bottom left, rgba(0,0,0,0) 2rem, ${a.primary} 2rem) bottom left,
-                radial-gradient(circle at bottom right, rgba(0,0,0,0) 2rem, ${a.secondary} 2rem) bottom right`,
+                radial-gradient(circle at bottom left, rgba(0,0,0,0) 2rem, ${a.hex.primary} 2rem) bottom left,
+                radial-gradient(circle at bottom right, rgba(0,0,0,0) 2rem, ${a.hex.secondary} 2rem) bottom right`,
             backgroundSize: '2rem 100%',
             backgroundRepeat: 'no-repeat'
         }
         const bodyBreak = {
             background: `
-                radial-gradient(circle at top left, rgba(0,0,0,0) 2rem, ${a.mode} 2rem) top left,
-                radial-gradient(circle at top right, rgba(0,0,0,0) 2rem, ${a.mode} 2rem) top right`,
+                radial-gradient(circle at top left, rgba(0,0,0,0) 2rem, ${mode} 2rem) top left,
+                radial-gradient(circle at top right, rgba(0,0,0,0) 2rem, ${mode} 2rem) top right`,
             backgroundSize: '50% 100%',
             backgroundRepeat: 'no-repeat'
         }
         const btn = {
             marginTop: '0.7rem',
-            backgroundColor: RevColor(a.mode),
-            color: a.mode
+            backgroundColor: rev,
+            color: mode
         }
         return (
             <section className="minesweeper flex-center">
@@ -365,7 +363,7 @@ class MineSweeper extends Component {
                                 onChange={(val) => this.dificulty(val)} 
                             />
                             <div data={a}><Flag /> {b.mineCount}</div>
-                            <div style={{ color: RevColor(a.mode) }} className="counter">
+                            <div style={{ color: rev}} className="counter">
                                 <Counter getTime={this.getTime} active={b.active} data={a} gameOver={b.gameOver} />
                             </div>
                         </div>
@@ -388,34 +386,34 @@ class MineSweeper extends Component {
                             <Button className="btn" styles={btn} onClick={() => this.help()} text="Help" />
                         </div>
                         <Modal style={popup} className="modal" overlayClassName="overlay" isOpen={b.popup}>
-                            <div style={grad} className="heading flex-center">
+                            <div style={{background: a.grad}} className="heading flex-center">
                                 <div style={{backgroundColor: a.primary}} className="left"></div>
                                 <div style={{backgroundColor: a.secondary}} className="right"></div>
                                 <h2>{b.win ? 'Winner' : 'Game Over'}</h2>
                             </div>
                             <div style={headingBreak} className="break">
-                                <div style={grad} className="grad"></div>
+                                <div style={{background: a.grad}} className="grad"></div>
                             </div>
                             <div style={bodyBreak} className="break"></div>
-                            <div style={popupBody} className="body flex-center">
+                            <div style={{backgroundColor: mode}} className="body flex-center">
                                 <div>{b.win ? `Time: ${b.time}` : 'You Lost'}</div>
                                 <div className="flex-center controller">
-                                    <Button styles={grad} className="btn" onClick={() => this.startOver()} text="Start Over" />
-                                    <Button styles={grad} className="btn" onClick={() => this.startOver()} text="Close" />
+                                    <Button styles={{background: a.grad}} className="btn" onClick={() => this.startOver()} text="Start Over" />
+                                    <Button styles={{background: a.grad}} className="btn" onClick={() => this.startOver()} text="Close" />
                                 </div>
                             </div>
                         </Modal>
                         <Modal style={popup} className="modal" overlayClassName="overlay" isOpen={b.help}>
-                            <div style={grad} className="heading flex-center">
+                            <div style={{background: a.grad}} className="heading flex-center">
                                 <div style={{backgroundColor: a.primary}} className="left"></div>
                                 <div style={{backgroundColor: a.secondary}} className="right"></div>
                                 <h2>Mine Sweeper Instructions</h2>
                             </div>
                             <div style={headingBreak} className="break">
-                                <div style={grad} className="grad"></div>
+                                <div style={{background: a.grad}} className="grad"></div>
                             </div>
                             <div style={bodyBreak} className="break"></div>
-                            <div style={popupBody} className="body flex-center">
+                            <div style={{backgroundColor: mode}} className="body flex-center">
                                 <div className="help">
                                     <h4>About the Game</h4> 
                                     <p>The object of Minesweeper is to expose all the open areas on the board without hitting an bombs.</p>
@@ -429,7 +427,7 @@ class MineSweeper extends Component {
                                     <p>This game should work on all platforms including safari and mobile (we hope, but make no guarantees).</p>
                                 </div>
                                 <div className="flex-center controller">
-                                    <button style={grad} className="btn" onClick={() => this.setState({help: false})}>Close</button>
+                                    <button style={{background: a.grad}} className="btn" onClick={() => this.setState({help: false})}>Close</button>
                                 </div>
                             </div>
                         </Modal>
@@ -442,6 +440,8 @@ class MineSweeper extends Component {
 }
 
 class Counter extends Component {
+
+    static contextType = ThemeContext;
     constructor(props) {
         super(props);
         this.state = {
@@ -469,7 +469,7 @@ class Counter extends Component {
     }
 
     render() {
-        if (!this.props.data) return (<h1>Loading...</h1>);
+        if (this.context.active.id === 0) return <Fragment>Loading...</Fragment>
         return  (
             <Fragment>
                 <i className="fas fa-stopwatch"></i> {this.state.count}
@@ -480,6 +480,7 @@ class Counter extends Component {
 
 class Cell extends Component {
 
+    static contextType = ThemeContext;
     constructor(props) {
         super(props);
         this.state = {
@@ -496,21 +497,20 @@ class Cell extends Component {
     }
 
     bgStart(a, e) {
-        e.target.style.background = LinGrad(a.primary, a.secondary);
+        e.target.style.background = a.grad;
     }
 
     bgLeave(a, e) {
-        e.target.style.background = a.mode;
+        e.target.style.background = GetMode(a, 1);
     }
 
     render() {
         if (!this.props.data) return (<h1>Error</h1>);
         const a = this.props.data;
-        const min = RevColor(a.mode);
+        const rev = RevColor(a, 1);
         const styles = {
-            // backgroundImage: LinGrad(a.primary, a.secondary),
-            backgroundImage: `radial-gradient(${a.secondary} 15%, ${a.primary} 60%)`,
-            color: min
+            backgroundImage: `radial-gradient(${a.hex.secondary} 15%, ${a.hex.primary} 60%)`,
+            color: rev
         }
 
         let value = '';
@@ -518,7 +518,7 @@ class Cell extends Component {
             value = <Flag />
         } else if (this.state.cell.revealed) {
             styles.opacity = '0.7';
-            if (this.state.cell.value !== 0) value = this.state.cell.value;
+            if (this.state.cell.value !== 0) value  = this.state.cell.value;
         } else {}
         return  (
             <div className="flex-center digit" style={styles} 

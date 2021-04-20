@@ -1,15 +1,17 @@
-import React, { Component } from "react";
-// import '../styles/Apps.scss';
+import React, { Component, Fragment } from "react";
+import { ThemeContext } from "../var";
 import Carousel from "react-elastic-carousel";
 import { Link } from 'react-router-dom';
-import { LinGrad } from "./inc";
+import { } from "./inc";
 
 class AppNav extends Component {
 
+    static contextType = ThemeContext;
     render() {
-        const a = this.props.data;
+        if (this.context.active.id === 0) return <Fragment>Loading...</Fragment>
+        const a = this.context.active;
         const i = {
-            background: LinGrad(a.primary, a.secondary),
+            background: a.grad
         }
         const breakPoints = [
             {width: 568, itemsToShow: 3},

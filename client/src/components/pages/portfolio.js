@@ -1,6 +1,7 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import '../../styles/pages/Portfolio.scss';
-import { Img, LinGrad, RevColor } from "../inc/inc";
+import { ThemeContext } from "../var"
+import { Img, RevColor, GetMode } from "../inc/inc";
 import Site1 from "./../../media/site1.png";
 import Site2 from "./../../media/site2.png";
 import Site3 from "./../../media/site3.png";
@@ -38,12 +39,17 @@ const images = [
         url: 'https://safelinkinternet.com/'
     },
 ]
+
 class Portfolio extends Component {
-       
+    
+    static contextType = ThemeContext;
     render() {
-        const a = this.props.data;
+        console.log(this.context);
+        if (this.context.active.id === 0) return <Fragment>Loading...</Fragment>
+        const a = this.context.active;
+        console.log(a);
         const pg = {
-            backgroundColor: a.mode,
+            backgroundColor: GetMode(a, 1),
             padding: '20px'
         }
         return  (
@@ -60,29 +66,28 @@ class Portfolio extends Component {
 }
 
 class Card extends Component {
-       
+    
+    static contextType = ThemeContext;
     render() {
-        const a = this.props.data;
-        const i = {
-            background: LinGrad(a.primary, a.secondary)
-        }
-        const bg = {
-            background: RevColor(a.mode)
-        }
+        if (this.context.active.id === 0) return <Fragment>Loading...</Fragment>
+        const a = this.context.active;
         return  (
-            <div style={bg} className="card-container flex-col">
+            <div style={{ background: RevColor(a, 1) }} className="card-container flex-col">
                 <div className="img-container">
                     <Img src={this.props.content.src} />
                 </div>
                 <div className="flex-center">
-                    {/* <i style={i} className="fas fa-expand-arrows-alt"></i> */}
-                    <a href={this.props.content.url} target="blank"><i style={i} className="far large fa-circle"></i></a>
-                    {/* <a href={this.props.content.url} target="blank"><i style={i} className="fas fa-external-link-alt"></i></a> */}
+                    {/* <i style={{background: a.grad}} className="fas fa-expand-arrows-alt"></i> */}
+                    <a href={this.props.content.url} target="blank">
+                        <i style={{background: a.grad}} className="far large fa-circle"></i>
+                    </a>
+                    {/* <a href={this.props.content.url} target="blank">
+                        <i style={{background: a.grad}} className="fas fa-external-link-alt"></i>
+                    </a> */}
                 </div>
             </div>
         )
     }
 }      
-  
 
 export default Portfolio;

@@ -2,103 +2,39 @@ import React, { Component, Fragment } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import '../styles/Global.scss';
 import '../styles/keyframes.scss';
-import { Background, RevColor, LinGrad } from "./inc/inc";
+import { Background, RevColor } from "./inc/inc";
 import Nav from './inc/main-nav';
 import Footer from './inc/footer';
 import Urls from './urls';
-const url = `${process.env.REACT_APP_STRAPIURL}themes/`;
+import { ThemeContext } from "./var"
 
 class Theme extends Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            themes: false,
-            active: false,
-            // path: `${window.location.pathname}${window.location.search}`
-        }
-        this.update = this.update.bind(this);
-    }
+    static contextType = ThemeContext;
 
     async componentDidMount() {
-        let themes = JSON.parse(sessionStorage.getItem('themes'));
-        let active = JSON.parse(sessionStorage.getItem('active'));
-        if (!themes) {
-            const res = await fetch(url);
-            themes = await res.json();
-            sessionStorage.setItem('themes', JSON.stringify(themes));
-        } 
-        if (!active) {
-            active = themes[0];
-            active.mode = '#383d44';
-            sessionStorage.setItem('active', JSON.stringify(active));
-        }
-        
-        this.setState({
-            themes: themes,
-            active: active
-        }, () => this.renderCss());
-    }
-
-    update(active) {
-        if (!active.mode) active.mode = this.state.active.mode;
-        this.setState({
-            active: active,
-        }, () => sessionStorage.setItem('active', JSON.stringify(active)));
-    }
-
-    renderCss() {
-        if (this.state.themes) {
-            let link  = document.createElement('style');
-            link.type = 'text/css';
-            let text = 'nav {}';
-            this.state.themes.map(a => (
-                text += `
-                .single-${a.id}:hover {
-                    animation: glow-${a.id} 2s ease-in-out infinite alternate;
-                }
-                @keyframes glow-${a.id} {
-                    from {
-                        filter: 
-                        drop-shadow(0 0 0.01rem #fff) 
-                        drop-shadow(0 0 0.02rem ${a.primary});
-                    }
-                    to {
-                        filter: 
-                        drop-shadow(0 0 0.1rem #fff) 
-                        drop-shadow(0 0 0.2rem #fff) 
-                        drop-shadow(0 0 0.3rem ${a.primary});
-                    }
-                }`
-            ));
-            link.innerHTML = `<style>${text}</style>`;
-            document.getElementsByTagName('head')[0].appendChild(link);
-        }
+        await this.context.getThemes();
     }
 
     render() {
-        if (this.state.themes === false) return <Fragment>No theme found</Fragment>
-
-        const a = this.state.active;
-        const bg = {backgroundImage: LinGrad(a.primary, a.secondary)}
+        if (this.context.active.id === 0) return <Fragment>Loading...</Fragment>
+        const a = this.context.active;
+        let rev = RevColor(a, 1);
         const page = {
-            backgroundImage: LinGrad(a.primary, a.secondary),
-            color: RevColor(a.mode)
-        }
-        const cont = {
-            color: RevColor(a.mode), 
+            backgroundImage: a.grad,
+            color: rev
         }
         return (
             <Fragment>
                 <BrowserRouter>
-                <Nav data={a} />
+                <Nav />
                 <div className="page flex-center" style={page}>
-                    <Background styles={bg} />
-                    <div className="content" style={cont}>
-                        <Urls data={a} />
+                    <Background styles={{ backgroundImage: a.grad }} />
+                    <div className="content" style={{ color: rev }}>
+                        <Urls />
                     </div>
                 </div>
-                <Footer data={this.state} update={this.update} />
+                <Footer /> 
                 </BrowserRouter> 
             </Fragment>
         )

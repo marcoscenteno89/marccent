@@ -1,10 +1,12 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
+import { ThemeContext } from "./var"
 import '../styles/Map.scss';
 import { Circle, Map, GoogleApiWrapper } from 'google-maps-react';
 import { MapStyle } from "./inc/inc";
 
 export class Maps extends Component {
 
+    static contextType = ThemeContext;
     constructor(props) {
         super(props);
         this.state = {
@@ -20,7 +22,7 @@ export class Maps extends Component {
     }
 
     updateMap() {
-        this.state.map.setOptions({styles: MapStyle(this.props.data)});
+        this.state.map.setOptions({styles: MapStyle(this.context.active)});
         this.state.map.setCenter({
             lat: this.state.mapData.loc.lat, 
             lng: this.state.mapData.loc.lng
@@ -36,7 +38,8 @@ export class Maps extends Component {
     }
 
     render() {
-        const a = this.props.data;
+        if (this.context.active.id === 0) return <Fragment>Loading...</Fragment>
+        const a = this.context.active;
         const d = this.state.mapData;
         const customStyle = MapStyle(a);
         const con = {
@@ -63,7 +66,7 @@ export class Maps extends Component {
                         strokeColor='transparent'
                         strokeOpacity={0}
                         strokeWeight={5}
-                        fillColor={a.primary}
+                        fillColor={a.hex.primary}
                         fillOpacity={0.5}
                     />)}
                 </Map>

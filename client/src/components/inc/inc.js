@@ -3,11 +3,24 @@ import { Link } from 'react-router-dom';
 
 const CurrentDate = new Date();
 
-const RandomNum = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
-
-const RevColor = (color) => color === '#FFFFFF' ? '#383d44' : '#FFFFFF';
-
 const LinGrad = (a, b) => `linear-gradient(to right, ${a}, ${b})`;
+
+const GetColor = (rgb, op) => `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${op})`;
+
+const GetRgb = hex => {
+    let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return {
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16)
+    }
+}
+
+const GetMode = (a, op) => a.is_dark ? GetColor(a.rgb.dark, op) : GetColor(a.rgb.light, op);
+
+const RevColor = (a, op) => !a.is_dark ? GetColor(a.rgb.dark, op) : GetColor(a.rgb.light, op);
+
+const RandomNum = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
 
 const Button = props => {
     return (
@@ -109,13 +122,12 @@ const FooterText = props => {
 
 const Notebook = props => {
     const a = props.data;
-    const c = toRgb(a.mode)
     const notebook = {
-        backgroundColor: `rgba(${c.r}, ${c.g}, ${c.b}, 0.3)`,
+        backgroundColor: GetMode(a, 0.3),
     }
     const full = {
-        backgroundColor: `rgba(${c.r}, ${c.g}, ${c.b}, 0.5)`,
-        color: RevColor(a.mode),
+        backgroundColor: GetMode(a, 0.5),
+        color: RevColor(a, 1),
     }
     return (
         <div className="notebook">
@@ -134,15 +146,6 @@ const Notebook = props => {
             </div>
         </div>
     )
-}
-
-const toRgb = hex => {
-    let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-    return {
-      r: parseInt(result[1], 16),
-      g: parseInt(result[2], 16),
-      b: parseInt(result[3], 16)
-    }
 }
 
 const Today = () => {
@@ -171,53 +174,50 @@ const SpCircle = props => {
     
 }
 
-const ColorList = color => {
+const ColorList = is_dark => {
     const list = {}
-    if (color === '#FFFFFF') {
-        list.a = '#656565';
-        list.b = '#f5f5f5';
-        list.c = '#e5e5e5';
-        list.d = '#FFFFFF';
-        list.main = '#FFFFFF';
-    } else {
+    if (is_dark) {
         list.a = '#6b6b6b';
         list.b = '#212121';
         list.c = '#181818';
         list.d = '#000000';
-        list.main = '#383d44';
+    } else {
+        list.a = '#656565';
+        list.b = '#f5f5f5';
+        list.c = '#e5e5e5';
+        list.d = '#FFFFFF';
     }
     return list;
 }
 
 const MapStyle = (a) => {
-    if (a.mode) {
-        const col =  ColorList(a.mode);
-        return [
-            {elementType: 'geometry', stylers: [{color: col.main}]},
-            {elementType: 'labels.text.stroke', stylers: [{color: col.d}]},
-            {elementType: 'labels.text.fill', stylers: [{color: a.secondary}]},
-            {featureType: 'administrative.locality', elementType: 'labels.text.fill', stylers: [{color: a.secondary}]},
-            {featureType: 'poi', elementType: 'labels.text.fill', stylers: [{color: a.secondary}]},
-            {featureType: 'poi.park', elementType: 'geometry', stylers: [{color: col.c}]},
-            {featureType: 'poi.park', elementType: 'labels.text.fill', stylers: [{color: a.primary}]},
-            {featureType: 'road', elementType: 'geometry', stylers: [{color: a.secondary}]},
-            {featureType: 'road', elementType: 'geometry.stroke', stylers: [{color: col.d}]},
-            {featureType: 'road', elementType: 'labels.text.fill', stylers: [{color: a.secondary}]},
-            {featureType: 'road.highway', elementType: 'geometry', stylers: [{color: a.primary}]},
-            {featureType: 'road.highway', elementType: 'geometry.stroke', stylers: [{color: col.d}]},
-            {featureType: 'road.highway', elementType: 'labels.text.fill', stylers: [{color: a.secondary}]},
-            {featureType: 'transit', elementType: 'geometry', stylers: [{color: a.primary}]},
-            {featureType: 'transit.station', elementType: 'labels.text.fill', stylers: [{color: a.secondary}] },
-            {featureType: 'water', elementType: 'geometry', stylers: [{color: col.d}]},
-            {featureType: 'water', elementType: 'labels.text.fill', stylers: [{color: a.secondary}]},
-            {featureType: 'water', elementType: 'labels.text.stroke', stylers: [{color: col.d}]}
-        ]
-    } else {
-        return []
-    }
+    const col =  ColorList(a.is_dark);
+    const mode = a.is_dark ? a.hex.dark : a.hex.light;
+    const prim = a.hex.primary;
+    const sec = a.hex.secondary;
+    return [
+        {elementType: 'geometry', stylers: [{color: mode}]},
+        {elementType: 'labels.text.stroke', stylers: [{color: col.d}]},
+        {elementType: 'labels.text.fill', stylers: [{color: sec}]},
+        {featureType: 'administrative.locality', elementType: 'labels.text.fill', stylers: [{color: sec}]},
+        {featureType: 'poi', elementType: 'labels.text.fill', stylers: [{color: sec}]},
+        {featureType: 'poi.park', elementType: 'geometry', stylers: [{color: col.c}]},
+        {featureType: 'poi.park', elementType: 'labels.text.fill', stylers: [{color: prim}]},
+        {featureType: 'road', elementType: 'geometry', stylers: [{color: sec}]},
+        {featureType: 'road', elementType: 'geometry.stroke', stylers: [{color: col.d}]},
+        {featureType: 'road', elementType: 'labels.text.fill', stylers: [{color: sec}]},
+        {featureType: 'road.highway', elementType: 'geometry', stylers: [{color: prim}]},
+        {featureType: 'road.highway', elementType: 'geometry.stroke', stylers: [{color: col.d}]},
+        {featureType: 'road.highway', elementType: 'labels.text.fill', stylers: [{color: sec}]},
+        {featureType: 'transit', elementType: 'geometry', stylers: [{color: prim}]},
+        {featureType: 'transit.station', elementType: 'labels.text.fill', stylers: [{color: sec}] },
+        {featureType: 'water', elementType: 'geometry', stylers: [{color: col.d}]},
+        {featureType: 'water', elementType: 'labels.text.fill', stylers: [{color: sec}]},
+        {featureType: 'water', elementType: 'labels.text.stroke', stylers: [{color: col.d}]}
+    ]
 }
 
 export { 
-    SpCircle, Blur, Button, Background, Title, FooterText, MapStyle, Bomb, Notebook,
-    CurrentDate, Today, Img, RevColor, LinGrad, ColorList, RandomNum, Flag, toRgb
+    SpCircle, Blur, Button, Background, Title, FooterText, MapStyle, Bomb, Notebook, GetMode,
+    CurrentDate, Today, Img, ColorList, RandomNum, Flag, LinGrad, GetColor, GetRgb, RevColor
 }
