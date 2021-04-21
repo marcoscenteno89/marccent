@@ -20,23 +20,23 @@ class Theme extends Component {
         if (this.context.active.id === 0) return <Fragment>Loading...</Fragment>
         const a = this.context.active;
         let rev = RevColor(a, 1);
-        const page = {
+        const body = {
             backgroundImage: a.grad,
             color: rev
         }
         return (
-            <Fragment>
+            <div className="body" style={body}>
+                <Background styles={{ backgroundImage: a.grad }} />
                 <BrowserRouter>
                 <Nav />
-                <div className="page flex-center" style={page}>
-                    <Background styles={{ backgroundImage: a.grad }} />
-                    <div className="content" style={{ color: rev }}>
+                <div className="page flex-center">
+                    <div className="content">
                         <Urls />
                     </div>
                 </div>
                 <Footer /> 
                 </BrowserRouter> 
-            </Fragment>
+            </div>
         )
     }
 }

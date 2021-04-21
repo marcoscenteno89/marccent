@@ -294,12 +294,13 @@ class MineSweeper extends Component {
     render() {
         if (!this.state.grid) return <Fragment>Loading...</Fragment>
         const a = this.context.active;
+        a.glass = true;
         const b = this.state;
         const mode = GetMode(a, 1);
         const rev = RevColor(a, 1);
         const container = {
             paddingTop: '2rem',
-            backgroundColor: mode,
+            backgroundColor: GetMode(a, a.glass ? 0.6 : 1),
             color: rev,
             alignItems: 'center'
         }
@@ -349,9 +350,11 @@ class MineSweeper extends Component {
             backgroundColor: rev,
             color: mode
         }
+        let glass = `container flex-col${a.glass ? ' glass' : ''}`;
+
         return (
             <section className="minesweeper flex-center">
-                <div className="container flex-col" style={container}>
+                <div className={glass} style={container}>
                     <h2>Mine Sweeper</h2>
                     <div className="board">
                         <div className="status flex-row">

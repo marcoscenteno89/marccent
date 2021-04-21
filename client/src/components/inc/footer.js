@@ -16,17 +16,9 @@ class Footer extends Component {
         if (this.context.active.id === 0) return <Fragment>Loading...</Fragment>
         const a = this.context.active;
         const c = this.context;
-        const mode = GetMode(a, 1);
+        a.glass = true;
+        const mode = GetMode(a, a.glass ? 0.6 : 1);
         const rev = RevColor(a, 1);
-        const footerTitle = {
-            backgroundColor: mode,
-            color : rev
-        };
-        const footer = {
-            color: a.primary,
-            backgroundColor: mode,
-            filter: `drop-shadow(0 0 5px ${rev})`
-        }
         
         const breakPoints = [
             {width: 368, itemsToShow: 2},
@@ -35,12 +27,15 @@ class Footer extends Component {
             {width: 668, itemsToShow: 6},
             {width: 768, itemsToShow: 7},
         ]
+
+        let background = `main-footer flex-center${a.glass ? ' glass' : ''}`;
+        
         return  (
-            <footer className="main-footer flex-center" style={footer}>
+            <footer className={background} style={{backgroundColor: mode}}>
                 <div className="container" style={{paddingTop: '1rem'}}>
                     <FooterNav />
                     <div className="m-10 flex-center">
-                        <LightDark data={a} />
+                        <LightDark />
                     </div>
                     <div className="flex-row">
                         <Carousel breakPoints={breakPoints}>
@@ -54,7 +49,7 @@ class Footer extends Component {
                             ))}
                         </Carousel>
                     </div>
-                    <FooterText style={footerTitle} />
+                    <FooterText style={{ color : rev }} />
                 </div>
             </footer>
         )        

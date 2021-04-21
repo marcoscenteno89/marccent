@@ -24,7 +24,8 @@ class Nav extends Component {
     render() {
         if (this.context.active.id === 0) return <Fragment>Loading...</Fragment>
         const a = this.context.active;
-        const mode = GetMode(a, 1);
+        a.glass = true;
+        const mode = GetMode(a, a.glass ? 0.6 : 1);
         const link = {
             background: `linear-gradient(to bottom, ${a.hex.primary}, ${a.hex.secondary})`
         }
@@ -39,8 +40,10 @@ class Nav extends Component {
             display: this.state.menuOpen ? 'block' : 'none'
         }
         
+        let background = `main-nav flex-center${a.glass ? ' glass' : ''}`;
+        
         return  (
-            <nav className="main-nav flex-center" style={{backgroundColor: mode}}>
+            <nav className={background} style={{backgroundColor: mode}}>
                 <div className="container flex-row">
                     <ul className="navigation" style={link}>
                         <li>
