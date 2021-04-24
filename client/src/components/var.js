@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { GetColor, GetRgb, LinGrad } from "./inc/inc";
+import { RevColor, GetMode, GetRgb, LinGrad } from "./inc/inc";
 
 export const ThemeContext = React.createContext();
 
@@ -41,23 +41,19 @@ export class ThemeProvider extends Component {
                 },
                 grad: LinGrad(themes[0].primary, themes[0].secondary),
                 is_dark: true,
-                glass: false
+                glass: false,
             }
-            localStorage.setItem('marccent_active', JSON.stringify(active));
+            active.mode = GetMode(active, 1);
+            active.rev = RevColor(active, 1);
         }
-        this.setState(active);
+        this.setState(active, () => this.storeTheme(this.state));
     }
 
-    // update = (i) => {
-    //     console.log(i);
-    //      this.setState({i}, () => localStorage.setItem('marccent_active', JSON.stringify(i)));
-    // }
     updateTheme = (id) => {
         let themes = JSON.parse(localStorage.getItem('marccent_themes'));
         let theme = themes.filter(i => i.id === id);
         let temp = this.state;
-        
-        this.setState({
+        let active = {
             id: theme[0].id,
             rgb: {
                 dark: temp.rgb.dark,
@@ -72,12 +68,27 @@ export class ThemeProvider extends Component {
                 secondary: theme[0].secondary
             },
             grad: LinGrad(theme[0].primary, theme[0].secondary)
+        }
+        active.mode = GetMode(active, 1);
+        active.rev = RevColor(active, 1);
+        this.setState(active, () => this.storeTheme(active));;
+    }
+
+    isGlass = (i) => {
+        this.setState({ 
+            glass: i,
+            mode: GetMode(this.state, this.state.glass ? 0.6 : 1),
+            rev: RevColor(this.state, 1)
         }, () => this.storeTheme(this.state));
     }
 
-    isGlass = (i) => this.setState({glass: i}, () => this.storeTheme(this.state));
-
-    isDark = (i) => this.setState({is_dark: i}, () => this.storeTheme(this.state));
+    isDark = (i) => {
+        this.setState({
+            is_dark: i,
+            mode: GetMode(this.state, this.state.glass ? 0.6 : 1),
+            rev: RevColor(this.state, 1)
+        }, () => this.storeTheme(this.state));
+    }
 
     storeTheme = (i) => localStorage.setItem('marccent_active', JSON.stringify(i));
 

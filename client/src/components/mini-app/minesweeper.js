@@ -4,7 +4,7 @@ import { Fragment } from "react";
 import Modal from 'react-modal';
 import Select from 'react-select'
 import "../../styles/mini-app/Minesweeper.scss";
-import { Button, RevColor, Bomb, RandomNum, Flag, GetMode } from "../inc/inc";
+import { Button, Bomb, RandomNum, Flag } from "../inc/inc";
 import AppNav from "../inc/app-nav";
 
 Modal.setAppElement('#app');
@@ -294,25 +294,22 @@ class MineSweeper extends Component {
     render() {
         if (!this.state.grid) return <Fragment>Loading...</Fragment>
         const a = this.context.active;
-        a.glass = true;
         const b = this.state;
-        const mode = GetMode(a, 1);
-        const rev = RevColor(a, 1);
         const container = {
             paddingTop: '2rem',
-            backgroundColor: GetMode(a, a.glass ? 0.6 : 1),
-            color: rev,
+            backgroundColor: a.mode,
+            color: a.rev,
             alignItems: 'center'
         }
         const select = {
-            control: styles => ({ ...styles, backgroundColor: mode}),
-            input: styles => ({ ...styles, color: rev}),
-            placeholder: styles => ({ ...styles, color: rev}),
-            singleValue: (styles, { data }) => ({ ...styles, color: rev }),
+            control: styles => ({ ...styles, backgroundColor: a.mode}),
+            input: styles => ({ ...styles, color: a.rev}),
+            placeholder: styles => ({ ...styles, color: a.rev}),
+            singleValue: (styles, { data }) => ({ ...styles, color: a.rev }),
             option: (styles, { data, isDisabled, isFocused, isSelected }) => {
                 return {...styles, 
-                    color: rev,
-                    backgroundColor: mode
+                    color: a.rev,
+                    backgroundColor: a.mode
                 }
             }
         }
@@ -327,7 +324,7 @@ class MineSweeper extends Component {
               backgroundColor: 'rgba(56,61,68,0.2)',
             },
             content: {
-                color: rev,
+                color: a.rev,
                 filter: `drop-shadow(0 0 10px rgba(0,0,0,0.8))`
             }
         }
@@ -340,21 +337,21 @@ class MineSweeper extends Component {
         }
         const bodyBreak = {
             background: `
-                radial-gradient(circle at top left, rgba(0,0,0,0) 2rem, ${mode} 2rem) top left,
-                radial-gradient(circle at top right, rgba(0,0,0,0) 2rem, ${mode} 2rem) top right`,
+                radial-gradient(circle at top left, rgba(0,0,0,0) 2rem, ${a.mode} 2rem) top left,
+                radial-gradient(circle at top right, rgba(0,0,0,0) 2rem, ${a.mode} 2rem) top right`,
             backgroundSize: '50% 100%',
             backgroundRepeat: 'no-repeat'
         }
         const btn = {
             marginTop: '0.7rem',
-            backgroundColor: rev,
-            color: mode
+            backgroundColor: a.rev,
+            color: a.mode
         }
-        let glass = `container flex-col${a.glass ? ' glass' : ''}`;
+        let background = `container flex-col${a.glass ? ' glass' : ''}`;
 
         return (
             <section className="minesweeper flex-center">
-                <div className={glass} style={container}>
+                <div className={background} style={container}>
                     <h2>Mine Sweeper</h2>
                     <div className="board">
                         <div className="status flex-row">
@@ -366,7 +363,7 @@ class MineSweeper extends Component {
                                 onChange={(val) => this.dificulty(val)} 
                             />
                             <div data={a}><Flag /> {b.mineCount}</div>
-                            <div style={{ color: rev}} className="counter">
+                            <div style={{ color: a.rev}} className="counter">
                                 <Counter getTime={this.getTime} active={b.active} data={a} gameOver={b.gameOver} />
                             </div>
                         </div>
@@ -390,15 +387,15 @@ class MineSweeper extends Component {
                         </div>
                         <Modal style={popup} className="modal" overlayClassName="overlay" isOpen={b.popup}>
                             <div style={{background: a.grad}} className="heading flex-center">
-                                <div style={{backgroundColor: a.primary}} className="left"></div>
-                                <div style={{backgroundColor: a.secondary}} className="right"></div>
+                                <div style={{backgroundColor: a.hex.primary}} className="left"></div>
+                                <div style={{backgroundColor: a.hex.secondary}} className="right"></div>
                                 <h2>{b.win ? 'Winner' : 'Game Over'}</h2>
                             </div>
                             <div style={headingBreak} className="break">
                                 <div style={{background: a.grad}} className="grad"></div>
                             </div>
                             <div style={bodyBreak} className="break"></div>
-                            <div style={{backgroundColor: mode}} className="body flex-center">
+                            <div style={{backgroundColor: a.mode}} className="body flex-center">
                                 <div>{b.win ? `Time: ${b.time}` : 'You Lost'}</div>
                                 <div className="flex-center controller">
                                     <Button styles={{background: a.grad}} className="btn" onClick={() => this.startOver()} text="Start Over" />
@@ -408,15 +405,15 @@ class MineSweeper extends Component {
                         </Modal>
                         <Modal style={popup} className="modal" overlayClassName="overlay" isOpen={b.help}>
                             <div style={{background: a.grad}} className="heading flex-center">
-                                <div style={{backgroundColor: a.primary}} className="left"></div>
-                                <div style={{backgroundColor: a.secondary}} className="right"></div>
+                                <div style={{backgroundColor: a.hex.primary}} className="left"></div>
+                                <div style={{backgroundColor: a.hex.secondary}} className="right"></div>
                                 <h2>Mine Sweeper Instructions</h2>
                             </div>
                             <div style={headingBreak} className="break">
                                 <div style={{background: a.grad}} className="grad"></div>
                             </div>
                             <div style={bodyBreak} className="break"></div>
-                            <div style={{backgroundColor: mode}} className="body flex-center">
+                            <div style={{backgroundColor: a.mode}} className="body flex-center">
                                 <div className="help">
                                     <h4>About the Game</h4> 
                                     <p>The object of Minesweeper is to expose all the open areas on the board without hitting an bombs.</p>
@@ -435,7 +432,7 @@ class MineSweeper extends Component {
                             </div>
                         </Modal>
                     </div>
-                    <AppNav data={a} />
+                    <AppNav />
                 </div>
             </section>
         )        
@@ -504,16 +501,15 @@ class Cell extends Component {
     }
 
     bgLeave(a, e) {
-        e.target.style.background = GetMode(a, 1);
+        e.target.style.background = a.mode;
     }
 
     render() {
         if (!this.props.data) return (<h1>Error</h1>);
         const a = this.props.data;
-        const rev = RevColor(a, 1);
         const styles = {
             backgroundImage: `radial-gradient(${a.hex.secondary} 15%, ${a.hex.primary} 60%)`,
-            color: rev
+            color: a.rev
         }
 
         let value = '';

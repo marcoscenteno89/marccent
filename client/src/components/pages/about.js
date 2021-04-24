@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { ThemeContext } from "../var"
 import '../../styles/pages/About.scss';
-import { Img, SpCircle, GetMode } from "../inc/inc";
+import { Img, SpCircle } from "../inc/inc";
 import { StatusBar } from "../inc/inc-classes";
 import header from "../../media/img2.jpg";
 import profile from "../../media/mcr.png";
@@ -17,16 +17,15 @@ class About extends Component {
     render() {
         if (this.context.active.id === 0) return <Fragment>Loading Navigation...</Fragment>
         const a = this.context.active;
-        const mode = GetMode(a, 1);
         const circle = {
             circle: {
-                backgroundColor: mode,
+                backgroundColor: a.mode,
             },
             innerCircle: {
-                backgroundColor: mode,
+                backgroundColor: a.mode,
             },
             grad: {
-                backgroundImage: a.mode,
+                backgroundImage: a.grad,
                 boxShadow: '0 0 1rem rgba(0,0,0,0.5)',
             }
         }
@@ -66,7 +65,7 @@ class About extends Component {
 
         return  (
             <section className="page-about flex-center">
-                <div className="container" style={{backgroundColor: mode}}>
+                <div className="container" style={{backgroundColor: a.mode}}>
                     <div className="image" style={img} />
                     <div className="con flex-center">
                         <div className="circle-con">
@@ -89,7 +88,7 @@ class About extends Component {
                         </div>
                         <div className="w-60 shadow-xs">
                             <div className="title">
-                                <strong>Safelink Internet</strong>, Idaho Falls, ID — <em style={{color: a.secondary}}>Web Developer</em>
+                                <strong>Safelink Internet</strong>, Idaho Falls, ID — <em style={{color: a.hex.secondary}}>Web Developer</em>
                             </div>
                             <br />
                             <em>Feb 2016 - PRESENT</em>

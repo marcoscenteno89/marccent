@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { ThemeContext } from "../var"
-import { GetMode, Notebook, RevColor } from "../inc/inc";
+import { Notebook } from "../inc/inc";
 import { StatusBar } from "../inc/inc-classes";
 
 class HeroBanner extends Component {
@@ -15,8 +15,8 @@ class HeroBanner extends Component {
             speed: 200
         }
         const barStyles = {
-            background: RevColor(a, 1),
-            color: GetMode(a, 1)
+            background: a.rev,
+            color: a.mode
         }
         return (
             <section className="hero-banner flex-center" style={{margin: '0'}}>

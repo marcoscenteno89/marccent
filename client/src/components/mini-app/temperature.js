@@ -3,7 +3,7 @@ import { ThemeContext } from "../var"
 import JwPagination from 'jw-react-pagination';
 import "../../styles/mini-app/Temperature.scss";
 import '../../styles/keyframes.scss';
-import { Today, Blur, SpCircle, RevColor, GetMode } from "../inc/inc";
+import { Today, Blur, SpCircle } from "../inc/inc";
 import AppNav from "../inc/app-nav";
 import Maps from "../map";
 const openWeather = `${process.env.REACT_APP_OPENWEATHERURL}data/2.5/forecast`;
@@ -50,11 +50,9 @@ class Temperature extends Component {
     render() {
         if (!this.state.city) return <Fragment>Loading...</Fragment>
         const a = this.context.active;
-        const mode = GetMode(a, 1);
         const e = this.state.city;
-        console.log(e);
         const sec = {
-            background: mode,
+            background: a.mode,
         }
         const bg = {
             background: a.grad,
@@ -62,7 +60,7 @@ class Temperature extends Component {
         }
         const input = {
             border: `solid 1px ${a.hex.primary}`,
-            backgroundColor: mode
+            backgroundColor: a.mode
         }
         const mapData = {
             loc: {
@@ -84,16 +82,16 @@ class Temperature extends Component {
                         </form>
                     </div>
                     <div className="w-50 flex-col" style={{alignItems: 'center'}}>
-                        <TempCir data={a} temp={e.list[0]} />
+                        <TempCir temp={e.list[0]} />
                         <div className="map-size" style={{marginTop: '2rem'}}>
                             <Maps mapData={mapData} />
                         </div>
                     </div>
                     <div className="w-50">
                         <h3>Weather History</h3>
-                        <WeatherHistory list={e.list} data={a} />
+                        <WeatherHistory list={e.list} />
                     </div>
-                    <AppNav data={a} />
+                    <AppNav />
                 </div>
             </section>
         )        
@@ -107,7 +105,6 @@ class List extends Component {
         if (this.context.active.id === 0) return <Fragment>Loading...</Fragment>
         const a = this.context.active;
         const o = this.props.item;
-        const mode = GetMode(a, 1);
         const list = {
             backgroundImage: `url('${openWeather}img/w/${o.weather[0].icon}.png')`,
             height: '50px'
@@ -117,7 +114,7 @@ class List extends Component {
             color: a.hex.light
         }
         return (
-            <div className="list-outer shadow-s" style={{background: mode}}>
+            <div className="list-outer shadow-s" style={{background: a.mode}}>
                 <div style={bg} className="list-inner shadow-xs">
                     <div className="transparent flex-row">
                         <div className="image" style={list} />
@@ -197,16 +194,15 @@ class TempCir extends Component {
         if (this.context.active.id === 0) return <Fragment>Loading...</Fragment>
         const a = this.context.active;
         const o = this.state.temp;
-        const mode = GetMode(a, 1);
         const prim = a.hex.primary;
         const sec = a.hex.secondary;
         const circle = {
             circle: {
-                backgroundColor: mode,
+                backgroundColor: a.mode,
                 boxShadow: 'inset 0 0 15px rgba(0,0,0,0.5)'
             },
             innerCircle: {
-                backgroundColor: mode,
+                backgroundColor: a.mode,
                 boxShadow: 'inset 0 0 75px rgba(0,0,0,0.5)'
             },
             grad: {
@@ -221,7 +217,7 @@ class TempCir extends Component {
 
         return (
             <SpCircle styles={circle} data={a}>
-                <div className="temp-cont flex-col" style={{color: RevColor(a, 1)}}>
+                <div className="temp-cont flex-col" style={{color: a.rev}}>
                     <div className="image" style={list} />
                     <h3>{o.main.temp}&#176;</h3>
                     <p><Today /></p>

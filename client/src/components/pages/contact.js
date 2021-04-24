@@ -3,7 +3,7 @@ import { ThemeContext } from "../var"
 import '../../styles/pages/Contact.scss';
 import Maps from "../map";
 import Modal from 'react-modal';
-import { RevColor, GetMode, Title } from "../inc/inc";
+import { Title } from "../inc/inc";
 
 const server = `${process.env.REACT_APP_STRAPIURL}`;
 Modal.setAppElement('#app');
@@ -42,15 +42,13 @@ class Contact extends Component {
         if (this.context.active.id === 0) return <Fragment>Loading...</Fragment>
         const a = this.context.active;
         const e = this.state;
-        const rev = RevColor(a, 1);
-        const mode = GetMode(a, 1);
         const bg = {
             background: a.grad,
-            color: mode
+            color: a.mode
         }
         const header = {
-            background: `linear-gradient(to bottom, ${mode} 30%, rgba(0,0,0,0))`,
-            color: rev
+            background: `linear-gradient(to bottom, ${a.mode} 30%, rgba(0,0,0,0))`,
+            color: a.rev
         }
         const mapData = {
             loc: {
@@ -64,7 +62,7 @@ class Contact extends Component {
               backgroundColor: 'rgba(56,61,68,0.2)',
             },
             content: {
-                color: RevColor(a, 1),
+                color: a.rev,
                 filter: `drop-shadow(0 0 10px rgba(0,0,0,0.8))`
             }
         }
@@ -78,12 +76,12 @@ class Contact extends Component {
         }
         const bodyBreak = {
             background: `
-                radial-gradient(circle at top left, rgba(0,0,0,0) 2rem, ${mode} 2rem) top left,
-                radial-gradient(circle at top right, rgba(0,0,0,0) 2rem, ${mode} 2rem) top right`,
+                radial-gradient(circle at top left, rgba(0,0,0,0) 2rem, ${a.mode} 2rem) top left,
+                radial-gradient(circle at top right, rgba(0,0,0,0) 2rem, ${a.mode} 2rem) top right`,
             backgroundSize: '50% 100%',
             backgroundRepeat: 'no-repeat'
         }
-        const cont = {backgroundImage: `linear-gradient(to bottom right, ${mode} 20%, rgba(0,0,0,0))`}
+        const cont = {backgroundImage: `linear-gradient(to bottom right, ${a.mode} 20%, rgba(0,0,0,0))`}
         return  (
             <section className="page-contact flex-center">
                 <div className="container">
@@ -112,7 +110,7 @@ class Contact extends Component {
                             <div style={{background: a.grad}} className="grad"></div>
                         </div>
                         <div style={bodyBreak} className="break"></div>
-                        <div style={{ backgroundColor: mode }} className="body flex-center">
+                        <div style={{ backgroundColor: a.mode }} className="body flex-center">
                             <div className="help">
                                 <p>Message has been received.</p>
                             </div>

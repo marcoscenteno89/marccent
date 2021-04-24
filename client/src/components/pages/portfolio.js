@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
 import '../../styles/pages/Portfolio.scss';
 import { ThemeContext } from "../var"
-import { Img, RevColor, GetMode } from "../inc/inc";
+import { Img } from "../inc/inc";
 import Site1 from "./../../media/site1.png";
 import Site2 from "./../../media/site2.png";
 import Site3 from "./../../media/site3.png";
@@ -44,12 +44,10 @@ class Portfolio extends Component {
     
     static contextType = ThemeContext;
     render() {
-        console.log(this.context);
         if (this.context.active.id === 0) return <Fragment>Loading...</Fragment>
         const a = this.context.active;
-        console.log(a);
         const pg = {
-            backgroundColor: GetMode(a, 1),
+            backgroundColor: a.mode,
             padding: '20px'
         }
         return  (
@@ -57,7 +55,7 @@ class Portfolio extends Component {
                 <div className="container">
                     <h2 className="w-100"style={{textAlign: 'center'}}>Portfolio</h2>
                     <div className="flex-center">
-                    {images.map((img, index) => <Card data={a} key={index} content={img} />)}
+                    {images.map((img, index) => <Card key={index} content={img} />)}
                     </div>
                 </div>
             </section>
@@ -72,18 +70,14 @@ class Card extends Component {
         if (this.context.active.id === 0) return <Fragment>Loading...</Fragment>
         const a = this.context.active;
         return  (
-            <div style={{ background: RevColor(a, 1) }} className="card-container flex-col">
+            <div style={{ background: a.rev }} className="card-container flex-col">
                 <div className="img-container">
                     <Img src={this.props.content.src} />
                 </div>
                 <div className="flex-center">
-                    {/* <i style={{background: a.grad}} className="fas fa-expand-arrows-alt"></i> */}
                     <a href={this.props.content.url} target="blank">
                         <i style={{background: a.grad}} className="far large fa-circle"></i>
                     </a>
-                    {/* <a href={this.props.content.url} target="blank">
-                        <i style={{background: a.grad}} className="fas fa-external-link-alt"></i>
-                    </a> */}
                 </div>
             </div>
         )

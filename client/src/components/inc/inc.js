@@ -30,7 +30,6 @@ const Button = props => {
     )
 }
 const Bomb = () => {
-
     function hover(a) {
         a.target.style.background = 'none';
     }
@@ -127,7 +126,7 @@ const Notebook = props => {
     }
     const full = {
         backgroundColor: GetMode(a, 0.5),
-        color: RevColor(a, 1),
+        color: a.rev
     }
     return (
         <div className="notebook">
@@ -156,22 +155,17 @@ const Today = () => {
 }
 
 const SpCircle = props => {
-    
-    if (props.data) {
-        const o = props.styles;
-        return (
-            <div className="cir cir-xl flex-center" style={o.circle}>
-                <div className="cir cir-ml flex-center" style={o.grad}>
-                    <div className="cir cir-m anim flex-center" style={o.innerCircle}>
-                        {props.children}
-                    </div>
+    if (!props.data) return (<div>No data Found</div>)
+    const o = props.styles;
+    return (
+        <div className="cir cir-xl flex-center" style={o.circle}>
+            <div className="cir cir-ml flex-center" style={o.grad}>
+                <div className="cir cir-m anim flex-center" style={o.innerCircle}>
+                    {props.children}
                 </div>
             </div>
-        )
-    } else {
-        return (<div>No data Found</div>)
-    }
-    
+        </div>
+    ) 
 }
 
 const ColorList = is_dark => {

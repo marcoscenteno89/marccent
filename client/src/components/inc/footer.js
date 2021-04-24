@@ -1,7 +1,7 @@
 import React, { Component,Fragment } from "react";
 import { ThemeContext } from "../var"
 import Carousel from "react-elastic-carousel";
-import { RevColor, FooterText, GetMode, GetColor, LinGrad } from "./inc"
+import { FooterText } from "./inc"
 import '../../styles/inc/Footer.scss';
 
 class Footer extends Component {
@@ -15,10 +15,6 @@ class Footer extends Component {
     render() {
         if (this.context.active.id === 0) return <Fragment>Loading...</Fragment>
         const a = this.context.active;
-        const c = this.context;
-        a.glass = true;
-        const mode = GetMode(a, a.glass ? 0.6 : 1);
-        const rev = RevColor(a, 1);
         
         const breakPoints = [
             {width: 368, itemsToShow: 2},
@@ -31,7 +27,7 @@ class Footer extends Component {
         let background = `main-footer flex-center${a.glass ? ' glass' : ''}`;
         
         return  (
-            <footer className={background} style={{backgroundColor: mode}}>
+            <footer className={background} style={{backgroundColor: a.mode}}>
                 <div className="container" style={{paddingTop: '1rem'}}>
                     <FooterNav />
                     <div className="m-10 flex-center">
@@ -41,7 +37,7 @@ class Footer extends Component {
                         <Carousel breakPoints={breakPoints}>
                             <button key={0} className="single flex-center" onClick={() => this.addTheme()}>
                                 <div className="inner flex-center">
-                                    <i style={{fontSize: '2rem'}} class="fas fa-plus"></i>
+                                    <i style={{fontSize: '2rem'}} className="fas fa-plus"></i>
                                 </div>
                             </button>
                             {this.context.themeList.map(single => (
@@ -49,7 +45,7 @@ class Footer extends Component {
                             ))}
                         </Carousel>
                     </div>
-                    <FooterText style={{ color : rev }} />
+                    <FooterText style={{ color : a.rev }} />
                 </div>
             </footer>
         )        
@@ -65,19 +61,18 @@ class Choices extends Component {
         const a = this.context.active;
         const b = this.context;
         const c = this.props.data;
-        const mode = GetMode(a, 1);
         const btn = {
-            backgroundImage: LinGrad(c.primary, c.secondary),
+            backgroundImage: a.grad,
             boxShadow: `0px 0px 10px ${c.primary}, 0px 0px 10px ${c.secondary}`
         }
         let inner = {
-            backgroundColor:  mode,
+            backgroundColor: a.mode,
             boxShadow: `inset 0 0 5px ${c.primary}, inset 0 0 5px ${c.secondary}`
         }
 
         const shadow = {
             filter: `drop-shadow(-25px 0 9px ${c.primary}) drop-shadow(25px 0 9px ${c.secondary}) blur(2px)`,
-            background: mode
+            background: a.mode
         }
             
         return (
@@ -101,21 +96,18 @@ class LightDark extends Component {
     render() {
         if (this.context.active.id === 0) return <Fragment>Loading...</Fragment>
         const a = this.context.active;
-        const primary = GetColor(a.rgb.primary, 1);
-        const secondary = GetColor(a.rgb.secondary, 1);
-        const mode = GetMode(a, 1);
         const slider = {
             backgroundImage: a.grad,
-            boxShadow: `0 0 10px ${primary}, 0 0 10px ${secondary}`
+            boxShadow: `0 0 10px ${a.hex.primary}, 0 0 10px ${a.hex.secondary}`
         }
         
         return (
             <label className='switch'>
                 <input type='checkbox' onChange={() => this.updateMode(a)} defaultChecked={a.is_dark} />
                 <div className='slider' style={slider}>
-                    <div className="pointer flex-center" style={{ backgroundColor: mode }}>
-                        <i className="fas fa-sun" style={{ color: primary }}></i>
-                        <i className="fas fa-moon" style={{ color: secondary}}></i>
+                    <div className="pointer flex-center" style={{ backgroundColor: a.mode }}>
+                        <i className="fas fa-sun" style={{ color: a.hex.primary }}></i>
+                        <i className="fas fa-moon" style={{ color: a.hex.secondary}}></i>
                     </div>
                 </div>
             </label>
@@ -133,14 +125,14 @@ class FooterNav extends Component {
             backgroundImage: a.grad
         }
         let e = {
-            backgroundColor: GetMode(a, 1)
+            backgroundColor: a.mode
         }
         let menu = {
             animation: `rotate 3s linear infinite`,
             backgroundImage: a.grad
         }
         return (
-            <ul className="flex-center footer-nav w-100" style={{color: RevColor(a, 1)}}>
+            <ul className="flex-center footer-nav w-100" style={{color: a.rev}}>
                 <li style={e}>
                     <a href="https://www.facebook.com/marcos.centeno.75" rel="noopener noreferrer" target="_blank">
                         <i style={i} className="fab fa-facebook"></i>

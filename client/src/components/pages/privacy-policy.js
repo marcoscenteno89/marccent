@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { ThemeContext } from "../var";
-import { RevColor, Title, GetMode } from "../inc/inc";
+import { Title } from "../inc/inc";
 
 class PrivacyPolicy extends Component {
 
@@ -9,8 +9,8 @@ class PrivacyPolicy extends Component {
         if (this.context.active.id === 0) return <Fragment>Loading...</Fragment>
         const a = this.context.active;
         const pg = {
-            background: GetMode(a, 1),
-            color: RevColor(a, 1)
+            background: a.mode,
+            color: a.rev
         }
         const bg = {
             background: a.grad,
