@@ -1,6 +1,9 @@
+@import 'Variables.scss';
 .map-size {
     height: 600px;
     width: 100%;
+    border-radius: $radious;
+    overflow: hidden;
 }
 .map-size > div, .map-size .map {
     width: 100%;

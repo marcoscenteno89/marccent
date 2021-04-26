@@ -50,8 +50,9 @@ class Portfolio extends Component {
             backgroundColor: a.mode,
             padding: '20px'
         }
+        let background = `page-portfolio flex-center${a.glass ? ' glass' : ''}`;
         return  (
-            <section className="page-portfolio flex-center" style={pg}>
+            <section className={background} style={pg}>
                 <div className="container">
                     <h2 className="w-100"style={{textAlign: 'center'}}>Portfolio</h2>
                     <div className="flex-center">

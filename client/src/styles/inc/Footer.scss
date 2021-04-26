@@ -40,15 +40,21 @@
     .switch {
       width: 10rem;
       justify-self: center;
+      margin: 0 1rem;
+      .name {
+        width: 100%;
+        padding-bottom: 0.5rem;
+        text-align: center;
+      }
       input { 
         display: none;
         &:checked + .slider {
           .pointer {
             transform: translateX(8.57rem);
-            .fa-moon {
+            .fa-moon, .fa-toggle-off {
               display: block;
             }
-            .fa-sun {
+            .fa-sun, .fa-toggle-on {
               display: none;
             }
           }
@@ -69,10 +75,10 @@
           background-color: #FFF;
           border-radius: 50%;
           transition: transform 0.5s ease;
-          .fa-moon {
+          .fa-moon, .fa-toggle-off {
             display: none;
           }
-          .fa-sun {
+          .fa-sun, .fa-toggle-on {
             display: block;
           }
           i {

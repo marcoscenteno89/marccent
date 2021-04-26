@@ -4,7 +4,6 @@ import JwPagination from 'jw-react-pagination';
 import "../../styles/mini-app/Temperature.scss";
 import '../../styles/keyframes.scss';
 import { Today, Blur, SpCircle } from "../inc/inc";
-import AppNav from "../inc/app-nav";
 import Maps from "../map";
 const openWeather = `${process.env.REACT_APP_OPENWEATHERURL}data/2.5/forecast`;
 const token = `&units=imperial&appid=${process.env.REACT_APP_OPENWEATHER}`;
@@ -69,10 +68,10 @@ class Temperature extends Component {
             },
             zoom: 11
         }
-
+        let background = `container flex-row${a.glass ? ' glass' : ''}`;
         return  (
             <section className="temp flex-center">
-                <div className="container flex-row" style={sec}>
+                <div className={background} style={sec}>
                     <div className="header flex-row w-100">
                         <h1>{e.city.name}</h1>
                         <h3>Population: {e.city.population}</h3>
@@ -91,7 +90,6 @@ class Temperature extends Component {
                         <h3>Weather History</h3>
                         <WeatherHistory list={e.list} />
                     </div>
-                    <AppNav />
                 </div>
             </section>
         )        

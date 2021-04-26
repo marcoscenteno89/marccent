@@ -3,7 +3,7 @@ import { ThemeContext } from "../var"
 import '../../styles/pages/Contact.scss';
 import Maps from "../map";
 import Modal from 'react-modal';
-import { Title } from "../inc/inc";
+import { GetMode, Title } from "../inc/inc";
 
 const server = `${process.env.REACT_APP_STRAPIURL}`;
 Modal.setAppElement('#app');
@@ -47,7 +47,7 @@ class Contact extends Component {
             color: a.mode
         }
         const header = {
-            background: `linear-gradient(to bottom, ${a.mode} 30%, rgba(0,0,0,0))`,
+            background: `linear-gradient(to top, ${GetMode(a, 1)}, ${GetMode(a, 0)})`,
             color: a.rev
         }
         const mapData = {
@@ -82,9 +82,10 @@ class Contact extends Component {
             backgroundRepeat: 'no-repeat'
         }
         const cont = {backgroundImage: `linear-gradient(to bottom right, ${a.mode} 20%, rgba(0,0,0,0))`}
+        let background = `container${a.glass ? ' glass' : ''}`;
         return  (
             <section className="page-contact flex-center">
-                <div className="container">
+                <div className={background} style={{backgroundColor: a.mode}}>
                     <Title style={header} text="Contact" />
                     <div className="contact flex-center">
                         <div className="map-size">

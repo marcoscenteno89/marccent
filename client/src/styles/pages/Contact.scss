@@ -24,19 +24,12 @@
         }
     }
     .header, .footer {
-        min-height: 10rem;
+        min-height: 5rem;
         position: relative;
         z-index: 99;
     }
-    .header {
-        padding-top: 15px;
-        margin-bottom: -140px;
-        align-items: flex-start;
-    }
-    .footer {
-        padding-bottom: 15px;
-        margin-top: -140px;
-        align-items: flex-end;
+    .map-size {
+        border-radius: 0;
     }
 }
 @media (max-width: 568px) {

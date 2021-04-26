@@ -49,6 +49,19 @@ export class ThemeProvider extends Component {
         this.setState(active, () => this.storeTheme(this.state));
     }
 
+    addTheme = theme => {
+        let themes = JSON.parse(localStorage.getItem('marccent_themes'));
+        let largest = themes[0].id;
+        for (let i of themes) {
+            if (i.id > largest) largest = i.id
+        }
+        delete theme.showForm;
+        theme.id = largest + 1;
+        themes.push(theme);
+        localStorage.setItem('marccent_themes', JSON.stringify(themes));
+        this.updateTheme(theme.id);
+    }
+
     updateTheme = (id) => {
         let themes = JSON.parse(localStorage.getItem('marccent_themes'));
         let theme = themes.filter(i => i.id === id);
@@ -71,7 +84,7 @@ export class ThemeProvider extends Component {
         }
         active.mode = GetMode(active, 1);
         active.rev = RevColor(active, 1);
-        this.setState(active, () => this.storeTheme(active));;
+        this.setState(active, () => this.storeTheme(active));
     }
 
     isGlass = (i) => {
@@ -100,6 +113,7 @@ export class ThemeProvider extends Component {
                 isGlass: this.isGlass,
                 updateTheme: this.updateTheme,
                 getThemes: this.getThemes,
+                addTheme: this.addTheme,
                 themeList: JSON.parse(localStorage.getItem('marccent_themes'))
             }}>
                 {this.props.children}

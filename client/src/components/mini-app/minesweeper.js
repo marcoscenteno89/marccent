@@ -5,7 +5,6 @@ import Modal from 'react-modal';
 import Select from 'react-select'
 import "../../styles/mini-app/Minesweeper.scss";
 import { Button, Bomb, RandomNum, Flag } from "../inc/inc";
-import AppNav from "../inc/app-nav";
 
 Modal.setAppElement('#app');
 
@@ -432,7 +431,6 @@ class MineSweeper extends Component {
                             </div>
                         </Modal>
                     </div>
-                    <AppNav />
                 </div>
             </section>
         )        

@@ -62,10 +62,10 @@ class About extends Component {
             backgroundImage: a.grad,
             color: a.hex.light
         }
-
+        let background = `container${a.glass ? ' glass' : ''}`;
         return  (
             <section className="page-about flex-center">
-                <div className="container" style={{backgroundColor: a.mode}}>
+                <div className={background} style={{backgroundColor: a.mode}}>
                     <div className="image" style={img} />
                     <div className="con flex-center">
                         <div className="circle-con">
@@ -75,7 +75,7 @@ class About extends Component {
                         </div>
                     </div>
                     <div className="flex-row container">
-                        <div className="w-40 shadow-xs flex-col">
+                        <div className="w-40 shadow-xs flex-col" style={{backgroundColor: a.mode}}>
                             {icons.map((single, index) => (
                                 <div className="flex-row" key={index}>
                                     {single.icon}
@@ -86,7 +86,7 @@ class About extends Component {
                                 </div>
                             ))}
                         </div>
-                        <div className="w-60 shadow-xs">
+                        <div className="w-60 shadow-xs" style={{backgroundColor: a.mode}}>
                             <div className="title">
                                 <strong>Safelink Internet</strong>, Idaho Falls, ID — <em style={{color: a.hex.secondary}}>Web Developer</em>
                             </div>
