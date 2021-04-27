@@ -230,11 +230,12 @@ class FooterNav extends Component {
     render() {
         if (this.context.active.id === 0) return <Fragment>Loading...</Fragment>
         const a = this.context.active;
+    
         let i = {
             backgroundImage: a.grad
         }
         let e = {
-            backgroundColor: a.mode
+            backgroundColor: GetMode(a, 1)
         }
         let menu = {
             animation: `rotate 3s linear infinite`,

@@ -20,8 +20,8 @@ class AppNav extends Component {
             {width: 968, itemsToShow: 6},
         ]
         return  (
-            <ul className="appnav section flex-center w-100">
-                <Carousel breakPoints={breakPoints}>
+            <Carousel breakPoints={breakPoints}>
+                <ul className="appnav flex-center w-100" style={{justifyContent: 'space-around'}}>
                     <li style={{borderColor: a.secondary}}>
                         <Link to="/apps/temp">
                             <i style={i} className="fas fa-temperature-high"></i>
@@ -34,8 +34,8 @@ class AppNav extends Component {
                             <h4 style={i}>Minesweeper</h4>
                         </Link>
                     </li>
-                </Carousel>
-            </ul>   
+                </ul>
+            </Carousel>
         )        
     }
 }

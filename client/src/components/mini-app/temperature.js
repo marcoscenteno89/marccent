@@ -7,6 +7,7 @@ import { Today, Blur, SpCircle } from "../inc/inc";
 import Maps from "../map";
 const openWeather = `${process.env.REACT_APP_OPENWEATHERURL}data/2.5/forecast`;
 const token = `&units=imperial&appid=${process.env.REACT_APP_OPENWEATHER}`;
+const url = 'http://api.openweathermap.org/';
 
 class Temperature extends Component {
 
@@ -104,7 +105,7 @@ class List extends Component {
         const a = this.context.active;
         const o = this.props.item;
         const list = {
-            backgroundImage: `url('${openWeather}img/w/${o.weather[0].icon}.png')`,
+            backgroundImage: `url('${url}img/w/${o.weather[0].icon}.png')`,
             height: '50px'
         }
         const bg = {

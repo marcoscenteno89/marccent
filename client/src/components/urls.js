@@ -1,13 +1,13 @@
-import React, { Component, Fragment } from 'react';
-import { Route, Switch, BrowserRouter as Router } from 'react-router-dom';
-import About from "./pages/about";
-import Contact from "./pages/contact";
-import Portfolio from './pages/portfolio';
-import PrivacyPolicy from './pages/privacy-policy';
-import HeroBanner from './sections/hero-banner';
-import Apps from './pages/apps';
-import MineSweeper from "./mini-app/minesweeper";
-import Temperature from "./mini-app/temperature";
+import React, { Component, lazy, Suspense, Fragment } from "react";
+import { Route, Switch } from "react-router-dom";
+import HeroBanner from "./sections/hero-banner";
+const Contact = lazy(() => import("./pages/contact"));
+const Portfolio = lazy(() => import("./pages/portfolio"));
+const PrivacyPolicy = lazy(() => import("./pages/privacy-policy"));
+const Apps = lazy(() => import("./pages/apps"));
+const MineSweeper = lazy(() => import("./mini-app/minesweeper"));
+const Temperature = lazy(() => import("./mini-app/temperature"));
+const About = lazy(() => import("./pages/about"));
 
 class Urls extends Component {
    
@@ -15,25 +15,29 @@ class Urls extends Component {
         return (
             <Fragment>
             <Switch>
-                <Route path="/portfolio"><Portfolio /></Route>
-                <Route path="/about"><About /></Route>
-                <Route path="/contact"><Contact /></Route>
-                <Route path="/privacy-policy"><PrivacyPolicy /></Route>
-                <Route exact path="/">
-                    <HeroBanner />
-                    <About />
-                    <Temperature />
-                    <Apps />
-                    <Portfolio />
-                    <Contact />
-                </Route>
-                <Route>
-                    <Route path="/apps/minesweeper"><MineSweeper /></Route>
-                    <Route path="/apps/temp"><Temperature /></Route>
-                    <Apps />
-                </Route>
+                <Route exact path="/"><HeroBanner /></Route>
             </Switch>
-            </Fragment>
+            <Switch>
+                <Suspense fallback={<h2>Loading...</h2>}>
+                    <Route path="/portfolio"><Portfolio /></Route>
+                    <Route path="/about"><About /></Route>
+                    <Route path="/contact"><Contact /></Route>
+                    <Route path="/privacy-policy"><PrivacyPolicy /></Route>
+                    <Route exact path="/">
+                        <About />
+                        <Temperature />
+                        <Apps />
+                        <Portfolio />
+                        <Contact />
+                    </Route>
+                    <Route path="/apps">
+                        <Route path="/apps/minesweeper"><MineSweeper /></Route>
+                        <Route path="/apps/temp"><Temperature /></Route>
+                        <Apps />
+                    </Route>
+                </Suspense>
+            </Switch>
+            </Fragment> 
         )
     }
 }
