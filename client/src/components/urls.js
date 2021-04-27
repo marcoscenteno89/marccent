@@ -26,13 +26,13 @@ class Urls extends Component {
                     <Apps />
                     <Portfolio />
                     <Contact />
-                </Route> 
+                </Route>
+                <Route>
+                    <Route path="/apps/minesweeper"><MineSweeper /></Route>
+                    <Route path="/apps/temp"><Temperature /></Route>
+                    <Apps />
+                </Route>
             </Switch>
-            <Router>
-                <Route path="/apps/minesweeper"><MineSweeper /></Route>
-                <Route path="/apps/temp"><Temperature /></Route> 
-                <Route path="/apps"><Apps /></Route>
-            </Router>
             </Fragment>
         )
     }
