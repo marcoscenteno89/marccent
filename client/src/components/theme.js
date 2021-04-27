@@ -12,8 +12,8 @@ class Theme extends Component {
 
     static contextType = ThemeContext;
 
-    async componentDidMount() {
-        await this.context.getThemes();
+    componentDidMount() {
+        this.context.getThemes();
     }
 
     render() {
