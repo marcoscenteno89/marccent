@@ -10,7 +10,7 @@ class HeroBanner extends Component {
         if (this.context.active.id === 0) return <Fragment>Loading...</Fragment>
         const a = this.context.active;
         const bar = {
-            current: 5, 
+            current: 3, 
             total: 5,
             speed: 200
         }

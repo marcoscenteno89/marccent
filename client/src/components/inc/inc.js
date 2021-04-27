@@ -56,8 +56,8 @@ const Flag = () => {
 
 const Background = props => {
     const arr = [];
-    for (let i = 0; i < 15; i++) {
-        let ran = RandomNum(40, 100);
+    for (let i = 0; i < 8; i++) {
+        let ran = RandomNum(60, 100);
         let ball = {
             width: `${ran * 3}px`,
             height: `${ran * 3}px`,
@@ -66,8 +66,8 @@ const Background = props => {
         }
         arr.push(ball);
     };
-    for (let i = 0; i < 15; i++) {
-        let ran = RandomNum(40, 100);
+    for (let i = 0; i < 8; i++) {
+        let ran = RandomNum(60, 100);
         let ball = {
             width: `${ran * 3}px`,
             height: `${ran * 3}px`,
@@ -104,7 +104,7 @@ const Title = props => {
 
 const Img = props => {
     return (<React.Fragment key="1">
-        <img src={props.src} alt={props.alt} style={props.styles} />
+        <img src={props.src} alt={props.alt} style={props.styles} loading="lazy" />
     </React.Fragment>)
 }
 
@@ -114,7 +114,7 @@ const FooterText = props => {
         Copyright ©{CurrentDate.getFullYear()} 
         Marccent. All rights reserved | 
         <ul>
-            <li><Link to="/privacy-policy"> Privacy Policy</Link></li>
+            <li><Link style={props.style} to="/privacy-policy"> Privacy Policy</Link></li>
         </ul>
     </div>)
 }

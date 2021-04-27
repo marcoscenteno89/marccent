@@ -91,7 +91,7 @@ class About extends Component {
                                 <strong>Safelink Internet</strong>, Idaho Falls, ID — <em style={{color: a.hex.secondary}}>Web Developer</em>
                             </div>
                             <br />
-                            <em>Feb 2016 - PRESENT</em>
+                            <em>Feb 2016 - <span style={{color: a.hex.secondary}}>PRESENT</span></em>
                             <hr />
                             <ul>
                                 <li>Build & maintain Safelink Internet websites as part of our marketing team.</li>
