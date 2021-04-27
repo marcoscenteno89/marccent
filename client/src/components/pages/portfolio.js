@@ -2,13 +2,13 @@ import React, { Component, Fragment } from "react";
 import '../../styles/pages/Portfolio.scss';
 import { ThemeContext } from "../var"
 import { Img } from "../inc/inc";
-import Site1 from "./../../media/site1.png";
-import Site2 from "./../../media/site2.png";
-import Site3 from "./../../media/site3.png";
-import Site4 from "./../../media/site4.png";
-import Site5 from "./../../media/site5.png";
-import Site6 from "./../../media/site6.png";
-import Site7 from "./../../media/site7.png";
+import Site1 from "./../../media/site1.jpg";
+import Site2 from "./../../media/site2.jpg";
+import Site3 from "./../../media/site3.jpg";
+import Site4 from "./../../media/site4.jpg";
+import Site5 from "./../../media/site5.jpg";
+import Site6 from "./../../media/site6.jpg";
+import Site7 from "./../../media/site7.jpg";
 const images = [
     {
         src: Site1,

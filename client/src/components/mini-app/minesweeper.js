@@ -1,6 +1,5 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { ThemeContext } from "../var";
-import { Fragment } from "react";
 import Modal from 'react-modal';
 import Select from 'react-select'
 import "../../styles/mini-app/Minesweeper.scss";
