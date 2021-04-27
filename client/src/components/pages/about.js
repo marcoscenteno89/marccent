@@ -3,8 +3,8 @@ import { ThemeContext } from "../var"
 import '../../styles/pages/About.scss';
 import { Img, SpCircle } from "../inc/inc";
 import { StatusBar } from "../inc/inc-classes";
-import header from "../../media/img2.jpg";
-import profile from "../../media/mcr.png";
+import header from "../../media/img2.webp";
+import profile from "../../media/mcr.webp";
 
 class About extends Component {
     
