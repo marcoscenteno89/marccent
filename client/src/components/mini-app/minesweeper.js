@@ -1,11 +1,9 @@
 import React, { Component, Fragment } from "react";
 import { ThemeContext } from "../var";
-import Modal from 'react-modal';
+import { PopUp } from "../inc/inc-classes";
 import Select from 'react-select'
 import "../../styles/mini-app/Minesweeper.scss";
 import { Button, Bomb, RandomNum, Flag } from "../inc/inc";
-
-Modal.setAppElement('#app');
 
 class MineSweeper extends Component {
 
@@ -25,6 +23,7 @@ class MineSweeper extends Component {
             help: false
         }
         this.getTime = this.getTime.bind(this);
+        this.startOver = this.startOver.bind(this);
     }
     async componentDidMount() {
         const game = this.createGrid(10, 10, this.state.mineCount);
@@ -100,7 +99,8 @@ class MineSweeper extends Component {
             gameOver: false,
             grid: game.grid,
             mineLocation: game.mines,
-            popup: false
+            popup: false,
+            help: false
         });
     }
 
@@ -317,35 +317,14 @@ class MineSweeper extends Component {
             {label: 'Hard', value: 20 },
             {label: 'Extra Hard', value: 25 }
         ]
-        const popup = {
-            overlay: {
-              backgroundColor: 'rgba(56,61,68,0.2)',
-            },
-            content: {
-                color: a.rev,
-                filter: `drop-shadow(0 0 10px rgba(0,0,0,0.8))`
-            }
-        }
-        const headingBreak = {
-            background: `
-                radial-gradient(circle at bottom left, rgba(0,0,0,0) 2rem, ${a.hex.primary} 2rem) bottom left,
-                radial-gradient(circle at bottom right, rgba(0,0,0,0) 2rem, ${a.hex.secondary} 2rem) bottom right`,
-            backgroundSize: '2rem 100%',
-            backgroundRepeat: 'no-repeat'
-        }
-        const bodyBreak = {
-            background: `
-                radial-gradient(circle at top left, rgba(0,0,0,0) 2rem, ${a.mode} 2rem) top left,
-                radial-gradient(circle at top right, rgba(0,0,0,0) 2rem, ${a.mode} 2rem) top right`,
-            backgroundSize: '50% 100%',
-            backgroundRepeat: 'no-repeat'
-        }
         const btn = {
             marginTop: '0.7rem',
             backgroundColor: a.rev,
             color: a.mode
         }
-        let background = `container flex-col${a.glass ? ' glass' : ''}`;
+        const background = `container flex-col${a.glass ? ' glass' : ''}`;
+
+        const header = b.win ? 'Winner' : 'Game Over';
 
         return (
             <section className="minesweeper flex-center">
@@ -383,52 +362,22 @@ class MineSweeper extends Component {
                             <Button className="btn" styles={btn} onClick={() => this.startOver()} text="Start Over" />
                             <Button className="btn" styles={btn} onClick={() => this.help()} text="Help" />
                         </div>
-                        <Modal style={popup} className="modal" overlayClassName="overlay" isOpen={b.popup}>
-                            <div style={{background: a.grad}} className="heading flex-center">
-                                <div style={{backgroundColor: a.hex.primary}} className="left"></div>
-                                <div style={{backgroundColor: a.hex.secondary}} className="right"></div>
-                                <h2>{b.win ? 'Winner' : 'Game Over'}</h2>
+                        <PopUp key={1} header={header} controller={this.startOver} display={b.popup} btnText="Start Over">
+                            <div>{b.win ? `Time: ${b.time}` : 'You Lost'}</div>
+                        </PopUp>
+                        <PopUp key={2} header="Mine Sweeper Instructions" display={b.help}>
+                            <div className="help">
+                                <h4>About the Game</h4> 
+                                <p>The object of Minesweeper is to expose all the open areas on the board without hitting an bombs.</p>
+                                <h4>Instructions</h4>
+                                <p>Click "Play" to begin the game.</p> 
+                                <p>Use the left click button on the mouse to select a space on the grid. If you hit a bomb, you lose.</p>
+                                <p>The numbers on the board represent how many bombs are adjacent to a square. For example, if a square has a "3" on it, then there are 3 bombs next to that square. The bombs could be above, below, right left, or diagonal to the square.</p>
+                                <p>Avoid all the bombs and expose all the empty spaces to win Minesweeper.</p>
+                                <p>Tip: Use the numbers to determine where you know a bomb is.</p> 
+                                <p>Tip: You can right click a square with the mouse to place a flag where you think a bomb is. This allows you to avoid that spot.</p>
                             </div>
-                            <div style={headingBreak} className="break">
-                                <div style={{background: a.grad}} className="grad"></div>
-                            </div>
-                            <div style={bodyBreak} className="break"></div>
-                            <div style={{backgroundColor: a.mode}} className="body flex-center">
-                                <div>{b.win ? `Time: ${b.time}` : 'You Lost'}</div>
-                                <div className="flex-center controller">
-                                    <Button styles={{background: a.grad}} className="btn" onClick={() => this.startOver()} text="Start Over" />
-                                    <Button styles={{background: a.grad}} className="btn" onClick={() => this.startOver()} text="Close" />
-                                </div>
-                            </div>
-                        </Modal>
-                        <Modal style={popup} className="modal" overlayClassName="overlay" isOpen={b.help}>
-                            <div style={{background: a.grad}} className="heading flex-center">
-                                <div style={{backgroundColor: a.hex.primary}} className="left"></div>
-                                <div style={{backgroundColor: a.hex.secondary}} className="right"></div>
-                                <h2>Mine Sweeper Instructions</h2>
-                            </div>
-                            <div style={headingBreak} className="break">
-                                <div style={{background: a.grad}} className="grad"></div>
-                            </div>
-                            <div style={bodyBreak} className="break"></div>
-                            <div style={{backgroundColor: a.mode}} className="body flex-center">
-                                <div className="help">
-                                    <h4>About the Game</h4> 
-                                    <p>The object of Minesweeper is to expose all the open areas on the board without hitting an bombs.</p>
-                                    <h4>Instructions</h4>
-                                    <p>Click "Play" to begin the game.</p> 
-                                    <p>Use the left click button on the mouse to select a space on the grid. If you hit a bomb, you lose.</p>
-                                    <p>The numbers on the board represent how many bombs are adjacent to a square. For example, if a square has a "3" on it, then there are 3 bombs next to that square. The bombs could be above, below, right left, or diagonal to the square.</p>
-                                    <p>Avoid all the bombs and expose all the empty spaces to win Minesweeper.</p>
-                                    <p>Tip: Use the numbers to determine where you know a bomb is.</p> 
-                                    <p>Tip: You can right click a square with the mouse to place a flag where you think a bomb is. This allows you to avoid that spot.</p>
-                                    <p>This game should work on all platforms including safari and mobile (we hope, but make no guarantees).</p>
-                                </div>
-                                <div className="flex-center controller">
-                                    <button style={{background: a.grad}} className="btn" onClick={() => this.setState({help: false})}>Close</button>
-                                </div>
-                            </div>
-                        </Modal>
+                        </PopUp>
                     </div>
                 </div>
             </section>
@@ -518,8 +467,6 @@ class Cell extends Component {
         } else {}
         return  (
             <div className="flex-center digit" style={styles} 
-                // onMouseLeave={this.bgLeave.bind(this, this.props.data)} 
-                // onMouseOver={this.bgStart.bind(this, this.props.data)}
                 onClick={(e) => this.props.onClick(e, this.state.cell)}
                 onContextMenu={(e) => this.props.onContextMenu(e, this.state.cell)}
                 key={this.props.num}> 

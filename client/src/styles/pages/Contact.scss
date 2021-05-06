@@ -17,6 +17,9 @@
                 opacity: 0.8;
                 border: none;
             }
+            input::placeholder , textarea::placeholder {
+                color: #FFF;
+            }
             .text {
                 -webkit-text-fill-color: transparent !important;
                 -webkit-background-clip: text !important;

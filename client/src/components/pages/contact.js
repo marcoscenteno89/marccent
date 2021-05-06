@@ -1,8 +1,10 @@
 import React, { Component, Fragment } from "react";
 import { ThemeContext } from "../var"
+import { PopUp } from "../inc/inc-classes";
 import '../../styles/pages/Contact.scss';
 import Maps from "../map";
 import Modal from 'react-modal';
+import ValidForm from 'react-valid-form-component';
 import { GetMode, Title } from "../inc/inc";
 
 const server = `${process.env.REACT_APP_STRAPIURL}`;
@@ -10,18 +12,14 @@ Modal.setAppElement('#app');
 
 class Contact extends Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            name: 'Full Name',
-            email: 'Email',
-            message: 'Message',
-            modal: false
-        }
+    state = {
+        name: '',
+        email: '',
+        message: '',
+        modal: false
     }
 
-    onClick = async e => {
-        e.preventDefault();
+    onClick = async () => {
         const res = await fetch(`${server}messages/`, {
             method: 'POST',
             credentials: 'same-origin',
@@ -42,12 +40,13 @@ class Contact extends Component {
         if (this.context.active.id === 0) return <Fragment>Loading...</Fragment>
         const a = this.context.active;
         const e = this.state;
+        const mode = GetMode(a, 1);
         const bg = {
             background: a.grad,
-            color: a.mode
+            color: a.hex.light
         }
         const header = {
-            background: `linear-gradient(to top, ${GetMode(a, 1)}, ${GetMode(a, 0)})`,
+            background: `linear-gradient(to top, ${mode}, ${GetMode(a, 0)})`,
             color: a.rev
         }
         const mapData = {
@@ -57,31 +56,7 @@ class Contact extends Component {
             },
             zoom: 11
         }
-        const popup = {
-            overlay: {
-              backgroundColor: 'rgba(56,61,68,0.2)',
-            },
-            content: {
-                color: a.rev,
-                filter: `drop-shadow(0 0 10px rgba(0,0,0,0.8))`
-            }
-        }
-
-        const headingBreak = {
-            background: `
-                radial-gradient(circle at bottom left, rgba(0,0,0,0) 2rem, ${a.hex.primary} 2rem) bottom left,
-                radial-gradient(circle at bottom right, rgba(0,0,0,0) 2rem, ${a.hex.secondary} 2rem) bottom right`,
-            backgroundSize: '2rem 100%',
-            backgroundRepeat: 'no-repeat'
-        }
-        const bodyBreak = {
-            background: `
-                radial-gradient(circle at top left, rgba(0,0,0,0) 2rem, ${a.mode} 2rem) top left,
-                radial-gradient(circle at top right, rgba(0,0,0,0) 2rem, ${a.mode} 2rem) top right`,
-            backgroundSize: '50% 100%',
-            backgroundRepeat: 'no-repeat'
-        }
-        const cont = {backgroundImage: `linear-gradient(to bottom right, ${a.mode} 20%, rgba(0,0,0,0))`}
+        const cont = {backgroundImage: `linear-gradient(to bottom right, ${mode}, ${GetMode(a, 0.4)})`}
         let background = `container${a.glass ? ' glass' : ''}`;
         return  (
             <section className="page-contact flex-center">
@@ -91,35 +66,40 @@ class Contact extends Component {
                         <div className="map-size">
                             <Maps mapData={mapData} />
                         </div>
-                        <div className="contact-info flex-col" style={cont}>
-                            <form className="flex-col">
-                                <h2 className="text" style={{background: a.grad}}>Get in Touch</h2>
-                                <input type="text" style={bg} onChange={this.nameChange} value={e.name} />
-                                <input type="text" style={bg} value={e.email} onChange={this.emailChange} />
-                                <textarea style={bg} value={e.message} onChange={this.messageChange} rows="5"></textarea>
-                                <button className="btn" style={bg} onClick={(e) => this.onClick(e)}>Submit</button>
-                            </form>
-                        </div>
+                        <ValidForm nosubmit onSubmit={(e) => this.onClick(e)} className="flex-col contact-info" style={cont}>
+                            <input 
+                                name="full_name"
+                                type="text" 
+                                required
+                                placeholder="Full Name" 
+                                style={bg} 
+                                onChange={this.nameChange} 
+                                value={e.name}
+                            />
+                            <input 
+                                name="email"
+                                type="email" 
+                                required
+                                placeholder="Email" 
+                                style={bg} 
+                                value={e.email} 
+                                onChange={this.emailChange} 
+                            />
+                            <textarea 
+                                required
+                                name="message"
+                                style={bg} 
+                                placeholder="Message" 
+                                value={e.message} 
+                                onChange={this.messageChange} 
+                                rows="5"
+                            ></textarea>
+                            <button className="btn" style={bg} type="submit">Send Form</button>
+                        </ValidForm>
                     </div>
-                    <Modal style={popup} className="modal" overlayClassName="overlay" isOpen={this.state.modal}>
-                        <div style={{background: a.grad}} className="heading flex-center">
-                            <div style={{backgroundColor: a.hex.primary}} className="left"></div>
-                            <div style={{backgroundColor: a.hex.secondary}} className="right"></div>
-                            <h2>Status</h2>
-                        </div>
-                        <div style={headingBreak} className="break">
-                            <div style={{background: a.grad}} className="grad"></div>
-                        </div>
-                        <div style={bodyBreak} className="break"></div>
-                        <div style={{ backgroundColor: a.mode }} className="body flex-center">
-                            <div className="help">
-                                <p>Message has been received.</p>
-                            </div>
-                            <div className="flex-center controller">
-                                <button style={{background: a.grad}} className="btn" onClick={() => this.setState({modal: false})}>Close</button>
-                            </div>
-                        </div>
-                    </Modal>
+                    <PopUp header="Status" display={this.state.modal}>
+                        <p>Message has been received.</p>
+                    </PopUp>
                 </div>
             </section>
         )        

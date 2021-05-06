@@ -120,6 +120,7 @@ const FooterText = props => {
 }
 
 const Notebook = props => {
+    console.log(props);
     const a = props.data;
     const notebook = {
         backgroundColor: GetMode(a, 0.3),

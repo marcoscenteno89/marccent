@@ -1,9 +1,9 @@
 import React, { Component,Fragment } from "react";
 import { ThemeContext } from "../var"
 import Carousel from "react-elastic-carousel";
-import { FooterText, GetMode, Button } from "./inc"
+import { PopUp } from "../inc/inc-classes";
+import { FooterText, GetMode } from "./inc";
 import '../../styles/inc/Footer.scss';
-import Modal from 'react-modal';
 
 class Footer extends Component {
 
@@ -12,7 +12,10 @@ class Footer extends Component {
     state = {
         showForm: false,
         primary: this.context.active.hex.primary,
-        secondary: this.context.active.hex.secondary
+        secondary: this.context.active.hex.secondary,
+        tempPrimary: this.context.active.hex.primary,
+        tempSecondary: this.context.active.hex.secondary,
+        status: ''
     }
 
     showForm = () => {
@@ -21,7 +24,12 @@ class Footer extends Component {
         });
     }
     addTheme = () => {
-        this.context.addTheme(this.state)
+        const i = this.state;
+        if (i.tempPrimary === i.primary && i.tempSecondary === i.secondary) {
+            this.setState({status: `You are tring to submit the same colors as current theme.`});
+            return;
+        }
+        this.context.addTheme(i);
     }
     primary = e => this.setState({ primary: e.target.value});
     secondary = e => this.setState({ secondary: e.target.value});
@@ -29,7 +37,6 @@ class Footer extends Component {
     render() {
         if (this.context.active.id === 0) return <Fragment>Loading...</Fragment>
         const a = this.context.active;
-        const b = this.state;
         const breakPoints = [
             {width: 368, itemsToShow: 2},
             {width: 468, itemsToShow: 3},
@@ -38,33 +45,17 @@ class Footer extends Component {
             {width: 768, itemsToShow: 7},
         ]
 
-        const popup = {
-            overlay: {
-              backgroundColor: 'rgba(56,61,68,0.2)',
-            },
-            content: {
-                color: a.rev,
-                filter: `drop-shadow(0 0 10px rgba(0,0,0,0.8))`
-            }
-        }
-
-        const headingBreak = {
-            background: `
-                radial-gradient(circle at bottom left, rgba(0,0,0,0) 2rem, ${a.hex.primary} 2rem) bottom left,
-                radial-gradient(circle at bottom right, rgba(0,0,0,0) 2rem, ${a.hex.secondary} 2rem) bottom right`,
-            backgroundSize: '2rem 100%',
-            backgroundRepeat: 'no-repeat'
-        }
-        const bodyBreak = {
-            background: `
-                radial-gradient(circle at top left, rgba(0,0,0,0) 2rem, ${a.mode} 2rem) top left,
-                radial-gradient(circle at top right, rgba(0,0,0,0) 2rem, ${a.mode} 2rem) top right`,
-            backgroundSize: '50% 100%',
-            backgroundRepeat: 'no-repeat'
-        }
-
         let background = `main-footer flex-center${a.glass ? ' glass' : ''}`;
         
+        let add = {
+            fontSize: '2rem',
+            color: a.hex.secondary,
+            filter: `drop-shadow(0 0 5px ${a.hex.secondary})`
+        }
+        let btn = {
+            backgroundColor: a.hex.primary,
+            boxShadow: `0 0 7px ${a.hex.secondary}, inset 0 0 7px ${a.hex.secondary}`
+        }
         return  (
             <footer className={background} style={{backgroundColor: a.mode}}>
                 <div className="container" style={{paddingTop: '1rem'}}>
@@ -75,9 +66,9 @@ class Footer extends Component {
                     </div>
                     <div className="flex-row">
                         <Carousel breakPoints={breakPoints}>
-                            <button key={0} className="single flex-center" onClick={() => this.showForm()}>
+                            <button key={0} style={btn} className="single flex-center" onClick={() => this.showForm()}>
                                 <div className="inner flex-center">
-                                    <i style={{fontSize: '2rem'}} className="fas fa-plus"></i>
+                                    <i style={add} className="fas fa-plus"></i>
                                 </div>
                             </button>
                             {this.context.themeList.map(single => (
@@ -87,40 +78,27 @@ class Footer extends Component {
                     </div>
                     <FooterText style={{ color : a.rev }} />
                 </div>
-                <Modal style={popup} className="modal" overlayClassName="overlay" isOpen={b.showForm}>
-                    <div style={{background: a.grad}} className="heading flex-center">
-                        <div style={{backgroundColor: a.hex.primary}} className="left"></div>
-                        <div style={{backgroundColor: a.hex.secondary}} className="right"></div>
-                        <h2>Add Theme</h2>
-                    </div>
-                    <div style={headingBreak} className="break">
-                        <div style={{background: a.grad}} className="grad"></div>
-                    </div>
-                    <div style={bodyBreak} className="break"></div>
-                    <div style={{backgroundColor: a.mode}} className="body flex-center">
-                        <form>
-                            <h4>Select Primary Color</h4>
-                            <input 
-                                type="color" 
-                                value={this.state.primary} 
-                                style={{backgroundColor: a.rev}} 
-                                onChange={this.primary} 
-                            />
-                            <h4>Select Secondary Color</h4>
-                            <input 
-                                type="color"
-                                value={this.state.secondary} 
-                                style={{backgroundColor: a.rev}} 
-                                onChange={this.secondary} 
-                            />
-                            <div><i>Select same color for primary and secundary colors<br />for single colored theme.</i></div>
-                        </form>
-                        <div className="flex-center controller">
-                            <Button styles={{background: a.grad}} className="btn" onClick={() => this.addTheme()} text="Submit" />
-                            <Button styles={{background: a.grad}} className="btn" onClick={() => this.showForm()} text="Close" />
-                        </div>
-                    </div>
-                </Modal>
+                <PopUp header="Add Theme" controller={this.addTheme} display={this.state.showForm} btnText="Submit">
+                    <form>
+                        <h4>Select Primary Color</h4>
+                        <input 
+                            type="color" 
+                            value={this.state.primary} 
+                            style={{backgroundColor: a.rev}} 
+                            onChange={this.primary} 
+                        />
+                        <h4>Select Secondary Color</h4>
+                        <input 
+                            type="color"
+                            value={this.state.secondary} 
+                            style={{backgroundColor: a.rev}} 
+                            onChange={this.secondary} 
+                        />
+                        <div><i>Select same color for primary and secondary colors<br />for single colored theme.</i></div>
+                        <br />
+                        <h5 style={{color: 'red'}}>{this.state.status}</h5>
+                    </form>
+                </PopUp>
             </footer>
         )        
     }
@@ -215,8 +193,8 @@ class Glass extends Component {
                 <input type='checkbox' onChange={() => this.updateMode(a)} defaultChecked={a.glass} />
                 <div className='slider' style={slider}>
                     <div className="pointer flex-center" style={{ backgroundColor: mode }}>
-                        <i className="fas fa-toggle-off" style={{ color: a.hex.primary }}></i>
-                        <i className="fas fa-toggle-on" style={{ color: a.hex.secondary}}></i>
+                        <i className="fas fa-toggle-off" style={{ color: a.hex.secondary }}></i>
+                        <i className="fas fa-toggle-on" style={{ color: a.hex.primary}}></i>
                     </div>
                 </div>
             </label>

@@ -308,6 +308,13 @@ strong {
     width: 100%;
     max-width: 150px;
 }
+span.invalid-field-warning {
+    color: red !important;
+}
+input.invalid-field, .invalid-field {
+    border: solid 1px red !important;
+    color: red !important;
+}
 form :is(input, select, button, textarea, select, option, .btn) {
     padding: 7px 20px;
     margin: 4px 0 !important;
@@ -402,6 +409,7 @@ form :is(input, select, button, textarea, select, option, .btn) {
         position: relative;
         align-items: flex-end;
         position: relative;
+        padding-top: 2rem;
         margin: 0 2rem;
         color: #FFF;
         p {

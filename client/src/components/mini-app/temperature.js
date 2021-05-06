@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { ThemeContext } from "../var"
 import JwPagination from 'jw-react-pagination';
+import ValidForm from 'react-valid-form-component';
 import "../../styles/mini-app/Temperature.scss";
 import '../../styles/keyframes.scss';
 import { Today, Blur, SpCircle } from "../inc/inc";
@@ -12,16 +13,11 @@ const url = 'http://api.openweathermap.org/';
 class Temperature extends Component {
 
     static contextType = ThemeContext;
-    constructor(props) {
-        super(props);
-        this.state = {
-            query: false,
-            city: false
-        }
-        this.update = this.update.bind(this);
-        this.onClick = this.onClick.bind(this);
+    state = {
+        query: false,
+        city: false
     }
-
+    
     componentDidMount() {
         this.setState({
             query: 'Idaho Falls',
@@ -38,8 +34,8 @@ class Temperature extends Component {
         } 
     }
 
-    onClick = e => {
-        e.preventDefault();
+    onClick = () => {
+
         this.update();
     }
 
@@ -76,10 +72,17 @@ class Temperature extends Component {
                     <div className="header flex-row w-100">
                         <h1>{e.city.name}</h1>
                         <h3>Population: {e.city.population}</h3>
-                        <form className="flex-center">
-                            <input type="text" style={input} value={this.state.query} onChange={this.onChange} />
-                            <button className="btn" style={bg} onClick={(e) => this.onClick(e)}>Update City</button>
-                        </form>
+                        <ValidForm nosubmit onSubmit={(e) => this.onClick()} className="flex-col contact-info">
+                            <input 
+                                name="city"
+                                type="text" 
+                                required
+                                placeholder={this.state.query} 
+                                style={input} 
+                                onChange={this.onChange} 
+                            />
+                            <button className="btn" style={bg} type="submit">Send Form</button>
+                        </ValidForm>
                     </div>
                     <div className="w-50 flex-col" style={{alignItems: 'center'}}>
                         <TempCir temp={e.list[0]} />
