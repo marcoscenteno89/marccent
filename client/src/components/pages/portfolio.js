@@ -84,12 +84,8 @@ class Card extends Component {
                 target="blank" 
                 style={{ background: a.rev }} 
                 className="card-container flex-col">
-                <div className="img-container">
                     <Img src={this.props.content.src} alt={this.props.content.alt} />
-                </div>
-                <div className="flex-center">
                     <i style={{background: a.grad}} className="far large fa-circle"></i>
-                </div>
             </a>
         )
     }

@@ -58,7 +58,7 @@ class Footer extends Component {
         }
         return  (
             <footer className={background} style={{backgroundColor: a.mode}}>
-                <div className="container" style={{paddingTop: '1rem'}}>
+                <div className="container">
                     <FooterNav />
                     <div className="m-10 flex-center">
                         <LightDark />

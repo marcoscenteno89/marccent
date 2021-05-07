@@ -3,6 +3,7 @@
   z-index: 1;
   .container {
     overflow: visible;
+    padding-top: 1rem;
     .footer-nav {
       position: absolute;
       top: -5rem;
@@ -94,6 +95,7 @@
       width: 3rem;
       height: 3rem;
       border: none;
+      cursor: pointer;
       .inner {
         width: 2.2rem;
         height: 2.2rem;
@@ -113,6 +115,32 @@
       ul {
         list-style-type: none;
         padding: 0 0 0 5px;
+      }
+    }
+  }
+}
+@media (max-width:768px) {
+  .main-footer {
+    .container {
+      padding-top: 0;
+      .footer-nav {
+        position: relative;
+        top: inherit;
+        padding-top: 0;
+        .menu {
+          width: 4rem;
+          height: 4rem;
+          i {
+            font-size: 3rem;
+          }
+        }
+        li {
+          height: 4rem;
+          width: 4rem;
+          i {
+            font-size: 2.5rem;
+          }
+        }
       }
     }
   }

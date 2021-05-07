@@ -13,20 +13,15 @@
                 min-width: 250px;
                 overflow: hidden;
                 align-items: center;
+                padding: 4px;
+                img {
+                    border-radius: $radious;
+                }
                 i {
-                    margin: 0.3rem 0.3rem;
-                    font-size: 0.8rem;
+                    margin-top: 0.3rem;
+                    font-size: 2.2rem;
                     -webkit-text-fill-color: transparent !important;
                     -webkit-background-clip: text !important;
-                }
-                i.large {
-                    font-size: 1.7rem;
-                }
-                .img-container {
-                    border-radius: $radious;
-                    border: solid 5px;
-                    height: 400px;
-                    overflow: hidden;
                 }
             }
         }
