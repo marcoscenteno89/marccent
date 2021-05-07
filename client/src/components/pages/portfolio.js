@@ -12,30 +12,37 @@ import Site7 from "./../../media/site7.webp";
 const images = [
     {
         src: Site1,
+        alt: 'Anthem Broadband Link',
         url: 'https://anthembroadband.com/'
     },
     {
         src: Site2,
+        alt: 'Dynamite Wireless Link',
         url: 'https://dynamitewireless.com/'
     },
     {
         src: Site3,
+        alt: 'Sage Mountain Link',
         url: 'https://sagemountainaccounting.com/'
     },
     {
         src: Site4,
+        alt: 'NorthWest DataCom Link',
         url: 'https://www.northwestdatacom.com/'
     },
     {
         src: Site5,
+        alt: 'Rimrock Concrete Curbing Link',
         url: 'https://rimrockconcretecurbing.com/'
     },
     {
         src: Site6,
+        alt: 'R & C Construction Link',
         url: 'https://rc-imp.com/'
     },
     {
         src: Site7,
+        alt: 'Safelink Internet Link',
         url: 'https://safelinkinternet.com/'
     },
 ]
@@ -71,16 +78,19 @@ class Card extends Component {
         if (this.context.active.id === 0) return <Fragment>Loading...</Fragment>
         const a = this.context.active;
         return  (
-            <div style={{ background: a.rev }} className="card-container flex-col">
+            <a 
+                href={this.props.content.url}
+                alt={this.props.content.alt}
+                target="blank" 
+                style={{ background: a.rev }} 
+                className="card-container flex-col">
                 <div className="img-container">
-                    <Img src={this.props.content.src} />
+                    <Img src={this.props.content.src} alt={this.props.content.alt} />
                 </div>
                 <div className="flex-center">
-                    <a href={this.props.content.url} target="blank">
-                        <i style={{background: a.grad}} className="far large fa-circle"></i>
-                    </a>
+                    <i style={{background: a.grad}} className="far large fa-circle"></i>
                 </div>
-            </div>
+            </a>
         )
     }
 }      

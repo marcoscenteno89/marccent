@@ -22,11 +22,10 @@ class HeroBanner extends Component {
             <section className="hero-banner flex-center" style={{margin: '0'}}>
                 <div className="container" style={{overflow: 'visible', width: '75%'}}>
                     <Notebook data={a}>
-                        <h1>Hello,</h1>
-                        <h1>My Name is Marcos Centeno</h1>
-                        <h3>A Web Developer that specializes in front-end development</h3>
-                        <h4>Take a look around</h4>
-                        <h4>Work in progress</h4>
+                        <h1>Hello, My Name is Marcos Centeno</h1>
+                        <h2>A Web Developer that specializes in front-end development</h2>
+                        <h3>Take a look around</h3>
+                        <h4>Work in progress, website under construction.</h4>
                         <StatusBar bar={bar} styles={barStyles} />
                     </Notebook>
                 </div>

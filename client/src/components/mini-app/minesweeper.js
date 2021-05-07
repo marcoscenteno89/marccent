@@ -359,8 +359,18 @@ class MineSweeper extends Component {
                             )}
                         </div>
                         <div className="controller flex-center">
-                            <Button className="btn" styles={btn} onClick={() => this.startOver()} text="Start Over" />
-                            <Button className="btn" styles={btn} onClick={() => this.help()} text="Help" />
+                            <Button 
+                                className="btn" 
+                                styles={btn} 
+                                onClick={() => this.startOver()} 
+                                text="Start Over" 
+                            />
+                            <Button 
+                                className="btn" 
+                                styles={btn} 
+                                onClick={() => this.help()} 
+                                text="Help" 
+                            />
                         </div>
                         <PopUp key={1} header={header} controller={this.startOver} display={b.popup} btnText="Start Over">
                             <div>{b.win ? `Time: ${b.time}` : 'You Lost'}</div>

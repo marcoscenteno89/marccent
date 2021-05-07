@@ -66,7 +66,12 @@ class Footer extends Component {
                     </div>
                     <div className="flex-row">
                         <Carousel breakPoints={breakPoints}>
-                            <button key={0} style={btn} className="single flex-center" onClick={() => this.showForm()}>
+                            <button 
+                                aria-label="Add Theme" 
+                                key={0} 
+                                style={btn} 
+                                className="single flex-center" 
+                                onClick={() => this.showForm()}>
                                 <div className="inner flex-center">
                                     <i style={add} className="fas fa-plus"></i>
                                 </div>
@@ -127,9 +132,13 @@ class Choices extends Component {
             filter: `drop-shadow(-25px 0 9px ${c.primary}) drop-shadow(25px 0 9px ${c.secondary}) blur(2px)`,
             background: a.mode
         }
-            
+        const label = `theme-${c.id}`
         return (
-        <button key={c.id} className="single flex-center" style={btn} onClick={() => b.updateTheme(c.id)}>
+        <button 
+            key={c.id}
+            aria-label={label}
+            className="single flex-center" 
+            style={btn} onClick={() => b.updateTheme(c.id)}>
             <div className="inner flex-center" style={inner}>
                 <div className="shadow" style={shadow}></div>
             </div>

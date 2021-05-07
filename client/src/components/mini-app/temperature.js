@@ -70,7 +70,7 @@ class Temperature extends Component {
             <section className="temp flex-center">
                 <div className={background} style={sec}>
                     <div className="header flex-row w-100">
-                        <h1>{e.city.name}</h1>
+                        <h2>{e.city.name}</h2>
                         <h3>Population: {e.city.population}</h3>
                         <ValidForm nosubmit onSubmit={(e) => this.onClick()} className="flex-col contact-info">
                             <input 
@@ -97,47 +97,6 @@ class Temperature extends Component {
                 </div>
             </section>
         )        
-    }
-}
-
-class List extends Component {
-    
-    static contextType = ThemeContext;
-    render() {
-        if (this.context.active.id === 0) return <Fragment>Loading...</Fragment>
-        const a = this.context.active;
-        const o = this.props.item;
-        const list = {
-            backgroundImage: `url('${url}img/w/${o.weather[0].icon}.png')`,
-            height: '50px'
-        }
-        const bg = {
-            background: a.grad,
-            color: a.hex.light
-        }
-        return (
-            <div className="list-outer shadow-s" style={{background: a.mode}}>
-                <div style={bg} className="list-inner shadow-xs">
-                    <div className="transparent flex-row">
-                        <div className="image" style={list} />
-                        <strong className="one">{o.main.temp}&#176;</strong>
-                        <div className="container">
-                            <div className="flex-row table">
-                                <span>{o.dt_txt}</span>
-                            </div>
-                            <div className="flex-row table">
-                                <span className="one">Feels like: {o.main.feels_like}</span>
-                                <span className="two">Humidity: {o.main.humidity}</span>
-                            </div>
-                            <div className="flex-row table">
-                                <span className="one">Low: {o.main.temp_min}</span>
-                                <span className="two">High: {o.main.temp_max}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        )
     }
 }
 
@@ -171,6 +130,47 @@ class WeatherHistory extends Component {
                     <List key={index} data={a} item={item} />
                 ))}
                 <JwPagination pageSize={8} items={this.state.items} onChangePage={this.onChangePage} />
+            </div>
+        )
+    }
+}
+
+class List extends Component {
+    
+    static contextType = ThemeContext;
+    render() {
+        if (this.context.active.id === 0) return <Fragment>Loading...</Fragment>
+        const a = this.context.active;
+        const o = this.props.item;
+        const list = {
+            backgroundImage: `url('${process.env.REACT_APP_OPENWEATHERURL}img/w/${o.weather[0].icon}.png')`,
+            height: '50px'
+        }
+        const bg = {
+            background: a.grad,
+            color: a.hex.light
+        }
+        return (
+            <div className="list-outer shadow-s" style={{background: a.mode}}>
+                <div style={bg} className="list-inner shadow-xs">
+                    <div className="transparent flex-row">
+                        <div className="image" style={list} />
+                        <strong className="one">{o.main.temp}&#176;</strong>
+                        <div className="container">
+                            <div className="flex-row table">
+                                <span>{o.dt_txt}</span>
+                            </div>
+                            <div className="flex-row table">
+                                <span className="one">Feels like: {o.main.feels_like}</span>
+                                <span className="two">Humidity: {o.main.humidity}</span>
+                            </div>
+                            <div className="flex-row table">
+                                <span className="one">Low: {o.main.temp_min}</span>
+                                <span className="two">High: {o.main.temp_max}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         )
     }

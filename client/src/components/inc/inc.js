@@ -24,7 +24,7 @@ const RandomNum = (min, max) => Math.floor(Math.random() * (max - min + 1) + min
 
 const Button = props => {
     return (
-        <button style={props.styles} className={props.className} onClick={() => props.onClick()}>
+        <button style={props.styles} aria-label={props.text} className={props.className} onClick={() => props.onClick()}>
             <i className="fab fa-edge rotate"></i> <span style={{marginLeft: '5px'}}>{props.text}</span>
         </button>
     )
@@ -104,7 +104,12 @@ const Title = props => {
 
 const Img = props => {
     return (<React.Fragment key="1">
-        <img src={props.src} alt={props.alt} style={props.styles} loading="lazy" />
+        <img 
+            src={props.src} 
+            alt={props.alt}
+            style={props.styles} 
+            loading="lazy" 
+        />
     </React.Fragment>)
 }
 

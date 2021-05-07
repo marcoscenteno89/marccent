@@ -70,7 +70,7 @@ class About extends Component {
                     <div className="con flex-center">
                         <div className="circle-con">
                             <SpCircle styles={circle} data={a}>
-                                <Img src={profile} />
+                                <Img src={profile} alt="Marcos Centeno profile picture" />
                             </SpCircle>
                         </div>
                     </div>
