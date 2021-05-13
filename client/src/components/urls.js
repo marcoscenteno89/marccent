@@ -11,35 +11,35 @@ const About = lazy(() => import("./pages/about"));
 
 class Urls extends Component {
    
-    render() {
-        return (
-            <Fragment>
-            <Switch>
-                <Route exact path="/"><HeroBanner /></Route>
-            </Switch>
-            <Switch>
-                <Suspense fallback={<h2>Loading...</h2>}>
-                    <Route path="/portfolio"><Portfolio /></Route>
-                    <Route path="/about"><About /></Route>
-                    <Route path="/contact"><Contact /></Route>
-                    <Route path="/privacy-policy"><PrivacyPolicy /></Route>
-                    <Route exact path="/">
-                        <About />
-                        <Temperature />
-                        <Apps />
-                        <Portfolio />
-                        <Contact />
-                    </Route>
-                    <Route path="/apps">
-                        <Route path="/apps/minesweeper"><MineSweeper /></Route>
-                        <Route path="/apps/temp"><Temperature /></Route>
-                        <Apps />
-                    </Route>
-                </Suspense>
-            </Switch>
-            </Fragment> 
-        )
-    }
+  render() {
+    return (
+      <Fragment>
+        <Switch>
+          <Route exact path="/"><HeroBanner /></Route>
+        </Switch>
+        <Switch>
+          <Suspense fallback={<h2>Loading...</h2>}>
+            <Route path="/portfolio"><Portfolio /></Route>
+            <Route path="/about"><About /></Route>
+            <Route path="/contact"><Contact /></Route>
+            <Route path="/privacy-policy"><PrivacyPolicy /></Route>
+            <Route exact path="/">
+              <About />
+              <Temperature />
+              <Apps />
+              <Portfolio />
+              <Contact />
+            </Route>
+            <Route path="/apps">
+              <Route path="/apps/minesweeper"><MineSweeper /></Route>
+              <Route path="/apps/temp"><Temperature /></Route>
+              <Apps />
+            </Route>
+          </Suspense>
+        </Switch>
+      </Fragment> 
+    )
+  }
 }
 
 export default Urls;

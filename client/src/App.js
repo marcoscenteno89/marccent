@@ -1,4 +1,4 @@
-import React, { Component, lazy } from 'react';
+import React, { Component } from 'react';
 // import Todo from './components/todo';
 import Theme from './components/theme';
 import { ThemeProvider } from './components/var';
@@ -16,13 +16,13 @@ ga4react.initialize().then((ga4) => {
 })
 
 class App extends Component {
-    render() {
-        return (
-            <ThemeProvider>
-                <Theme />
-            </ThemeProvider>  
-        )
-    }
+  render() {
+    return (
+      <ThemeProvider>
+        <Theme />
+      </ThemeProvider>  
+    )
+  }
 }
 
 export default App;

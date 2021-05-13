@@ -10,34 +10,36 @@ import { ThemeContext } from "./var"
 
 class Theme extends Component {
 
-    static contextType = ThemeContext;
+  static contextType = ThemeContext;
 
-    componentDidMount() {
-        this.context.getThemes();
+  componentDidMount() {
+    this.context.getThemes();
+  }
+
+  render() {
+    if (this.context.theme.id === 0) return <Fragment>Loading...</Fragment>
+    const a = this.context.theme;
+
+    const body = {
+      backgroundImage: a.grad,
+      color: a.rev
     }
-
-    render() {
-        if (this.context.active.id === 0) return <Fragment>Loading...</Fragment>
-        const a = this.context.active;
-        const body = {
-            backgroundImage: a.grad,
-            color: a.rev
-        }
-        return (
-            <div className="body" style={body}>
-                <Background styles={{ backgroundImage: a.grad }} />
-                <BrowserRouter>
-                <Nav />
-                <div className="page flex-center">
-                    <div className="content">
-                        <Urls />
-                    </div>
-                </div>
-                <Footer /> 
-                </BrowserRouter> 
+    
+    return (
+      <div className="body" style={body}>
+        <Background styles={{ backgroundImage: a.grad }} />
+        <BrowserRouter>
+          <Nav />
+          <div className="page flex-center">
+            <div className="content">
+                <Urls />
             </div>
-        )
-    }
+          </div>
+          <Footer /> 
+        </BrowserRouter> 
+      </div>
+    )
+  }
 }
 
 export default Theme;

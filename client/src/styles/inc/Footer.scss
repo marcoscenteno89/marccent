@@ -88,6 +88,22 @@
         }
       }
     }
+    .rec-item-wrapper {
+      position: relative;
+      .close {
+        position: absolute;
+        top: 10%;
+        right: 7%;
+        font-size: 1.5rem;
+        display: none;
+        cursor: pointer;
+      }
+      &:hover {
+        .close {
+          display: block;
+        }
+      }
+    }
     .single {
       margin: 25px 0 60px 0;
       padding: 0;
