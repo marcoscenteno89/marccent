@@ -29,7 +29,11 @@ class Footer extends Component {
       this.setState({status: `You are tring to submit the same colors as current theme.`});
       return;
     }
-    this.context.addTheme(i);
+    this.setState({ showForm: false });
+    this.context.addTheme({
+      primary: this.state.primary,
+      secondary: this.state.secondary
+    });
   }
   primary = e => this.setState({ primary: e.target.value});
   secondary = e => this.setState({ secondary: e.target.value});

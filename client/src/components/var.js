@@ -66,13 +66,13 @@ export class ThemeProvider extends Component {
   }
 
   addTheme = theme => {
+    console.log('at add theme');
     console.log(theme);
     let temp = this.state.list;
     let largest = this.state.list[0].id;
     for (let i of this.state.list) {
       if (i.id > largest) largest = i.id
     }
-    delete theme.showForm;
     theme.id = largest + 1;
     temp.push(theme);
     this.setState({
@@ -84,15 +84,12 @@ export class ThemeProvider extends Component {
   }
 
   removeTheme = (id) => {
-
+    if (id === this.state.id) {
+      this.updateTheme(this.state.list[0].id);
+    }
+    
     let updated = this.state.list.filter(theme => theme.id !== id);
-    console.log(id);
-    console.log(updated);
-    return;
-    // let temp = this.state;
-    // let theme = themes[0];
-    // console.log(updated, id, this.state); 
-    // localStorage.setItem('marccent_themes', JSON.stringify(updated));
+    this.setState({ list: updated }, () => this.storeTheme(this.state));
   }
 
   updateTheme = (id) => {

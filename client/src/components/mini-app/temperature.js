@@ -8,7 +8,6 @@ import { Today, Blur, SpCircle } from "../inc/inc";
 import Maps from "../map";
 const openWeather = `${process.env.REACT_APP_OPENWEATHERURL}data/2.5/forecast`;
 const token = `&units=imperial&appid=${process.env.REACT_APP_OPENWEATHER}`;
-const url = 'http://api.openweathermap.org/';
 
 class Temperature extends Component {
 

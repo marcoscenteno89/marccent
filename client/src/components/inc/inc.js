@@ -238,27 +238,28 @@ const ColorList = is_dark => {
 const MapStyle = (a) => {
   const col =  ColorList(a.is_dark);
   const mode = a.is_dark ? a.hex.dark : a.hex.light;
+  const rev = a.is_dark ? a.hex.light : a.hex.dark;
   const prim = a.hex.primary;
   const sec = a.hex.secondary;
   return [
     {elementType: 'geometry', stylers: [{color: mode}]},
-    {elementType: 'labels.text.stroke', stylers: [{color: col.d}]},
-    {elementType: 'labels.text.fill', stylers: [{color: sec}]},
-    {featureType: 'administrative.locality', elementType: 'labels.text.fill', stylers: [{color: sec}]},
-    {featureType: 'poi', elementType: 'labels.text.fill', stylers: [{color: sec}]},
+    {elementType: 'labels.text.stroke', stylers: [{color: rev}]},
+    {elementType: 'labels.text.fill', stylers: [{color: mode}]},
+    {featureType: 'administrative.locality', elementType: 'labels.text.fill', stylers: [{color: mode}]},
+    {featureType: 'poi', elementType: 'labels.text.fill', stylers: [{color: mode}]},
     {featureType: 'poi.park', elementType: 'geometry', stylers: [{color: col.c}]},
-    {featureType: 'poi.park', elementType: 'labels.text.fill', stylers: [{color: prim}]},
+    {featureType: 'poi.park', elementType: 'labels.text.fill', stylers: [{color: mode}]},
     {featureType: 'road', elementType: 'geometry', stylers: [{color: sec}]},
     {featureType: 'road', elementType: 'geometry.stroke', stylers: [{color: col.d}]},
-    {featureType: 'road', elementType: 'labels.text.fill', stylers: [{color: sec}]},
+    {featureType: 'road', elementType: 'labels.text.fill', stylers: [{color: mode}]},
     {featureType: 'road.highway', elementType: 'geometry', stylers: [{color: prim}]},
-    {featureType: 'road.highway', elementType: 'geometry.stroke', stylers: [{color: col.d}]},
-    {featureType: 'road.highway', elementType: 'labels.text.fill', stylers: [{color: sec}]},
+    {featureType: 'road.highway', elementType: 'geometry.stroke', stylers: [{color: sec}]},
+    {featureType: 'road.highway', elementType: 'labels.text.fill', stylers: [{color: mode}]},
     {featureType: 'transit', elementType: 'geometry', stylers: [{color: prim}]},
-    {featureType: 'transit.station', elementType: 'labels.text.fill', stylers: [{color: sec}] },
+    {featureType: 'transit.station', elementType: 'labels.text.fill', stylers: [{color: mode}] },
     {featureType: 'water', elementType: 'geometry', stylers: [{color: col.d}]},
-    {featureType: 'water', elementType: 'labels.text.fill', stylers: [{color: sec}]},
-    {featureType: 'water', elementType: 'labels.text.stroke', stylers: [{color: col.d}]}
+    {featureType: 'water', elementType: 'labels.text.fill', stylers: [{color: mode}]},
+    {featureType: 'water', elementType: 'labels.text.stroke', stylers: [{color: rev}]}
   ]
 }
 
