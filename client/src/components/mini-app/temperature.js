@@ -33,14 +33,9 @@ class Temperature extends Component {
         } 
     }
 
-    onClick = () => {
+    onClick = () => this.update();
 
-        this.update();
-    }
-
-    onChange = (e) => {
-        this.setState({query: e.target.value});
-    }
+    onChange = (e) => this.setState({query: e.target.value});
 
     render() {
         if (!this.state.city) return <Fragment>Loading...</Fragment>
@@ -111,7 +106,7 @@ class WeatherHistory extends Component {
     this.onChangePage = this.onChangePage.bind(this);
   }
 
-  componentWillReceiveProps(props) {
+  UNSAFE_componentWillReceiveProps(props) {
     this.setState({
       items: props.list
     });
@@ -185,7 +180,7 @@ class TempCir extends Component {
     }
   }
 
-  componentWillReceiveProps(props) {
+  UNSAFE_componentWillReceiveProps(props) {
     this.setState({
       temp: props.temp
     });

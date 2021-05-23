@@ -15,7 +15,7 @@ export class Maps extends Component {
     }
   }
 
-  componentWillReceiveProps(props) {
+  UNSAFE_componentWillReceiveProps(props) {
     this.setState({
       mapData: props.mapData
     }, () => this.updateMap());

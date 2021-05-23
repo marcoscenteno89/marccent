@@ -51,7 +51,7 @@ class PopUp extends Component {
     }
   }
 
-  componentWillReceiveProps(e) {
+  UNSAFE_componentWillReceiveProps(e) {
     this.setState({
       display: e.display
     });

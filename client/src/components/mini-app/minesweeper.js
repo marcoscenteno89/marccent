@@ -407,7 +407,7 @@ class Counter extends Component {
     }
   }
 
-  componentWillReceiveProps(e) {
+  UNSAFE_componentWillReceiveProps(e) {
     if (e.active && this.state.count === 0) {
       this.setState({
         active: true
@@ -446,7 +446,7 @@ class Cell extends Component {
     }
   }
 
-  componentWillReceiveProps(props) {
+  UNSAFE_componentWillReceiveProps(props) {
     this.setState({
       data: props.data,
       cell: props.cell
