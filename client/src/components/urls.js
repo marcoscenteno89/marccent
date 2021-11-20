@@ -25,9 +25,9 @@ class Urls extends Component {
             <Route path="/privacy-policy"><PrivacyPolicy /></Route>
             <Route exact path="/">
               <About />
+              <Portfolio />
               <Temperature />
               <Apps />
-              <Portfolio />
               <Contact />
             </Route>
             <Route path="/apps">

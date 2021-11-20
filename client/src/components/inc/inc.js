@@ -95,9 +95,37 @@ const Background = props => {
   )
 }
 
+const WaveSvg = (props) => {
+  const classes = `wave-section wave-${props.dir}`;
+  return (
+    <svg 
+      className={classes} 
+      style={props.styles} 
+      xmlns="http://www.w3.org/2000/svg" 
+      viewBox="0 0 1000 100" 
+      preserveAspectRatio="none"
+    >
+      <path 
+        className="fill wave-one" 
+        opacity="0.33" 
+        d="M473,67.3c-203.9,88.3-263.1-34-320.3,0C66,119.1,0,59.7,0,59.7V0h1000v59.7 c0,0-62.1,26.1-94.9,29.3c-32.8,3.3-62.8-12.3-75.8-22.1C806,49.6,745.3,8.7,694.9,4.7S492.4,59,473,67.3z"
+      ></path>
+      <path 
+        className="fill wave-one" 
+        opacity="0.66" 
+        d="M734,67.3c-45.5,0-77.2-23.2-129.1-39.1c-28.6-8.7-150.3-10.1-254,39.1 s-91.7-34.4-149.2,0C115.7,118.3,0,39.8,0,39.8V0h1000v36.5c0,0-28.2-18.5-92.1-18.5C810.2,18.1,775.7,67.3,734,67.3z"
+      ></path>
+      <path 
+        className="fill wave-one" 
+        d="M766.1,28.9c-200-57.5-266,65.5-395.1,19.5C242,1.8,242,5.4,184.8,20.6C128,35.8,132.3,44.9,89.9,52.5C28.6,63.7,0,0,0,0 h1000c0,0-9.9,40.9-83.6,48.1S829.6,47,766.1,28.9z"
+      ></path>
+    </svg>
+  )
+}
+
 const Blur = props => {
   return (
-    <svg>
+    <svg className="blur-svg">
       <defs>
         <filter id="filter">
           <feGaussianBlur 
@@ -177,7 +205,8 @@ const Notebook = props => {
   )
 }
 
-const Today = () => {
+const CustDate = (props) => {
+  const i = props.date ? new Date(props.date) : CurrentDate;
   const days = [
     "Sunday", 
     "Monday", 
@@ -201,8 +230,15 @@ const Today = () => {
     'November', 
     'December'
   ];
-  const i = CurrentDate;
-  return (`${days[i.getDay()]}, ${month[i.getMonth()]} ${i.getDate()}, ${i.getFullYear()}`);
+  const o = FormatTime(i);
+  let string = '';
+  if (props.ver) {
+    let e = props.ver;
+    if (e == '1') string = `${days[i.getDay()]}, ${month[i.getMonth()]} ${i.getDate()}, ${i.getFullYear()}`;
+    if (e == '2') string = `${days[i.getDay()]} ${i.getDate()}, ${o.hour}:${o.min} ${o.tod}`;
+  }
+  
+  return (string);
 }
 
 const SpCircle = props => {
@@ -263,7 +299,20 @@ const MapStyle = (a) => {
   ]
 }
 
+const FormatTime = (i) => {
+  const singleDig = (num) => {
+    return num < 10 ? `0${num}` : num;
+  }
+  return {
+    hour: singleDig(i.getHours() > 12 ? i.getHours() - 12 : i.getHours()),
+    min: singleDig(i.getMinutes()),
+    sec: singleDig(i.getSeconds()),
+    tod: i.getHours() > 12 ? 'PM' : 'AM'
+  }
+}
+
 export { 
     SpCircle, Blur, Button, Background, Title, FooterText, MapStyle, Bomb, Notebook, GetMode,
-    CurrentDate, Today, Img, ColorList, RandomNum, Flag, LinGrad, GetColor, GetRgb, RevColor
+    CurrentDate, CustDate, Img, ColorList, RandomNum, Flag, LinGrad, GetColor, GetRgb, RevColor,
+    WaveSvg, FormatTime
 }

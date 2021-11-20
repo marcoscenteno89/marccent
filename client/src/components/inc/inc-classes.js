@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { ThemeContext } from "../var"
 import Modal from 'react-modal';
-import { Button } from "./inc";
+import { Button, FormatTime } from "./inc";
 import "../../styles/inc/Incclasses.scss";
 
 Modal.setAppElement('#app');
@@ -36,7 +36,61 @@ class StatusBar extends Component {
         </div>
       </div>
     )
-      
+  }
+}
+
+class Clock extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      hour: '',
+      min: '',
+      sec: '',
+      tod: ''
+    }
+  }
+
+  componentDidMount(e) {
+    setInterval(() => this.updateClock(), 1000);
+  }
+
+  updateClock () {
+    const i = new Date();
+    const date = FormatTime(i);
+    this.setState({
+      hour: date.hour,
+      min: date.min,
+      sec: date.sec,
+      tod: date.tod
+    })
+  }
+ 
+  render() {
+    const i = this.state;
+    const e = this.props.data;
+    const digit = {
+      border: e.border,
+      backgroundColor: e.bg
+    }
+    return (
+      <div className="flex-row clock" style={{ color: e.text }}>
+        <span className="flex-col-center digit" style={digit}>
+          <strong>{i.hour}</strong>
+          <small>Hour</small>
+        </span>
+        <span className="flex-col-center digit" style={digit}>
+          <strong>{i.min}</strong>
+          <small>Min</small>
+        </span>
+        <span className="flex-col-center digit" style={digit}>
+          <strong>{i.sec}</strong>
+          <small>Sec</small>
+        </span>
+        <span className="flex-col-center digit" style={digit}>
+          <strong style={{fontSize:'2rem',lineHeight:'2rem'}}>{i.tod}</strong>
+        </span>
+      </div>
+    );   
   }
 }
 
@@ -117,6 +171,49 @@ class PopUp extends Component {
   }
 }
 
+class Accordion extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      on: false,
+      display: 'none',
+      symbol: '+'
+    }
+  }
+
+  update() {
+    if (this.state.on) {
+      this.setState({
+        on: false,
+        display: 'none',
+        symbol: '+'
+      });
+    } else {
+      this.setState({
+        on: true,
+        display: 'flex',
+        symbol: '-'
+      });
+    }
+  }
+
+  render() {
+    const i = this.state;
+    const e = this.props;
+    return (
+      <div className="accordion">
+				<button className="heading flex-row" onClick={(e) => this.update()}>
+					<span className="symbol flex-center">{i.symbol}</span>{e.children[0]}
+        </button>
+				<div className="body" style={{display: i.display}}>
+          {e.children[1]}
+        </div>
+      </div>
+    )
+  }
+}
+
 export { 
-    StatusBar, PopUp
+    StatusBar, PopUp, Clock, Accordion
 }

@@ -1,29 +1,30 @@
 @import '../Variables.scss';
 .page-portfolio {
-    > .container {
-        > .flex-center {
-            min-height: 700px;
-            flex-wrap: wrap;
-            justify-content: center;
-            .card-container {
-                border-radius: $radious;
-                box-shadow: 0 0 12px #000;
-                margin: 1.5rem;
-                width: 22%;
-                min-width: 250px;
-                overflow: hidden;
-                align-items: center;
-                padding: 4px;
-                img {
-                    border-radius: $radious;
-                }
-                i {
-                    margin-top: 0.3rem;
-                    font-size: 2.2rem;
-                    -webkit-text-fill-color: transparent !important;
-                    -webkit-background-clip: text !important;
-                }
-            }
+  margin: 0;
+  > .container {
+    > .flex-center {
+      flex-wrap: wrap;
+      justify-content: center;
+      .card-container {
+        border-radius: $radious;
+        box-shadow: 0 0 12px #000;
+        margin: 1.5rem;
+        width: 100%;
+        min-width: 120px;
+        max-width: 250px;
+        overflow: hidden;
+        align-items: center;
+        padding: 4px;
+        img {
+          border-radius: $radious;
         }
+        i {
+          margin-top: 0.3rem;
+          font-size: 2.2rem;
+          -webkit-text-fill-color: transparent !important;
+          -webkit-background-clip: text !important;
+        }
+      }
     }
+  }
 }

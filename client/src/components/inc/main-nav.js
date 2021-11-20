@@ -1,6 +1,8 @@
 import React, { Component, Fragment } from "react";
 import { ThemeContext } from "../var";
 import { Link } from 'react-router-dom';
+import { GetMode } from "../inc/inc";
+import { Clock } from "../inc/inc-classes";
 import '../../styles/inc/Nav.scss';
 
 class Nav extends Component {
@@ -37,8 +39,13 @@ class Nav extends Component {
       display: this.state.menuOpen ? 'block' : 'none'
     }
     
-    let background = `main-nav flex-center${a.glass ? ' glass' : ''}`;
-      
+    const background = `main-nav flex-center${a.glass ? ' glass' : ''}`;
+    const grad = `linear-gradient(to bottom, ${a.hex.secondary}, ${a.hex.primary})`;
+    const clockstyles = {
+      border: `1px solid ${a.hex.secondary}`,
+      text: a.hex.secondary,
+      bg: GetMode(a, '0.5')
+    }
     return  (
       <nav className={background} style={{backgroundColor: a.mode}}>
         <div className="container flex-row">
@@ -69,6 +76,7 @@ class Nav extends Component {
             </ul>
           </div>
           <i className="toggle fas fa-bars" style={toggle} onClick={() => this.toggleMenu()}></i>
+          <Clock data={clockstyles} />
         </div>
       </nav>
     )        

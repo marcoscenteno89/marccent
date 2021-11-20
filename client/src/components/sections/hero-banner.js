@@ -26,7 +26,6 @@ class HeroBanner extends Component {
             <h2>A Web Developer that specializes in front-end development</h2>
             <h3>Take a look around</h3>
             <h4>Work in progress, website under construction.</h4>
-            <StatusBar bar={bar} styles={barStyles} />
           </Notebook>
         </div>
       </section>

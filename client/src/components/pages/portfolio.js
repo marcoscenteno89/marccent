@@ -1,7 +1,8 @@
 import React, { Component, Fragment } from "react";
 import '../../styles/pages/Portfolio.scss';
-import { ThemeContext } from "../var"
-import { Img } from "../inc/inc";
+import { ThemeContext } from "../var";
+import Carousel from "react-elastic-carousel";
+import { Img, WaveSvg } from "../inc/inc";
 import Site1 from "./../../media/site1.webp";
 import Site2 from "./../../media/site2.webp";
 import Site3 from "./../../media/site3.webp";
@@ -55,18 +56,28 @@ class Portfolio extends Component {
     const a = this.context.theme;
     const pg = {
       backgroundColor: a.mode,
-      padding: '20px'
     }
     let background = `page-portfolio flex-center${a.glass ? ' glass' : ''}`;
+    const breakPoints = [
+      {width: 768, itemsToShow: 1},
+      {width: 868, itemsToShow: 2},
+      {width: 968, itemsToShow: 3},
+    ]
     return  (
-      <section className={background} style={pg}>
-        <div className="container">
-          <h2 className="w-100"style={{textAlign: 'center'}}>Portfolio</h2>
-          <div className="flex-center">
-          {images.map((img, index) => <Card key={index} content={img} />)}
+      <div>
+        <WaveSvg dir="top" styles={{ fill: a.mode}} />
+        <section className={background} style={pg}>
+          <div className="container" style={{margin: '0'}}>
+            <h2 className="w-100"style={{textAlign: 'center'}}>Portfolio</h2>
+            <div className="flex-center">
+              <Carousel breakPoints={breakPoints}>
+              {images.map((img, index) => <Card key={index} content={img} />)}
+              </Carousel>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+        <WaveSvg dir="bottom" styles={{ fill: a.mode}} />
+      </div>
     )        
   }
 }

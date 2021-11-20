@@ -5,7 +5,7 @@ import '../../styles/pages/Contact.scss';
 import Maps from "../map";
 import Modal from 'react-modal';
 import ValidForm from 'react-valid-form-component';
-import { GetMode, Title } from "../inc/inc";
+import { GetMode, Title, WaveSvg } from "../inc/inc";
 
 const server = `${process.env.REACT_APP_STRAPIURL}`;
 Modal.setAppElement('#app');
@@ -42,12 +42,11 @@ class Contact extends Component {
     const e = this.state;
     const mode = GetMode(a, 1);
     const bg = {
+      border: `1px solid ${a.hex.primary}`
+    }
+    const btn = {
       background: a.grad,
       color: a.hex.light
-    }
-    const header = {
-      background: `linear-gradient(to top, ${mode}, ${GetMode(a, 0)})`,
-      color: a.rev
     }
     const mapData = {
       loc: {
@@ -56,17 +55,21 @@ class Contact extends Component {
       },
       zoom: 11
     }
-    const cont = {backgroundImage: `linear-gradient(to bottom right, ${mode}, ${GetMode(a, 0.4)})`}
-    let background = `container${a.glass ? ' glass' : ''}`;
+    let background = `page-contact${a.glass ? ' glass' : ''}`;
     return  (
-      <section className="page-contact flex-center">
-        <div className={background} style={{backgroundColor: a.mode}}>
-          <Title style={header} text="Contact" />
-          <div className="contact flex-center">
-            <div className="map-size">
-              <Maps mapData={mapData} />
-            </div>
-            <ValidForm nosubmit onSubmit={(e) => this.onClick(e)} className="flex-col contact-info" style={cont}>
+      <section className={background}>
+        <WaveSvg dir="top" styles={{ fill: a.mode}} />
+        <div className="contact flex-center">
+          <div className="map-size" style={{height: '600px'}}>
+            <Maps mapData={mapData} />
+          </div>
+          <div className="form-area flex-row" style={{ backgroundColor: mode }}>
+            <ValidForm 
+              nosubmit 
+              onSubmit={(e) => this.onClick(e)} 
+              className="flex-col contact-info" 
+            >
+              <h3 style={{color: a.rev}}>GET IN TOUCH</h3>
               <input 
                 name="full_name"
                 type="text" 
@@ -94,13 +97,18 @@ class Contact extends Component {
                 onChange={this.messageChange} 
                 rows="5"
               ></textarea>
-              <button className="btn" style={bg} type="submit">Send Form</button>
+              <button className="btn" style={btn} type="submit">Send Form</button>
             </ValidForm>
+            <div className="">
+
+            </div>
           </div>
-          <PopUp header="Status" display={this.state.modal}>
-            <p>Message has been received.</p>
-          </PopUp>
+          
         </div>
+        <WaveSvg dir="bottom" styles={{ fill: a.mode}} />
+        <PopUp header="Status" display={this.state.modal}>
+          <p>Message has been received.</p>
+        </PopUp>
       </section>
     )        
   }
