@@ -1,5 +1,7 @@
 from django.db import models
 from django.template.defaultfilters import truncatechars
+# from django.conf import settings
+from django.contrib.auth.models import User
 import json
 
 # Create your models here.
@@ -15,33 +17,38 @@ class Option(models.Model):
   def short_description(self):
     return truncatechars(self.value, 100)
 
-  def op_get(name):
-    obj = Option.objects.filter(name=name).values()
-    return obj[0]['value'] if (len(obj) > 0) else 'Item not found'
+  def get(name):
+    return Option.objects.filter(name=name).values()
   
-  def op_update(name, val):
+  def update(name, val):
     return Option.objects.update_or_create(name=name,value=val)
 
-  def op_filter(filter):
+  def find(term):
+    return Option.objects.filter(name__contains=term).values()
 
-    return 'nothing here'
-
-  def op_get_all():
-    items = Option.objects.all()
-    values = Option.objects.values()
-    alist = list(Option.objects.all())
-    # print(items)
-    # print(values)
-    # for val in items:
-    #   temp = Option.is_json(val.value)
-    #   val['value'] = temp
-
-    return items
+  def get_all():
+    return Option.objects.values()
 
   def is_json(value):
+    import sys 
     try:
       return json.loads(value)
     except:
       return value
 
-  
+
+class Message(models.Model):
+  user = models.ForeignKey(User, on_delete=models.CASCADE)
+  message = models.TextField(default='')
+
+  @property
+  def short_description(self):
+    return truncatechars(self.message, 100)
+
+  def get_user(email):
+    return User.objects.values().filter(email=email)
+
+  def user_msgs(email):
+    user = User.objects.get(email=email)
+    return Message.objects.filter(user=user)
+

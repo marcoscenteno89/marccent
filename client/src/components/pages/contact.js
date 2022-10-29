@@ -7,31 +7,33 @@ import Modal from 'react-modal';
 import ValidForm from 'react-valid-form-component';
 import { GetMode, Title, WaveSvg } from "../inc/inc";
 
-const server = `${process.env.REACT_APP_STRAPIURL}`;
+const server = `${process.env.REACT_APP_SERVERURL}`;
 Modal.setAppElement('#app');
 
 class Contact extends Component {
 
   state = {
-    name: '',
+    first_name: '',
+    last_name: '',
     email: '',
     message: '',
     modal: false
   }
 
   onClick = async () => {
-    const res = await fetch(`${server}messages/`, {
+    const res = await fetch(`${server}message/`, {
       method: 'POST',
       credentials: 'same-origin',
       headers: new Headers({'Content-Type': 'application/json', 'Accept': 'application/json'}),
       body: JSON.stringify(this.state)
     });
     let response = await res.json();
-    if (response.id) {
+    if (response.response) {
       this.setState({ modal: true });
     }
   }
-  nameChange = e => this.setState({ name: e.target.value});
+  firstNameChange = e => this.setState({ first_name: e.target.value});
+  lastNameChange = e => this.setState({ last_name: e.target.value});
   emailChange = e => this.setState({ email: e.target.value});
   messageChange = e => this.setState({ message: e.target.value});
 
@@ -71,13 +73,22 @@ class Contact extends Component {
             >
               <h3 style={{color: a.rev}}>GET IN TOUCH</h3>
               <input 
-                name="full_name"
+                name="first_name"
                 type="text" 
                 required
-                placeholder="Full Name" 
+                placeholder="First Name" 
                 style={bg} 
-                onChange={this.nameChange} 
-                value={e.name}
+                onChange={this.firstNameChange} 
+                value={e.first_name}
+              />
+              <input 
+                name="last_name"
+                type="text" 
+                required
+                placeholder="Last Name" 
+                style={bg} 
+                onChange={this.lastNameChange} 
+                value={e.last_name}
               />
               <input 
                 name="email"

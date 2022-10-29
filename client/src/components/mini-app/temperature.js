@@ -80,13 +80,13 @@ class Temperature extends Component {
                 <button className="btn" style={bg} type="submit">Send Form</button>
               </ValidForm>
             </div>
-            <div className="w-50" style={{padding: '0 3rem'}}>
+            <div className="w-50" style={{padding: '0 1rem'}}>
               <TempCir temp={e.list[0]} />
               <div className="map-size" style={{marginTop: '2rem', height: '400px'}}>
                 <Maps mapData={mapData} />
               </div>
             </div>
-            <div className="w-50" style={{padding: '0 3rem'}}>
+            <div className="w-50" style={{padding: '0 1rem'}}>
               <h3>Weather Forecast</h3>
               <WeatherHistory list={e.list} />
             </div>

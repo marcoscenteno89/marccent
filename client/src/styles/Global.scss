@@ -1,5 +1,6 @@
 @import 'Variables.scss';
 * {
+    font-family: Sans-Serif;
     font-size: calc(12px + 0.4vw);
     font-weight: 400;
     line-height: calc(12px + 0.5vw);
@@ -466,20 +467,16 @@ form :is(input, select, button, textarea, select, option, .btn) {
     }
 }
 .clock {
-  strong {
-    font-size: 1rem;
-  }
-  small {
-    font-size: 0.6rem;
-  }
-  strong, small {
-    padding: 0;
-    line-height: 1rem;
-  }
+  align-items: stretch;
+  padding: 4px 0;
   .digit {
-    margin: 0 0.1rem;
-    padding: 0.2rem 0.3rem 0 0.3rem;;
     border-radius: 5px;
+    .number {
+      font-size: 0.9rem;
+    }
+    .title {
+      font-size: 0.6rem;
+    }
   }
 }
 @media (max-width:768px) {

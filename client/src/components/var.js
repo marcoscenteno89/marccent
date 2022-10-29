@@ -10,26 +10,37 @@ export class ThemeProvider extends Component {
   }
 
   getThemes = async () => {
-    const url = process.env.REACT_APP_STRAPIURL;
+    const url = process.env.REACT_APP_SERVERURL;
     let theme = JSON.parse(localStorage.getItem('marccent_theme'));
     if (!theme) {
       theme = {};
-      const themeJson = await fetch(`${url}themes/`);
-      const darkJson = await fetch(`${url}options?name=theme_dark`);
-      const lightJson = await fetch(`${url}options?name=theme_light`);
-      theme.list = await themeJson.json();
-      let dark = await darkJson.json();
-      let light = await lightJson.json();
+      let api = {
+        method: 'GET',
+        credentials: 'same-origin',
+        headers: new Headers({ 
+          'Content-Type': 'application/x-www-form-urlencoded; application/json; charset=utf-8' 
+        })
+      }
+      const dataJson =  await fetch(`${url}option/find/?name=theme`, api);
+      const data = await dataJson.json();
+      let dark = data.filter(i => i.name === 'theme_dark')[0];
+      let light = data.filter(i => i.name === 'theme_light')[0];
+      let themelist = data.filter(i => i.name !== 'theme_dark' && i.name !== 'theme_light');
+      theme.list = []
+      for (let i of themelist) theme.list.push(i.value);
+      console.log(light)
+      console.log(dark)
+      console.log(theme.list)
       theme.id = theme.list[0].id;
       theme.rgb = {
-        dark: GetRgb(dark[0].value),
-        light: GetRgb(light[0].value),
+        dark: GetRgb(dark.value),
+        light: GetRgb(light.value),
         primary: GetRgb(theme.list[0].primary),
         secondary: GetRgb(theme.list[0].secondary)
       };
       theme.hex = {
-        dark: dark[0].value,
-        light: light[0].value,
+        dark: dark.value,
+        light: light.value,
         primary: theme.list[0].primary,
         secondary: theme.list[0].secondary
       };

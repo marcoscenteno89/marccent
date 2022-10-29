@@ -69,26 +69,34 @@ class Clock extends Component {
     const i = this.state;
     const e = this.props.data;
     const digit = {
-      border: e.border,
-      backgroundColor: e.bg
+      width: '20%',
+      border: e.border
+    }
+    const last = {
+      width:'32%',
+      fontWeight: '700',
+      fontSize: '2rem',
+      border: e.border
+    }
+    const container = {
+      color: e.text,
+      minWidth: '200px'
     }
     return (
-      <div className="flex-row clock" style={{ color: e.text }}>
+      <div className="flex-row clock" style={container}>
         <span className="flex-col-center digit" style={digit}>
-          <strong>{i.hour}</strong>
-          <small>Hour</small>
+          <small className="number">{i.hour}</small>
+          <small className="title">Hour</small>
         </span>
         <span className="flex-col-center digit" style={digit}>
-          <strong>{i.min}</strong>
-          <small>Min</small>
+          <small className="number">{i.min}</small>
+          <small className="title">Min</small>
         </span>
         <span className="flex-col-center digit" style={digit}>
-          <strong>{i.sec}</strong>
-          <small>Sec</small>
+          <small className="number">{i.sec}</small>
+          <small className="title">Sec</small>
         </span>
-        <span className="flex-col-center digit" style={digit}>
-          <strong style={{fontSize:'2rem',lineHeight:'2rem'}}>{i.tod}</strong>
-        </span>
+        <span className="flex-center digit" style={last}>{i.tod}</span>
       </div>
     );   
   }

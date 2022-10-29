@@ -4,6 +4,14 @@ from . import views
 
 urlpatterns = [
   path('option/', include([
-    path('get-all/', views.getAll),
+    path('', views.optionGetAll),
+    path('get/', views.optionGet),
+    path('find/', views.optionFind),
+  ])),
+  path('message/', include([
+    path('', views.message),
+    # path('get-all/', views.messageGetAll),
+    # path('get/', views.messageGet),
+    # path('find/', views.messageFind),
   ])),
 ]
