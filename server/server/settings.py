@@ -28,7 +28,7 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', cast=bool)
 
-ALLOWED_HOSTS = ['localhost', 'marccent.com', '127.0.0.1', 'server.marccent.com']
+ALLOWED_HOSTS = ['localhost', 'marccent.com', '127.0.0.1', '138.128.247.222', 'server.marccent.com']
 
 
 # Application definition
@@ -148,5 +148,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "https://marccent.com",
+    "server.marccent.com",
 ]
 
