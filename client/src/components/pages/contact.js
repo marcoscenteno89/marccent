@@ -5,7 +5,7 @@ import '../../styles/pages/Contact.scss';
 import Maps from "../map";
 import Modal from 'react-modal';
 import ValidForm from 'react-valid-form-component';
-import { GetMode, Title, WaveSvg } from "../inc/inc";
+import { GetMode, WaveSvg } from "../inc/inc";
 
 const server = `${process.env.REACT_APP_SERVERURL}`;
 Modal.setAppElement('#app');

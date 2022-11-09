@@ -4,7 +4,7 @@ import JwPagination from 'jw-react-pagination';
 import ValidForm from 'react-valid-form-component';
 import "../../styles/mini-app/Temperature.scss";
 import '../../styles/keyframes.scss';
-import { CustDate, Img, SpCircle, GetMode, FormatDate } from "../inc/inc";
+import { CustDate, Img, SpCircle, GetMode } from "../inc/inc";
 import { Clock, Accordion } from "../inc/inc-classes";
 import Maps from "../map";
 const openWeather = `${process.env.REACT_APP_OPENWEATHERURL}data/2.5/forecast`;

@@ -40,7 +40,7 @@ class Nav extends Component {
     }
     
     const background = `main-nav flex-center${a.glass ? ' glass' : ''}`;
-    const grad = `linear-gradient(to bottom, ${a.hex.secondary}, ${a.hex.primary})`;
+    // const grad = `linear-gradient(to bottom, ${a.hex.secondary}, ${a.hex.primary})`;
     const clockstyles = {
       border: `1px solid ${a.hex.secondary}`,
       text: a.hex.secondary,

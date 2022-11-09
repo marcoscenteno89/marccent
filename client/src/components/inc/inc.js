@@ -168,8 +168,7 @@ const Img = props => {
 const FooterText = props => {
   return (
     <div className="footer flex-center" style={props.style}>
-      Copyright ©{CurrentDate.getFullYear()} 
-      Marccent. All rights reserved | 
+      Copyright ©{CurrentDate.getFullYear()} Marccent. All rights reserved | 
       <ul>
         <li><Link style={props.style} to="/privacy-policy"> Privacy Policy</Link></li>
       </ul>
@@ -234,8 +233,8 @@ const CustDate = (props) => {
   let string = '';
   if (props.ver) {
     let e = props.ver;
-    if (e == '1') string = `${days[i.getDay()]}, ${month[i.getMonth()]} ${i.getDate()}, ${i.getFullYear()}`;
-    if (e == '2') string = `${days[i.getDay()]} ${i.getDate()}, ${o.hour}:${o.min} ${o.tod}`;
+    if (e === '1') string = `${days[i.getDay()]}, ${month[i.getMonth()]} ${i.getDate()}, ${i.getFullYear()}`;
+    if (e === '2') string = `${days[i.getDay()]} ${i.getDate()}, ${o.hour}:${o.min} ${o.tod}`;
   }
   
   return (string);

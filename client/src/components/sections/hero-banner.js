@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { ThemeContext } from "../var"
 import { Notebook } from "../inc/inc";
-import { StatusBar } from "../inc/inc-classes";
 
 class HeroBanner extends Component {
    
@@ -9,15 +8,6 @@ class HeroBanner extends Component {
   render() {
     if (this.context.theme.id === 0) return <Fragment>Loading...</Fragment>
     const a = this.context.theme;
-    const bar = {
-      current: 3, 
-      total: 5,
-      speed: 200
-    }
-    const barStyles = {
-      background: a.rev,
-      color: a.mode
-    }
     return (
       <section className="hero-banner flex-center" style={{margin: '0'}}>
         <div className="container" style={{overflow: 'visible', width: '75%'}}>
