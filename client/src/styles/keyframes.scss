@@ -54,30 +54,30 @@
 }
 @keyframes leftright {
   0% {
-    transform: translateX(0) rotate(0);
+    transform: translateX(0);
   }
   25% {
-    transform: translateX(150%);
+    transform: translateX(125%);
   }
   75% {
-    transform: translateX(-150%);
+    transform: translateX(-125%);
   }
   100% {
-    transform: translateX(0) rotate(360deg);
+    transform: translateX(0);
   }
 }
 @keyframes updown {
   0% {
-    transform: translateY(0) rotate(0);
+    transform: translateY(0);
   }
   25% {
-    transform: translateY(150%);
+    transform: translateY(125%);
   }
   75% {
-    transform: translateY(-150%);
+    transform: translateY(-125%);
   }
   100% {
-    transform: translateY(0) rotate(360deg);
+    transform: translateY(0);
   }
 }
 @keyframes rotate {

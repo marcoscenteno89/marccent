@@ -65,23 +65,13 @@ const Flag = () => {
 
 const Background = props => {
   const arr = [];
-  for (let i = 0; i < 8; i++) {
-    let ran = RandomNum(60, 100);
+  for (let i = 0; i < 20; i++) {
+    let ran = RandomNum(20, 150);
     let ball = {
       width: `${ran * 3}px`,
       height: `${ran * 3}px`,
-      top: `${RandomNum(60, 100)}%`,
-      left: `${RandomNum(60, 100)}%`
-    }
-    arr.push(ball);
-  };
-  for (let i = 0; i < 8; i++) {
-    let ran = RandomNum(60, 100);
-    let ball = {
-      width: `${ran * 3}px`,
-      height: `${ran * 3}px`,
-      top: `${RandomNum(0, 40)}%`,
-      left: `${RandomNum(0, 40)}%`
+      [RandomNum(0, 1) === 0 ? 'top' : 'bottom']: `${RandomNum(45, 55)}%`,
+      [RandomNum(0, 1) === 0 ? 'left' : 'right']: `${RandomNum(0, 10)}%`
     }
     arr.push(ball);
   };
