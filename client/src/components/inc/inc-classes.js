@@ -18,7 +18,7 @@ class StatusBar extends Component {
   componentDidMount(e) {
     const runInterval = () => {
       this.setState({
-        width: this.state.width + 1
+        width: this.state.width + 2
       });
     }
     const speed = this.props.bar.speed ? this.props.bar.speed : 100;

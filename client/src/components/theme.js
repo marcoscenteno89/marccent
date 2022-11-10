@@ -32,7 +32,7 @@ class Theme extends Component {
           <Nav />
           <div className="page flex-center">
             <div className="content">
-                <Urls />
+              <Urls />
             </div>
           </div>
           <Footer /> 

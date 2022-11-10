@@ -193,11 +193,11 @@ class TempCir extends Component {
     }
   }
 
-  UNSAFE_componentWillReceiveProps(props) {
-    this.setState({
-      temp: props.temp
-    });
-  }
+  // UNSAFE_componentWillReceiveProps(props) {
+  //   this.setState({
+  //     temp: props.temp
+  //   });
+  // }
 
   render() {
     if (this.context.theme.id === 0) return <Fragment>Loading...</Fragment>
