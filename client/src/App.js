@@ -10,7 +10,7 @@ hotjar.initialize(process.env.REACT_APP_HOTJAR);
 const ga4react = new GA4React('G-XT2J9RQ50E',);
 
 ga4react.initialize().then((ga4) => {
-  ga4.pageview(`${window.location.pathname}${window.location.search}`)
+  ga4.pageview(`${window.location.pathname}${window.location.search}`);
 },(err) => {
   console.error(err)
 })
