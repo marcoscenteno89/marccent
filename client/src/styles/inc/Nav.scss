@@ -9,18 +9,16 @@
       justify-content: flex-end;
     }
     .toggle {
-      -webkit-text-fill-color: transparent !important;
-      -webkit-background-clip: text !important;
       font-size: 1.8rem;
       padding: 3px 8px;
       border-radius: 5px;
       display: none;
       margin: 3px 5px 3px 0;
+      border-style: solid;
+      border-width: 1px;
     }
     .navigation, .mobile-navigation ul {
         list-style: none;
-        -webkit-text-fill-color: transparent !important;
-        -webkit-background-clip: text !important;
     }
     .navigation {
       padding-bottom: 0;
@@ -32,10 +30,7 @@
           height: 100%;
         }
       }
-      li.active {
-        background: #FFF;
-      }
-      li:not(:nth-child(1)) {
+      li:not(:first-child) {
         border-left: 2px solid;
       }
     }

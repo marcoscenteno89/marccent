@@ -4,6 +4,7 @@ import HeroBanner from "./sections/hero-banner";
 const Contact = lazy(() => import("./pages/contact"));
 const Portfolio = lazy(() => import("./pages/portfolio"));
 const PrivacyPolicy = lazy(() => import("./pages/privacy-policy"));
+const Animations = lazy(() => import("./pages/animations"));
 const Apps = lazy(() => import("./pages/apps"));
 const MineSweeper = lazy(() => import("./mini-app/minesweeper"));
 const Temperature = lazy(() => import("./mini-app/temperature"));
@@ -23,6 +24,7 @@ class Urls extends Component {
             <Route path="/about"><About /></Route>
             <Route path="/contact"><Contact /></Route>
             <Route path="/privacy-policy"><PrivacyPolicy /></Route>
+            <Route path="/animatiions"><Animations /></Route>
             <Route exact path="/">
               <About />
               <Portfolio />

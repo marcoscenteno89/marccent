@@ -25,13 +25,10 @@ class Nav extends Component {
   render() {
     if (this.context.theme.id === 0) return <Fragment>Loading...</Fragment>
     const a = this.context.theme;
-    const link = {
-      background: `linear-gradient(to bottom, ${a.hex.primary}, ${a.hex.secondary})`
-    }
 
     const toggle = {
-      background: `linear-gradient(to bottom, ${a.hex.primary}, ${a.hex.secondary})`,
-      border: `1px solid ${a.hex.secondary}`
+      color: a.rev,
+      borderColor: a.rev
     }
     
     const mobile = {
@@ -40,39 +37,42 @@ class Nav extends Component {
     }
     
     const background = `main-nav flex-center${a.glass ? ' glass' : ''}`;
-    // const grad = `linear-gradient(to bottom, ${a.hex.secondary}, ${a.hex.primary})`;
     const clockstyles = {
-      border: `1px solid ${a.hex.secondary}`,
-      text: a.hex.secondary,
+      border: `1px solid ${a.rev}`,
+      text: a.rev,
       bg: GetMode(a, '0.5')
     }
     return  (
       <nav className={background} style={{backgroundColor: a.mode}}>
         <div className="container flex-row">
-          <ul className="navigation" style={link}>
+          <ul className="navigation">
             <li>
-              <Link to="/"><i className="fas fa-home"></i> Home</Link>
+              <Link  style={{ color: a.rev, borderColor: a.rev }} to="/"><i className="fas fa-home"></i> Home</Link>
             </li>
-            <li style={{borderColor: a.hex.secondary}}>
-              <Link to="/portfolio"><i className="fas fa-folder-open"></i> Portfolio</Link>
+            <li>
+              <Link style={{ color: a.rev, borderColor: a.rev }} to="/portfolio"><i className="fas fa-folder-open"></i> Portfolio</Link>
             </li>
-            <li style={{borderColor: a.hex.secondary}}>
-              <Link to="/apps/minesweeper"><i className="fab fa-windows"></i> Apps</Link>
+            <li>
+              <Link style={{ color: a.rev, borderColor: a.rev }}to="/apps/minesweeper"><i className="fab fa-windows"></i> Apps</Link>
             </li>
-            <li style={{borderColor: a.hex.secondary}}>
-              <Link to="/about"><i className="fas fa-address-card"></i> About</Link>
+            <li>
+              <Link style={{ color: a.rev, borderColor: a.rev }} to="/animations"><i className="fa-solid fa-faucet-drip"></i> Animations</Link>
             </li>
-            <li style={{borderColor: a.hex.secondary}}>
-              <Link to="/contact"><i className="fas fa-comments"></i> Contact</Link>
+            <li>
+              <Link style={{ color: a.rev, borderColor: a.rev }} to="/about"><i className="fas fa-address-card"></i> About</Link>
+            </li>
+            <li>
+              <Link style={{ color: a.rev, borderColor: a.rev }} to="/contact"><i className="fas fa-comments"></i> Contact</Link>
             </li>
           </ul>
           <div className="mobile-navigation" style={mobile}>
-            <ul style={link}>
-              <li><Link to="/"><i className="fas fa-home"></i> Home</Link></li>
-              <li><Link to="/portfolio"><i className="fas fa-folder-open"></i> Portfolio</Link></li>
-              <li><Link to="/apps/minesweeper"><i className="fab fa-windows"></i> Apps</Link></li>
-              <li><Link to="/about"><i className="fas fa-address-card"></i> About</Link></li>
-              <li><Link to="/contact"><i className="fas fa-comments"></i> Contact</Link></li>
+            <ul>
+              <li><Link style={{ color: a.rev }} to="/"><i className="fas fa-home"></i> Home</Link></li>
+              <li><Link style={{ color: a.rev }} to="/portfolio"><i className="fas fa-folder-open"></i> Portfolio</Link></li>
+              <li><Link style={{ color: a.rev }} to="/apps/minesweeper"><i className="fab fa-windows"></i> Apps</Link></li>
+              <li><Link style={{ color: a.rev }} to="/animations"><i className="fa-solid fa-faucet-drip"></i> Animations</Link></li>
+              <li><Link style={{ color: a.rev }} to="/about"><i className="fas fa-address-card"></i> About</Link></li>
+              <li><Link style={{ color: a.rev }} to="/contact"><i className="fas fa-comments"></i> Contact</Link></li>
             </ul>
           </div>
           <i className="toggle fas fa-bars" style={toggle} onClick={() => this.toggleMenu()}></i>
