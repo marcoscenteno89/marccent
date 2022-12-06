@@ -241,7 +241,7 @@ class FooterNav extends Component {
       backgroundImage: a.grad
     }
     return (
-      <ul className="flex-center footer-nav w-100" style={{color: a.rev}}>
+      <ul className="flex-center footer-nav" style={{color: a.rev}}>
         <li style={e}>
           <a href="https://www.facebook.com/marcos.centeno.75" rel="noopener noreferrer" target="_blank">
             <i style={i} className="fab fa-facebook"></i>

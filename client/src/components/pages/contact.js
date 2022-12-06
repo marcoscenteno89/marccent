@@ -46,6 +46,9 @@ class Contact extends Component {
     const bg = {
       border: `1px solid ${a.hex.primary}`
     }
+    const pg = {
+      backgroundColor: a.mode,
+    }
     const btn = {
       background: a.grad,
       color: a.hex.light
@@ -57,65 +60,66 @@ class Contact extends Component {
       },
       zoom: 11
     }
-    let background = `page-contact${a.glass ? ' glass' : ''}`;
+    let background = `page-contact ${a.glass ? ' glass' : ''}`;
     return  (
-      <section className={background}>
+      <section className="container-fluid" style={{padding: '3rem 0'}}>
         <WaveSvg dir="top" styles={{ fill: a.mode}} />
-        <div className="contact flex-center">
-          <div className="map-size" style={{height: '600px'}}>
-            <Maps mapData={mapData} />
-          </div>
-          <div className="form-area flex-row" style={{ backgroundColor: mode }}>
-            <ValidForm 
-              nosubmit 
-              onSubmit={(e) => this.onClick(e)} 
-              className="flex-col contact-info" 
-            >
-              <h3 style={{color: a.rev}}>GET IN TOUCH</h3>
-              <input 
-                name="first_name"
-                type="text" 
-                required
-                placeholder="First Name" 
-                style={bg} 
-                onChange={this.firstNameChange} 
-                value={e.first_name}
-              />
-              <input 
-                name="last_name"
-                type="text" 
-                required
-                placeholder="Last Name" 
-                style={bg} 
-                onChange={this.lastNameChange} 
-                value={e.last_name}
-              />
-              <input 
-                name="email"
-                type="email" 
-                required
-                placeholder="Email" 
-                style={bg} 
-                value={e.email} 
-                onChange={this.emailChange} 
-              />
-              <textarea 
-                required
-                name="message"
-                style={bg} 
-                placeholder="Message" 
-                value={e.message} 
-                onChange={this.messageChange} 
-                rows="5"
-              ></textarea>
-              <button className="btn" style={btn} type="submit">Send Form</button>
-            </ValidForm>
-            <div className="">
+        <section className={background} style={pg}>
+          <div className="container">
+            <div className="map-size" style={{height: '600px'}}>
+              <Maps mapData={mapData} />
+            </div>
+            <div className="form-area flex-row" style={{ backgroundColor: mode }}>
+              <ValidForm 
+                nosubmit 
+                onSubmit={(e) => this.onClick(e)} 
+                className="flex-col contact-info" 
+              >
+                <h3 style={{color: a.rev}}>GET IN TOUCH</h3>
+                <input 
+                  name="first_name"
+                  type="text" 
+                  required
+                  placeholder="First Name" 
+                  style={bg} 
+                  onChange={this.firstNameChange} 
+                  value={e.first_name}
+                />
+                <input 
+                  name="last_name"
+                  type="text" 
+                  required
+                  placeholder="Last Name" 
+                  style={bg} 
+                  onChange={this.lastNameChange} 
+                  value={e.last_name}
+                />
+                <input 
+                  name="email"
+                  type="email" 
+                  required
+                  placeholder="Email" 
+                  style={bg} 
+                  value={e.email} 
+                  onChange={this.emailChange} 
+                />
+                <textarea 
+                  required
+                  name="message"
+                  style={bg} 
+                  placeholder="Message" 
+                  value={e.message} 
+                  onChange={this.messageChange} 
+                  rows="5"
+                ></textarea>
+                <button className="btn" style={btn} type="submit">Send Form</button>
+              </ValidForm>
+              <div className="">
 
+              </div>
             </div>
           </div>
-          
-        </div>
+        </section>
         <WaveSvg dir="bottom" styles={{ fill: a.mode}} />
         <PopUp header="Status" display={this.state.modal}>
           <p>Message has been received.</p>

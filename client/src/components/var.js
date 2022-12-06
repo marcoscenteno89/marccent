@@ -16,7 +16,6 @@ export class ThemeProvider extends Component {
       theme = {};
       let api = {
         method: 'GET',
-        credentials: 'same-origin',
         headers: new Headers({ 
           'Content-Type': 'application/x-www-form-urlencoded; application/json; charset=utf-8' 
         })
@@ -28,9 +27,6 @@ export class ThemeProvider extends Component {
       let themelist = data.filter(i => i.name !== 'theme_dark' && i.name !== 'theme_light');
       theme.list = []
       for (let i of themelist) theme.list.push(i.value);
-      console.log(light)
-      console.log(dark)
-      console.log(theme.list)
       theme.id = theme.list[0].id;
       theme.rgb = {
         dark: GetRgb(dark.value),
@@ -77,8 +73,6 @@ export class ThemeProvider extends Component {
   }
 
   addTheme = theme => {
-    console.log('at add theme');
-    console.log(theme);
     let temp = this.state.list;
     let largest = this.state.list[0].id;
     for (let i of this.state.list) {

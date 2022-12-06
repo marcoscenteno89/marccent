@@ -20,7 +20,7 @@ class AppNav extends Component {
     ]
     return  (
       <Carousel breakPoints={breakPoints}>
-        <ul className="appnav flex-center w-100" style={{justifyContent: 'space-around'}}>
+        <ul className="appnav flex-center" style={{justifyContent: 'space-around'}}>
           <li style={{borderColor: a.secondary}}>
             <Link to="/apps/temp">
               <i style={i} className="fas fa-temperature-high"></i>

@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 from pathlib import Path
 from decouple import config
 import os
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
 
 DATA_DIR = os.path.dirname(os.path.dirname(__file__))
 
@@ -28,7 +30,7 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', cast=bool)
 
-ALLOWED_HOSTS = ['localhost', 'marccent.com', '127.0.0.1', '138.128.247.222', 'server.marccent.com']
+ALLOWED_HOSTS = ['localhost', 'marccent.com', '127.0.0.1', 'api.marccent.com']
 
 
 # Application definition
@@ -144,10 +146,28 @@ STATICFILES_DIRS = (
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
-    "https://marccent.com",
-    "server.marccent.com",
+    "marccent.com",
+    "api.marccent.com",
 ]
 
+CORS_ALLOW_HEADERS = [
+    "sentry-trace",
+]
+
+sentry_sdk.init(
+    dsn="https://2db1359feaf048f0a65d5527639f36f7@o306953.ingest.sentry.io/4504232943353856",
+    integrations=[
+        DjangoIntegration(),
+    ],
+
+    # Set traces_sample_rate to 1.0 to capture 100%
+    # of transactions for performance monitoring.
+    # We recommend adjusting this value in production.
+    traces_sample_rate=1.0,
+
+    # If you wish to associate users to errors (assuming you are using
+    # django.contrib.auth) you may enable sending PII data.
+    send_default_pii=True
+)

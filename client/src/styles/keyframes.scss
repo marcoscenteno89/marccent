@@ -57,10 +57,10 @@
     transform: translateX(0);
   }
   25% {
-    transform: translateX(125%);
+    transform: translateX(120%);
   }
   75% {
-    transform: translateX(-125%);
+    transform: translateX(-120%);
   }
   100% {
     transform: translateX(0);
@@ -71,10 +71,10 @@
     transform: translateY(0);
   }
   25% {
-    transform: translateY(125%);
+    transform: translateY(120%);
   }
   75% {
-    transform: translateY(-125%);
+    transform: translateY(-120%);
   }
   100% {
     transform: translateY(0);
@@ -86,5 +86,18 @@
   }
   to {
     transform: rotate(360deg);
+  }
+}
+@keyframes fire {
+  0% {
+    opacity: 0;
+    transform: translateY(0) scale(1);
+  }
+  15% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-100%) scale(0);
   }
 }

@@ -24,7 +24,7 @@ class Urls extends Component {
             <Route path="/about"><About /></Route>
             <Route path="/contact"><Contact /></Route>
             <Route path="/privacy-policy"><PrivacyPolicy /></Route>
-            <Route path="/animatiions"><Animations /></Route>
+            <Route path="/animations"><Animations /></Route>
             <Route exact path="/">
               <About />
               <Portfolio />

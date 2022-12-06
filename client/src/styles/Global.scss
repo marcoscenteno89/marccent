@@ -1,372 +1,325 @@
 @import 'Variables.scss';
-* {
-    font-family: Arial, Sans-Serif;
-    font-size: calc(14px + 0.2vw);
-    font-weight: 300;
-    line-height: calc(20px + 0.5vw);
-}
-*, html, body, pre, code {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-#app {
-    width: 100%;
-    svg.blur-svg {
-        display: none;
-    }
-}
-.header, .footer {
-    width: 100%;
-    min-height: 70px;
-    padding: 1rem;
-}
-.image {
-    width: 100%;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-}
-.header-image {
-    min-height: 15rem;
-}
 section {
-    overflow: hidden;
-    width: 100%;
-    margin: 2rem 0;
-    .content {
-        width: 100%;
-        height: auto;
-        min-height: 500px;
-        padding: 20px;
-    } 
+  overflow: hidden;
+  .content {
+      width: 100%;
+      height: auto;
+      min-height: 500px;
+      padding: 20px;
+  } 
 }
 input {
-    border: none;
-    padding: $padding;
-    border-radius: $radious;
-    &:hover, &:active, &:focus, &:visited, &:focus-within, &:focus-visible {
-        outline: none !important;
-    }
+  border: none;
+  padding: $padding;
+  border-radius: $radious;
+  &:hover, &:active, &:focus, &:visited, &:focus-within, &:focus-visible {
+      outline: none !important;
+  }
 }
 input[type="color"] {
-    height: 2.5rem;
-    border-radius: calc(2.5rem / 2) !important;
+  height: 2.5rem;
+  border-radius: calc(2.5rem / 2) !important;
 }
 input[type="color" i] {
-    border-radius: 10px;
+  border-radius: 10px;
 }
-.page {
-    width: 100%;
-    height: auto;
-    overflow: hidden;
-    padding: 3rem 0;
-}
-
-.glass {
-    backdrop-filter: blur(15px);
-}
-
-.bg {
-    position: fixed;
-    overflow: hidden;
-    top: 0%;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    filter: url('#filter');
-    opacity: 0.3;
-    .cont {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        animation: 100s linear infinite rotate;
-        .ball {
-            @for $i from 1 through 20 {
-                &:nth-child(#{$i}) {
-                    @if $i % 2 == 0 {
-                        animation: leftright 50s linear infinite;
-                    } @else {
-                        animation: updown 40s linear infinite;
-                    }
-                }
-            }
-            position: absolute;
-            border-radius: 50%;
-            background-color: rgba(255, 255, 255, 1);
-        }
-    }
-}
-.content {
-    width: 100%;
-    position: relative;
-    z-index: 1;
-}
-.container {
-    position: relative;
-    width: 100%;
-    max-width: 1140px;
-    margin: 1rem;
-    border-radius: $radious;
-    overflow: hidden;
-}
-.m-10 {
-    margin: 10px 0;
+ul {
+  margin-bottom: 0;
+  list-style-type: none;
 }
 img {
-    width: 100%;
-    height: auto;
+  width: 100%;
+  height: auto;
 }
 a {
-    text-decoration: none;
+  text-decoration: none !important;
 }
-h1, h2, h3, h4, h5, h5, p, ul {
-    padding-bottom: 0.7rem;
+span.invalid-field-warning {
+  color: red !important;
 }
-h1 {
-    font-size: 2.5rem;
-    line-height: 2.8rem;
+input.invalid-field, .invalid-field {
+  border: solid 1px red !important;
+  color: red !important;
 }
-h2 {
-    font-size: 2.1rem;
-    line-height: 2.4rem;
+form :is(input, select, button, textarea, select, option, .btn) {
+  padding: 7px 20px;
+  margin: 4px 0 !important;
+  border-radius: $radious;
+  width: 100%;
+  max-width: 280px;
+  color: #666;
 }
-h3 {
-    font-size: 1.6rem;
-    line-height: 2rem;
+h6, .h6, h5, .h5, h4, .h4, h3, .h3, h2, .h2, h1, .h1 {
+  margin: 1.5rem 0;
 }
-h4 {
-    font-size: 1.3rem;
-    line-height: 1.6rem;
+section.container-fluid {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
 }
-p {
-    font-weight: 300;
+.row {
+  margin-left: 0;
+  margin-right: 0;
 }
-strong {
-    font-weight: 900;
+.col-1, .col-2, .col-3, .col-4, .col-5, .col-6, .col-7, .col-8, .col-9, .col-10, .col-11, .col-12 {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
-
-small {
-  font-size: 0.7rem;
-  font-weight: 200;
+.shadow {
+  box-shadow: 0 0 0.6rem rgba(0,0,0,0.5) !important;
+  border-radius: $radious;
 }
-.shadow-xs {
-    box-shadow: 0 0 5px rgba(0,0,0,0.4);
+#app {
+  width: 100%;
+  svg.blur-svg {
+    display: none;
+  }
 }
-.shadow-s {
-    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+.header, .footer {
+  width: 100%;
+  min-height: 70px;
 }
-.shadow-m {
-    box-shadow: 0 0 15px rgba(0,0,0,0.6);
+.image {
+  width: 100%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
 }
-.shadow-l {
-    box-shadow: 0 0 20px rgba(0,0,0,0.7);
+.header-image {
+  min-height: 15rem;
 }
-.shadow-xl {
-    box-shadow: 0 0 25px rgba(0,0,0,0.8);
+.page {
+  width: 100%;
+  height: auto;
+  overflow: hidden;
+}
+.glass {
+  backdrop-filter: blur(15px);
+}
+.blob-container {
+  position: fixed;
+  overflow: hidden;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  filter: url('#filter');
+  opacity: 0.5;
+}
+.blob-single {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  .ball {
+    position: absolute;
+    border-radius: 50%;
+  }
+}
+.flame-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  z-index: 1;
+  .ember {
+    border-radius: 50%;
+    mix-blend-mode: screen;
+    opacity: 0;
+    position: absolute;
+    bottom: 0;
+    width: 50%;
+    height: 50%;
+  }
+  .ember {
+    animation: fire 1s ease-in infinite;
+  }
+}
+.content {
+  width: 100%;
+  position: relative;
+  z-index: 1;
+}
+.container {
+  border-radius: $radious;
+  overflow-x: hidden;
 }
 .notebook {
-    div {
-        border-radius: $radious;
-    }
-    @for $r from 6 through 1 {
-        .layer-#{$r} {
-            transform: rotate(#{$r}deg);
-        }
-    }
-    .notebook-content {
-        padding: 2rem;
-        transform: rotate(-21deg);
-    }
-}
-.w-10, .w-20, .w-30, .w-40, .w-50, .w-60, .w-60, .w-80, .w-80, .w-90 {
-    padding: 1rem;
+  div {
     border-radius: $radious;
-    margin: 1rem 0.5%;
-}
-.w-100 {
-    padding: 1rem;
-    border-radius: $radious;
-}
-.w-10 {
-    width: 9%;
-}
-.w-20 {
-    width: 19%;
-}
-.w-30 {
-    width: 29%;
-}
-.w-40 {
-    width: 39%;
-}
-.w-50 {
-    width: 49%;
-}
-.w-60 {
-    width: 59%;
-}
-.w-70 {
-    width: 69%;
-}
-.w-80 {
-    width: 79%;
-}
-.w-90 {
-    width: 89%;
-}
-.w-100 {
-    width: 100%;
-}
-.cir {
-    height:0;
-    border-radius:50%;
-}
-.cir-xl {
-    width: 100%;
-    padding: 50% 0;
-}
-.cir-l {
-    width: 90%;
-    padding:  45% 0;
-}
-.cir-ml {
-    width: 85%;
-    padding:  42.5% 0;
-}
-.cir-m {
-    width: 80%;
-    padding: 40% 0;
-}
-.cir-s {
-    width: 70%;
-    padding: 35% 0;
-}
-.cir-xs {
-    width: 60%;
-    padding: 30% 0;
+  }
+  @for $r from 6 through 1 {
+    .layer-#{$r} {
+      transform: rotate(#{$r}deg);
+    }
+  }
+  .notebook-content {
+    padding: 2rem;
+    transform: rotate(-21deg);
+  }
 }
 .anim {
-    overflow: hidden;
-    position: relative;
-    -webkit-mask-image: -webkit-radial-gradient(white, black);
+  overflow: hidden;
+  position: relative;
+  -webkit-mask-image: -webkit-radial-gradient(white, black);
 }
 .overlay {
-    z-index: 98;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  z-index: 98;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .modal {
+    position: static;
+    display: block;
+    height: auto;
+    &:hover, &:active, &:focus, &:visited, &:focus-within, &:focus-visible {
+      border: none !important;
+      outline: none !important;
+    }
+    border: none !important;
+    width: 90%;
+    max-width: 750px;
+    border-radius: $radious;
+    overflow: hidden;
+    .heading {
+      min-height: 60px;
+      position: relative;
+      align-items: flex-end;
+      position: relative;
+      padding-top: 2rem;
+      margin: 0 2rem;
+      color: #FFF;
+      p {
+        font-size: 1.5rem;
+        margin-bottom: -0.7rem;
+      }
+      .left, .right {
+        position: absolute;
+        width: 2rem;
+        height: 100%;
+        top: 0;
+      }
+      .left {
+        left: -2rem;
+      }
+      .right {
+        right: -2rem;
+      }
+    }
+    .break {
+      height: 2rem;
+      width: 100%;
+    }
+    .grad {
+      height: 100%;
+      margin: 0 2rem;
+    }
+    .body {
+      min-height: 100px;
+      flex-wrap: wrap;
+      .controller {
+        width: 100%;
+        padding: 1rem 0;
+      }
+    }
+  }
 }
 .flex-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
 }
 .flex-col {
-    display: flex;
-    align-items: stretch;
-    justify-content: space-between;
-    flex-direction: column;
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  flex-direction: column;
 }
 .flex-col-center {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-around;
   flex-direction: column;
 }
 .flex-center {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .select-field div {
-    font-size: 1rem !important;
+  font-size: 1rem !important;
 }
 .select-field {
-    width: 100%;
-    max-width: 150px;
+  width: 100%;
+  max-width: 150px;
 }
 .rec-swipable {
-    padding-top: 1rem;
+  padding-top: 1rem;
 }
 .appnav {
-    i {
-        -webkit-text-fill-color: transparent !important;
-        -webkit-background-clip: text !important;
-        padding-bottom: 1rem;
-    }
-    h4 {
-        -webkit-text-fill-color: transparent !important;
-        -webkit-background-clip: text !important;
-    }
+  padding-left: 0;
+  li {
+    padding: 1rem;
+  }
+  i {
+    -webkit-text-fill-color: transparent !important;
+    -webkit-background-clip: text !important;
+    padding-bottom: 1rem;
+  }
+  h4 {
+    -webkit-text-fill-color: transparent !important;
+    -webkit-background-clip: text !important;
+  }
 }
 .css-1utlbt5-control {
-    border: none !important;
+  border: none !important;
 }
 .css-yk16xz-control {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: $radious;
-    border: none;
-    width: 100%;
-    max-width: 150px;
-}
-span.invalid-field-warning {
-    color: red !important;
-}
-input.invalid-field, .invalid-field {
-    border: solid 1px red !important;
-    color: red !important;
-}
-form :is(input, select, button, textarea, select, option, .btn) {
-    padding: 7px 20px;
-    margin: 4px 0 !important;
-    border-radius: $radious;
-    width: 100%;
-    max-width: 280px;
-    color: #666;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: $radious;
+  border: none;
+  width: 100%;
+  max-width: 150px;
 }
 .btn {
-    padding: 7px 0 7px 25px !important;
-    position: relative;
-    margin: 0.3rem;
-    border-radius: $radious;
-    border: none;
-    color: #FFF;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    &:hover, &:active, &:focus, &:visited, &:focus-within, &:focus-visible {
-        border: none !important;
-        outline: none !important;
-    }
+  padding: 7px 0 7px 25px !important;
+  position: relative;
+  margin: 0.3rem;
+  border-radius: $radious;
+  border: none;
+  color: #FFF;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  &:hover, &:active, &:focus, &:visited, &:focus-within, &:focus-visible {
+    border: none !important;
+    outline: none !important;
+  }
 }
 .btn:after {
-    content: '\00bb';
-    padding-left: 10px;
-    opacity: 0;
-    transform: scale(1.5);
-    font-weight: 900;
-    transition: all 1s;
+  content: '\00bb';
+  padding-left: 10px;
+  opacity: 0;
+  transform: scale(1.5);
+  font-weight: 900;
+  transition: all 1s;
 }
 .btn:hover::after {
-    opacity: 1;
-    padding-right: 25px;
+  opacity: 1;
+  padding-right: 25px;
 }
 .btn:hover {
-    color: #FFF;
+  color: #FFF;
 }
 .rotate {
-    animation: rotate 5s linear infinite;
+  animation: rotate 5s linear infinite;
 }
 .wave-section {
   width: 100%;
@@ -377,100 +330,47 @@ form :is(input, select, button, textarea, select, option, .btn) {
   margin-bottom: -1rem;
 }
 .rec-carousel {
-    > button {
-        border: none;
-        box-shadow: none;
-        background: none;
-        font-size: 3rem;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        position: relative;
-        top: -10%;
-        &:hover, &:active, &:focus, &:visited {
-            background: none !important;
-            box-shadow: none !important;
-        }
+  > button {
+    border: none;
+    box-shadow: none;
+    background: none;
+    font-size: 3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    top: -10%;
+    &:hover, &:active, &:focus, &:visited {
+      background: none !important;
+      box-shadow: none !important;
     }
+  }
 }
 .appnav {
-    list-style-type: none;
-    li {
-        a {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            i {
-                font-size: 3rem;
-            }
-        }
+  list-style-type: none;
+  li {
+    a {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      i {
+        font-size: 3rem;
+      }
     }
+  }
 }
 .hero-banner {
-    width: 100%;
-    height: 100vh;
-    margin: 0 !important;
-    min-height: 500px;
-    justify-content: center;
-}
-
-.modal {
-    &:hover, &:active, &:focus, &:visited, &:focus-within, &:focus-visible {
-        border: none !important;
-        outline: none !important;
-    }
-    border: none !important;
-    width: 90%;
-    max-width: 750px;
-    border-radius: $radious;
-    overflow: hidden;
-    .heading {
-        min-height: 60px;
-        position: relative;
-        align-items: flex-end;
-        position: relative;
-        padding-top: 2rem;
-        margin: 0 2rem;
-        color: #FFF;
-        p {
-            font-size: 1.5rem;
-            margin-bottom: -0.7rem;
-        }
-        .left, .right {
-            position: absolute;
-            width: 2rem;
-            height: 100%;
-            top: 0;
-        }
-        .left {
-            left: -2rem;
-        }
-        .right {
-            right: -2rem;
-        }
-    }
-    .break {
-        height: 2rem;
-        width: 100%;
-    }
-    .grad {
-        height: 100%;
-        margin: 0 2rem;
-    }
-    .body {
-        min-height: 100px;
-        flex-wrap: wrap;
-        .controller {
-            width: 100%;
-            padding: 1rem 0;
-        }
-    }
+  margin: 0 !important;
+  padding-top: 16vw !important;
+  padding-bottom: 16vw !important;
+  .container {
+    overflow: visible !important;
+  }
 }
 .clock {
   align-items: stretch;
   padding: 4px 0;
   .digit {
-    border-radius: 5px;
     .number {
       font-size: 0.9rem;
       margin-bottom: -0.5rem;
@@ -480,10 +380,50 @@ form :is(input, select, button, textarea, select, option, .btn) {
     }
   }
 }
+.circle {
+  border-radius: 50%;
+  width: 100%;
+  .inner {
+    width: 90%;
+    height: 90%;
+  }
+}
+// Animations
+.liquid-container {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  .liquid {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .rotator {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    border-radius: 45%;
+    bottom: 40%;
+    left: -50%;
+    height: 200%;
+    width: 200%;
+    animation: rotate 8s linear infinite;
+  }
+  .rotator.one {
+    border-radius: 42%;
+  }
+  .rotator.two {
+    border-radius: 35%;
+    opacity: 0.5;
+  }
+}
 @media (max-width:768px) {
-	.w-10, .w-20, .w-30, .w-40, .w-50, .w-60, .w-60, .w-80, .w-80, .w-90 {
-    width: 98%;
-    margin: 1rem 1%;
+	.col-1, .col-2, .col-3, .col-4, .col-5, .col-6, .col-7, .col-8, .col-9, .col-10, .col-11, .col-12 {
+    width: 100%;
+    padding-right: 0;
+    padding-left: 0;
   }
 }
 @media (max-width:568px) {

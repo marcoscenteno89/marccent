@@ -9,8 +9,8 @@ class HeroBanner extends Component {
     if (this.context.theme.id === 0) return <Fragment>Loading...</Fragment>
     const a = this.context.theme;
     return (
-      <section className="hero-banner flex-center" style={{margin: '0'}}>
-        <div className="container" style={{overflow: 'visible', width: '75%'}}>
+      <section className="container-fluid hero-banner">
+        <div className="container">
           <Notebook data={a}>
             <h1>Hello, My Name is Marcos Centeno</h1>
             <h2>A Web Developer that specializes in front-end development</h2>

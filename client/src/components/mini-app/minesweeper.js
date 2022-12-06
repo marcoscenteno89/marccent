@@ -11,6 +11,8 @@ class MineSweeper extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      row: 10,
+      col: 10,
       grid: false,
       mineLocation: false,
       mineCount: 15,
@@ -26,12 +28,16 @@ class MineSweeper extends Component {
     this.startOver = this.startOver.bind(this);
   }
   async componentDidMount() {
-    const game = this.createGrid(10, 10, this.state.mineCount);
+    const grid = await this.createGrid();
     this.setState({
-      grid: game.grid,
-      mineLocation: game.mines,
+      grid: grid,
       mineCount: this.state.mineCount,
       revealedCount: 100 - this.state.mineCount
+    }, async () => {
+      const mines = await this.generateMines(this.state.mineCount);
+      this.setState({
+        mineLocation: mines
+      }, () => this.generateHints());
     });
   }
 
@@ -47,7 +53,7 @@ class MineSweeper extends Component {
       for(let i of this.state.mineLocation) newGrid[i.x][i.y].revealed = true;
       this.setState({
         grid: newGrid,
-        gameOver: true
+        active: false
       });
     } else {
       let grid = this.reveal(newGrid, cell.x, cell.y, 0);
@@ -94,9 +100,9 @@ class MineSweeper extends Component {
   }
 
   startOver() {
-    const game = this.createGrid(10, 10, this.state.mineCount);
+    const game = this.createGrid();
     this.setState({
-      gameOver: false,
+      active: false,
       grid: game.grid,
       mineLocation: game.mines,
       popup: false,
@@ -104,16 +110,15 @@ class MineSweeper extends Component {
     });
   }
 
-  createGrid(row, col, bombs) {
+  createGrid() {
     const grid = []
-    const mines = []
     let mineCount = 0
-    for (let x = 0; x < row; x++) {
+    for (let x = 0; x < this.state.row; x++) {
       const inner = []
-      for (let y = 0; y < col; y++) {
+      for (let y = 0; y < this.state.col; y++) {
         inner.push({
           mine: false,
-          revealed: false,
+          revealed: true,
           flagged: false,
           value: 0,
           x: x,
@@ -124,11 +129,16 @@ class MineSweeper extends Component {
       }
       grid.push(inner);
     }
+    return grid;
+  }
 
+  generateMines(bombs) {
+    const mines = []
+    const grid = this.state.grid;
     let count = 0;
     while (count < bombs) {
-      let x = RandomNum(0, row - 1);
-      let y = RandomNum(0, col - 1);
+      let x = RandomNum(0, this.state.row - 1);
+      let y = RandomNum(0, this.state.col - 1);
       if (!grid[x][y]['mine']) {
         grid[x][y]['mine'] = true;
         grid[x][y]['value'] = <Bomb />;
@@ -137,41 +147,49 @@ class MineSweeper extends Component {
         count++;
       }
     }
+    return mines;
+  }
 
+  generateHints() { // Check every cell and add number of mines of nerby cells
+    const col = this.state.row;
+    const row = this.state.row;
+    const grid = this.state.grid;
     for (let x = 0; x < row; x++) {
       for (let y = 0; y < col; y++) {
-        let cell = grid[x][y];
-        if (cell.mine) continue;
-  
-        if (x > 0 && grid[x - 1][y].mine) cell.value++; // TOP
-
-        if (x > 0 && y < col - 1 && grid[x - 1][y + 1].mine) cell.value++; // TOP RIGHT
-
-        if (y < col - 1 && grid[x][y + 1].mine) cell.value++; // RIGHT
-
-        if (x < row - 1 && y < col - 1 && grid[x + 1][y + 1].mine) cell.value++; // BOTTOM RIGHT
-
-        if (x < row - 1 && grid[x + 1][y].mine) cell.value++; // BOTTOM
-
-        if (x < row - 1 && y > 0 && grid[x + 1][y - 1].mine) cell.value++; // BOTTOM LEFT
-
-        if (y > 0 && grid[x][y - 1].mine) cell.value++; // LEFT
-
-        if (x > 0 && y > 0 && grid[x - 1][y - 1].mine) cell.value++; // TOP LEFT
+        if (grid[x][y].mine) continue;
+        const callback = (current, cell) => current.mine ? cell.value++ : false;
+        this.checkNearBy(x,y, callback);
+        this.setState({
+          grid: grid
+        });
       }
     }
+  }
 
-    return { grid, mines };
+  cellExists(x, y) {
+    const grid = this.state.grid
+    return x > -1 && x < grid.length && y > -1 && y < grid[0].length ? true : false;
+  }
+
+  checkNearBy(x, y, callback=false) { // Check every cell around current one
+    let grid = this.state.grid;
+    let arr = [-1, 0, 1] // Create a 9 cell Matrix
+    for (let i of arr) {
+      for (let o of arr) {
+        let tl = this.cellExists( x + i, y + o ); // Check if current cell exists
+        if (tl) callback(grid[x + i][y + o], grid[x][y]);
+      }
+    }
   }
 
   reveal(arr, x, y, newNonMinesCount) {
     if (arr[x][y].revealed) return;
-
     let flipped = [];
     flipped.push(arr[x][y]);
     while (flipped.length !== 0) {
+      console.log('flipped items', flipped);
       let s = flipped.pop();
-  
+      console.log('last item', s)
       if (!s.revealed) {
         newNonMinesCount--;
         s.revealed = true;
@@ -179,6 +197,7 @@ class MineSweeper extends Component {
   
       if (s.value !== 0) break;
       
+
       if (s.x > 0 && s.y > 0) { // Top - Left
         let tl = arr[s.x - 1][s.y - 1];
         if (tl.value === 0 && !tl.revealed) flipped.push(tl);
@@ -218,51 +237,66 @@ class MineSweeper extends Component {
         let right = arr[s.x][s.y + 1]; 
         if (right.value === 0 && !right.revealed) flipped.push(right);
       }
-    
+      
+      newNonMinesCount += this.isMine(arr, s.x - 1, s.y - 1); // Top Left
+      newNonMinesCount += this.isMine(arr, s.x, s.y - 1); // Left 
+      newNonMinesCount += this.isMine(arr, s.x + 1, s.y - 1); // Bottom Left
+      newNonMinesCount += this.isMine(arr, s.x - 1, s.y); // Top
+      newNonMinesCount += this.isMine(arr, s.x + 1, s.y); // Bottom
+      newNonMinesCount += this.isMine(arr, s.x - 1, s.y + 1); // Top Right
+      newNonMinesCount += this.isMine(arr, s.x, s.y + 1); // Right
+      newNonMinesCount += this.isMine(arr, s.x + 1, s.y + 1); // bottom Right
+      
       // Start Revealing Items
-      if (s.x > 0 && s.y > 0 && !arr[s.x - 1][s.y - 1].revealed) { //Top Left Reveal
-        arr[s.x - 1][s.y - 1].revealed = true;
-        newNonMinesCount--;
-      }
+      // if (s.x > 0 && s.y > 0 && !arr[s.x - 1][s.y - 1].revealed) { //Top Left Reveal
+      //   arr[s.x - 1][s.y - 1].revealed = true;
+      //   newNonMinesCount--;
+      // }
   
-      if (s.y > 0 && !arr[s.x][s.y - 1].revealed) { // Left Reveal
-        arr[s.x][s.y - 1].revealed = true;
-        newNonMinesCount--;
-      }
+      // if (s.y > 0 && !arr[s.x][s.y - 1].revealed) { // Left Reveal
+      //   arr[s.x][s.y - 1].revealed = true;
+      //   newNonMinesCount--;
+      // }
   
-      if (s.x < arr.length - 1 && s.y > 0 && !arr[s.x + 1][s.y - 1].revealed) { //Bottom Left Reveal
-        arr[s.x + 1][s.y - 1].revealed = true;
-        newNonMinesCount--;
-      }
+      // if (s.x < arr.length - 1 && s.y > 0 && !arr[s.x + 1][s.y - 1].revealed) { //Bottom Left Reveal
+      //   arr[s.x + 1][s.y - 1].revealed = true;
+      //   newNonMinesCount--;
+      // }
   
-      if (s.x > 0 && !arr[s.x - 1][s.y].revealed) { //Top Reveal
-        arr[s.x - 1][s.y].revealed = true;
-        newNonMinesCount--;
-      }
+      // if (s.x > 0 && !arr[s.x - 1][s.y].revealed) { //Top Reveal
+      //   arr[s.x - 1][s.y].revealed = true;
+      //   newNonMinesCount--;
+      // }
   
-      if (s.x < arr.length - 1 && !arr[s.x + 1][s.y].revealed) { // Bottom Reveal
-        arr[s.x + 1][s.y].revealed = true;
-        newNonMinesCount--;
-      }
+      // if (s.x < arr.length - 1 && !arr[s.x + 1][s.y].revealed) { // Bottom Reveal
+      //   arr[s.x + 1][s.y].revealed = true;
+      //   newNonMinesCount--;
+      // }
   
-      if (s.x > 0 && s.y < arr[0].length - 1 && !arr[s.x - 1][s.y + 1].revealed) { // Top Right Reveal
-        arr[s.x - 1][s.y + 1].revealed = true;
-        newNonMinesCount--;
-      }
+      // if (s.x > 0 && s.y < arr[0].length - 1 && !arr[s.x - 1][s.y + 1].revealed) { // Top Right Reveal
+      //   arr[s.x - 1][s.y + 1].revealed = true;
+      //   newNonMinesCount--;
+      // }
   
-      if (s.y < arr[0].length - 1 && !arr[s.x][s.y + 1].revealed) { //Right Reveal
-        arr[s.x][s.y + 1].revealed = true;
-        newNonMinesCount--;
-      }
+      // if (s.y < arr[0].length - 1 && !arr[s.x][s.y + 1].revealed) { //Right Reveal
+      //   arr[s.x][s.y + 1].revealed = true;
+      //   newNonMinesCount--;
+      // }
   
-      if (s.x < arr.length - 1 && s.y < arr[0].length - 1 && !arr[s.x + 1][s.y + 1].revealed) {// Bottom Right Reveal
-        arr[s.x + 1][s.y + 1].revealed = true;
-        newNonMinesCount--;
-      }
-
+      // if (s.x < arr.length - 1 && s.y < arr[0].length - 1 && !arr[s.x + 1][s.y + 1].revealed) {// Bottom Right Reveal
+      //   arr[s.x + 1][s.y + 1].revealed = true;
+      //   newNonMinesCount--;
+      // }
     }
-    
-    return { arr, newNonMinesCount };
+    // console.log(obj)
+    return {arr, newNonMinesCount};
+  }
+
+  isMine(arr, x, y) {
+    if (x < 0 || x > arr.length - 1 || y < 0 || y > arr[0].length - 1) return;
+    if (!arr[x][y].revealed) return;
+    arr[x][y].revealed = true;
+    return -1;
   }
 
   help() {
@@ -273,20 +307,19 @@ class MineSweeper extends Component {
 
   getTime(time) {
     this.setState({
-      active: false,
-      gameOver: false,
       time: time,
       popup: true
-    }, () => console.log(this.state));
+    });
   }
 
   dificulty = (val) => {
-    const game = this.createGrid(10, 10, val.value);
+    const game = this.createGrid();
     this.setState({
       mineCount: val.value,
-      gameOver: false,
+      active: false,
       grid: game.grid,
       mineLocation: game.mines,
+      popup: false
     });
   }
 
@@ -328,7 +361,7 @@ class MineSweeper extends Component {
     const header = b.win ? 'Winner' : 'Game Over';
 
     return (
-      <section className="minesweeper flex-center">
+      <section className="container-fluid minesweeper">
         <div className={background} style={container}>
           <h2>Mine Sweeper</h2>
           <div className="board">
@@ -342,7 +375,7 @@ class MineSweeper extends Component {
               />
               <div data={a}><Flag /> {b.mineCount}</div>
               <div style={{ color: a.rev}} className="counter">
-                <Counter getTime={this.getTime} active={b.active} data={a} gameOver={b.gameOver} />
+                <Counter getTime={this.getTime} active={b.active} data={a} />
               </div>
             </div>
             <div className="body">
@@ -377,18 +410,18 @@ class MineSweeper extends Component {
               <div>{b.win ? `Time: ${b.time}` : 'You Lost'}</div>
             </PopUp>
             <PopUp key={2} header="Mine Sweeper Instructions" display={b.help}>
-                  <div className="help">
-                    <h4>About the Game</h4> 
-                    <p>The object of Minesweeper is to expose all the open areas on the board without hitting an bombs.</p>
-                    <h4>Instructions</h4>
-                    <p>Click "Play" to begin the game.</p> 
-                    <p>Use the left click button on the mouse to select a space on the grid. If you hit a bomb, you lose.</p>
-                    <p>The numbers on the board represent how many bombs are adjacent to a square. For example, if a square has a "3" on it, then there are 3 bombs next to that square. The bombs could be above, below, right left, or diagonal to the square.</p>
-                    <p>Avoid all the bombs and expose all the empty spaces to win Minesweeper.</p>
-                    <p>Tip: Use the numbers to determine where you know a bomb is.</p> 
-                    <p>Tip: You can right click a square with the mouse to place a flag where you think a bomb is. This allows you to avoid that spot.</p>
-                  </div>
-                </PopUp>
+              <div className="help">
+                <h4>About the Game</h4> 
+                <p>The object of Minesweeper is to expose all the open areas on the board without hitting an bombs.</p>
+                <h4>Instructions</h4>
+                <p>Click "Play" to begin the game.</p> 
+                <p>Use the left click button on the mouse to select a space on the grid. If you hit a bomb, you lose.</p>
+                <p>The numbers on the board represent how many bombs are adjacent to a square. For example, if a square has a "3" on it, then there are 3 bombs next to that square. The bombs could be above, below, right left, or diagonal to the square.</p>
+                <p>Avoid all the bombs and expose all the empty spaces to win Minesweeper.</p>
+                <p>Tip: Use the numbers to determine where you know a bomb is.</p> 
+                <p>Tip: You can right click a square with the mouse to place a flag where you think a bomb is. This allows you to avoid that spot.</p>
+              </div>
+            </PopUp>
           </div>
         </div>
       </section>
@@ -402,35 +435,32 @@ class Counter extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      count: 0,
-      active: false,
+      count: 0
     }
   }
+  start() {
+    this.timer = setInterval(() => this.setState({count: this.state.count + 1}), 1000)
+  }
+  
+  stop(minesweeper) {
+    clearInterval(this.timer);
+    minesweeper.getTime(this.state.count)
+    this.setState({
+      count: 0,
+    });
+  }
 
-  UNSAFE_componentWillReceiveProps(e) {
-    if (e.active && this.state.count === 0) {
-      this.setState({
-        active: true
-      }, () => {
-        this.timer = setInterval(() => this.setState({count: this.state.count + 1}), 1000);
-      });
-    }
-    if (e.gameOver) {
-      let temp = this.state.count;
-      clearInterval(this.timer);
-      this.setState({
-        count: 0,
-        active: false
-      }, () => e.getTime(temp));
-    }
+  componentDidUpdate(e) {
+    if (this.props.active && this.state.count === 0) this.start();
+    if (!this.props.active && this.state.count > 0) this.stop(e);
   }
 
   render() {
     if (this.context.theme.id === 0) return <Fragment>Loading...</Fragment>
     return  (
-      <Fragment>
-        <i className="fas fa-stopwatch"></i> {this.state.count}
-      </Fragment>
+      <div className="timer">
+        <i className="fas fa-stopwatch"></i> <small>{this.state.count} Sec</small>
+      </div>
     )        
   }
 }
@@ -486,6 +516,5 @@ class Cell extends Component {
     )       
   }
 }
-
 
 export default MineSweeper;

@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import ReactDOM from 'react-dom';
 import { ThemeContext } from "../var"
 import Modal from 'react-modal';
 import { Button, FormatTime } from "./inc";
@@ -28,11 +29,10 @@ class StatusBar extends Component {
 
   render() {
     const bar = {...this.props.styles, ...{width: `${this.state.width}%`}};
-
     return (
       <div className="bar-container">
         <div className="bar" style={{width: '100%'}}>
-          <div className="progress" style={bar}>{`${this.state.width}%`}</div>
+          <div className="progress" style={bar}>{this.state.width}%</div>
         </div>
       </div>
     )
@@ -80,7 +80,7 @@ class Clock extends Component {
     }
     const container = {
       color: e.text,
-      minWidth: '200px'
+      minWidth: '180px'
     }
     return (
       <div className="flex-row clock" style={container}>
@@ -211,7 +211,7 @@ class Accordion extends Component {
     const e = this.props;
     return (
       <div className="accordion">
-				<button className="heading flex-row" onClick={(e) => this.update()}>
+				<button className="heading flex-row" style={{ padding: 0 }} onClick={(e) => this.update()}>
 					<span className="symbol flex-center">{i.symbol}</span>{e.children[0]}
         </button>
 				<div className="body" style={{display: i.display}}>
@@ -222,6 +222,48 @@ class Accordion extends Component {
   }
 }
 
+class Circle extends Component {
+
+  static contextType = ThemeContext;
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      height: 0,
+    }
+    this.handleResize = this.handleResize.bind(this);
+  }
+
+  handleResize () {
+    this.setState({
+      height: this.ref.offsetWidth
+    })
+  } 
+
+  componentDidMount() {
+    this.setState({
+      height: this.ref.offsetWidth
+    });
+
+    window.addEventListener("resize", this.handleResize);
+  }
+
+
+  render() {
+    const styles = { 
+      ...this.props.styles,
+      ...{ height: this.state.height }
+    }
+    let classes = `circle`;
+    if (this.props.className) classes += ` ${this.props.className}`;
+    return (
+      <div ref={node => {if (node !== null) this.ref = node}} className={classes} style={styles}>
+        {this.props.children}
+      </div>
+    )
+  }
+}
+
 export { 
-    StatusBar, PopUp, Clock, Accordion
+    StatusBar, PopUp, Clock, Accordion, Circle
 }

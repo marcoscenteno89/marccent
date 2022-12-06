@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import * as Sentry from "@sentry/react";
 import { Integrations } from "@sentry/tracing";
-import './index.css';
+import 'bootstrap/dist/css/bootstrap.css'
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 

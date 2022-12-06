@@ -7,30 +7,10 @@
     align-items: center;
 }
 .temp {
-    align-items: flex-start;
     .header {
         h1, h3 {
             padding: 0;
         }
-    }
-    .water-circle {
-      width: 100%;
-      height: 100%;
-      position: absolute;
-      border-radius: 45%;
-      bottom: 35%;
-      left: -50%;
-      height: 200%;
-      width: 200%;
-    }
-    .water-circle.one {
-      animation: rotate 8s linear infinite;
-      border-radius: 42%;
-    }
-    .water-circle.two {
-      animation: rotate 8s linear  infinite;
-      border-radius: 35%;
-      opacity: 0.5;
     }
     .box-shadow {
       border-radius: 50%;
@@ -39,12 +19,6 @@
       top: 0;
       width: 100%;
       height: 100%;
-    }
-    .water {
-      position: absolute;
-      bottom: 0;
-      width: 100%;
-      height: 50%;
     }
     .history {
         .list-outer {
@@ -83,7 +57,7 @@
             display: flex !important;
             justify-content: space-between;
             li {
-              opacity: 0.6;
+              opacity: 0.8;
               box-shadow: 0 0 5px rgba(0,0,0,0.5);
               border-radius: $radious;
             }
@@ -91,7 +65,7 @@
               opacity: 1;
             }
             li.disabled {
-              opacity: 0.1;
+              opacity: 0.4;
               pointer-events: none;
             }
         }

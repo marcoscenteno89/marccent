@@ -15,7 +15,7 @@ class Apps extends Component {
     }
     let background = `container${a.glass ? ' glass' : ''}`;
     return  (
-      <section className="page-apps flex-center">
+      <section className="container-fluid page-apps">
         <div className={background} style={pg}>
           <AppNav />
         </div>

@@ -1,71 +1,61 @@
 @import '../Variables.scss';
 .page-contact {
-    margin: 4rem 0 12rem 0;
-    overflow: visible;
-    .contact {
-        width: 100%;
-        justify-content: flex-end;
-        align-items: stretch;
-        position: relative;
-        .form-area {
-            box-shadow: 0 0 12px rgba(0, 0, 0, 0.5);
-            border-radius: $radious;
-            justify-content: center;
-            height: 50%;
-            min-height: 400px;
-            padding: 1rem;
-            position: absolute;
-            width: 60%;
-            max-width: 992px;
-            bottom: -30%;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 99;
-            .contact-info {
-              .text, input, .btn, textarea {
-                  opacity: 0.8;
-                  border: none;
-                  background-color: transparent !important;
-              }
-              input::placeholder , textarea::placeholder {
-                  // color: #FFF;
-                  
-              }
-              .text {
-                  -webkit-text-fill-color: transparent !important;
-                  -webkit-background-clip: text !important;
-              }
-          }
-        }  
-    }
-    .header, .footer {
-        min-height: 5rem;
-        position: relative;
-        z-index: 99;
-    }
-    .map-size {
-        border-radius: 0;
-    }
+  overflow: visible;
+  position: relative;
+  .form-area {
+      box-shadow: 0 0 12px rgba(0, 0, 0, 0.5);
+      border-radius: $radious;
+      justify-content: center;
+      height: 50%;
+      min-height: 400px;
+      padding: 1rem;
+      position: absolute;
+      width: 60%;
+      max-width: 992px;
+      bottom: -30%;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 99;
+      .contact-info {
+        .text, input, .btn, textarea {
+          opacity: 0.8;
+          border: none;
+          background-color: transparent !important;
+        }
+        .text {
+          -webkit-text-fill-color: transparent !important;
+          -webkit-background-clip: text !important;
+        }
+      }
+  }  
+  .header, .footer {
+    min-height: 5rem;
+    position: relative;
+    z-index: 99;
+  }
+  .map-size {
+    border-radius: 0;
+  }
 }
 @media (max-width: 568px) {
-    .page-contact {
-        .map-size {
-            height: 300px !important;
-        }
-        .contact {
-            flex-wrap: wrap;
-            .contact-info {
-                justify-content: center;
-                height: 450px;
-                width: 100%;
-                max-width: 100%;
-                position: relative;
-                z-index: 999;
-                form {
-                    justify-content: center;
-                    align-items: center;
-                }
-            }
-        }
+  .page-contact {
+    .map-size {
+      height: 300px !important;
     }
+    .contact {
+      flex-wrap: wrap;
+      .contact-info {
+        justify-content: center;
+        height: 450px;
+        width: 100%;
+        max-width: 100%;
+        position: relative;
+        z-index: 999;
+        form {
+          justify-content: center;
+          align-items: center;
+        }
+      }
+    }
+  }
 }

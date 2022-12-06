@@ -57,18 +57,18 @@ class Portfolio extends Component {
     const pg = {
       backgroundColor: a.mode,
     }
-    let background = `page-portfolio flex-center${a.glass ? ' glass' : ''}`;
+    let background = `page-portfolio ${a.glass ? ' glass' : ''}`;
     const breakPoints = [
       {width: 768, itemsToShow: 1},
       {width: 868, itemsToShow: 2},
       {width: 968, itemsToShow: 3},
     ]
     return  (
-      <div>
+      <section className="container-fluid" style={{padding: '3rem 0'}}>
         <WaveSvg dir="top" styles={{ fill: a.mode}} />
         <section className={background} style={pg}>
-          <div className="container" style={{margin: '0'}}>
-            <h2 className="w-100"style={{textAlign: 'center'}}>Portfolio</h2>
+          <div className="container">
+            <h2 className="col-12"style={{textAlign: 'center'}}>Portfolio</h2>
             <div className="flex-center">
               <Carousel breakPoints={breakPoints}>
               {images.map((img, index) => <Card key={index} content={img} />)}
@@ -77,7 +77,7 @@ class Portfolio extends Component {
           </div>
         </section>
         <WaveSvg dir="bottom" styles={{ fill: a.mode}} />
-      </div>
+      </section>
     )        
   }
 }

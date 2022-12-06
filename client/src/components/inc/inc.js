@@ -1,5 +1,6 @@
 import React, {} from "react";
 import { Link } from 'react-router-dom';
+import { Circle } from "../inc/inc-classes";
 
 const CurrentDate = new Date();
 
@@ -63,23 +64,33 @@ const Flag = () => {
   </i>)
 }
 
-const Background = props => {
+const Blob = (props) => {
   const arr = [];
-  for (let i = 0; i < 20; i++) {
-    let ran = RandomNum(20, 150);
-    let ball = {
-      width: `${ran * 3}px`,
-      height: `${ran * 3}px`,
-      [RandomNum(0, 1) === 0 ? 'top' : 'bottom']: `${RandomNum(45, 55)}%`,
-      [RandomNum(0, 1) === 0 ? 'left' : 'right']: `${RandomNum(0, 10)}%`
-    }
+  for (let i = 0; i < props.count; i++) {
+    let ran = RandomNum(props.min, props.max);
+    let ball = Object.assign({
+      width: `${ran}vw`,
+      height: `${ran}vw`,
+      [props.ydirection]: `${RandomNum(props.y - 5, props.y + 5)}%`,
+      [props.xdirection]: `${RandomNum(props.x - 5, props.x + 5)}%`,
+      animation: `updown ${RandomNum(35,55)}s linear infinite`
+    }, props.styles)
+      
     arr.push(ball);
-  };
+  }
+  return (
+    <div className="blob-single" style={{ animation: `${RandomNum(70,120)}s linear infinite rotate` }}>
+      {arr.map((i, index) => <div key={index} className="ball" style={i}></div>)}
+    </div>
+  )
+}
+
+const BlobContainer = props => {
   return (
     <React.Fragment key="1">
-      <div className="bg"><div className="cont">
-        {arr.map((i, index) => <div key={index} className="ball" style={i}></div>)}
-      </div></div>
+      <div className="blob-container" style={props.styles}>
+        {props.children}
+      </div>
       <Blur />
     </React.Fragment>
   )
@@ -234,13 +245,13 @@ const SpCircle = props => {
   if (!props.data) return (<div>No data Found</div>)
   const o = props.styles;
   return (
-    <div className="cir cir-xl flex-center" style={o.circle}>
-      <div className="cir cir-ml flex-center" style={o.grad}>
-        <div className="cir cir-m anim flex-center" style={o.innerCircle}>
+    <Circle className="flex-center" styles={o.circle}>
+      <div className="inner circle flex-center" style={o.grad}>
+        <div className="inner circle anim flex-center"style={o.innerCircle}>
           {props.children}
         </div>
       </div>
-    </div>
+    </Circle>
   ) 
 }
 
@@ -300,8 +311,41 @@ const FormatTime = (i) => {
   }
 }
 
+const Liquid = props => {
+  const styles = {
+    bottom: `${props.level ? props.level : 40}%`,
+    backgroundColor: props.background
+  };
+  return (
+    <div className="liquid-container" style={props.container}>
+      <div className="liquid" style={{ background: props.color }}></div>
+      <Circle className="rotator one" styles={styles} />
+      <Circle className="rotator two" styles={styles} />
+    </div>
+  )
+}
+
+const Flames = props => {
+  const styles = {}
+  const arr = []
+  for (let i = 0; i < props.count; i++) {
+    let ember = Object.assign({
+      left: `${RandomNum(10, 40)}%`,
+      animationDelay: `0.${RandomNum(1, 100)}s`,
+      backgroundImage: `radial-gradient(${props.color} 20%, rgba(0, 0, 0, 0) 50%)`
+    }, props.styles)
+      
+    arr.push(ember);
+  }
+  return (
+    <div className="flame-container" style={props.container}>
+      {arr.map((i, index) => <div key={index} className="ember" style={i}></div>)}
+    </div>
+  )
+}
+
 export { 
-    SpCircle, Blur, Button, Background, Title, FooterText, MapStyle, Bomb, Notebook, GetMode,
+    SpCircle, Blur, Button, BlobContainer, Blob, Title, FooterText, MapStyle, Bomb, Notebook, GetMode,
     CurrentDate, CustDate, Img, ColorList, RandomNum, Flag, LinGrad, GetColor, GetRgb, RevColor,
-    WaveSvg, FormatTime
+    WaveSvg, FormatTime, Liquid, Flames
 }

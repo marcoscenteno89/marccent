@@ -4,8 +4,8 @@ import JwPagination from 'jw-react-pagination';
 import ValidForm from 'react-valid-form-component';
 import "../../styles/mini-app/Temperature.scss";
 import '../../styles/keyframes.scss';
-import { CustDate, Img, SpCircle, GetMode } from "../inc/inc";
-import { Clock, Accordion } from "../inc/inc-classes";
+import { CustDate, Img, SpCircle, GetMode, Liquid } from "../inc/inc";
+import { Clock, Accordion, Circle } from "../inc/inc-classes";
 import Maps from "../map";
 const openWeather = `${process.env.REACT_APP_OPENWEATHERURL}data/2.5/forecast`;
 const token = `&units=imperial&appid=${process.env.REACT_APP_OPENWEATHER}`;
@@ -61,13 +61,13 @@ class Temperature extends Component {
         },
         zoom: 11
       }
-      let background = `container flex-row${a.glass ? ' glass' : ''}`;
+      let background = `container${a.glass ? ' glass' : ''}`;
       return  (
-        <section className="temp flex-center">
+        <section className="container-fluid temp">
           <div className={background} style={sec}>
-            <div className="header flex-row w-100" style={{alignItems:'flex-start',padding:'1rem calc(3rem + 0.5%)'}}>
+            <div className="header" style={{textAlign: 'center'}}>
               <h3>{e.city.name}'s Population: {e.city.population}</h3>
-              <ValidForm nosubmit onSubmit={(e) => this.onClick()} className="flex-row contact-info" style={{flexWrap: 'nowrap'}}>
+              <ValidForm nosubmit onSubmit={(e) => this.onClick()} className="flex-row contact-info" style={{flexWrap: 'nowrap', justifyContent: 'center'}}>
                 <input 
                   name="city"
                   type="text" 
@@ -80,15 +80,21 @@ class Temperature extends Component {
                 <button className="btn" style={bg} type="submit">Send Form</button>
               </ValidForm>
             </div>
-            <div className="w-50" style={{padding: '0 1rem'}}>
-              <TempCir temp={e.list[0]} />
-              <div className="map-size" style={{marginTop: '2rem', height: '400px'}}>
-                <Maps mapData={mapData} />
+            <div className="row">
+              <div className="col-6">
+                <div className="shadow flex-col-center p-3">
+                  <TempCir temp={e.list[0]} />
+                  <div className="map-size" style={{marginTop: '2rem', height: '400px'}}>
+                    <Maps mapData={mapData} />
+                  </div>
+                  </div>
               </div>
-            </div>
-            <div className="w-50" style={{padding: '0 1rem'}}>
-              <h3>Weather Forecast</h3>
-              <WeatherHistory list={e.list} />
+              <div className="col-6">
+                <div className="shadow p-3">
+                  <h3>Weather Forecast</h3>
+                  <WeatherHistory list={e.list} />
+                </div>
+              </div>
             </div>
           </div>
         </section>
@@ -122,11 +128,13 @@ class WeatherHistory extends Component {
     if (this.context.theme.id === 0) return <Fragment>Loading...</Fragment>
     const a = this.context.theme;
     const paginationStyles = {
-      li: {
+      a: {
         background: a.rev,
+        borderColor: a.rev,
         color: a.mode
       }
     }
+
     return (
       <div className="flex-row history">
         {this.state.pageOfItems.map((item, index) => (
@@ -157,8 +165,8 @@ class List extends Component {
     }
 
     return (
-      <div className="list-outer shadow-s" style={{background: a.mode}}>
-        <div style={bg} className="list-inner shadow-xs">
+      <div className="list-outer shadow" style={{background: a.mode}}>
+        <div style={bg} className="list-inner shadow">
         <Accordion>
           <span className="head-content">
             <Img src={icon} styles={{width: '40px'}} alt={o.weather[0].description} />
@@ -193,12 +201,6 @@ class TempCir extends Component {
     }
   }
 
-  // UNSAFE_componentWillReceiveProps(props) {
-  //   this.setState({
-  //     temp: props.temp
-  //   });
-  // }
-
   render() {
     if (this.context.theme.id === 0) return <Fragment>Loading...</Fragment>
     const a = this.context.theme;
@@ -212,11 +214,13 @@ class TempCir extends Component {
       },
       innerCircle: {
         backgroundColor: a.mode,
-        boxShadow: 'inset 0 0 75px rgba(0,0,0,0.5)'
+        boxShadow: 'inset 0 0 75px rgba(0,0,0,0.5)',
+        width: '90%'
       },
       grad: {
         backgroundImage: a.grad,
-        boxShadow: 'inset 0 0 15px rgba(0,0,0,0.5)'
+        boxShadow: 'inset 0 0 15px rgba(0,0,0,0.5)',
+        width: '90%'
       }
     }
     const clockstyles = {
@@ -224,13 +228,16 @@ class TempCir extends Component {
       text: a.rev,
       bg: GetMode(a, '0.5')
     }
+    
+    const liquid = {
+      bottom: '0',
+      position: 'absolute'
+    }
     const icon = `https://openweathermap.org/img/w/${o.weather[0].icon}.png`;
     const grad = `linear-gradient(to bottom, ${sec}, ${prim})`;
     return (
       <SpCircle styles={circle} data={a}>
-        <div className="water" style={{ background: grad }}></div>
-        <div className="water-circle one" style={{ backgroundColor: a.mode }}></div>
-        <div className="water-circle two" style={{ backgroundColor: a.mode }}></div>
+        <Liquid color={a.grad} background={a.mode} container={liquid} />
         <div className="box-shadow"></div>
         <div className="temp-cont flex-col" style={{color: a.rev}}>
           <Img src={icon} styles={{width: '60%', marginBottom: '-1rem'}} alt={o.weather[0].description} />

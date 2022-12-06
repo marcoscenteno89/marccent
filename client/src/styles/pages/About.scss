@@ -1,48 +1,26 @@
 @import '../Variables.scss';
 .page-about {
-    > .container {
-        width: auto;
-        > .container {
-            align-items: flex-start;
-        }
-        .con {
-            width: 100%;
-            height: 3.5rem;
-            position: relative;
-            .circle-con {
-                position: absolute;
-                width: 7rem;
-                height: 100%;
-                max-width: 150px;
-                max-height: 150px;
-                bottom: 100%;
-            }
-        }
-        .flex-row {
-            width: auto;
-            margin-bottom: 0.7rem;
-        }
-        ul {
-            list-style-type: none;
-        }
-        i {
-            font-size: 2rem;
-        }
-        .title {
-            font-size: 1.2rem;
-            strong, em {
-                font-size: 1.2rem;
-            }
-        }
-        hr {
-            margin: 1rem 0;
-        }
-        ul {
-            padding-left: 15px;
-            li {
-                margin-bottom: 0.5rem;
-                font-size: 0.8rem;
-            }
-        }
+  > .container {
+    padding: 0;
+    i {
+      font-size: 1.6rem;
+      padding: 0.4rem;
     }
+    li {
+      font-weight: 300;
+    }
+    .con {
+      width: 100%;
+      height: 3.5rem;
+      position: relative;
+      .circle-con {
+        position: absolute;
+        width: 7rem;
+        height: 100%;
+        max-width: 150px;
+        max-height: 150px;
+        bottom: 100%;
+      }
+    }
+  }
 }

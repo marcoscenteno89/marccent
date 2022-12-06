@@ -63,7 +63,7 @@ class About extends Component {
     }
     let background = `container${a.glass ? ' glass' : ''}`;
     return  (
-      <section className="page-about flex-center">
+      <section className="container-fluid page-about">
         <div className={background} style={{backgroundColor: a.mode}}>
           <div className="image" style={img} />
           <div className="con flex-center">
@@ -73,39 +73,43 @@ class About extends Component {
               </SpCircle>
             </div>
           </div>
-            <div className="flex-row container">
-              <div className="w-40 shadow-xs flex-col" style={{backgroundColor: a.mode}}>
-                {icons.map((single, index) => (
-                  <div className="flex-row" key={index}>
-                    {single.icon}
-                    <div style={{width: '50%', paddingLeft: '5px'}}>
-                      <StatusBar bar={single.bar} styles={barStyles} />
+            <div className="container row p-3">
+              <div className="col-4">
+                <div className="shadow p-3">
+                  {icons.map((single, index) => (
+                    <div className="flex-row" key={index}>
+                      {single.icon}
+                      <div style={{width: '50%', paddingLeft: '5px'}}>
+                        <StatusBar bar={single.bar} styles={barStyles} />
+                      </div>
+                      <div style={yr}> {this.time(single.bar.current)}</div>
                     </div>
-                    <div style={yr}> {this.time(single.bar.current)}</div>
-                  </div>
-                ))}
-              </div>
-              <div className="w-60 shadow-xs" style={{backgroundColor: a.mode}}>
-                <div className="title">
-                  <strong>Safelink Internet</strong>, Idaho Falls, ID — <em style={{color: a.hex.secondary}}>Web Developer</em>
+                  ))}
                 </div>
-                <br />
-                <em>Feb 2016 - <span style={{color: a.hex.secondary}}>PRESENT</span></em>
-                <hr />
-                <ul>
-                  <li>Build & maintain Safelink Internet websites as part of our marketing team.</li>
-                  <li>Wordpress Plugin and Theme development, using PHP, MySQL, HTML, CSS and Javascript.</li>
-                  <li>Work with our graphic designer to build front-end animations mainly using CSS animations and Vanilla Javascript, (sometimes jQuery).</li>
-                  <li>Develop and update python websites using Django framework, jQuery and Bootstrap.</li>
-                  <li>Make sure that websites follow responsive and Cross-Browser standards.</li>
-                  <li>Manage Linux containers on AWS EC2/S3 or our own servers for some of Safelink's Python/Django applications. The main tasks are build containers using Dockerfiles and Docker Compose, setup & configure NGINX servers, setup HTTPS encryption using letsencrypt.</li>
-                  <li>Update Legacy code.</li>
-                  <li>Help outline & modify sales processes based on our current needs.</li>
-                  <li>Manage Website databases Mainly MySQL but sometimes PostgreSQL and SQLite.</li>
-                  <li>Help come up with ideas that streamline our sales pipeline, Improve our tracking methods, overall improving the way we utilize our resources.</li>
-                  <li>Build Mapping interfaces using Google Map API.</li>
-                  <li>Develop and update Company web applications that integrate with third-party APIs: consuming data feeds (JSON), RESTful services</li>
-                </ul>
+              </div>
+              <div className="col-8">
+                <div className="shadow p-3">
+                  <div className="title">
+                    <strong>Safelink Internet</strong>, Idaho Falls, ID — <em style={{color: a.hex.secondary}}>Web Developer</em>
+                  </div>
+                  <br />
+                  <em>Feb 2016 - <span style={{color: a.hex.secondary}}>PRESENT</span></em>
+                  <hr />
+                  <ul>
+                    <li>Build & maintain Safelink Internet websites as part of our marketing team.</li>
+                    <li>Wordpress Plugin and Theme development, using PHP, MySQL, HTML, CSS and Javascript.</li>
+                    <li>Work with our graphic designer to build front-end animations mainly using CSS animations and Vanilla Javascript, (sometimes jQuery).</li>
+                    <li>Develop and update python websites using Django framework, jQuery and Bootstrap.</li>
+                    <li>Make sure that websites follow responsive and Cross-Browser standards.</li>
+                    <li>Manage Linux containers on AWS EC2/S3 or our own servers for some of Safelink's Python/Django applications. The main tasks are build containers using Dockerfiles and Docker Compose, setup & configure NGINX servers, setup HTTPS encryption using letsencrypt.</li>
+                    <li>Update Legacy code.</li>
+                    <li>Help outline & modify sales processes based on our current needs.</li>
+                    <li>Manage Website databases Mainly MySQL but sometimes PostgreSQL and SQLite.</li>
+                    <li>Help come up with ideas that streamline our sales pipeline, Improve our tracking methods, overall improving the way we utilize our resources.</li>
+                    <li>Build Mapping interfaces using Google Map API.</li>
+                    <li>Develop and update Company web applications that integrate with third-party APIs: consuming data feeds (JSON), RESTful services</li>
+                  </ul>
+                </div>
               </div>
             </div>
         </div>

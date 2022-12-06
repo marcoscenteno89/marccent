@@ -36,7 +36,7 @@ class Nav extends Component {
       display: this.state.menuOpen ? 'block' : 'none'
     }
     
-    const background = `main-nav flex-center${a.glass ? ' glass' : ''}`;
+    const background = `container-fluid main-nav ${a.glass ? ' glass' : ''}`;
     const clockstyles = {
       border: `1px solid ${a.rev}`,
       text: a.rev,

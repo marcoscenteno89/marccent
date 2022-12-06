@@ -9,6 +9,7 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
+    "bootstrap": "^5.2.2",
     "ga-4-react": "^0.1.28",
     "google-maps-react": "^2.0.6",
     "ini": "^2.0.0",
