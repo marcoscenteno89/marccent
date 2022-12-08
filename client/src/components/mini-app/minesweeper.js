@@ -15,12 +15,13 @@ class MineSweeper extends Component {
       col: 10,
       grid: false,
       mines: false,
-      mineCount: 15,
+      mineCount: 0,
+      dificulty: 4,
       popup: false,
       gameOver: false,
       active: false,
       win: false,
-      time: 0,
+      time: 0, 
       revealedCount: 0,
       help: false
     }
@@ -88,12 +89,11 @@ class MineSweeper extends Component {
       popup: false,
       help: false,
       grid: await this.createGrid(),
-      mineCount: this.state.mineCount,
+      mineCount: this.state.dificulty * 5,
       revealedCount: 100 - this.state.mineCount
     }, async () => {
       this.setState({ mines: await this.generateMines(this.state.mineCount) }, () => this.generateHints());
     });
-    console.log(this.state);
   }
 
   lost() {
@@ -124,6 +124,7 @@ class MineSweeper extends Component {
         mineCount++;
       }
       grid.push(inner);
+      
     }
     return grid;
   }
@@ -220,7 +221,8 @@ class MineSweeper extends Component {
   }
 
   dificulty = async (val) => {
-    this.setState({mineCount: val.value}, () => this.startOver());
+    console.log(val)
+    this.setState({dificulty: val.value, mineCount: val.value * 5}, () => this.startOver());
   }
 
   render() {
@@ -246,10 +248,13 @@ class MineSweeper extends Component {
       }
     }
     const op = [
-      {label: 'Easy', value: 10 },
-      {label: 'Medium', value: 15 },
-      {label: 'Hard', value: 20 },
-      {label: 'Extra Hard', value: 25 }
+      {label: 'Extra Easy', value: 1 },
+      {label: 'Very Easy', value: 2 },
+      {label: 'Easy', value: 3 },
+      {label: 'Normal', value: 4 },
+      {label: 'Hard', value: 5 },
+      {label: 'Very Hard', value: 6 },
+      {label: 'Extra Hard', value: 7 }
     ]
     const btn = {
       marginTop: '0.7rem',
@@ -266,7 +271,7 @@ class MineSweeper extends Component {
           <h2>Mine Sweeper</h2>
           <div className="board">
             <div className="status flex-row">
-              <Select options={op} styles={select} defaultValue={op[1]} className="select-field" onChange={(val) => this.dificulty(val)} />
+              <Select options={op} styles={select} defaultValue={op[3]} className="select-field" onChange={(val) => this.dificulty(val)} />
               <div data={a}><Flag /> {b.mineCount}</div>
               <div style={{ color: a.rev}} className="counter">
                 <Counter getTime={this.getTime} active={b.active} data={a} />
