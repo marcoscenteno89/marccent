@@ -128,6 +128,7 @@ class PopUp extends Component {
 
     const a = this.context.theme;
     const b = this.props;
+    console.log(this.state.display);
     const popup = {
       overlay: {
         backgroundColor: 'rgba(56,61,68,0.2)',
