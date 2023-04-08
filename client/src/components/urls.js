@@ -8,6 +8,7 @@ const Animations = lazy(() => import("./pages/animations"));
 const Apps = lazy(() => import("./pages/apps"));
 const MineSweeper = lazy(() => import("./mini-app/minesweeper"));
 const Temperature = lazy(() => import("./mini-app/temperature"));
+const NumPuz = lazy(() => import("./mini-app/numpuz"));
 const About = lazy(() => import("./pages/about"));
 
 class Urls extends Component {
@@ -35,6 +36,7 @@ class Urls extends Component {
             <Route path="/apps">
               <Route path="/apps/minesweeper"><MineSweeper /></Route>
               <Route path="/apps/temp"><Temperature /></Route>
+              <Route path="/apps/numpuz"><NumPuz /></Route>
               <Apps />
             </Route>
           </Suspense>

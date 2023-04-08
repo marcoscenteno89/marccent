@@ -1,7 +1,8 @@
 import React, { Component, Fragment } from "react";
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { ThemeContext } from "../var";
 import { BlobContainer, Blob, Liquid, Flames } from "../inc/inc";
-// import { Circle } from "../inc/inc-classes";
+import { CodeSnipet } from "../inc/inc-classes";
 
 class Animations extends Component {
 
@@ -17,6 +18,19 @@ class Animations extends Component {
       background: a.grad,
       color: a.hex.light
     }
+    const snippet = `
+      const formData = new FormData();
+      formData.append('username', 'David');
+      formData.append('password', '12345');
+      fetch('https://example.com/authenticate', {
+          method: 'POST',
+          body: formData
+      }).then(response => response.json()).then(data => {
+          console.log(data);
+      }).catch(error => {
+          console.error('Error:', error);
+      });
+    `
     return  (
       <section className="page-privacy-policy container-fluid">
         <div className="container">
@@ -24,14 +38,19 @@ class Animations extends Component {
             <div className="container">
               <h2 style={{textAlign: 'center'}}>Animations</h2>
               <h3 style={{textAlign: 'center'}}>Blob</h3>
-              <div className="shadow col-6" style={{ height: '600px', position: 'relative', overflow: 'hidden' }}>
-                <BlobContainer styles={{ position: 'absolute' }}>
-                  <Blob y={10} x={10} min={2} max={6} count={7} ydirection="top" xdirection="left" styles={{background: a.rev}} />
-                  <Blob y={15} x={75} min={4} max={8} count={7} ydirection="bottom" xdirection="right" styles={{background: a.rev}} />
-                  <Blob y={85} x={10} min={6} max={10} count={7} ydirection="top" xdirection="left" styles={{background: a.rev}} />
-                  <Blob y={85} x={85} min={8} max={15} count={7} ydirection="bottom" xdirection="left" styles={{background: a.rev}} />
-                  <Blob y={40} x={40} min={10} max={20} count={7} ydirection="top" xdirection="left" styles={{background: a.rev}} />
-                </BlobContainer>
+              <div className="row">
+                <div className="shadow p-0 col-4" style={{ height: '600px', position: 'relative', overflow: 'hidden' }}>
+                  <BlobContainer styles={{ position: 'absolute' }}>
+                    <Blob y={10} x={10} min={2} max={6} count={7} ydirection="top" xdirection="left" styles={{background: a.rev}} />
+                    <Blob y={15} x={75} min={4} max={8} count={7} ydirection="bottom" xdirection="right" styles={{background: a.rev}} />
+                    <Blob y={85} x={10} min={6} max={10} count={7} ydirection="top" xdirection="left" styles={{background: a.rev}} />
+                    <Blob y={85} x={85} min={8} max={15} count={7} ydirection="bottom" xdirection="left" styles={{background: a.rev}} />
+                    <Blob y={40} x={40} min={10} max={20} count={7} ydirection="top" xdirection="left" styles={{background: a.rev}} />
+                  </BlobContainer>
+                </div>
+                <div className="col-8 p-3">
+                  <CodeSnipet language="javascript" text={snippet} />
+                </div>
               </div>
               <h3 style={{textAlign: 'center'}}>Liquid</h3>
               <div className="shadow col-6" style={{ height: '600px', margin: '1rem 0', overflow: 'hidden' }}>

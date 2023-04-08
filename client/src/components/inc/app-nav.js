@@ -33,6 +33,12 @@ class AppNav extends Component {
               <h4 style={i}>Minesweeper</h4>
             </Link>
           </li>
+          <li>
+            <Link to="/apps/numpuz">
+              <i style={i} className="fa-solid fa-grip-vertical"></i>
+              <h4 style={i}>Num Puzzle</h4>
+            </Link>
+          </li>
         </ul>
       </Carousel>
     )        

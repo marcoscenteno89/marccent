@@ -202,7 +202,6 @@ class Glass extends Component {
   render() {
     if (this.context.theme.id === 0) return <Fragment>Loading...</Fragment>
     const a = this.context.theme;
-    // console.log(a);
     const mode = GetMode(a, 1);
     const slider = {
       backgroundImage: a.grad,

@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { ThemeContext } from "../var";
-import { PopUp } from "../inc/inc-classes";
+import { PopUp, Counter } from "../inc/inc-classes";
 import Select from 'react-select'
 import "../../styles/mini-app/Minesweeper.scss";
 import { Button, Bomb, RandomNum, Flag } from "../inc/inc";
@@ -29,7 +29,7 @@ class MineSweeper extends Component {
     this.startOver = this.startOver.bind(this);
     this.lost = this.lost.bind(this);
   }
-  async componentDidMount() {
+  componentDidMount() {
     this.startOver();
   }
   
@@ -215,7 +215,7 @@ class MineSweeper extends Component {
 
   getTime(time) {
     this.setState({
-      time: time,
+      time: `${time.hour} : ${time.minute} : ${time.second} : ${time.tos}`,
       popup: true
     });
   }
@@ -277,19 +277,14 @@ class MineSweeper extends Component {
                 <Counter getTime={this.getTime} active={b.active} data={a} />
               </div>
             </div>
-            <div className="body">
-                {b.grid.map((row, index) => 
-                    <div className="bd-col" key={index}> {row.map((cell) => 
-                        <Cell 
-                          cell={cell}
-                          key={cell.id}
-                          data={a} 
-                          onClick={this.onClick}
-                          onContextMenu={this.onContextMenu}
-                        />
-                    )}
-                    </div>
-                )}
+            <div className="body flex-col-center">
+              {b.grid.map((row, index) => 
+                <div className="row" key={index}> 
+                  {row.map((cell) => 
+                    <Cell cell={cell} key={cell.id} data={a} onClick={this.onClick} onContextMenu={this.onContextMenu} />
+                  )}
+                </div>
+              )}
             </div>
             <div className="controller flex-center">
               <Button 
@@ -324,40 +319,6 @@ class MineSweeper extends Component {
           </div>
         </div>
       </section>
-    )        
-  }
-}
-
-class Counter extends Component {
-
-  static contextType = ThemeContext;
-  constructor(props) {
-    super(props);
-    this.state = {
-      count: 0
-    }
-  }
-  start() {
-    this.timer = setInterval(() => this.setState({count: this.state.count + 1}), 1000)
-  }
-  
-  stop(minesweeper) {
-    clearInterval(this.timer);
-    minesweeper.getTime(this.state.count)
-    this.setState({ count: 0 });
-  }
-
-  componentDidUpdate(e) {
-    if (this.props.active && this.state.count === 0) this.start();
-    if (!this.props.active && this.state.count > 0) this.stop(e);
-  }
-
-  render() {
-    if (this.context.theme.id === 0) return <Fragment>Loading...</Fragment>
-    return  (
-      <div className="timer">
-        <i className="fas fa-stopwatch"></i> <small>{this.state.count} Sec</small>
-      </div>
     )        
   }
 }

@@ -1,5 +1,8 @@
-import React, { Component } from "react";
-import ReactDOM from 'react-dom';
+import React, { Component, Fragment } from "react";
+import {CopyToClipboard} from 'react-copy-to-clipboard';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { atomDark, prism } from 'react-syntax-highlighter/dist/esm/styles/prism';
+// import ReactDOM from 'react-dom';
 import { ThemeContext } from "../var"
 import Modal from 'react-modal';
 import { Button, FormatTime } from "./inc";
@@ -223,7 +226,7 @@ class Accordion extends Component {
   }
 }
 
-class Circle extends Component {
+class Square extends Component {
 
   static contextType = ThemeContext;
 
@@ -255,7 +258,7 @@ class Circle extends Component {
       ...this.props.styles,
       ...{ height: this.state.height }
     }
-    let classes = `circle`;
+    let classes = `square`;
     if (this.props.className) classes += ` ${this.props.className}`;
     return (
       <div ref={node => {if (node !== null) this.ref = node}} className={classes} style={styles}>
@@ -265,6 +268,123 @@ class Circle extends Component {
   }
 }
 
+class CodeSnipet extends Component {
+  static contextType = ThemeContext;
+  constructor(props) {
+    super(props);
+    this.state = {
+      value: this.props.text,
+      copied: false,
+      cta: 'Copy to clipboard'
+    }
+  }
+
+  render() {
+    const e = this.props;
+    const a = this.context.theme;
+    const btn = {
+      backgroundImage: a.grad,
+      borderRadius: 0
+    }
+    return (
+      <div className="code-snippet">
+        <CopyToClipboard text={this.state.value} onCopy={() => this.setState({copied: true, cta: 'Copied!'})}>
+          <div className="btn-con flex-center" style={btn}>
+            <button className="btn">{this.state.cta}</button>
+            <i className="fa-solid fa-copy"></i>
+          </div>
+        </CopyToClipboard>
+        <SyntaxHighlighter language={e.language} style={a.is_dark ? prism : atomDark}>
+          {this.state.value}
+        </SyntaxHighlighter>
+      </div>
+    )
+  }
+}
+
+class Counter extends Component {
+
+  static contextType = ThemeContext;
+  constructor(props) {
+    super(props);
+    this.state = {
+      tos: 0,
+      second: 0,
+      minute: 0,
+      hour: 0
+    }
+  }
+
+  addZero(num) {
+    return num > 10 ? `${num}` : `0${num}`;
+  }
+
+  start() {
+    this.timer = setInterval(() => {
+      let st = this.state;
+      const nt = {
+        tos: st.tos,
+        second: st.second,
+        minute: st.minute,
+        hour: st.hour
+      }
+      if (st.tos > 9) {
+        nt.tos = 0;
+        nt.second = st.second + 1;
+      }
+      if (st.second > 59) {
+        nt.second = 0;
+        nt.minute = st.minute + 1;
+      }
+      if (st.minute > 59) {
+        nt.minute = 0;
+        nt.hour = st.hour + 1;
+      }
+      this.setState({
+        tos: nt.tos + 1,
+        second: nt.second,
+        minute: nt.minute,
+        hour: nt.hour
+      })
+    }, 100)
+  }
+  
+  stop() {
+    clearInterval(this.timer);
+    let time = {
+      tos: this.state.tos < 10 ? `${this.state.tos}0` : this.state.tos,
+      second: this.addZero(this.state.second),
+      minute: this.addZero(this.state.minute),
+      hour: this.addZero(this.state.hour)
+    }
+    this.setState({ 
+      tos: 0,
+      second: 0,
+      minute: 0,
+      hour: 0
+    });
+    this.props.getTime(time);
+  }
+
+  componentDidUpdate(e) {
+    if (this.props.active && this.state.tos === 0) this.start();
+    if (!this.props.active && this.state.tos > 0) this.stop(e);
+  }
+
+  render() {
+    if (this.context.theme.id === 0) return <Fragment>Loading...</Fragment>
+    const i = this.state;
+    return  (
+      <div className="timer">
+        <i className="fas fa-stopwatch" style={{marginRight: '0.5rem'}}></i> 
+        <small>
+          {this.addZero(i.hour)}:{this.addZero(i.minute)}:{this.addZero(i.second)}:{i.tos < 10 ? `${i.tos}0` : i.tos}
+        </small>
+      </div>
+    )        
+  }
+}
+
 export { 
-    StatusBar, PopUp, Clock, Accordion, Circle
+    StatusBar, PopUp, Clock, Accordion, Square, CodeSnipet, Counter
 }

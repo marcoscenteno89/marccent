@@ -16,15 +16,9 @@
     }
   }
   .body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
     width: 100%;
     height: auto;
-    flex-direction: column;
-    .bd-col {
-      display: flex;
-      // flex-direction: column;
+    .row {
       .digit {
         background-size: cover;
         background-position: center center;
@@ -34,9 +28,6 @@
         height: 3rem;
         min-height: 15px;
         margin: 1px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
         border-radius: 3px;
         cursor: pointer;
         font-size: 0.7rem;
