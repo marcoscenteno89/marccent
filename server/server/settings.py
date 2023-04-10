@@ -30,7 +30,13 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', cast=bool)
 
-ALLOWED_HOSTS = ['localhost', 'marccent.com', '127.0.0.1', 'api.marccent.com']
+ALLOWED_HOSTS = [
+  'localhost', 
+  'marccent.com', 
+  '127.0.0.1', 
+  'api.marccent.com',
+  '172.21.187.139',
+  ]
 
 
 # Application definition
@@ -150,6 +156,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "marccent.com",
     "api.marccent.com",
+    'http://172.21.187.139:3000',
 ]
 
 CORS_ALLOW_HEADERS = [

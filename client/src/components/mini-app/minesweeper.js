@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { ThemeContext } from "../var";
-import { PopUp, Counter } from "../inc/inc-classes";
+import { Counter, Square } from "../inc/inc-classes";
 import Select from 'react-select'
 import "../../styles/mini-app/Minesweeper.scss";
 import { Button, Bomb, RandomNum, Flag } from "../inc/inc";
@@ -17,13 +17,11 @@ class MineSweeper extends Component {
       mines: false,
       mineCount: 0,
       dificulty: 4,
-      popup: false,
       gameOver: false,
       active: false,
-      win: false,
       time: 0, 
       revealedCount: 0,
-      help: false
+      status: ''
     }
     this.getTime = this.getTime.bind(this);
     this.startOver = this.startOver.bind(this);
@@ -34,11 +32,8 @@ class MineSweeper extends Component {
   }
   
   onClick = (e, cell) => {
-    console.log(this.state);
     if (this.state.gameOver || cell.revealed) return;
-    if (!this.state.active) {
-      this.setState({ active: true, popup: false });
-    }
+    if (!this.state.active) this.setState({ active: true, popup: false });
     let newGrid = this.state.grid;
     if (cell.mine) { // Do this if user hits mine 
       this.lost();
@@ -46,11 +41,7 @@ class MineSweeper extends Component {
       let grid = this.reveal(newGrid, cell.x, cell.y, 0);
       let count = this.state.revealedCount + grid.newNonMinesCount;
       if (count === 0) { // User won game
-        this.setState({
-          gameOver: true,
-          active: false,
-          win: true
-        });
+        this.win();
       } else { // Game continues
         this.setState({
           grid: grid.arr,
@@ -62,9 +53,7 @@ class MineSweeper extends Component {
 
   onContextMenu = (e, cell) => {
     e.preventDefault();
-    if (!this.state.active) {
-      this.setState({ active: true });
-    }
+    if (!this.state.active) this.setState({ active: true });
     let mineCnt = this.state.mineCount;
     let grid = this.state.grid;
     if (grid[cell.x][cell.y].flagged) {
@@ -86,8 +75,7 @@ class MineSweeper extends Component {
 
   async startOver() {
     this.setState({
-      popup: false,
-      help: false,
+      active: false,
       grid: await this.createGrid(),
       mineCount: this.state.dificulty * 5,
       revealedCount: 100 - this.state.mineCount
@@ -97,15 +85,25 @@ class MineSweeper extends Component {
   }
 
   lost() {
+    const grid = this.state.grid;
     for(let i of this.state.mines) {
-      this.state.grid[i.x][i.y].revealed = true; // Reveals all mines
+      grid[i.x][i.y].revealed = true; // Reveals all mines
     }
     this.setState({
-      popup: true,
-      grid: this.state.grid,
-      active: false
+      grid: grid,
+      active: false,
+      status: 'You Lost!'
     });
   }
+
+  win() {
+    this.setState({
+      gameOver: true,
+      active: false,
+      status: 'You won, Congratulations.'
+    });
+  }
+
   createGrid() {
     const grid = []
     let mineCount = 0
@@ -209,20 +207,15 @@ class MineSweeper extends Component {
     return {arr, newNonMinesCount};
   }
 
-  help() {
-    this.setState({ help: true });
-  }
-
   getTime(time) {
-    this.setState({
-      time: `${time.hour} : ${time.minute} : ${time.second} : ${time.tos}`,
-      popup: true
-    });
+    this.setState({ status: `${this.state.status} Your time is ${time.hour} : ${time.minute} : ${time.second} : ${time.tos}` });
   }
 
   dificulty = async (val) => {
-    console.log(val)
-    this.setState({dificulty: val.value, mineCount: val.value * 5}, () => this.startOver());
+    this.setState({
+      dificulty: val.value, 
+      mineCount: val.value * 5
+    }, () => this.startOver());
   }
 
   render() {
@@ -257,65 +250,52 @@ class MineSweeper extends Component {
       {label: 'Extra Hard', value: 7 }
     ]
     const btn = {
-      marginTop: '0.7rem',
       backgroundColor: a.rev,
       color: a.mode
     }
     const background = `container flex-col${a.glass ? ' glass' : ''}`;
-
-    const header = b.win ? 'Winner' : 'Game Over';
-
+    const rowHeight = {
+      height: `calc((100% / ${b.grid.length}) - 4px)`
+    }
     return (
       <section className="container-fluid minesweeper">
         <div className={background} style={container}>
           <h2>Mine Sweeper</h2>
-          <div className="board">
-            <div className="status flex-row">
-              <Select options={op} styles={select} defaultValue={op[3]} className="select-field" onChange={(val) => this.dificulty(val)} />
-              <div data={a}><Flag /> {b.mineCount}</div>
-              <div style={{ color: a.rev}} className="counter">
-                <Counter getTime={this.getTime} active={b.active} data={a} />
-              </div>
-            </div>
-            <div className="body flex-col-center">
-              {b.grid.map((row, index) => 
-                <div className="row" key={index}> 
-                  {row.map((cell) => 
-                    <Cell cell={cell} key={cell.id} data={a} onClick={this.onClick} onContextMenu={this.onContextMenu} />
-                  )}
+          <div className="row">
+            <div className="col-7">
+              <div className="controller flex-row">
+                <Select options={op} styles={select} defaultValue={op[3]} className="select-field" onChange={(val) => this.dificulty(val)} />
+                <div><Flag /> {b.mineCount}</div>
+                <div style={{ color: a.rev}} className="counter">
+                  <Counter getTime={this.getTime} active={b.active} data={a} />
                 </div>
-              )}
-            </div>
-            <div className="controller flex-center">
-              <Button 
-                className="btn" 
-                styles={btn} 
-                onClick={() => this.startOver()} 
-                text="Start Over" 
-              />
-              <Button 
-                className="btn" 
-                styles={btn} 
-                onClick={() => this.help()} 
-                text="Help" 
-              />
-            </div>
-            <PopUp key={1} header={header} controller={this.startOver} display={b.popup} btnText="Start Over">
-              <div>{b.win ? `Time: ${b.time}` : 'You Lost'}</div>
-            </PopUp>
-            <PopUp key={2} header="Mine Sweeper Instructions" display={b.help}>
-              <div className="help">
-                <h4>About the Game</h4> 
-                <p>The object of Minesweeper is to expose all the open areas on the board without hitting an bombs.</p>
-                <h4>Instructions</h4>
-                <p>Click "Play" to begin the game.</p> 
-                <p>Use the left click button on the mouse to select a space on the grid. If you hit a bomb, you lose.</p>
-                <p>The numbers on the board represent how many bombs are adjacent to a square. For example, if a square has a "3" on it, then there are 3 bombs next to that square. The bombs could be above, below, right left, or diagonal to the square.</p>
-                <p>Avoid all the bombs and expose all the empty spaces to win Minesweeper.</p>
-                <p>Tip: Use the numbers to determine where you know a bomb is.</p> 
-                <p>Tip: You can right click a square with the mouse to place a flag where you think a bomb is. This allows you to avoid that spot.</p>
+                <Button className="btn" styles={btn}  onClick={() => this.startOver()} text="Start Over" />
               </div>
-            </PopUp>
+              <Square className="flex-col-center">
+                {b.grid.map((row, index) => 
+                  <div className="row" style={rowHeight} key={index}> 
+                    {row.map((cell) => 
+                      <Cell cell={cell} col={row.length} key={cell.id} data={a} onClick={this.onClick} onContextMenu={this.onContextMenu}  />
+                    )}
+                  </div>
+                )}
+              </Square>
+              <div className="statusMsg">{this.state.status}</div>
+              {/* <PopUp key={1} header={header} controller={this.startOver} display={b.popup} btnText="Start Over">
+                <div>{b.win ? `Time: ${b.time}` : 'You Lost'}</div>
+              </PopUp> */}
+            </div>
+            <div className="col-5">
+              <h4>About the Game</h4> 
+              <p>The object of Minesweeper is to expose all the open areas on the board without hitting an bombs.</p>
+              <h4>Instructions</h4>
+              <p>Click "Play" to begin the game.</p> 
+              <p>Use the left click button on the mouse to select a space on the grid. If you hit a bomb, you lose.</p>
+              <p>The numbers on the board represent how many bombs are adjacent to a square. For example, if a square has a "3" on it, then there are 3 bombs next to that square. The bombs could be above, below, right left, or diagonal to the square.</p>
+              <p>Avoid all the bombs and expose all the empty spaces to win Minesweeper.</p>
+              <p>Tip: Use the numbers to determine where you know a bomb is.</p> 
+              <p>Tip: You can right click a square with the mouse to place a flag where you think a bomb is. This allows you to avoid that spot.</p>
+            </div>
           </div>
         </div>
       </section>
@@ -354,7 +334,8 @@ class Cell extends Component {
     const a = this.props.data;
     const styles = {
       backgroundImage: `radial-gradient(${a.hex.secondary} 15%, ${a.hex.primary} 60%)`,
-      color: a.rev
+      color: a.rev,
+      width: `calc((100% / ${this.props.col}) - 4px)`
     }
 
     let value = '';

@@ -79,8 +79,8 @@ class NumPuz extends Component {
     this.setState({ status: status })
   }
 
-  getTime(data) {
-    this.setState({status: `${this.state.status} Your time is ${data.hour} : ${data.minute} : ${data.second} : ${data.tos}`});
+  getTime(time) {
+    this.setState({status: `${this.state.status} Your time is ${time.hour} : ${time.minute} : ${time.second} : ${time.tos}`});
   }
   update(newObj) {
     
@@ -171,7 +171,7 @@ class NumPuz extends Component {
                   </div>
                 )}
               </Square>
-              <div className="msg">{this.state.status}</div>
+              <div className="statusMsg">{this.state.status}</div>
             </div>
             <div className="col-6" style={{fontSize: '0.9rem'}}>
               <h2>NumPuz Puzzle</h2>
@@ -204,9 +204,7 @@ class Digit extends Component {
   }
 
   onDragStart(event, cell) {
-    if (!this.props.active) {
-      this.props.activate();
-    }
+    if (!this.props.active) this.props.activate();
     event.dataTransfer.setData("cell", JSON.stringify(cell));
   }
   onDragOver(event) {

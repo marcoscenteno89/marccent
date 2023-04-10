@@ -378,7 +378,7 @@ class Counter extends Component {
       <div className="timer">
         <i className="fas fa-stopwatch" style={{marginRight: '0.5rem'}}></i> 
         <small>
-          {this.addZero(i.hour)}:{this.addZero(i.minute)}:{this.addZero(i.second)}:{i.tos < 10 ? `${i.tos}0` : i.tos}
+          {this.addZero(i.hour)} : {this.addZero(i.minute)} : {this.addZero(i.second)} : {i.tos < 10 ? `${i.tos}0` : i.tos}
         </small>
       </div>
     )        
