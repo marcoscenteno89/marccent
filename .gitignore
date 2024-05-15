@@ -1,12 +1,13 @@
 
 
 .idea
-
+client/.idea
 client/node_modules
 client/.env
 client/build
 client/package-lock.json
 
+next/.idea
 next/out/
 next/.next/
 next/node_modules
@@ -23,9 +24,9 @@ server/*.pyc
 server/.env
 server/__pycache__
 server/*/__pycache__
+server/*/__pycache__/*
 server/docker-compose.yml
 server/static
 server/log
-
 server/.idea
 server/*/migrations
