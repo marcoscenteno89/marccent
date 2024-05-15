@@ -17,18 +17,20 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.views.static import serve
-from django.conf.urls.static import static
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from core.api import api
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('api/', include('api.urls')),
+  path('admin/', admin.site.urls),
+  path('', api.urls)
 ]
 
 # This is only needed when using runserver.
 if settings.DEBUG:
-    urlpatterns = [
-        path(r'^media/(?P<path>.*)$', serve,
-            {'document_root': settings.MEDIA_ROOT, 'show_indexes': True}),
-        ] + staticfiles_urlpatterns() + urlpatterns
+  import debug_toolbar
+
+  urlpatterns = [
+    path('media/<path>', serve, {'document_root': settings.MEDIA_ROOT, 'show_indexes': True}),
+    path('__debug__/', include(debug_toolbar.urls)),
+  ] + staticfiles_urlpatterns() + urlpatterns
 

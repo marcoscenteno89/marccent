@@ -1,0 +1,7 @@
+<!-- book_list.html -->
+<h1>Custom List</h1>
+<ul>
+  {% for message in message_list %}
+    <li>{{ message.user }}: {{ message.message }}</li>
+  {% endfor %}
+</ul>

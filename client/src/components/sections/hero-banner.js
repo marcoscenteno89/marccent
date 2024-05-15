@@ -3,13 +3,12 @@ import { ThemeContext } from "../var"
 import { Notebook } from "../inc/inc";
 
 class HeroBanner extends Component {
-   
   static contextType = ThemeContext;
   render() {
-    if (this.context.theme.id === 0) return <Fragment>Loading...</Fragment>
+    if (!this.context.theme.id) return <Fragment>Loading...</Fragment>
     const a = this.context.theme;
     return (
-      <section className="container-fluid hero-banner">
+      <section className="container-fluid hero-banner flex-center">
         <div className="container">
           <Notebook data={a}>
             <h1>Hello, My Name is Marcos Centeno</h1>

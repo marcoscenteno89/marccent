@@ -1,6 +1,6 @@
 import React, {} from "react";
 import { Link } from 'react-router-dom';
-import { Square } from "../inc/inc-classes";
+import { random } from 'lodash';
 
 const CurrentDate = new Date();
 
@@ -17,11 +17,9 @@ const GetRgb = hex => {
   }
 }
 
-const GetMode = (a, op) => a.is_dark ? GetColor(a.rgb.dark, op) : GetColor(a.rgb.light, op);
+const GetMode = (a, op) =>  a.is_dark ? GetColor(a.rgb.dark, op) : GetColor(a.rgb.light, op);
 
 const RevColor = (a, op) => !a.is_dark ? GetColor(a.rgb.dark, op) : GetColor(a.rgb.light, op);
-
-const RandomNum = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
 
 const Button = props => {
   return (
@@ -62,38 +60,6 @@ const Flag = () => {
     style={{backgroundColor: 'none !important'}}
     >
   </i>)
-}
-
-const Blob = (props) => {
-  const arr = [];
-  for (let i = 0; i < props.count; i++) {
-    let ran = RandomNum(props.min, props.max);
-    let ball = Object.assign({
-      width: `${ran}vw`,
-      height: `${ran}vw`,
-      [props.ydirection]: `${RandomNum(props.y - 5, props.y + 5)}%`,
-      [props.xdirection]: `${RandomNum(props.x - 5, props.x + 5)}%`,
-      animation: `updown ${RandomNum(35,55)}s linear infinite`
-    }, props.styles)
-      
-    arr.push(ball);
-  }
-  return (
-    <div className="blob-single" style={{ animation: `${RandomNum(70,120)}s linear infinite rotate` }}>
-      {arr.map((i, index) => <div key={index} className="ball" style={i}></div>)}
-    </div>
-  )
-}
-
-const BlobContainer = props => {
-  return (
-    <React.Fragment key="1">
-      <div className="blob-container" style={props.styles}>
-        {props.children}
-      </div>
-      <Blur />
-    </React.Fragment>
-  )
 }
 
 const WaveSvg = (props) => {
@@ -174,9 +140,7 @@ const FooterText = props => {
   return (
     <div className="footer flex-center" style={props.style}>
       Copyright ©{CurrentDate.getFullYear()} Marccent. All rights reserved | 
-      <ul>
-        <li><Link style={props.style} to="/privacy-policy"> Privacy Policy</Link></li>
-      </ul>
+      <Link style={props.style} to="/privacy-policy"> Privacy Policy</Link>
     </div>
   )
 }
@@ -184,26 +148,26 @@ const FooterText = props => {
 const Notebook = props => {
   const a = props.data;
   const notebook = {
-    backgroundColor: GetMode(a, 0.3),
+    backgroundColor: GetMode(a, 0.4),
   }
   const full = {
-    backgroundColor: GetMode(a, 0.5),
+    backgroundColor: GetMode(a, 1),
     color: a.rev
   }
   return (
     <div className="notebook">
       <div className="layer-1" style={notebook}>
-      <div className="layer-2" style={notebook}>
-      <div className="layer-3" style={notebook}>
-      <div className="layer-4" style={notebook}>
-      <div className="layer-5" style={notebook}>
-      <div className="layer-6" style={notebook}>
-        <div className="notebook-content" style={full}>{props.children}</div>
-      </div>
-      </div>
-      </div>
-      </div>
-      </div>
+        <div className="layer-2" style={notebook}>
+          <div className="layer-3" style={notebook}>
+            <div className="layer-4" style={notebook}>
+              <div className="layer-5" style={notebook}>
+                <div className="layer-6" style={notebook}>
+                  <div className="notebook-content" style={full}>{props.children}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   )
@@ -243,20 +207,6 @@ const CustDate = (props) => {
   }
   
   return (string);
-}
-
-const SpCircle = props => {
-  if (!props.data) return (<div>No data Found</div>)
-  const o = props.styles;
-  return (
-    <Square className="flex-center circle" styles={o.circle}>
-      <div className="inner circle flex-center" style={o.grad}>
-        <div className="inner circle anim flex-center"style={o.innerCircle}>
-          {props.children}
-        </div>
-      </div>
-    </Square>
-  ) 
 }
 
 const ColorList = is_dark => {
@@ -314,42 +264,12 @@ const FormatTime = (i) => {
     tod: i.getHours() > 12 ? 'PM' : 'AM'
   }
 }
-
-const Liquid = props => {
-  const styles = {
-    bottom: `${props.level ? props.level : 40}%`,
-    backgroundColor: props.background
-  };
-  return (
-    <div className="liquid-container" style={props.container}>
-      <div className="liquid" style={{ background: props.color }}></div>
-      <Square className="rotator one" styles={styles} />
-      <Square className="rotator two" styles={styles} />
-    </div>
-  )
-}
-
-const Flames = props => {
-  const styles = {}
-  const arr = []
-  for (let i = 0; i < props.count; i++) {
-    let ember = Object.assign({
-      left: `${RandomNum(10, 40)}%`,
-      animationDelay: `0.${RandomNum(1, 100)}s`,
-      backgroundImage: `radial-gradient(${props.color} 20%, rgba(0, 0, 0, 0) 50%)`
-    }, props.styles)
-      
-    arr.push(ember);
-  }
-  return (
-    <div className="flame-container" style={props.container}>
-      {arr.map((i, index) => <div key={index} className="ember" style={i}></div>)}
-    </div>
-  )
+const RandomInt = (min, max) => {
+  return parseFloat(`${random(0,1) === 0 ? '-' : ''}${random(min, max)}`);
 }
 
 export { 
-    SpCircle, Blur, Button, BlobContainer, Blob, Title, FooterText, MapStyle, Bomb, Notebook, GetMode,
-    CurrentDate, CustDate, Img, ColorList, RandomNum, Flag, LinGrad, GetColor, GetRgb, RevColor,
-    WaveSvg, FormatTime, Liquid, Flames, ChatGPT
+  Blur, Button, Title, FooterText, MapStyle, Bomb, Notebook, GetMode,
+  CurrentDate, CustDate, Img, ColorList, Flag, LinGrad, GetColor, GetRgb, RevColor,
+  WaveSvg, FormatTime, ChatGPT, RandomInt
 }

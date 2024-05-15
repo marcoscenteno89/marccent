@@ -1,8 +1,13 @@
 import React, { Component,Fragment } from "react";
 import { ThemeContext } from "../var"
-import Carousel from "react-elastic-carousel";
 import { PopUp } from "../inc/inc-classes";
+import { Square } from "../inc/shapes";
 import { FooterText, GetMode } from "./inc";
+import { Navigation, Pagination } from 'swiper';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
 import '../../styles/inc/Footer.scss';
 
 class Footer extends Component {
@@ -39,15 +44,15 @@ class Footer extends Component {
   secondary = e => this.setState({ secondary: e.target.value});
 
   render() {
-    if (this.context.theme.id === 0) return <Fragment>Loading...</Fragment>
+    if (!this.context.theme.id) return <Fragment>Loading...</Fragment>
     const a = this.context.theme;
-    const breakPoints = [
-      {width: 368, itemsToShow: 2},
-      {width: 468, itemsToShow: 3},
-      {width: 568, itemsToShow: 5},
-      {width: 668, itemsToShow: 6},
-      {width: 768, itemsToShow: 7},
-    ]
+    const breakPoints = {
+      368: {width: 368, slidesPerView: 2},
+      468: {width: 468, slidesPerView: 3},
+      568: {width: 568, slidesPerView: 5},
+      668: {width: 668, slidesPerView: 6},
+      768: {width: 768, slidesPerView: 7},
+    }
 
     let background = `main-footer flex-center${a.glass ? ' glass' : ''}`;
     
@@ -64,56 +69,64 @@ class Footer extends Component {
       <footer className={background} style={{backgroundColor: a.mode}}>
         <div className="container">
           <FooterNav />
-          <div className="m-10 flex-center">
+          <div className="flex-center">
               <LightDark />
               <Glass />
           </div>
-          <div className="flex-row">
-            <Carousel breakPoints={breakPoints}>
-              <button 
-                aria-label="Add Theme" 
-                key={0} 
-                style={btn} 
-                className="single flex-center" 
-                onClick={() => this.showForm()}>
-                <div className="inner flex-center">
-                  <i style={add} className="fas fa-plus"></i>
-                </div>
-              </button>
-              {this.context.theme.list.map(single => (
-                <Choices key={single.id} data={single} />
-              ))}
-            </Carousel>
-          </div>
+          <Swiper
+            breakpoints={breakPoints}
+            modules={[ Navigation, Pagination ]}
+            className="theme-nav"
+            slidesPerView={10}
+            navigation
+            pagination={{ clickable: true }}
+            // onSlideChange={() => console.log('slide change')}
+            // onSwiper={(swiper) => console.log(swiper)}
+          >
+            <SwiperSlide>
+              <Square className="flex-center">
+                <button aria-label="Add Theme" key={0} style={btn} className="single flex-center" onClick={() => this.showForm()}>
+                  <div className="inner flex-center">
+                    <i style={add} className="fas fa-plus"></i>
+                  </div>
+                </button>
+              </Square>
+            </SwiperSlide>
+            {this.context.theme.list.map((single, index) => (
+              <SwiperSlide key={index}>
+                <SingleChoice key={`footer-choice-${index}`} data={single} />
+              </SwiperSlide>
+            ))}
+          </Swiper>
           <FooterText style={{ color : a.rev }} />
         </div>
         <PopUp header="Add Theme" controller={this.addTheme} display={this.state.showForm} btnText="Submit">
-            <form>
-              <h4>Select Primary Color</h4>
-              <input 
-                type="color" 
-                value={this.state.primary} 
-                style={{backgroundColor: a.rev}} 
-                onChange={this.primary} 
-              />
-              <h4>Select Secondary Color</h4>
-              <input 
-                type="color"
-                value={this.state.secondary} 
-                style={{backgroundColor: a.rev}} 
-                onChange={this.secondary} 
-              />
-              <div><i>Select same color for primary and secondary colors<br />for single colored theme.</i></div>
-              <br />
-              <h5 style={{color: 'red'}}>{this.state.status}</h5>
-            </form>
-          </PopUp>
+          <form>
+            <h4>Select Primary Color</h4>
+            <input 
+              type="color" 
+              value={this.state.primary} 
+              style={{backgroundColor: a.rev}} 
+              onChange={this.primary} 
+            />
+            <h4>Select Secondary Color</h4>
+            <input 
+              type="color"
+              value={this.state.secondary} 
+              style={{backgroundColor: a.rev}} 
+              onChange={this.secondary} 
+            />
+            <div><i>Select same color for primary and secondary colors<br />for single colored theme.</i></div>
+            <br />
+            <h5 style={{color: 'red'}}>{this.state.status}</h5>
+          </form>
+        </PopUp>
       </footer>
     )        
   }
 }
 
-class Choices extends Component {
+class SingleChoice extends Component {
     
   static contextType = ThemeContext;
 
@@ -139,14 +152,13 @@ class Choices extends Component {
     }
     const label = `theme-${c.id}`
     return (
-      <Fragment>
+      <Square key={`square-footer-choice`} className="flex-center">
         <i 
           style={{ color: a.rev }} 
           onClick={() => b.removeTheme(c.id)} 
           className="close fas fa-times-circle"
         ></i>
         <button 
-          key={c.id}
           aria-label={label}
           className="single flex-center" 
           style={btn} onClick={() => b.updateTheme(c.id)}>
@@ -154,7 +166,7 @@ class Choices extends Component {
             <div className="shadow" style={shadow}></div>
           </div>
         </button>
-      </Fragment>
+      </Square>
     )
   }
 }
@@ -227,48 +239,56 @@ class FooterNav extends Component {
 
   static contextType = ThemeContext;
   render() {
-    if (this.context.theme.id === 0) return <Fragment>Loading...</Fragment>
-    const a = this.context.theme;
     let i = {
-      backgroundImage: a.grad
-    }
-    let e = {
-      backgroundColor: GetMode(a, 1)
-    }
-    let menu = {
-      animation: `rotate 3s linear infinite`,
-      backgroundImage: a.grad
+      backgroundImage: this.context.theme.grad
     }
     return (
-      <ul className="flex-center footer-nav" style={{color: a.rev}}>
-        <li style={e}>
-          <a href="https://www.facebook.com/marcos.centeno.75" rel="noopener noreferrer" target="_blank">
+      <ul className="flex-center footer-nav">
+        <li>
+          <a 
+            href="https://www.facebook.com/marcos.centeno.75" 
+            rel="noopener noreferrer" 
+            target="_blank">
             <i style={i} className="fab fa-facebook"></i>
           </a>
         </li>
-        <li style={e}>
-          <a href="https://github.com/marcoscenteno89" rel="noopener noreferrer" target="_blank">
+        <li>
+          <a 
+            href="https://github.com/marcoscenteno89" 
+            rel="noopener noreferrer" 
+            target="_blank">
             <i style={i} className="fab fa-github"></i>
           </a>
         </li>
-        <li style={e}>
-          <a href="mailto:marcoscenteno89@gmail.com" rel="noopener noreferrer" target="_blank">
+        <li>
+          <a 
+            href="mailto:marcoscenteno89@gmail.com" 
+            rel="noopener noreferrer" 
+            target="_blank">
             <i style={i} className="fas fa-envelope"></i>
           </a>
         </li>
-        <li style={e} className="menu flex-center"><i style={menu} className="fab fa-ethereum"></i></li>
-        <li style={e}>
-          <a href="https://www.linkedin.com/in/marcos-centeno-0b1a7b65/" rel="noopener noreferrer" target="_blank">
+        <li>
+          <a 
+            href="https://www.linkedin.com/in/marcos-centeno-0b1a7b65/" 
+            rel="noopener noreferrer" 
+            target="_blank">
             <i style={i} className="fab fa-linkedin"></i>
           </a>
         </li>
-        <li style={e}>
-          <a href="https://stackoverflow.com/users/8151467/marcos-centeno" rel="noopener noreferrer" target="_blank">
+        <li>
+          <a 
+            href="https://stackoverflow.com/users/8151467/marcos-centeno" 
+            rel="noopener noreferrer" 
+            target="_blank">
             <i style={i} className="fab fa-stack-overflow"></i>
           </a>
         </li>
-        <li style={e}>
-          <a href="https://www.pinterest.com/marcoscenteno75" rel="noopener noreferrer" target="_blank">
+        <li>
+          <a 
+            href="https://www.pinterest.com/marcoscenteno75" 
+            rel="noopener noreferrer" 
+            target="_blank">
             <i style={i} className="fab fa-pinterest-square"></i>
           </a>
         </li>

@@ -1,7 +1,8 @@
 import React, { Component, Fragment } from "react";
 import { ThemeContext } from "../var"
 import '../../styles/pages/About.scss';
-import { Img, SpCircle } from "../inc/inc";
+import { Img } from "../inc/inc";
+import { SpCircle } from "../inc/shapes";
 import { StatusBar } from "../inc/inc-classes";
 import header from "../../media/img2.webp";
 import profile from "../../media/mcr.webp";
@@ -14,7 +15,7 @@ class About extends Component {
     return `${x} ${year}`;
   }
   render() {
-    if (this.context.theme.id === 0) return <Fragment>Loading Navigation...</Fragment>
+    if (!this.context.theme.id) return <Fragment>Loading Navigation...</Fragment>
     const a = this.context.theme;
     const circle = {
       circle: {

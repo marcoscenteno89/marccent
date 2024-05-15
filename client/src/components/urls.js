@@ -1,49 +1,37 @@
-import React, { Component, lazy, Suspense, Fragment } from "react";
-import { Route, Switch } from "react-router-dom";
+import React, { Component, lazy, Suspense } from "react";
+import { Route, Routes } from "react-router-dom";
 import HeroBanner from "./sections/hero-banner";
+const Temperature = lazy(() => import("./mini-app/temperature"));
 const Contact = lazy(() => import("./pages/contact"));
 const Portfolio = lazy(() => import("./pages/portfolio"));
 const PrivacyPolicy = lazy(() => import("./pages/privacy-policy"));
 const Animations = lazy(() => import("./pages/animations"));
-const Apps = lazy(() => import("./pages/apps"));
 const MineSweeper = lazy(() => import("./mini-app/minesweeper"));
-const Temperature = lazy(() => import("./mini-app/temperature"));
 const NumPuz = lazy(() => import("./mini-app/numpuz"));
 const About = lazy(() => import("./pages/about"));
 
-class Urls extends Component {
-   
+export default class Urls extends Component {
   render() {
     return (
-      <Fragment>
-        <Switch>
-          <Route exact path="/"><HeroBanner /></Route>
-        </Switch>
-        <Switch>
-          <Suspense fallback={<h2>Loading...</h2>}>
-            <Route path="/portfolio"><Portfolio /></Route>
-            <Route path="/about"><About /></Route>
-            <Route path="/contact"><Contact /></Route>
-            <Route path="/privacy-policy"><PrivacyPolicy /></Route>
-            <Route path="/animations"><Animations /></Route>
-            <Route exact path="/">
-              <About />
-              <Portfolio />
-              <Temperature />
-              <Apps />
-              <Contact />
-            </Route>
-            <Route path="/apps">
-              <Route path="/apps/minesweeper"><MineSweeper /></Route>
-              <Route path="/apps/temp"><Temperature /></Route>
-              <Route path="/apps/numpuz"><NumPuz /></Route>
-              <Apps />
-            </Route>
-          </Suspense>
-        </Switch>
-      </Fragment> 
+      <Suspense  fallback={<h2>Loading...</h2>}>
+        <Routes>
+          <Route path="/portfolio" element={<Portfolio />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/animations" element={<Animations />} />
+          <Route exact path="/" element={[
+            <HeroBanner key={0} />, 
+            <About key={1} />, 
+            <Portfolio key={2} />, 
+            <Temperature key={3} />,  
+            <Contact key={5} />
+          ]} />
+          <Route path="/apps/minesweeper" element={<MineSweeper key={0} />} />
+          <Route path="/apps/temp" element={<Temperature key={0} />} />
+          <Route path="/apps/numpuz" element={<NumPuz key={0} />} />
+        </Routes>
+      </Suspense> 
     )
   }
 }
-
-export default Urls;

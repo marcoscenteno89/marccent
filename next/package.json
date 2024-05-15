@@ -1,0 +1,36 @@
+{
+  "name": "next",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^6.5.1",
+    "@googlemaps/js-api-loader": "^1.16.2",
+    "@marccent/util": "github:marcoscenteno89/util",
+    "@sentry/react": "^7.109.0",
+    "@sentry/tracing": "^7.109.0",
+    "bootstrap": "^5.3.2",
+    "dayjs": "^1.11.10",
+    "ga-4-react": "^0.1.281",
+    "lodash": "^4.17.21",
+    "next": "14.0.4",
+    "p5": "^1.9.0",
+    "react": "^18",
+    "react-bootstrap": "^2.10.0",
+    "react-dom": "^18",
+    "swiper": "^11.0.5"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "eslint": "^8",
+    "eslint-config-next": "14.0.4",
+    "typescript": "^5"
+  }
+}

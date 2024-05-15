@@ -1,12 +1,14 @@
 import React, { Component, Fragment } from "react";
 import { ThemeContext } from "../var"
-import JwPagination from 'jw-react-pagination';
+import Pagination from 'rc-pagination';
+import "rc-pagination/assets/index.css";
 import ValidForm from 'react-valid-form-component';
-import "../../styles/mini-app/Temperature.scss";
-import '../../styles/keyframes.scss';
-import { CustDate, Img, SpCircle, GetMode, Liquid } from "../inc/inc";
-import { Clock, Accordion, Circle } from "../inc/inc-classes";
-import Maps from "../map";
+import { CustDate, Img, GetMode } from "../inc/inc";
+import { SpCircle } from "../inc/shapes";
+import { Clock, Accordion } from "../inc/inc-classes";
+import { Liquid } from '../inc/canvas';
+import Map from "../map";
+import AppNav from "../inc/app-nav";
 const openWeather = `${process.env.REACT_APP_OPENWEATHERURL}data/2.5/forecast`;
 const token = `&units=imperial&appid=${process.env.REACT_APP_OPENWEATHER}`;
 
@@ -27,11 +29,7 @@ class Temperature extends Component {
     async update() {
       const res = await fetch(`${openWeather}?q=${this.state.query}${token}`);
       const data = await res.json();
-      if (data.cod === "200") {
-        this.setState({
-          city: data
-        });
-      } 
+      if (data.cod === "200") this.setState({ city: data });
     }
 
     onClick = () => this.update();
@@ -40,6 +38,7 @@ class Temperature extends Component {
 
     render() {
       if (!this.state.city) return <Fragment>Loading...</Fragment>
+      if (!this.context.theme.id) return <Fragment>Loading...</Fragment>
       const a = this.context.theme;
       const e = this.state.city;
       const sec = {
@@ -54,20 +53,22 @@ class Temperature extends Component {
         backgroundColor: a.mode,
         marginRight: '3px !important'
       }
-      const mapData = {
-        loc: {
+      const map = {
+        center: {
           lat: e.city.coord.lat,
           lng: e.city.coord.lon
         },
         zoom: 11
       }
-      let background = `container${a.glass ? ' glass' : ''}`;
       return  (
         <section className="container-fluid temp">
-          <div className={background} style={sec}>
+          <div className={`container${a.glass ? ' glass' : ''}`} style={sec}>
             <div className="header" style={{textAlign: 'center'}}>
               <h3>{e.city.name}'s Population: {e.city.population}</h3>
-              <ValidForm nosubmit onSubmit={(e) => this.onClick()} className="flex-row contact-info" style={{flexWrap: 'nowrap', justifyContent: 'center'}}>
+              <ValidForm 
+                nosubmit 
+                onSubmit={() => this.onClick()} 
+                className="flex-center temp-form">
                 <input 
                   name="city"
                   type="text" 
@@ -84,18 +85,17 @@ class Temperature extends Component {
               <div className="col-6">
                 <div className="shadow flex-col-center p-3">
                   <TempCir temp={e.list[0]} />
-                  <div className="map-size" style={{marginTop: '2rem', height: '400px'}}>
+                  <Map data={map} />
+                  {/* <div className="map-size" style={{marginTop: '2rem', height: '400px'}}>
                     <Maps mapData={mapData} />
-                  </div>
-                  </div>
-              </div>
-              <div className="col-6">
-                <div className="shadow p-3">
-                  <h3>Weather Forecast</h3>
-                  <WeatherHistory list={e.list} />
+                  </div> */}
                 </div>
               </div>
+              <div className="col-6">
+                <WeatherHistory list={e.list} />
+              </div>
             </div>
+            <AppNav key={0} />
           </div>
         </section>
       )        
@@ -109,24 +109,33 @@ class WeatherHistory extends Component {
     super(props);
     this.state = {
       items: this.props.list,
-      pageOfItems: []
+      currentList: [],
+      current: 1,
+      pageSize: 10
     }
-    this.onChangePage = this.onChangePage.bind(this);
+    this.updatePage = this.updatePage.bind(this);
   }
 
-  UNSAFE_componentWillReceiveProps(props) {
-    this.setState({
-      items: props.list
-    });
+  componentDidMount() {
+    this.setState({ currentList: this.state.items.slice(0, this.state.pageSize) });
   }
-  
-  onChangePage(pageOfItems) {
-    this.setState({ pageOfItems: pageOfItems }); // update local state with new page of items
+
+  updatePage(current) {
+    this.setState({
+      current: current
+    }, () => {
+      const i = this.state;
+      const to = i.pageSize * current;
+      const from = to - i.pageSize;
+      // update state with new page of items
+      this.setState({ currentList: i.items.slice(from, to) }); 
+    })
   }
   
   render() {
-    if (this.context.theme.id === 0) return <Fragment>Loading...</Fragment>
+    if (!this.context.theme.id) return <Fragment>Loading...</Fragment>
     const a = this.context.theme;
+    const i = this.state;
     const paginationStyles = {
       a: {
         background: a.rev,
@@ -136,56 +145,34 @@ class WeatherHistory extends Component {
     }
 
     return (
-      <div className="flex-row history">
-        {this.state.pageOfItems.map((item, index) => (
-          <List key={index} data={a} item={item} />
-        ))}
-        <JwPagination 
-          pageSize={10} 
-          items={this.state.items} 
-          onChangePage={this.onChangePage}
-          styles={paginationStyles}
-        />
-      </div>
-    )
-  }
-}
-
-class List extends Component {
-    
-  static contextType = ThemeContext;
-  render() {
-    if (this.context.theme.id === 0) return <Fragment>Loading...</Fragment>
-    const a = this.context.theme;
-    const o = this.props.item;
-    const icon = `${process.env.REACT_APP_OPENWEATHERURL}img/w/${o.weather[0].icon}.png`;
-    const bg = {
-      background: a.grad,
-      color: a.hex.light
-    }
-
-    return (
-      <div className="list-outer shadow" style={{background: a.mode}}>
-        <div style={bg} className="list-inner shadow">
-        <Accordion>
-          <span className="head-content">
-            <Img src={icon} styles={{width: '40px'}} alt={o.weather[0].description} />
-            <strong>{o.main.temp}&#176;</strong>
-            <span><CustDate date={o.dt_txt}ver="2" /></span>
-          </span>
-          <div className="body-content flex-row">
-            <div style={{width:'50%',padding: '0 0.5rem'}} className="flex-col">
-              <strong>{o.weather[0].description}</strong>
-              <span>Humidity: {o.main.humidity}</span>
+      <div className="flex-col list shadow p-3">
+        <h3>Weather Forecast</h3>
+        {i.currentList.map((item, index) => {
+          let icon = `${process.env.REACT_APP_OPENWEATHERURL}img/w/${item.weather[0].icon}.png`;
+          return <Accordion key={`accordion-temp-${index}`}>
+            <span className="head-content">
+              <Img src={icon} styles={{width: '40px'}} alt={item.weather[0].description} />
+              <strong>{item.main.temp}&#176;</strong>
+              <span><CustDate date={item.dt_txt}ver="2" /></span>
+            </span>
+            <div className="body-content flex-row">
+              <div style={{width:'50%',padding: '0 0.5rem'}} className="flex-col">
+                <strong>{item.weather[0].description}</strong>
+                <span>Humidity: {item.main.humidity}</span>
+              </div>
+              <div style={{width:'50%',padding: '0 0.5rem'}} className="flex-col">
+                <span>Low: {item.main.temp_min}</span>
+                <span>High: {item.main.temp_max}</span>
+                <span>Feels like: {item.main.feels_like}</span>
+              </div>
             </div>
-            <div style={{width:'50%',padding: '0 0.5rem'}} className="flex-col">
-              <span>Low: {o.main.temp_min}</span>
-              <span>High: {o.main.temp_max}</span>
-              <span>Feels like: {o.main.feels_like}</span>
-            </div>
-          </div>
-        </Accordion>
-        </div>
+          </Accordion>
+        })}
+        <Pagination 
+          total={i.items.length} 
+          pageSize={i.pageSize} 
+          onChange={this.updatePage} 
+          current={i.current} />
       </div>
     )
   }
@@ -202,11 +189,10 @@ class TempCir extends Component {
   }
 
   render() {
-    if (this.context.theme.id === 0) return <Fragment>Loading...</Fragment>
+    if (!this.context.theme.id) return <Fragment>Loading...</Fragment>
     const a = this.context.theme;
     const o = this.state.temp;
-    const prim = a.hex.primary;
-    const sec = a.hex.secondary;
+    const icon = `https://openweathermap.org/img/w/${o.weather[0].icon}.png`;
     const circle = {
       circle: {
         backgroundColor: a.mode,
@@ -228,22 +214,19 @@ class TempCir extends Component {
       text: a.rev,
       bg: GetMode(a, '0.5')
     }
-    
-    const liquid = {
-      bottom: '0',
-      position: 'absolute'
-    }
-    const icon = `https://openweathermap.org/img/w/${o.weather[0].icon}.png`;
-    const grad = `linear-gradient(to bottom, ${sec}, ${prim})`;
     return (
       <SpCircle styles={circle} data={a}>
-        <Liquid color={a.grad} background={a.mode} container={liquid} />
-        <div className="box-shadow"></div>
-        <div className="temp-cont flex-col" style={{color: a.rev}}>
-          <Img src={icon} styles={{width: '60%', marginBottom: '-1rem'}} alt={o.weather[0].description} />
-          <h3 style={{padding: '0'}}>{o.main.temp}&#176;</h3>
-          <small><CustDate ver="1" /></small>
-          <Clock data={clockstyles} />
+        <Liquid className="circle" />
+        <div className="temp-cont-outer flex-center box-shadow circle">
+          <div className="temp-cont-inner flex-col" style={{color: a.rev}}>
+            <Img 
+              src={icon} 
+              styles={{width: '60%', marginBottom: '-1.5rem'}} 
+              alt={o.weather[0].description} />
+            <h3 style={{padding: '0', margin: '0.5rem'}}>{o.main.temp}&#176;</h3>
+            <small><CustDate ver="1" /></small>
+            <Clock data={clockstyles} />
+          </div>
         </div>
       </SpCircle>
     )

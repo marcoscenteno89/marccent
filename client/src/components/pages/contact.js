@@ -2,44 +2,67 @@ import React, { Component, Fragment } from "react";
 import { ThemeContext } from "../var"
 import { PopUp } from "../inc/inc-classes";
 import '../../styles/pages/Contact.scss';
-import Maps from "../map";
+import Map from "../map";
 import Modal from 'react-modal';
 import ValidForm from 'react-valid-form-component';
 import { GetMode, WaveSvg } from "../inc/inc";
 
-const server = `${process.env.REACT_APP_SERVERURL}`;
+// const server = `${process.env.REACT_APP_SERVERURL}`;
+
 Modal.setAppElement('#app');
 
 class Contact extends Component {
+  static contextType = ThemeContext;
+  constructor(props) {
+    super(props);
+    this.state = {
+      first_name: '',
+      last_name: '',
+      email: '',
+      message: '',
+      popup: false,
+      status: ''
+    }
+    this.popupClose = this.popupClose.bind(this);
+  }
 
-  state = {
-    first_name: '',
-    last_name: '',
-    email: '',
-    message: '',
-    modal: false
+  popupClose() {
+    this.setState({ popup: false })
   }
 
   onClick = async () => {
-    const res = await fetch(`${server}message/`, {
+    const url = process.env.REACT_APP_SERVERURL;
+    const res = await fetch(`${url}message/`, {
       method: 'POST',
-      credentials: 'same-origin',
-      headers: new Headers({'Content-Type': 'application/json', 'Accept': 'application/json'}),
+      headers: new Headers({ 
+        'Content-Type': 'application/x-www-form-urlencoded; application/json; charset=utf-8' 
+      }),
       body: JSON.stringify(this.state)
     });
     let response = await res.json();
+    
     if (response.response) {
-      this.setState({ modal: true });
+      this.setState({ popup: true });
     }
   }
-  firstNameChange = e => this.setState({ first_name: e.target.value});
-  lastNameChange = e => this.setState({ last_name: e.target.value});
-  emailChange = e => this.setState({ email: e.target.value});
-  messageChange = e => this.setState({ message: e.target.value});
+  firstNameChange(e) {
+    this.setState({ first_name: e.target.value});
+  }
 
-  static contextType = ThemeContext;
+  lastNameChange(e) {
+    this.setState({ last_name: e.target.value});
+  }
+
+  emailChange(e) {
+    this.setState({ email: e.target.value});
+  }
+  
+  messageChange(e) {
+    this.setState({ message: e.target.value});
+  }
+
   render() {
-    if (this.context.theme.id === 0) return <Fragment>Loading...</Fragment>
+    if (!this.context.theme.id) return <Fragment>Loading...</Fragment>
     const a = this.context.theme;
     const e = this.state;
     const mode = GetMode(a, 1);
@@ -53,8 +76,8 @@ class Contact extends Component {
       background: a.grad,
       color: a.hex.light
     }
-    const mapData = {
-      loc: {
+    const map = {
+      center: {
         lat: 43.5, 
         lng: -112.05
       },
@@ -66,9 +89,10 @@ class Contact extends Component {
         <WaveSvg dir="top" styles={{ fill: a.mode}} />
         <section className={background} style={pg}>
           <div className="container">
-            <div className="map-size" style={{height: '600px'}}>
+            {/* <Map data={map} /> */}
+            {/* <div className="map-size" style={{height: '600px'}}>
               <Maps mapData={mapData} />
-            </div>
+            </div> */}
             <div className="form-area flex-row" style={{ backgroundColor: mode }}>
               <ValidForm 
                 nosubmit 
@@ -114,14 +138,12 @@ class Contact extends Component {
                 ></textarea>
                 <button className="btn" style={btn} type="submit">Send Form</button>
               </ValidForm>
-              <div className="">
-
-              </div>
+              <div className="statusMsg">{this.state.status}</div>
             </div>
           </div>
         </section>
         <WaveSvg dir="bottom" styles={{ fill: a.mode}} />
-        <PopUp header="Status" display={this.state.modal}>
+        <PopUp header="Status" close={this.popupClose} display={this.state.popup}>
           <p>Message has been received.</p>
         </PopUp>
       </section>

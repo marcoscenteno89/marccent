@@ -1,13 +1,11 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { RevColor, GetMode, GetRgb, LinGrad } from "./inc/inc";
 
 export const ThemeContext = React.createContext();
 
 export class ThemeProvider extends Component {
 
-  state = {
-    id: 0
-  }
+  state = {}
 
   getThemes = async () => {
     const url = process.env.REACT_APP_SERVERURL;
@@ -25,8 +23,9 @@ export class ThemeProvider extends Component {
       let dark = data.filter(i => i.name === 'theme_dark')[0];
       let light = data.filter(i => i.name === 'theme_light')[0];
       let themelist = data.filter(i => i.name !== 'theme_dark' && i.name !== 'theme_light');
+      console.log(themelist)
       theme.list = []
-      for (let i of themelist) theme.list.push(i.value);
+      for (let i of themelist)  theme.list.push(JSON.parse(i.value));
       theme.id = theme.list[0].id;
       theme.rgb = {
         dark: GetRgb(dark.value),
@@ -48,28 +47,6 @@ export class ThemeProvider extends Component {
     }
     
     this.setState(theme, () => this.storeTheme(this.state));
-  }
-
-  newState = n => {
-    // let active = {
-    //   id: theme[0].id,
-    //   rgb: {
-    //     dark: temp.rgb.dark,
-    //     light: temp.rgb.light,
-    //     primary: GetRgb(theme[0].primary),
-    //     secondary: GetRgb(theme[0].secondary)
-    //   },
-    //   hex: {
-    //     dark: temp.hex.dark,
-    //     light: temp.hex.light,
-    //     primary: theme[0].primary,
-    //     secondary: theme[0].secondary
-    //   },
-    //   grad: LinGrad(theme[0].primary, theme[0].secondary)
-    // }
-    // active.mode = GetMode(active, 1);
-    // active.rev = RevColor(active, 1);
-    // this.setState(active, () => this.storeTheme(this.state));
   }
 
   addTheme = theme => {
@@ -137,6 +114,7 @@ export class ThemeProvider extends Component {
   storeTheme = (i) => localStorage.setItem('marccent_theme', JSON.stringify(i));
 
   render() {
+    // if (!this.context.theme) return <Fragment>Loading..</Fragment>
     return (
       <ThemeContext.Provider value={{
         theme: this.state, 

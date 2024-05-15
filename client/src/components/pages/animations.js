@@ -1,22 +1,27 @@
 import React, { Component, Fragment } from "react";
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { ThemeContext } from "../var";
-import { BlobContainer, Blob, Liquid, Flames } from "../inc/inc";
+import { Blob, Fire, LinesCircles, Liquid } from '../inc/canvas';
+// import { Flames } from "../inc/inc";
+// import { Liquid } from "../inc/shapes";
 import { CodeSnipet } from "../inc/inc-classes";
 
 class Animations extends Component {
 
   static contextType = ThemeContext;
+
+  constructor(props) {
+    super(props);
+  }
+
   render() {
-    if (this.context.theme.id === 0) return <Fragment>Loading...</Fragment>
+    if (!this.context.theme.id) return <Fragment>Loading...</Fragment>
     const a = this.context.theme;
+    let rev = !a.is_dark ? a.hex.dark : a.hex.light;
+    let mode = a.is_dark ? a.hex.dark : a.hex.light;
     const pg = {
       background: a.mode,
       color: a.rev
-    }
-    const bg = {
-      background: a.grad,
-      color: a.hex.light
     }
     const snippet = `
       const formData = new FormData();
@@ -39,31 +44,35 @@ class Animations extends Component {
               <h2 style={{textAlign: 'center'}}>Animations</h2>
               <h3 style={{textAlign: 'center'}}>Blob</h3>
               <div className="row">
-                <div className="shadow p-0 col-4" style={{ height: '600px', position: 'relative', overflow: 'hidden' }}>
-                  <BlobContainer styles={{ position: 'absolute' }}>
-                    <Blob y={10} x={10} min={2} max={6} count={7} ydirection="top" xdirection="left" styles={{background: a.rev}} />
-                    <Blob y={15} x={75} min={4} max={8} count={7} ydirection="bottom" xdirection="right" styles={{background: a.rev}} />
-                    <Blob y={85} x={10} min={6} max={10} count={7} ydirection="top" xdirection="left" styles={{background: a.rev}} />
-                    <Blob y={85} x={85} min={8} max={15} count={7} ydirection="bottom" xdirection="left" styles={{background: a.rev}} />
-                    <Blob y={40} x={40} min={10} max={20} count={7} ydirection="top" xdirection="left" styles={{background: a.rev}} />
-                  </BlobContainer>
+                <div className="col-4">
+                  <div className="shadow" style={{ height: '600px' }}>
+                    <Blob color={a.hex.primary} count="15" />
+                  </div>
                 </div>
-                <div className="col-8 p-3">
-                  <CodeSnipet language="javascript" text={snippet} />
+                <div className="col-8">
+                  <div className="shadow" style={{ height: '600px' }}>
+                    <CodeSnipet language="javascript" text={snippet} />
+                  </div>
                 </div>
               </div>
               <h3 style={{textAlign: 'center'}}>Liquid</h3>
-              <div className="shadow col-6" style={{ height: '600px', margin: '1rem 0', overflow: 'hidden' }}>
-                <Liquid color={a.grad} level={70} background={a.mode} />
+              <div className="row">
+                <div className="col-6">
+                  <div className="shadow" style={{ height: '600px' }}>
+                    <Fire color={a.hex.primary} count="40"/>
+                  </div>
+                </div>
+                <div className="col-6">
+                  <div className="shadow" style={{ height: '600px' }}>
+                    <LinesCircles color={a.hex.primary} count="20" />
+                  </div>
+                </div>
               </div>
               <h3 style={{textAlign: 'center'}}>Flames</h3>
               <div className="row">
-                <div className="col-6" >
-                  <div className="shadow" style={{ height: '600px', margin: '1rem 0', overflow: 'hidden' }}>
-                    <Flames color={a.hex.primary} count={40} background={a.rev} />
-                  </div>
-                  <div className="shadow" style={{ height: '600px', margin: '1rem 0', overflow: 'hidden' }}>
-                    <Flames color={a.hex.secondary} count={40} background={a.rev} />
+                <div className="col-12" >
+                  <div className="shadow" style={{ height: '600px' }}>
+                    <Liquid />
                   </div>
                 </div>
               </div>

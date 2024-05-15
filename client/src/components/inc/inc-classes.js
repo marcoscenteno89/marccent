@@ -2,7 +2,6 @@ import React, { Component, Fragment } from "react";
 import {CopyToClipboard} from 'react-copy-to-clipboard';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { atomDark, prism } from 'react-syntax-highlighter/dist/esm/styles/prism';
-// import ReactDOM from 'react-dom';
 import { ThemeContext } from "../var"
 import Modal from 'react-modal';
 import { Button, FormatTime } from "./inc";
@@ -27,7 +26,9 @@ class StatusBar extends Component {
     }
     const speed = this.props.bar.speed ? this.props.bar.speed : 100;
     const percent = (this.props.bar.current / this.props.bar.total) * 100;
-    let id = setInterval(() => this.state.width >= percent ? clearInterval(id) : runInterval(), speed);
+    let id = setInterval(() => {
+      return this.state.width >= percent ? clearInterval(id) : runInterval()
+    }, speed);
   }
 
   render() {
@@ -109,29 +110,10 @@ class PopUp extends Component {
 
   static contextType = ThemeContext;
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      display: this.props.display
-    }
-  }
-
-  UNSAFE_componentWillReceiveProps(e) {
-    this.setState({
-      display: e.display
-    });
-  }
-  updateDisplay = () => {
-    this.setState({
-      display: this.state.display ? false : true
-    });
-  }
-
   render() {
-
+    if (!this.context.theme.id) return <Fragment>Loading...</Fragment>
     const a = this.context.theme;
     const b = this.props;
-    console.log(this.state.display);
     const popup = {
       overlay: {
         backgroundColor: 'rgba(56,61,68,0.5)',
@@ -161,7 +143,7 @@ class PopUp extends Component {
     }
       
     return (
-      <Modal style={popup} className="modal" overlayClassName="overlay" isOpen={this.state.display}>
+      <Modal style={popup} className="modal" overlayClassName="overlay" isOpen={this.props.display}>
         <div style={{background: a.grad}} className="heading flex-center">
           <div style={{backgroundColor: a.hex.primary}} className="left"></div>
           <div style={{backgroundColor: a.hex.secondary}} className="right"></div>
@@ -175,7 +157,7 @@ class PopUp extends Component {
           {b.children}
           <div className="flex-center controller">
             {b.controller ? <Button styles={btn} className="btn" onClick={() => b.controller()} text={b.btnText} /> : ''}
-            <Button styles={btn} className="btn" onClick={() => this.updateDisplay()} text="Close" />
+            <Button styles={btn} className="btn" onClick={() => this.props.close()} text="Close" />
           </div>
         </div>
       </Modal>
@@ -184,7 +166,7 @@ class PopUp extends Component {
 }
 
 class Accordion extends Component {
-
+  static contextType = ThemeContext;
   constructor(props) {
     super(props);
     this.state = {
@@ -211,58 +193,29 @@ class Accordion extends Component {
   }
 
   render() {
+    const a = this.context.theme;
     const i = this.state;
     const e = this.props;
+    const bg = {
+      background: a.grad,
+      color: a.hex.light
+    }
     return (
-      <div className="accordion">
-				<button className="heading flex-row" style={{ padding: 0 }} onClick={(e) => this.update()}>
-					<span className="symbol flex-center">{i.symbol}</span>{e.children[0]}
-        </button>
-				<div className="body" style={{display: i.display}}>
-          {e.children[1]}
+      <div className="list-outer shadow" style={{background: a.mode}}>
+        <div style={bg} className="list-inner shadow">
+          <div className="accordion">
+            <button 
+              className="heading flex-row" 
+              style={{ padding: 0 }} 
+              onClick={(e) => this.update()}>
+              <span className="symbol flex-center">{i.symbol}</span>
+              {e.children[0]}
+            </button>
+            <div className="body" style={{display: i.display}}>
+              {e.children[1]}
+            </div>
+          </div>
         </div>
-      </div>
-    )
-  }
-}
-
-class Square extends Component {
-
-  static contextType = ThemeContext;
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      height: 0,
-    }
-    this.handleResize = this.handleResize.bind(this);
-  }
-
-  handleResize () {
-    this.setState({
-      height: this.ref.offsetWidth
-    })
-  } 
-
-  componentDidMount() {
-    this.setState({
-      height: this.ref.offsetWidth
-    });
-
-    window.addEventListener("resize", this.handleResize);
-  }
-
-
-  render() {
-    const styles = { 
-      ...this.props.styles,
-      ...{ height: this.state.height }
-    }
-    let classes = `square`;
-    if (this.props.className) classes += ` ${this.props.className}`;
-    return (
-      <div ref={node => {if (node !== null) this.ref = node}} className={classes} style={styles}>
-        {this.props.children}
       </div>
     )
   }
@@ -280,6 +233,7 @@ class CodeSnipet extends Component {
   }
 
   render() {
+    if (!this.context.theme.id) return <Fragment>Loading...</Fragment>
     const e = this.props;
     const a = this.context.theme;
     const btn = {
@@ -372,7 +326,7 @@ class Counter extends Component {
   }
 
   render() {
-    if (this.context.theme.id === 0) return <Fragment>Loading...</Fragment>
+    if (!this.context.theme.id) return <Fragment>Loading...</Fragment>
     const i = this.state;
     return  (
       <div className="timer">
@@ -385,6 +339,4 @@ class Counter extends Component {
   }
 }
 
-export { 
-    StatusBar, PopUp, Clock, Accordion, Square, CodeSnipet, Counter
-}
+export { StatusBar, PopUp, Clock, Accordion, CodeSnipet, Counter }

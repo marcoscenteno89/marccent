@@ -6,7 +6,7 @@ class PrivacyPolicy extends Component {
 
   static contextType = ThemeContext;
   render() {
-    if (this.context.theme.id === 0) return <Fragment>Loading...</Fragment>
+    if (!this.context.theme.id) return <Fragment>Loading...</Fragment>
     const a = this.context.theme;
     const pg = {
       background: a.mode,

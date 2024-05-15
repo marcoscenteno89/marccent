@@ -1,9 +1,12 @@
 import React, { Component, Fragment } from "react";
 import { ThemeContext } from "../var";
-import { Counter, Square } from "../inc/inc-classes";
+import { Counter } from "../inc/inc-classes";
+import { Square } from "../inc/shapes";
 import Select from 'react-select'
 import "../../styles/mini-app/Minesweeper.scss";
-import { Button, Bomb, RandomNum, Flag } from "../inc/inc";
+import { Button, Bomb, Flag } from "../inc/inc";
+import { random } from 'lodash';
+import AppNav from "../inc/app-nav";
 
 class MineSweeper extends Component {
 
@@ -11,41 +14,41 @@ class MineSweeper extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      row: 10,
-      col: 10,
+      size: 15, // ROW SIZE
       grid: false,
       mines: false,
-      mineCount: 0,
-      dificulty: 4,
+      mineCnt: 0,
+      dificulty: 3,
       gameOver: false,
       active: false,
       time: 0, 
-      revealedCount: 0,
+      revealedCnt: 0,
       status: ''
     }
     this.getTime = this.getTime.bind(this);
     this.startOver = this.startOver.bind(this);
     this.lost = this.lost.bind(this);
   }
-  componentDidMount() {
-    this.startOver();
+  async componentDidMount() {
+    await this.startOver();
   }
   
   onClick = (e, cell) => {
     if (this.state.gameOver || cell.revealed) return;
-    if (!this.state.active) this.setState({ active: true, popup: false });
+    if (!this.state.active) this.setState({ active: true });
     let newGrid = this.state.grid;
     if (cell.mine) { // Do this if user hits mine 
       this.lost();
     } else {
-      let grid = this.reveal(newGrid, cell.x, cell.y, 0);
-      let count = this.state.revealedCount + grid.newNonMinesCount;
+      let gridData = this.reveal(newGrid, cell.x, cell.y, 0);
+      let count = this.state.revealedCnt - gridData.newNonMinesCnt;
+      console.log(count)
       if (count === 0) { // User won game
         this.win();
       } else { // Game continues
         this.setState({
-          grid: grid.arr,
-          revealedCount: count,
+          grid: gridData.grid,
+          revealedCnt: count,
         });
       }
     }
@@ -54,7 +57,7 @@ class MineSweeper extends Component {
   onContextMenu = (e, cell) => {
     e.preventDefault();
     if (!this.state.active) this.setState({ active: true });
-    let mineCnt = this.state.mineCount;
+    let mineCnt = this.state.mineCnt;
     let grid = this.state.grid;
     if (grid[cell.x][cell.y].flagged) {
       grid[cell.x][cell.y].flagged = false;
@@ -69,19 +72,21 @@ class MineSweeper extends Component {
     }
     this.setState({
       grid: grid,
-      mineCount: mineCnt
+      mineCnt: mineCnt
     });
   }
 
   async startOver() {
+    let i = this.state;
     this.setState({
+      gameOver: false,
       active: false,
-      grid: await this.createGrid(),
-      mineCount: this.state.dificulty * 5,
-      revealedCount: 100 - this.state.mineCount
-    }, async () => {
-      this.setState({ mines: await this.generateMines(this.state.mineCount) }, () => this.generateHints());
-    });
+      mineCnt: i.size * i.dificulty,
+      revealedCnt: (i.size * i.size) - (i.size * i.dificulty),
+      status: '',
+      time: 0,
+      grid: false
+    }, async () => await this.createGrid());
   }
 
   lost() {
@@ -91,6 +96,7 @@ class MineSweeper extends Component {
     }
     this.setState({
       grid: grid,
+      gameOver: true,
       active: false,
       status: 'You Lost!'
     });
@@ -104,12 +110,12 @@ class MineSweeper extends Component {
     });
   }
 
-  createGrid() {
+  async createGrid() {
     const grid = []
-    let mineCount = 0
-    for (let x = 0; x < this.state.row; x++) {
+    let digitId = 1;
+    for (let x = 0; x < this.state.size; x++) {
       const inner = []
-      for (let y = 0; y < this.state.col; y++) {
+      for (let y = 0; y < this.state.size; y++) {
         inner.push({
           mine: false,
           revealed: false,
@@ -117,67 +123,71 @@ class MineSweeper extends Component {
           value: 0,
           x: x,
           y: y,
-          id: mineCount
+          id: digitId++
         });
-        mineCount++;
       }
       grid.push(inner);
-      
+    }
+    let data = await this.generateMines(grid);
+    let completedGrid = await this.generateHints(data.grid);
+    this.setState({
+      grid: completedGrid,
+      mines: data.mines
+    });
+  }
+
+  generateMines(grid) {
+    const mines = []
+    let count = 0;
+    while (count < this.state.mineCnt) {
+      let x = random(0, this.state.size - 1);
+      let y = random(0, this.state.size - 1);
+      if (!grid[x][y]['mine']) {
+        grid[x][y]['mine'] = true;
+        grid[x][y]['value'] = <Bomb />;
+        mines.push({
+          x: x, 
+          y: y
+        });
+        count++;
+      }
+    }
+    return { grid, mines };
+  }
+
+  generateHints(grid) { // Check every cell and add number of mines of nerby cells
+    const callback = (current, data=false) => current.mine ? data.cell.value++ : false;
+    for (let x = 0; x < this.state.size; x++) {
+      for (let y = 0; y < this.state.size; y++) {
+        if (grid[x][y].mine) continue;
+        this.checkNearBy(x, y, {
+          grid: grid,
+          callback: callback, 
+          cell: grid[x][y], 
+          sendBack: {} 
+        });
+      }
     }
     return grid;
   }
 
-  generateMines(bombs) {
-    const mines = []
-    const grid = this.state.grid;
-    let count = 0;
-    while (count < bombs) {
-      let x = RandomNum(0, this.state.row - 1);
-      let y = RandomNum(0, this.state.col - 1);
-      if (!grid[x][y]['mine']) {
-        grid[x][y]['mine'] = true;
-        grid[x][y]['value'] = <Bomb />;
-        let loc = {x: x, y: y};
-        mines.push(loc);
-        count++;
-      }
-    }
-    return mines;
-  }
-
-  generateHints() { // Check every cell and add number of mines of nerby cells
-    const col = this.state.row;
-    const row = this.state.row;
-    const grid = this.state.grid;
-    const callback = (current, data=false) => current.mine ? data.cell.value++ : false;
-    for (let x = 0; x < row; x++) {
-      for (let y = 0; y < col; y++) {
-        if (grid[x][y].mine) continue;
-        this.checkNearBy(x,y, {callback: callback, cell: grid[x][y], sendBack: {} });
-        this.setState({ grid: grid });
-      }
-    }
-  }
-
-  cellExists(x, y) {
-    const grid = this.state.grid
+  cellExists(grid, x, y) {
     return x > -1 && x < grid.length && y > -1 && y < grid[0].length ? true : false;
   }
 
   checkNearBy(x, y, data) { // Check every cell around current one
-    let grid = this.state.grid;
     let arr = [-1, 0, 1] // Create a 9 cell Matrix
     for (let i of arr) {
       for (let o of arr) {
-        let tl = this.cellExists( x + i, y + o ); // Check if current cell exists
-        if (tl) data.callback(grid[x + i][y + o], data);
+        let tl = this.cellExists(data.grid, x + i, y + o ); // Check if current cell exists
+        if (tl) data.callback(data.grid[x + i][y + o], data);
       }
     }
     return data.sendBack;
   }
 
-  reveal(arr, x, y, newNonMinesCount) {
-    if (arr[x][y].revealed) return;
+  reveal(grid, x, y, newNonMinesCnt) {
+    if (grid[x][y].revealed) return;
     const flipCallback = (cur, data) => {
       if (cur.value === 0 && !cur.revealed) data.sendBack.push(cur);
     }
@@ -185,41 +195,63 @@ class MineSweeper extends Component {
     const revealCallback = (cur, data) => {
       if (!cur.revealed) {
         cur.revealed = true;
-        data.sendBack--;
+        data.sendBack++;
       }
       return data.sendBack;
     }
 
     let flipped = []
-    flipped.push(arr[x][y]);
+    flipped.push(grid[x][y]);
     while (flipped.length !== 0) {
       let s = flipped.pop();
       if (!s.revealed) {
-        newNonMinesCount--;
+        newNonMinesCnt++;
         s.revealed = true;
       }
       if (s.value !== 0) break;
       // Check surrounding cells to check for empty cells and them to flipped array
-      flipped = this.checkNearBy(s.x,s.y, {callback: flipCallback, sendBack: flipped});
+      flipped = this.checkNearBy(s.x,s.y, {
+        grid: this.state.grid,
+        callback: flipCallback, 
+        sendBack: flipped
+      });
       // Reveal surronding cells and add them to count down, user wins when count down hits 0
-      newNonMinesCount = this.checkNearBy(s.x,s.y, {callback: revealCallback, sendBack: newNonMinesCount});
+      newNonMinesCnt = this.checkNearBy(s.x,s.y, {
+        grid: this.state.grid,
+        callback: revealCallback, 
+        sendBack: newNonMinesCnt
+      });
     }
-    return {arr, newNonMinesCount};
+    return {grid, newNonMinesCnt};
   }
 
   getTime(time) {
-    this.setState({ status: `${this.state.status} Your time is ${time.hour} : ${time.minute} : ${time.second} : ${time.tos}` });
+    this.setState({ 
+      status: `${this.state.status} 
+        Your time is ${time.hour} : ${time.minute} : ${time.second} : ${time.tos}` 
+    });
   }
 
-  dificulty = async (val) => {
+  addRows(num, difficulty, frequency) {
+    // Num is the starting point
+    // Frequency is the amount of rows added per difficulty level
+    for (let i = 0; i < difficulty; i++) num = num + frequency;
+    return num;
+  }
+
+  dificulty = async (dificulty) => {
+    // this.addrows() returns the number of rows per dificulty level
+    let size = this.addRows(6, dificulty, 3);
     this.setState({
-      dificulty: val.value, 
-      mineCount: val.value * 5
-    }, () => this.startOver());
+      size: size,
+      dificulty: dificulty,
+      mineCnt: size * dificulty,
+      active: false
+    }, async () => await this.startOver());
   }
 
   render() {
-    if (!this.state.grid) return <Fragment>Loading...</Fragment>
+    if (!this.state.grid || !this.context.theme.id) return <Fragment>Loading...</Fragment>
     const a = this.context.theme;
     const b = this.state;
     const container = {
@@ -229,7 +261,7 @@ class MineSweeper extends Component {
       alignItems: 'center'
     }
     const select = {
-      control: styles => ({ ...styles, backgroundColor: a.mode}),
+      control: styles => ({ ...styles, backgroundColor: a.mode, width: '100%'}),
       input: styles => ({ ...styles, color: a.rev}),
       placeholder: styles => ({ ...styles, color: a.rev}),
       singleValue: (styles, { data }) => ({ ...styles, color: a.rev }),
@@ -241,49 +273,59 @@ class MineSweeper extends Component {
       }
     }
     const op = [
-      {label: 'Extra Easy', value: 1 },
-      {label: 'Very Easy', value: 2 },
-      {label: 'Easy', value: 3 },
-      {label: 'Normal', value: 4 },
-      {label: 'Hard', value: 5 },
-      {label: 'Very Hard', value: 6 },
-      {label: 'Extra Hard', value: 7 }
+      {label: 'Very Easy', value: 1 },
+      {label: 'Easy', value: 2 },
+      {label: 'Normal', value: 3 },
+      {label: 'Hard', value: 4 },
+      {label: 'Very Hard', value: 5 },
     ]
     const btn = {
       backgroundColor: a.rev,
       color: a.mode
     }
-    const background = `container flex-col${a.glass ? ' glass' : ''}`;
-    const rowHeight = {
-      height: `calc((100% / ${b.grid.length}) - 4px)`
-    }
     return (
       <section className="container-fluid minesweeper">
-        <div className={background} style={container}>
+        <div className={`container flex-col${a.glass ? ' glass' : ''}`} style={container}>
           <h2>Mine Sweeper</h2>
           <div className="row">
             <div className="col-7">
               <div className="controller flex-row">
-                <Select options={op} styles={select} defaultValue={op[3]} className="select-field" onChange={(val) => this.dificulty(val)} />
-                <div><Flag /> {b.mineCount}</div>
+                <div><Flag /> {b.mineCnt}</div>
                 <div style={{ color: a.rev}} className="counter">
                   <Counter getTime={this.getTime} active={b.active} data={a} />
                 </div>
-                <Button className="btn" styles={btn}  onClick={() => this.startOver()} text="Start Over" />
+                <p style={{width:'100%'}}></p>
+                <Select 
+                  options={op} 
+                  styles={select} 
+                  defaultValue={op[2]} 
+                  className="select-field" 
+                  onChange={(val) => this.dificulty(val.value)} />
+                <Button 
+                  className="btn" 
+                  styles={btn}
+                  onClick={async () => await this.startOver()}
+                  text="Start Over" />
               </div>
-              <Square className="flex-col-center">
-                {b.grid.map((row, index) => 
-                  <div className="row" style={rowHeight} key={index}> 
+              <Square className="flex-col-center" key="square-minesweeper">
+                {this.state.grid.map((row, index) => 
+                  <div 
+                    className="row" 
+                    style={{height: `calc(100% / ${b.size})`}} 
+                    key={`row-${index}`}> 
                     {row.map((cell) => 
-                      <Cell cell={cell} col={row.length} key={cell.id} data={a} onClick={this.onClick} onContextMenu={this.onContextMenu}  />
+                      <Cell 
+                        cell={cell} 
+                        size={b.size} 
+                        key={`cell-${cell.id}`} 
+                        data={a} 
+                        onClick={this.onClick} 
+                        onContextMenu={this.onContextMenu} />
                     )}
                   </div>
                 )}
               </Square>
               <div className="statusMsg">{this.state.status}</div>
-              {/* <PopUp key={1} header={header} controller={this.startOver} display={b.popup} btnText="Start Over">
-                <div>{b.win ? `Time: ${b.time}` : 'You Lost'}</div>
-              </PopUp> */}
             </div>
             <div className="col-5">
               <h4>About the Game</h4> 
@@ -297,6 +339,7 @@ class MineSweeper extends Component {
               <p>Tip: You can right click a square with the mouse to place a flag where you think a bomb is. This allows you to avoid that spot.</p>
             </div>
           </div>
+          <AppNav key={`app-nav`} />
         </div>
       </section>
     )        
@@ -304,7 +347,6 @@ class MineSweeper extends Component {
 }
 
 class Cell extends Component {
-
   static contextType = ThemeContext;
   constructor(props) {
     super(props);
@@ -312,13 +354,6 @@ class Cell extends Component {
       data: this.props.data,
       cell: this.props.cell
     }
-  }
-
-  UNSAFE_componentWillReceiveProps(props) {
-    this.setState({
-      data: props.data,
-      cell: props.cell
-    });
   }
 
   bgStart(a, e) {
@@ -333,23 +368,26 @@ class Cell extends Component {
     if (!this.props.data) return (<h1>Error</h1>);
     const a = this.props.data;
     const styles = {
-      backgroundImage: `radial-gradient(${a.hex.secondary} 15%, ${a.hex.primary} 60%)`,
+      backgroundColor: a.hex.primary,
       color: a.rev,
-      width: `calc((100% / ${this.props.col}) - 4px)`
+      width: `calc(100% / ${this.props.size})`,
+      borderColor: a.mode
     }
 
     let value = '';
-    if (this.state.cell.flagged) {
-      value = <Flag />
-    } else if (this.state.cell.revealed) {
+    if (this.state.cell.flagged) value = <Flag />
+    if (this.state.cell.revealed) {
       styles.opacity = '0.7';
       if (this.state.cell.value !== 0) value  = this.state.cell.value;
-    } else {}
+    } 
+
     return  (
-      <div className="flex-center digit" style={styles} 
+      <div 
+        className="flex-center digit" 
+        style={styles} 
         onClick={(e) => this.props.onClick(e, this.state.cell)}
         onContextMenu={(e) => this.props.onContextMenu(e, this.state.cell)}
-        key={this.props.num}> 
+        key={`digit-${this.state.cell.id}`}> 
           {value} 
       </div>
     )       

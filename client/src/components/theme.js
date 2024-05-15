@@ -2,11 +2,12 @@ import React, { Component, Fragment } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import '../styles/Global.scss';
 import '../styles/keyframes.scss';
-import { BlobContainer, Blob } from "./inc/inc";
 import Nav from './inc/main-nav';
+import { Blob, LinesCircles } from './inc/canvas';
 import Footer from './inc/footer';
-import Urls from './urls';
 import { ThemeContext } from "./var"
+import Urls from './urls';
+import { LoadScript } from '@react-google-maps/api';
 
 class Theme extends Component {
 
@@ -17,21 +18,18 @@ class Theme extends Component {
   }
 
   render() {
-    if (this.context.theme.id === 0) return <Fragment>Loading...</Fragment>
-    const a = this.context.theme;
-
+    if (!this.context.theme.id) return <Fragment>Loading...</Fragment>
+    let a = this.context.theme;
     const body = {
-      backgroundImage: a.grad,
-      color: a.rev
+      backgroundImage: this.context.theme.grad,
+      color: this.context.theme.rev
     }
-    
+    let rev = !a.is_dark ? a.hex.dark : a.hex.light;
+    let mode = a.is_dark ? a.hex.dark : a.hex.light;
     return (
       <div className="body" style={body}>
-        <BlobContainer>
-          <Blob y={20} x={5} min={15} max={22} count={10} ydirection="top" xdirection="left" styles={{background: a.mode}} />
-          <Blob y={5} x={5} min={10} max={17} count={10} ydirection="bottom" xdirection="right" styles={{background: a.mode}} />
-          <Blob y={50} x={50} min={5} max={12} count={10} ydirection="top" xdirection="left" styles={{background: a.mode}} />
-        </BlobContainer>
+        <Blob color={mode} className="bg" count="15" />
+        {/* <LinesCircles color={mode} className="bg" count="20" /> */}
         <BrowserRouter>
           <Nav />
           <div className="page">
@@ -39,11 +37,11 @@ class Theme extends Component {
               <Urls />
             </div>
           </div>
-          <Footer /> 
+          <Footer />
+          <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_API} />
         </BrowserRouter> 
       </div>
     )
   }
 }
-
 export default Theme;

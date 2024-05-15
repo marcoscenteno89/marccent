@@ -15,13 +15,13 @@
       background-size: cover;
       background-position: center center;
       background-attachment: fixed;  /* <- here it is */
-      margin: 2px;
       border-radius: 3px;
+      border: 2px solid;
       cursor: pointer;
       font-size: 0.7rem;
       .fa-bomb {
-          background: none !important;
-          font-size: 1.3rem;
+        background: none !important;
+        font-size: 1.3rem;
       }
     }
   }
@@ -29,15 +29,10 @@
 .controller {
   width: 100%;
   flex-wrap: wrap;
-}
-.modal {
-  h2 {
-    padding-bottom: 0 !important;
+  .select-field {
+    width: 48%;
   }
-  .help {
-    padding: 1rem 2rem;
-    p {
-      font-size: 0.9rem;
-    }
+  .btn {
+    width: 48%;
   }
 }

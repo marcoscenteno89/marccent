@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
 import '../../styles/pages/Portfolio.scss';
 import { ThemeContext } from "../var";
-import Carousel from "react-elastic-carousel";
+import { Swiper, SwiperSlide } from 'swiper/react';
 import { Img, WaveSvg } from "../inc/inc";
 import Site1 from "./../../media/site1.webp";
 import Site2 from "./../../media/site2.webp";
@@ -52,7 +52,7 @@ class Portfolio extends Component {
     
   static contextType = ThemeContext;
   render() {
-    if (this.context.theme.id === 0) return <Fragment>Loading...</Fragment>
+    if (!this.context.theme.id) return <Fragment>Loading...</Fragment>
     const a = this.context.theme;
     const pg = {
       backgroundColor: a.mode,
@@ -70,9 +70,18 @@ class Portfolio extends Component {
           <div className="container">
             <h2 className="col-12"style={{textAlign: 'center'}}>Portfolio</h2>
             <div className="flex-center">
-              <Carousel breakPoints={breakPoints}>
-              {images.map((img, index) => <Card key={index} content={img} />)}
-              </Carousel>
+              <Swiper
+                spaceBetween={50}
+                slidesPerView={3}
+                // onSlideChange={() => console.log('slide change')}
+                // onSwiper={(swiper) => console.log(swiper)}
+              >
+                {images.map((img, index) => (
+                  <SwiperSlide key={index}>
+                    <Card key={index} content={img} />
+                  </SwiperSlide>
+                ))}
+              </Swiper>
             </div>
           </div>
         </section>
@@ -86,7 +95,7 @@ class Card extends Component {
     
   static contextType = ThemeContext;
   render() {
-    if (this.context.theme.id === 0) return <Fragment>Loading...</Fragment>
+    if (!this.context.theme.id) return <Fragment>Loading...</Fragment>
     const a = this.context.theme;
     return  (
       <a 

@@ -1,80 +1,154 @@
-import React, { Component, Fragment } from "react";
+import React, { Component, Fragment, useMemo } from "react";
 import { ThemeContext } from "./var"
 import '../styles/Map.scss';
-import { Circle, Map, GoogleApiWrapper } from 'google-maps-react';
-import { MapStyle } from "./inc/inc";
+import { GoogleMap, Circle } from '@react-google-maps/api';
 
-export class Maps extends Component {
+// import { Circle, Map, GoogleApiWrapper } from 'google-maps-react';
+// import { MapStyle } from "./inc/inc";
 
-  static contextType = ThemeContext;
-  constructor(props) {
-    super(props);
-    this.state = {
-      map: false,
-      mapData: this.props.mapData
-    }
-  }
+// export class Maps extends Component {
 
-  UNSAFE_componentWillReceiveProps(props) {
-    this.setState({
-      mapData: props.mapData
-    }, () => this.updateMap());
-  }
+//   static contextType = ThemeContext;
+//   constructor(props) {
+//     super(props);
+//     this.state = {
+//       map: false,
+//       mapData: this.props.mapData
+//     }
+//   }
 
-  updateMap() {
-    this.state.map.setOptions({styles: MapStyle(this.context.theme)});
-    this.state.map.setCenter({
-      lat: this.state.mapData.loc.lat, 
-      lng: this.state.mapData.loc.lng
-    });
-  }
+//   UNSAFE_componentWillReceiveProps(props) {
+//     this.setState({
+//       mapData: props.mapData
+//     }, () => this.updateMap());
+//   }
 
-  componentDidUpdate() {
-    this.updateMap();
-  }
+//   updateMap() {
+//     this.state.map.setOptions({styles: MapStyle(this.context.theme)});
+//     this.state.map.setCenter({
+//       lat: this.state.mapData.loc.lat, 
+//       lng: this.state.mapData.loc.lng
+//     });
+//   }
 
-  update(mapProps, map) {
-    this.setState({map: map});
-  }
+//   componentDidUpdate() {
+//     this.updateMap();
+//   }
 
+//   update(mapProps, map) {
+//     this.setState({map: map});
+//   }
+
+//   render() {
+//     if (this.context.theme.id === 0) return <Fragment>Loading...</Fragment>
+//     const a = this.context.theme;
+//     const d = this.state.mapData;
+//     const customStyle = MapStyle(a);
+//     const con = {
+//       position: 'relative',  
+//       width: '100%',
+//       height: '100%'
+//     }
+//     return (
+//       <div className="map" style={this.props.styles}>
+//         <Map 
+//           style={con} 
+//           containerStyle={con} 
+//           google={this.props.google} 
+//           zoom={d.zoom ? d.zoom : 12} 
+//           initialCenter={d.loc}
+//           styles={customStyle}
+//           map={this}
+//           onReady={(mapProps, map) => this.update(mapProps, map, customStyle)}
+//         >
+//           <Circle
+//             radius={4000}
+//             key={0}
+//             center={d.loc}
+//             strokeColor='transparent'
+//             strokeOpacity={0}
+//             strokeWeight={5}
+//             fillColor={a.hex.primary}
+//             fillOpacity={0.5}
+//           />
+//         </Map>
+//       </div>
+//     )
+//   }
+// }
+
+// export default GoogleApiWrapper({
+//   apiKey: process.env.REACT_APP_GOOGLE_API
+// })(Maps)
+
+class Map extends Component {
   render() {
-    if (this.context.theme.id === 0) return <Fragment>Loading...</Fragment>
-    const a = this.context.theme;
-    const d = this.state.mapData;
-    const customStyle = MapStyle(a);
-    const con = {
-      position: 'relative',  
+    const a = this.props.data;
+    const i = this.context.theme;
+    // const customStyle = MapStyle(i);
+    const containerStyle = {
       width: '100%',
-      height: '100%'
-    }
+      height: '400px'
+    };
+    
     return (
-      <div className="map" style={this.props.styles}>
-        <Map 
-          style={con} 
-          containerStyle={con} 
-          google={this.props.google} 
-          zoom={d.zoom ? d.zoom : 12} 
-          initialCenter={d.loc}
-          styles={customStyle}
-          map={this}
-          onReady={(mapProps, map) => this.update(mapProps, map, customStyle)}
+        <GoogleMap
+          center={a.center}
+          zoom={a.zoom ? a.zoom : 12}
+          mapContainerStyle={containerStyle}
+          // styles={customStyle}
         >
-          {[...Array(4)].map((x,i) => <Circle
-            radius={i * 1000}
-            key={i}
-            center={d.loc}
-            strokeColor='transparent'
-            strokeOpacity={0}
-            strokeWeight={5}
-            fillColor={a.hex.primary}
-            fillOpacity={0.5}
-          />)}
-        </Map>
-      </div>
+
+        </GoogleMap>
     )
   }
 }
 
-export default GoogleApiWrapper({
-  apiKey: process.env.REACT_APP_GOOGLE_API
-})(Maps)
+export default Map;
+
+// const Map = (center) => {
+
+//   const containerStyle = {
+//     width: '100%',
+//     height: '400px'
+//   };
+  
+//   const center = {
+//     lat: -3.745,
+//     lng: -38.523
+//   };
+
+//   const { isLoaded } = useJsApiLoader({
+//     id: 'google-map-script',
+//     googleMapsApiKey: process.env.REACT_APP_GOOGLE_API
+//   })
+
+//   const [map, setMap] = React.useState(null)
+
+//   const onLoad = React.useCallback(function callback(map) {
+//     // This is just an example of getting and using the map instance!!! don't just blindly copy!
+//     const bounds = new window.google.maps.LatLngBounds(center);
+//     map.fitBounds(bounds);
+
+//     setMap(map)
+//   }, [])
+
+//   // const onUnmount = React.useCallback(function callback(map) {
+//   //   setMap(null)
+//   // }, [])
+
+//   return isLoaded ? (
+//       <GoogleMap
+//         mapContainerStyle={containerStyle}
+//         center={center}
+//         zoom={11}
+//         onLoad={onLoad}
+//         // onUnmount={onUnmount}
+//       >
+//         { /* Child components, such as markers, info windows, etc. */ }
+//         <></>
+//       </GoogleMap>
+//   ) : <></>
+// }
+
+// export default useMemo(Map)
