@@ -7,4 +7,4 @@ services:
       - .:/app
     ports:
       - '8000:8000'
-    command: gunicorn server.wsgi:application --bind 8000 --workers 3
+    command: gunicorn server.wsgi:application --bind :8000 --workers 3
