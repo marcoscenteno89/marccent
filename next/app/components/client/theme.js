@@ -60,7 +60,10 @@ const ThemeMode = (props) => {
   props.className.add(is_dark ? 'light' : 'dark').remove(is_dark ? 'dark' : 'light');
   return(
     <li className="nav-item col-6 col-md-auto">
-      <Button variant={props.className.print()} onClick={() => props.update({is_dark: !is_dark})}>
+      <Button 
+        aria-label="Update theme mode"
+        variant={props.className.print()}
+        onClick={() => props.update({is_dark: !is_dark})}>
         <i className={`fa-solid ${is_dark ? 'fa-sun' : 'fa-moon'}`}></i>
       </Button>
     </li>
@@ -74,7 +77,10 @@ const GlassMode = (props) => {
   props.className.add(glass ? on : off).remove(glass ? off : on);
   return (
     <li className="nav-item col-6 col-md-auto">
-      <Button variant={props.className.print()} onClick={() => props.update({ glass: !glass })}>
+      <Button 
+        aria-label="Update glass mode"
+        variant={props.className.print()} 
+        onClick={() => props.update({ glass: !glass })}>
         <i className="fa-brands fa-hornbill"></i>
       </Button>
     </li>
@@ -175,7 +181,11 @@ const ThemeBtn = (props) => {
     marginLeft: '-3px' 
   }
   return (
-    <button className={cls.join(' ')} style={btn} onClick={() => update(id)}>
+    <button
+      aria-label={`Activate Theme #${id}`}
+      className={cls.join(' ')} 
+      style={btn} 
+      onClick={() => update(id)}>
       <i className={icon.join(' ')} style={iStyles} onClick={(event) => remove(id, event)}></i>
     </button>
   )

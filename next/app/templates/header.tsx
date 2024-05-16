@@ -45,17 +45,17 @@ export default function Header() {
           </ul>
           <ul className="navbar-nav flex-row flex-wrap ms-md-auto">
             <li className="nav-item col-12 col-md-auto">
-              <Link className="nav-link" href="https://codepen.io/marcos-centeno/pens/public" target="_blank">
+              <Link className="nav-link" href="https://codepen.io/marcos-centeno/pens/public" target="_blank" aria-label="Codepen Link">
                 <i className="fa-brands fa-codepen"></i>
               </Link>
             </li>
             <li className="nav-item col-12 col-md-auto">
-              <Link className="nav-link" href="https://www.linkedin.com/in/marcos-centeno-0b1a7b65/" target="_blank">
+              <Link className="nav-link" href="https://www.linkedin.com/in/marcos-centeno-0b1a7b65/" target="_blank" aria-label="Linkedin Link">
                 <i className="fa-brands fa-linkedin"></i>
               </Link>
             </li>
             <li className="nav-item col-12 col-md-auto">
-              <Link className="nav-link" href="https://github.com/marcoscenteno89" target="_blank">
+              <Link className="nav-link" href="https://github.com/marcoscenteno89" target="_blank" aria-label="Github Link">
                 <i className="fa-brands fa-github"></i>
               </Link>
             </li>
