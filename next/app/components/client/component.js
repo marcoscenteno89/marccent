@@ -17,73 +17,9 @@ import { ToastContext } from '@/components/context';
 
 /* ---------- classes ---------- */
 
-class CLS {
-  constructor() {
-    this.list = this.checkData(arguments);
-  }
-
-  checkData(arg) {
-    let list;
-    if (arg.length === 1) {
-      arg = arg[0];
-      if (!arg) return list = []
-      if (typeof arg === 'string') {
-        if (arg.includes(' ')) {
-          list = arg.split(' ');
-        } else if (arg.includes(',')) {
-          list = arg.split(',');
-        } else {
-          list = [arg]
-        }
-      }
-
-      if (typeof arg === 'object') list = arg;
-
-    } else {
-      list = Array.from(arg);
-    }
-    const filtered = list.filter(Boolean);
-    return filtered;
-  }
-
-  add() {
-    const arr = Array.from(arguments);
-    for (let i of arr) {
-      if (!this.list.includes(i)) this.list.push(i);
-    }
-    this.list = this.list.filter(Boolean);
-    return this;
-  }
-
-  remove() {
-    const arr = Array.from(arguments);
-    this.list = this.list.filter(item => !arr.includes(item));
-    return this;
-  }
-
-  prt() {
-    return this.list.join(' ');
-  }
-}
-
-class STL extends Object {
-  constructor(args) {
-    super();
-    for (let key in args) {
-      this[key] = args[key];
-    }
-  }
-
-  add(name, value) {
-    this[name] = value;
-    return this;
-  }
-
-  remove(name) {
-    delete this[name];
-    return this;
-  }
-}
+// Joins class names, skipping falsy ones, so a class can be switched by a condition:
+// cx('btn', active && 'active', className). Styles need no helper: { ...style, position: 'relative' }.
+const cx = (...classes) => classes.filter(Boolean).join(' ');
 
 /* ---------- loading, alert, modal ---------- */
 
@@ -130,8 +66,6 @@ const WebModal = (props) => {
 }
 
 /* ---------- icon and button ---------- */
-
-const cx = (...classes) => classes.filter(Boolean).join(' ');
 
 /**
  * Icon: a Font Awesome icon. Decorative (aria-hidden); give its button or link the accessible name.
@@ -232,15 +166,9 @@ const WebToast = () => {
   )
 }
 
-const WebForm2 = (props) => {
-
-}
-
 const WebForm = (props) => {
   const [ form, setForm ] = useState(null);
   const [ alert, setAlert] = useState('');
-  const f_cls = new CLS(props.className);
-  const f_stl = new STL(props.style);
   useEffect(() => {
     const obj = {};
     for (let i of React.Children.toArray(props.children)) {
@@ -282,7 +210,7 @@ const WebForm = (props) => {
   const arr = React.Children.toArray(props.children);
   return (
     <Loading require={[form]}>
-      <Form className={f_cls.prt()} style={f_stl}>
+      <Form className={props.className} style={props.style}>
         {arr.map((key, i) => <Input key={`form-${i}`} set={set} {...key.props} />)} 
         <Button onClick={submit}>Submit</Button>
         {/* <WebAlert variant="danger mb-2" active={alert !== ''} msg={alert} /> */}
@@ -320,11 +248,10 @@ const Blur = (props) => {
   const ref = useRef(null);
   const { style={}, id } = props;
   const [ deviation, setDeviation ] = useState(null);
-  const b_cls = new CLS(props.className).add('blur-svg');
   useEffect(() => setDeviation(parseInt(5 + ref.current.parentNode.offsetWidth / 75)), []);
   
   return (
-    <svg ref={ref} className={b_cls.prt()} style={style}>
+    <svg ref={ref} className={cx('blur-svg', props.className)} style={style}>
       <defs>
         <filter id={id}>
           <feGaussianBlur in="SourceGraphic" stdDeviation={deviation} result="blur" />
@@ -504,14 +431,6 @@ const ContactUsForm = props => {
   );
 }
 
-const Show = (props) => {
-  const { variant = 'md', children, className = '' } = props;
-  const cls = `d-none d-${variant}-inline-block ${className}`.trim();
-  return (
-    <span className={cls}>{children}</span>
-  );
-}
-
 /**
  * Accordion built on <details>/<summary> (replaces react-bootstrap's Accordion). The browser opens and closes
  * items; items share a name, so opening one closes the others (pass multiple to allow several open).
@@ -546,8 +465,8 @@ const AccordionItem = (props) => {
 }
 
 export { 
-  CLS, STL, Icon, Button, Loading, WebAlert, WebModal,
+  cx, Icon, Button, Loading, WebAlert, WebModal,
   WebForm, WebToast, Blur, Clock,
-  WebPagination, Counter, ContactUsForm, Show, Input,
+  WebPagination, Counter, ContactUsForm, Input,
   Accordion, AccordionItem
 }

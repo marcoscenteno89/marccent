@@ -3,7 +3,7 @@ import { useContext, useState } from "react";
 import { ThemeContext } from "@/components/context";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules";
-import { WebForm, CLS, STL, Loading, Button } from "./component";
+import { WebForm, cx, Loading, Button } from "./component";
 import { withT } from "./hoc";
 import dynamic from 'next/dynamic';
 import { ToastContext } from '@/components/context';
@@ -31,10 +31,9 @@ const animations = initAnim();
 const Body = (props) => {
   let { theme } = useContext(ThemeContext);
   if (!theme) theme = {};
-  const b_cls = new CLS(props.className).add('body', theme.glass ? 'glass' : '');
   const is_dark = theme.is_dark ? 'dark' : 'light';
   return (
-    <body className={b_cls.prt()} suppressHydrationWarning={true} data-bs-theme={is_dark}>
+    <body className={cx(props.className, 'body', theme.glass && 'glass')} suppressHydrationWarning={true} data-bs-theme={is_dark}>
       {props.children}
     </body>
   )  
@@ -73,7 +72,7 @@ const GlassMode = (props) => {
 const Themes = (props) => {
   const { toast, setToast } = useContext(ToastContext);
   const [ modal, setModal ] = useState(false);
-  const b_slt = new STL({width: '80%', height: '60px'});
+  const b_slt = { width: '80%', height: '60px' };
   const breakPoints = {
     268: {width: 268, slidesPerView: 3},
     368: {width: 368, slidesPerView: 4},
@@ -146,18 +145,16 @@ const Themes = (props) => {
 
 const ThemeBtn = (props) => {
   const { data, id, update, remove } = props;
-  const b_cls = new CLS('btn');
-  const i_cls = new CLS('fa-solid fa-circle-xmark position-absolute bottom-100 start-100');
   const bg = `linear-gradient(to right, ${data.primary.hex}, ${data.secondary.hex})`;
-  const b_slt = new STL(props.styles).add('backgroundImage', bg).add('position', 'relative'); // relative: anchors the remove (x) icon
-  const i_slt = new STL({ marginBottom: '-6px', marginLeft: '-3px' });
+  const b_slt = { ...props.styles, backgroundImage: bg, position: 'relative' }; // relative: anchors the remove (x) icon
+  const i_slt = { marginBottom: '-6px', marginLeft: '-3px' };
   return (
     <button
       aria-label={`Activate Theme #${id}`}
-      className={b_cls.prt()} 
+      className="btn" 
       style={b_slt} 
       onClick={() => update(id)}>
-      <i className={i_cls.prt()} style={i_slt} onClick={(event) => remove(id, event)}></i>
+      <i className="fa-solid fa-circle-xmark position-absolute bottom-100 start-100" style={i_slt} onClick={(event) => remove(id, event)}></i>
     </button>
   )
 }

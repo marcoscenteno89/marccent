@@ -2,7 +2,7 @@
 import { useState, useEffect, useContext, useRef } from 'react';
 import { CanvasManager, canvasObserver } from "@marccent/util/canvas";
 import { ThemeContext, ToastContext } from "@/components/context";
-import { CLS, Loading } from "./component";
+import { cx, Loading } from "./component";
 
 const withLoader = (Component) => {
   const WithLoaderComponent = (props) => {
@@ -60,7 +60,6 @@ const withCanvas = (Component) => {
   const WithCanvasComponent = (props) => {
     const ref = useRef(null);
     const [ sketch, setSketch ] = useState(null);
-    const c_cls = new CLS(props.className).add('canvas');
     useEffect(() => {
       // const rainbow = props.theme.rainbow;
       // c_cls.add(rainbow ? 'linear-gradient' : '').remove(rainbow ? '' : 'linear-gradient');
@@ -76,7 +75,7 @@ const withCanvas = (Component) => {
     }, []);
     return (
       <>
-        <canvas style={props.style} className={c_cls.prt()} ref={ref}></canvas>
+        <canvas style={props.style} className={cx(props.className, 'canvas')} ref={ref}></canvas>
         <Loading require={[sketch]}>
           <Component {...props} cavasRef={ref} sketch={sketch} />
         </Loading>

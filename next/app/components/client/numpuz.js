@@ -1,7 +1,7 @@
 'use client';
 import React, { Component, Fragment } from "react";
 import Alert from 'react-bootstrap/Alert';
-import { Counter, CLS, Button } from "./component";
+import { Counter, cx, Button } from "./component";
 import { withT } from "./hoc";
 
 class NumPuz extends Component {
@@ -226,11 +226,9 @@ class Digit extends Component {
 
   render() {
     const cell = this.state.cell;
-    const d_cls = new CLS(this.props.className);
-    d_cls.add('center', 'round', cell.value !== '' ? 'bg-primary' : '');
     return(
       <div 
-        className={d_cls.prt()}
+        className={cx(this.props.className, 'center round', cell.value !== '' && 'bg-primary')}
         style={{aspectRatio: '1 / 1'}}
         draggable={cell.draggable} 
         onDrop={(event) => this.onDrop(event)}

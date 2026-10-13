@@ -2,13 +2,12 @@
 import { useState, useMemo, useEffect, useRef } from "react";
 import { Loader } from '@googlemaps/js-api-loader';
 import { withTR } from "./hoc";
-import { CLS } from "./component";
+import { cx } from "./component";
 
 const Map = (props) => {
   const ref = useRef(null);
   const { zoom, theme } = props;
   const [center] = useState(props.center ? props.center : { lat: 43.49, lng: -112.034 });
-  const m_cls = new CLS(props.className).add('map');
   const [map, setMap] = useState(null);
   const mapStyles = MapStyles(theme);
   const mapOptions = {
@@ -38,7 +37,7 @@ const Map = (props) => {
     }
   }, [theme, center, zoom])
 
-  return <div {...props} className={m_cls.prt()} require={{theme, map}}  ref={ref}></div>;
+  return <div {...props} className={cx(props.className, 'map')} require={{theme, map}}  ref={ref}></div>;
 }
 
 const MapStyles = (theme) => {

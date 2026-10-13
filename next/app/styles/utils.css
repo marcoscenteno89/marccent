@@ -52,15 +52,10 @@
 .overflow-hidden { overflow: hidden; }
 .overflow-auto { overflow: auto; }
 
-/* DISPLAY. d-md-*: from 768px (Show in component.js). */
+/* DISPLAY */
 .d-none { display: none; }
 .d-block { display: block; }
 .d-inline-block { display: inline-block; }
-@media (min-width: 768px) {
-  .d-md-none { display: none; }
-  .d-md-block { display: block; }
-  .d-md-inline-block { display: inline-block; }
-}
 
 /* POSITION. Overlays (toasts, the remove icon on theme cards); for layering in the flow use .stack (globals.css). */
 .position-relative { position: relative; }
