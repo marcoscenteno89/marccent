@@ -10,6 +10,7 @@ import './styles/theme.css';
 import './styles/grid.css';
 import './styles/globals.css';
 import './styles/components.css';
+import './styles/utils.css'; // last: utils win over component rules
 import { BootstrapClient } from './components/client/bootstrap.js';
 import { CurrentAnimWT } from "./components/client/theme";
 import Header from './templates/header';
