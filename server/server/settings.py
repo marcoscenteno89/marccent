@@ -26,6 +26,7 @@ ALLOWED_HOSTS = [
   'www.marccent.com',
   '172.21.187.139',
   '192.168.0.14',
+  'wsl.tailf0f5f4.ts.net',
 ]
 
 INSTALLED_APPS = [
@@ -118,7 +119,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'MST'
+TIME_ZONE = 'America/Denver'
 
 USE_I18N = True
 
@@ -148,6 +149,7 @@ CORS_ALLOWED_ORIGINS = [
   "https://marccent.com",
   "https://api.marccent.com",
   'http://172.21.187.139:3000',
+  'http://wsl.tailf0f5f4.ts.net:3000',
 ]
 
 CORS_ALLOW_HEADERS = [
@@ -172,4 +174,5 @@ sentry_sdk.init(
 
 INTERNAL_IPS = [
   '127.0.0.1',
+  'wsl.tailf0f5f4.ts.net'
 ]

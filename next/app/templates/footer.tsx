@@ -1,18 +1,16 @@
-import Link from 'next/link';
 import { dt } from "@/components/sac";
 import { ThemesWT, AnimListWT } from '@/components/client/theme';
-import { WebToast } from '@/components/client/component';
+import Markdown from '@/components/server/markdown';
+import { site } from '@/content';
 
 export default function Footer() {
   return (
-    <footer className="container-fluid bg" id="footer">
-      <div className="container-md">
+    // Grid only: the parts are spaced by gap; .pad gives the edge space (the body grid spaces it from main).
+    <footer className="wrap wrap-fluid bg" id="footer">
+      <div className="wrap pad grid cols-1 gap-3">
         <AnimListWT />
         <ThemesWT />
-        <div className="text-center pb-3">
-          Copyright ©{dt.getFullYear()} Marccent. All rights reserved | 
-          <Link href="/privacy-policy"> Privacy Policy</Link>
-        </div>
+        <Markdown text={site.footer(dt.getFullYear())} className="text-center" />
       </div>
     </footer>
   );

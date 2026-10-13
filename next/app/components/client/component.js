@@ -1,26 +1,20 @@
 'use client';
+import React, { Component, useState, useRef, useEffect, useContext, useCallback, useId } from 'react';
 import capitalize from 'lodash/capitalize';
-import ToastContainer from 'react-bootstrap/ToastContainer';
-import Form from 'react-bootstrap/Form';
-import Toast from 'react-bootstrap/Toast';
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
-import Alert from 'react-bootstrap/Alert';
-import { withComponent } from "./hoc";
-import Pagination from 'react-bootstrap/Pagination';
+import { ToastContainer, Form, Toast, Button, Modal, Alert, Pagination } from 'react-bootstrap';
+// import ToastContainer from 'react-bootstrap/ToastContainer';
+// import Form from 'react-bootstrap/Form';
+// import Toast from 'react-bootstrap/Toast';
+// import Button from 'react-bootstrap/Button';
+// import Modal from 'react-bootstrap/Modal';
+// import Alert from 'react-bootstrap/Alert';
+// import Pagination from 'react-bootstrap/Pagination';
 import dayjs from "dayjs";
 import relativeTime from 'dayjs/plugin/relativeTime';
-import React, { Component, useState, useRef, useEffect, useContext } from 'react';
 import { post } from "@marccent/util";
+import { Loading } from "@/components/client/util";
 import { ToastContext } from '@/components/context';
-import { cls } from '@/components/classes';
-
-const WebAlert = (props) => {
-  if (!props.active) return null
-  return (
-    <Alert variant={props.variant}><div dangerouslySetInnerHTML={{ __html: props.msg }} /></Alert>
-  )
-}
+import { CLS, STL } from '@/components/client/util';
 
 const WebToast = () => {
   const { toast, setToast } = useContext(ToastContext);
@@ -40,7 +34,7 @@ const WebToast = () => {
   // console.log(toast)
   return (
     <Loading require={[toast]}>
-      <ToastContainer className="position-fixed bottom-0 end-0 p-3">
+      <ToastContainer className="position-fixed bottom-0 end-0 pad">
         {toast.list.map((item, i) => (
           <Toast key={`toast-${i}`} bg={item.type} onClose={() => remove(i)}>
             <Toast.Header>
@@ -55,24 +49,15 @@ const WebToast = () => {
   )
 }
 
-const WebModal = (props) => {
-  const { title, children, show, setShow } = props;
-  return (
-    <Modal show={show} onHide={() => setShow(false)}>
-      <Modal.Header closeButton>
-        <Modal.Title>{title}</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>{children}</Modal.Body>
-      <Modal.Footer>
-        <Button variant="secondary" onClick={() => setShow(false)}>Close</Button>
-      </Modal.Footer>
-    </Modal>
-  )
+const WebForm2 = (props) => {
+
 }
 
 const WebForm = (props) => {
   const [ form, setForm ] = useState(null);
   const [ alert, setAlert] = useState('');
+  const f_cls = new CLS(props.className);
+  const f_stl = new STL(props.style);
   useEffect(() => {
     const obj = {};
     for (let i of React.Children.toArray(props.children)) {
@@ -80,6 +65,7 @@ const WebForm = (props) => {
         name: i.props.name,
         value: i.props.value ? i.props.value : '',
         label: capitalize(i.props.name.replace(/_/g, ' ')),
+        placeholder: i.props.placeholder ? i.props.placeholder : i.props.name.replace(/_/g, ' '),
         ref: null
       }
     }
@@ -92,7 +78,7 @@ const WebForm = (props) => {
     setForm(newForm);
   }
 
-  const submit = () =>  {
+  const submit = useCallback(() =>  {
     let msg = '';
     Object.keys(form).map((key) => {
       form[key].value = form[key].ref.value; // Update value
@@ -108,45 +94,70 @@ const WebForm = (props) => {
       setAlert('');
       props.callBack(form);
     }
-  }
+  });
   
   const arr = React.Children.toArray(props.children);
   return (
     <Loading require={[form]}>
-      <Form className={props.className.print()}>
-        {arr.map((key, i) => <InputWC key={`form-${i}`} set={set} {...key.props} />)} 
-        <Button onClick={submit} variant="primary mb-2">Submit</Button>
-        <WebAlert variant="danger mb-2" active={alert !== ''} msg={alert} />
+      <Form className={f_cls.prt()} style={f_stl}>
+        {arr.map((key, i) => <Input key={`form-${i}`} set={set} {...key.props} />)} 
+        <Button onClick={submit} variant="">Submit</Button>
+        {/* <WebAlert variant="danger mb-2" active={alert !== ''} msg={alert} /> */}
       </Form>
     </Loading>
   )
 }
 
 const Input = (props) => {
+  
   const ref = useRef(null);
   const [ label ] = useState(capitalize(props.name.replace(/_/g, ' ')));
   let n = { ...props };
   delete n.set;
+  delete n['no-label']; // our own flag, not an HTML attribute
   useEffect(() => props.set(ref.current, props.name), []);
+  
   return (
-    <Form.Group className="input-group mb-2">
-      <Form.Label className="col-4 input-group-text m-0" htmlFor={`#id-${props.name}`}>
-        {label}
-      </Form.Label>
-      <Form.Control ref={ref} id={`id-${n.name}`} {...n} placeholder={label} />
-    </Form.Group>
+    <>
+      {props['no-label'] ? 
+        <Form.Control ref={ref} id={`id-${n.name}`} {...n} /> 
+      : 
+        <Form.Group className="input-group mb-2">
+          <Form.Label className="input-group-text m-0" htmlFor={`#id-${props.name}`}>
+            {label}
+          </Form.Label>
+          <Form.Control ref={ref} id={`id-${n.name}`} {...n} />
+        </Form.Group>
+      }
+    </>
   )
 }
 
+// const Input = (props) => {
+//   const ref = useRef(null);
+//   const [ label ] = useState(capitalize(props.name.replace(/_/g, ' ')));
+//   let n = { ...props };
+//   delete n.set;
+//   useEffect(() => props.set(ref.current, props.name), []);
+//   return (
+//     <Form.Group className="input-group mb-2">
+//       <Form.Label className="input-group-text m-0" htmlFor={`#id-${props.name}`}>
+//         {label}
+//       </Form.Label>
+//       <Form.Control ref={ref} id={`id-${n.name}`} {...n} placeholder={label} />
+//     </Form.Group>
+//   )
+// }
+
 const Blur = (props) => {
   const ref = useRef(null);
-  const { style={}, className="", id } = props;
+  const { style={}, id } = props;
   const [ deviation, setDeviation ] = useState(null);
-  const cls = ['blur-svg', ...className.split(' ')]
+  const b_cls = new CLS(props.className).add('blur-svg');
   useEffect(() => setDeviation(parseInt(5 + ref.current.parentNode.offsetWidth / 75)), []);
   
   return (
-    <svg ref={ref} className={cls.join(' ')} style={style}>
+    <svg ref={ref} className={b_cls.prt()} style={style}>
       <defs>
         <filter id={id}>
           <feGaussianBlur in="SourceGraphic" stdDeviation={deviation} result="blur" />
@@ -159,46 +170,13 @@ const Blur = (props) => {
   )
 }
 
-const Loading = (props) => {
-  const style = {
-    width: '100%',
-    height: '100%'
-  }
-  let ready = true;
-  for (let i of props.require) {
-    if (!i) ready = false;
-  }
-
-  return ready ? props.children :  (
-    <SquareWC className="spinner-grow" style={style} role="status">
-      <span className="visually-hidden">Loading...</span>
-    </SquareWC>
-  ) ;
-}
-
-const Square = (props) => {
-  props.className.add('square');
-  const [ height, setHeight ] = useState(0);
-  const ref = useRef(null);
-  useEffect(() => {
-    window.addEventListener("resize", setHeight(ref.current.clientWidth));
-  }, [height]);
-  return (
-    <div className="square-container">
-      <div {...props} ref={ref} className={props.className.print()} style={{ height }}>
-        {props.children}
-      </div>
-    </div>
-  )
-}
-
 const SpCircle = props => {
   return (
-    <SquareWC className="flex-center circle shadow-inset">
-      <div className="inner circle flex-center linear-gradient shadow-inset">
-        <div className="inner circle flex-center relative">{props.children}</div>
+    <div className="square center circle shadow-inset">
+      <div className="inner circle center linear-gradient shadow-inset">
+        <div className="inner circle center relative">{props.children}</div>
       </div>
-    </SquareWC>
+    </div>
   ) 
 }
 
@@ -224,23 +202,23 @@ const Counter2 = () => {
 
 const Clock = (props) => {
   const [ time, setTime ] = useState(dayjs());
-  props.className.add('clock', 'row');
+  const c_cls = new CLS(props.className).add('clock', 'grid', 'fixed', 'cols-4', 'gap-0', 'items-center', 'text-center');
   useEffect(() => {
     const interval = setInterval(() => setTime(dayjs()), 1000);
     return () => clearInterval(interval);
   }, []);
   return (
-    <div className={props.className.print()}>
-      <span className="col row">
+    <div className={c_cls.prt()}>
+      <span className="grid gap-0">
         <small>Hr</small><small>{time.format('h')}</small>
       </span>
-      <span className="col row">
+      <span className="grid gap-0">
         <small>Min</small><small>{time.format('m')}</small> 
       </span>
-      <span className="col row">
+      <span className="grid gap-0">
         <small>Sec</small><small>{time.format('s')}</small>
       </span>
-      <h2 className="col flex-center">{time.format('A')}</h2>
+      <h2 className="center">{time.format('A')}</h2>
     </div>
   );
 }
@@ -267,7 +245,7 @@ const WebPagination = (props) => {
   }
 
   return (
-    <Pagination className="my-1 p-2 border rounded">
+    <Pagination className="my-1 pad border round">
       <Pagination.First style={style} disabled={first} onClick={()=> update(1)} />
       <Pagination.Prev style={style} disabled={first} onClick={()=> update(current - 1)} />
       {items}
@@ -308,7 +286,7 @@ class PopUp extends Component {
       
     return (
       <Modal style={popup} className="modal" overlayClassName="overlay" isOpen={this.props.display}>
-        <div className="heading flex-center">
+        <div className="heading center">
           <div  className="left"></div>
           <div  className="right"></div>
           <h2>{b.header}</h2>
@@ -317,11 +295,11 @@ class PopUp extends Component {
           <div className="grad"></div>
         </div>
         <div style={bodyBreak} className="break"></div>
-        <div style={{backgroundColor: a.mode}} className="body flex-center">
+        <div style={{backgroundColor: a.mode}} className="body center">
           {b.children}
-          <div className="flex-center controller">
-            {b.controller ? <Button variant="primary" onClick={() => b.controller()}>{b.btnText}</Button> : ''}
-            <Button variant="primary" onClick={() => this.props.close()}>Close</Button>
+          <div className="center controller">
+            {b.controller ? <Button variant="" onClick={() => b.controller()}>{b.btnText}</Button> : ''}
+            <Button variant="" onClick={() => this.props.close()}>Close</Button>
           </div>
         </div>
       </Modal>
@@ -418,32 +396,71 @@ const ContactUsForm = props => {
     const obj = {};
     Object.entries(data).forEach(([key, val]) => obj[val.name] = val.value );
     const res = await post(`${process.env.NEXT_PUBLIC_SERVERURL}message/`, obj).then(res => res);
-    console.log(res)
     setVariant(res.ok ? 'success' : 'danger');
     setAlert(res.ok ? res.response : res);
     setActive(true);
   }
+  const style = {
+    width: '100%',
+    maxWidth: '400px'
+  }
   
   return (
     <>
-      <WebFormWC className="col-12" callBack={onClick}>
+      <WebForm style={style} callBack={onClick}>
         <input type="text" name="first_name" required />
         <input type="text" name="last_name" required />
         <input type="text" name="email" required />
         <input type="text" name="message" as="textarea" rows={4} required />
-      </WebFormWC>
-      <WebAlert variant={`${variant} mb-2`} active={active} msg={alert} />
+      </WebForm>
+      {/* <WebAlert variant={`${variant} mb-2`} active={active} msg={alert} /> */}
     </>
   );
 }
 
-// const ContactUsFormWC = withComponent(ContactUsForm);
-const ClockWC = withComponent(Clock);
-const SquareWC = withComponent(Square);
-const WebFormWC = withComponent(WebForm);
-const InputWC = withComponent(Input);
+const Show = (props) => {
+  const { variant = 'md', children, className = '' } = props;
+  const cls = `d-none d-${variant}-inline-block ${className}`.trim();
+  return (
+    <span className={cls}>{children}</span>
+  );
+}
+
+/**
+ * Accordion built on <details>/<summary> (replaces react-bootstrap's Accordion). The browser opens and closes
+ * items; items share a name, so opening one closes the others (pass multiple to allow several open).
+ * Lines between items come from .divide; look in components.css, animation in animations.css, colors in theme.css.
+ * @example
+ * <Accordion defaultOpen={0}>
+ *   <AccordionItem header="Title" className="grid cols-1 gap-2">Body</AccordionItem>
+ * </Accordion>
+ */
+const Accordion = (props) => {
+  const { children, defaultOpen = 0, multiple = false, className = '' } = props;
+  const name = useId();
+  return (
+    <div className={`accordion grid cols-1 gap-0 divide border round ${className}`.trim()}>
+      {React.Children.toArray(children).map((child, i) => React.cloneElement(child, {
+        name: multiple ? undefined : name,
+        defaultOpen: i === defaultOpen,
+      }))}
+    </div>
+  );
+}
+
+// One item: header is the always-visible summary row, children the body. className goes on the body.
+const AccordionItem = (props) => {
+  const { header, children, className = '', name, defaultOpen = false } = props;
+  return (
+    <details className="accordion-item" name={name} open={defaultOpen}>
+      <summary className="accordion-header pad">{header}</summary>
+      <div className={`accordion-body pad ${className}`.trim()}>{children}</div>
+    </details>
+  );
+}
 
 export { 
-  WebAlert, WebModal, WebForm, WebFormWC, WebToast, Blur, Loading, SquareWC, SpCircle, ClockWC,
-  WebPagination, Counter, ContactUsForm
+  WebForm, WebToast, Blur, Loading, SpCircle, Clock,
+  WebPagination, Counter, ContactUsForm, Show, Input,
+  Accordion, AccordionItem
 }

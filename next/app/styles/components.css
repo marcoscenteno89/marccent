@@ -1,0 +1,156 @@
+/* Animations (animations.css). @import must come before any rule, so these load first: a rule here with
+   the same specificity wins over one there. */
+@import "./animations.css";
+
+/*
+ * COMPONENTS: styles for shared components. Loaded after globals.css (layout.tsx).
+ */
+
+/* MENU (Menu in templates/menus.js). Layout comes from grid.css on the markup; this is the look. */
+.menu-link {
+  display: inline-grid;
+  grid-auto-flow: column;
+  align-items: center;
+  justify-content: start;
+  gap: .5rem;
+  padding: .25rem .5rem;
+  border-radius: var(--radius);
+  color: inherit;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  min-width: 0; /* may shrink inside its grid cell */
+}
+
+/* Top-level menu items fill their cell with the content centered, so a .divide line sits evenly between items. */
+.menu > .menu-link { justify-content: center; }
+.menu > .menu-dropdown > summary { display: grid; justify-content: center; }
+
+/* Icon-only link (Menu iconOnly): the icon square is the whole link, no extra padding. */
+.menu-link:has(> i:only-child) { padding: 0; }
+
+/* Label truncates with "…" instead of running into the next item on narrow screens. */
+.menu-link > span { overflow: hidden; text-overflow: ellipsis; }
+
+.menu-link:hover { background-color: var(--primary-subtle); }
+.menu-link:focus-visible { outline: 0; box-shadow: 0 0 0 .25rem var(--focus-ring); }
+
+/* Dropdown: the panel floats over the page (the one non-grid rule: an overlay can't take grid space). */
+.menu-dropdown { position: relative; }
+.menu-dropdown > summary { list-style: none; }                           /* hide the default triangle */
+.menu-dropdown > summary::-webkit-details-marker { display: none; }      /* Safari */
+.menu-dropdown > summary::after { content: '\25BE'; transition: rotate .15s; } /* ▾ caret */
+.menu-dropdown[open] > summary::after { rotate: 180deg; }
+
+.menu-panel {
+  position: absolute;
+  top: calc(100% + .25rem);
+  left: 0;
+  z-index: 1000;
+  min-width: max-content;
+}
+
+/*
+ * BUTTONS (replaces Bootstrap's buttons module). Layout only; colors live in theme.css.
+ * Layout: icon pinned left, label centered in the rest. Wrap the label in .btn-text; inside a .btn-cq
+ * wrapper (CompactButton) the label is hidden below 8rem, leaving the icon. The icon never shrinks.
+ * Buttons without .btn-text just center their content.
+ */
+.btn {
+  display: inline-grid;
+  grid-auto-flow: column;
+  justify-content: center;
+  align-items: center;
+  gap: .5rem;
+  min-width: 0;
+  max-width: 100%;
+  padding: .375rem .75rem;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: var(--radius);
+  overflow: hidden; /* the icon tint follows the rounded corners */
+  font: inherit;
+  line-height: 1.5;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color .15s, border-color .15s, color .15s, box-shadow .15s;
+}
+
+/* With a label: .btn-text is the whole button except the icon square. The button has no padding or
+   gap of its own; the label carries the padding, so its box (and hover area) runs edge to edge.
+   The label column can shrink (clipped, no "…"); the icon column keeps its size. */
+.btn:has(> .btn-text) { padding: 0; gap: 0; grid-template-columns: minmax(0, 1fr); } /* label only */
+.btn:has(> :not(.btn-text) + .btn-text) { grid-template-columns: auto minmax(0, 1fr); } /* icon + label */
+
+.btn-text {
+  display: grid;          /* fills its cell both ways; the text stays vertically centered */
+  align-content: center;
+  align-self: stretch;
+  padding: .375rem .75rem;
+  overflow: hidden;       /* safety clip only; .btn-cq hides the label before it gets cut */
+  white-space: nowrap;
+}
+
+/* Icon cell (Button's icon prop): the icon is already a square (ICONS in globals.css); it sits on the
+   left edge and sets the button's height. Its tint is in theme.css. An icon-only button is just the square. */
+.btn:has(> .btn-icon) { padding: 0; }
+
+/* Wrapper that lets a button drop its label when its slot gets narrow (see CompactButton in util.js).
+   display: grid fills the slot (block-level) and stretches the .btn inside, so no width hacks are needed.
+   Named, so other containers (.cq, .wrap) can't trigger it.
+   A size container has no content width of its own, so in a content-sized (auto) column it would collapse
+   to 0; contain-intrinsic-inline-size gives it one (--btn-cq-w, wide enough for the longest label). */
+.btn-cq:has(> .btn > .btn-text) {
+  container: btn / inline-size;
+  contain-intrinsic-inline-size: var(--btn-cq-w, 10rem);
+  display: grid;
+}
+
+/* Icon only: the label goes and the button shrinks to its square .btn-icon, centered in its slot. */
+@container btn (width < 8rem) {
+  .btn-text { display: none; }
+  .btn-cq > .btn:has(> .btn-text) { justify-self: center; } /* only the square .btn-icon is left */
+}
+
+.btn:disabled,
+.btn.disabled {
+  opacity: .65;
+  pointer-events: none;
+}
+
+/* SWIPER (footer sliders, components/client/theme.js). Swiper sizes its slides from its own width, so
+   as a grid item it must be allowed to shrink (min-width: 0); with the default min-width: auto it grows
+   to fit its slides, Swiper re-measures, and the page locks up in a resize loop. */
+.swiper { min-width: 0; max-width: 100%; }
+
+/* The slider is a grid so its dots and scrollbar leave their overlay spot and sit below the slides,
+   spaced by gap. The column is pinned (minmax(0, 1fr)): an auto column would size to the slides,
+   which Swiper sizes from the column, in a loop. .swiper > … outranks Swiper's absolute rules. */
+.swiper { display: grid; grid-template-columns: minmax(0, 1fr); gap: .5rem; }
+.swiper > .swiper-pagination.swiper-pagination-bullets,
+.swiper > .swiper-scrollbar.swiper-scrollbar-horizontal { position: static; }
+
+/* ACCORDION (Accordion in components/client/component.js; replaces Bootstrap's accordion module).
+   Lines between items come from .divide on the list. Colors live in theme.css; the open/close
+   animation in animations.css. */
+.accordion { overflow: hidden; } /* items follow the list's rounded corners */
+
+/* Header: content takes the row, the caret sits in its own column. Cells stretch (no align-items),
+   so a grid inside the header keeps full-height cells; only the caret is centered. */
+.accordion-header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: .5rem;
+  list-style: none;           /* hide the default triangle */
+  cursor: pointer;
+  user-select: none;
+}
+.accordion-header::-webkit-details-marker { display: none; }  /* Safari */
+.accordion-header::after { content: '\25BE'; align-self: center; transition: rotate .15s; } /* ▾ caret */
+.accordion-item[open] > .accordion-header::after { rotate: 180deg; }
+.accordion-header:focus-visible { outline: 0; box-shadow: inset 0 0 0 .25rem var(--focus-ring); }
+
+/* Open item: a line between header and body. */
+.accordion-item[open] > .accordion-header { border-bottom: 1px solid var(--bs-border-color); }

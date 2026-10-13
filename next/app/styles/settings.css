@@ -1,0 +1,39 @@
+/*
+ * Site settings. These are the values to change when reusing this code for another site
+ * (a custom theme). Every other stylesheet reads from here.
+ */
+
+:root {
+  /* Brand colors. Every shade, button, alert and gradient is derived from these two
+     (see theme.css). components/client/bootstrap.js overrides them at runtime with the saved theme. */
+  --mc-primary: #0d6efd;
+  --mc-secondary: #6c757d;
+
+  /* Typography */
+  --font-body: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif;
+  --font-size: 1rem;
+
+  /* Shape */
+  --radius: .375rem;
+
+  /* Layout (grid.css) */
+  --grid-gap: 1rem;    /* space between grid items */
+  --grid-min: 14rem;   /* narrowest a fluid grid column gets before wrapping */
+  --wrap-max: 75rem;   /* max width of .wrap containers */
+  --wrap-pad: 1rem;    /* side padding of .wrap containers */
+  --pad: 1rem;         /* inner padding of boxes (.pad) */
+  --icon-size: calc(1.5em + 1.25rem); /* every icon's square (ICONS in globals.css); em = the icon's font size */
+
+  /* Glass mode */
+  --glass-blur: 20px;
+  --glass-opacity: 0.4;
+}
+
+/* REMOVABLE (with Bootstrap): feeds the settings into Bootstrap. Declared on [data-bs-theme] too, because Bootstrap
+   re-declares its defaults on <body data-bs-theme>, which would hide a :root-only value. */
+:root,
+[data-bs-theme] {
+  --bs-body-font-family: var(--font-body);
+  --bs-body-font-size: var(--font-size);
+  --bs-border-radius: var(--radius);
+}

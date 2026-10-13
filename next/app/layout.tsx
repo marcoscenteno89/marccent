@@ -4,7 +4,12 @@ import Script from "next/script";
 import * as Sentry from "@sentry/react";
 import { Integrations } from "@sentry/tracing";
 import GA4React from 'ga-4-react';
-import './globals.css';
+import './styles/bootstrap.scss';
+import './styles/settings.css';
+import './styles/theme.css';
+import './styles/grid.css';
+import './styles/globals.css';
+import './styles/components.css';
 import { BootstrapClient } from './components/client/bootstrap.js';
 import { CurrentAnimWT } from "./components/client/theme";
 import Header from './templates/header';
@@ -12,12 +17,13 @@ import Footer from './templates/footer';
 import { Body } from './components/client/theme';
 import { ThemeProvider, ToastProvider } from "./components/context";
 import { WebToast } from "./components/client/component";
+import { site } from './content';
 
 // const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Marccent',
-  description: 'Marcos Centeno Portfolio Website',
+  title: site.title,
+  description: site.description,
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -40,15 +46,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   }
 
   return (
-    <html lang="en">
+    <html lang="en" className="">
       <ThemeProvider>
         <ToastProvider>
-          <Body>
-            <div className="fixed back">
+          {/* Body is a 1-col grid: header, main and footer are spaced by its gap. */}
+          <Body className="grid cols-1 gap-5">
+            <div className="fixed-layer back">
               <CurrentAnimWT id="main" />
             </div>
             <Header />
-            <main>{children}</main>
+            {/* Side gutter and the space between sections live here once; sections are single boxes. */}
+            <main className="wrap wrap-fluid grid cols-1 gap-5">{children}</main>
             <Footer />
             <WebToast />
             <BootstrapClient />

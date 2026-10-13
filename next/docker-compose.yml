@@ -9,4 +9,3 @@ services:
       - /app/.next
     ports:
       - '0.0.0.0:3000:3000'
-    # command: npm run dev

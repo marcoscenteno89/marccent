@@ -2,8 +2,8 @@
 import { useState, useEffect, useContext, useRef } from 'react';
 import { CanvasManager, canvasObserver } from "@marccent/util/canvas";
 import { ThemeContext, ToastContext } from "@/components/context";
-import { CssClass, StyleClass } from "@/components/classes";
-import { Loading } from "./component";
+import { CLS } from "@/components/client/util";
+import { Loading } from "@/components/client/util";
 
 const withLoader = (Component) => {
   const WithLoaderComponent = (props) => {
@@ -14,6 +14,18 @@ const withLoader = (Component) => {
     return ready ? <Component {...props} /> : <Loading {...props} />;
   }
   return WithLoaderComponent;
+}
+
+const withComponent = (Component) => {
+  const WithComponentComponent = (props) => {
+    // const { theme } = useContext(ThemeContext);
+    return ( 
+      <Loading require={[theme]}>
+        <Component {...props} theme={theme} />
+      </Loading>
+    );
+  }
+  return WithComponentComponent;
 }
 
 const withThemeRead = (Component) => {
@@ -45,25 +57,14 @@ const withTheme = (Component) => {
   return WiththemeComponent;
 }
 
-const withComponent = (Component) => {
-  const WidthComponentComponent = (props) => {
-    const className = new CssClass(props.className);
-    const style = new StyleClass();
-    return <Component {...props} style={style} className={className} />;
-  }
-  return WidthComponentComponent;
-}
-
 const withCanvas = (Component) => {
   const WithCanvasComponent = (props) => {
     const ref = useRef(null);
     const [ sketch, setSketch ] = useState(null);
-    const cls = props.canvasCls ? props.canvasCls.split(' ') : [];
-    cls.push('canvas-container');
+    const c_cls = new CLS(props.className).add('canvas');
     useEffect(() => {
-      const rainbow = props.theme.rainbow;
-      if (rainbow) props.className.add('linear-gradient');
-      if (!rainbow) props.className.remove('linear-gradient');
+      // const rainbow = props.theme.rainbow;
+      // c_cls.add(rainbow ? 'linear-gradient' : '').remove(rainbow ? '' : 'linear-gradient');
       const init = async () => {
         const data = {};
         data.p5 = (await import("p5")).default;
@@ -75,21 +76,19 @@ const withCanvas = (Component) => {
       init();
     }, []);
     return (
-      <div style={props.style} className={cls.join(' ')}>
-        <canvas style={props.style} className={props.className.print()} ref={ref}></canvas>
+      <>
+        <canvas style={props.style} className={c_cls.prt()} ref={ref}></canvas>
         <Loading require={[sketch]}>
           <Component {...props} cavasRef={ref} sketch={sketch} />
         </Loading>
-      </div>
+      </>
     );
   }
   return WithCanvasComponent;
 }
 
-const withC= (Component) => withComponent(Component);
 const withT= (Component) => withTheme(Component);
-const withCTRC = (Component) => withComponent(withThemeRead(withCanvas(Component)));
-const withCT = (Component) => withComponent(withTheme(Component));
-const withCTR = (Component) => withComponent(withThemeRead(Component));
+const withTRC = (Component) => withThemeRead(withCanvas(Component));
+const withTR = (Component) => withThemeRead(Component);
 
-export { withComponent, withTheme, withCanvas, withCTRC, withCT, withC, withT, withCTR }
+export { withTheme, withCanvas, withTRC, withT, withTR }

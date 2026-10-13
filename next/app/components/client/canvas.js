@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { Ellipse, Line, setColor, linearGradient, Rect, Orbit } from "@marccent/util/canvas";
 import { Blur } from "./component";
-import { withCTRC } from "./hoc";
+import { withTRC, withCanvas } from "./hoc";
 
 const Blob = (props) => {
   const { sketch, canvas: c, p } = props.sketch;
@@ -264,11 +264,96 @@ const OrbitAnim = (props) => {
   return null;
 }
 
-const BlobWCTC = withCTRC(Blob);
-const FireWCTC = withCTRC(Fire);
-const WaveWCTC = withCTRC(Wave);
-const NetworkLoopWCTC = withCTRC(NetworkLoop);
-const ParticleFlowfieldWCTC = withCTRC(ParticleFlowfield);
-const OrbitAnimWCTC = withCTRC(OrbitAnim);
+const Graph = (props) => {
+  const { base, pts, obj } = props;
+  const { data, min, max } = obj;
+  const { sketch, canvas: c, p } = props.sketch;
+  const rgb = props.theme.rev().rgb;
+  const [ grid, setGrid ] = useState(null);
+  const [ selected, setSelected ] = useState(null);
+  const [ cell ] = useState({x: p.width / data.length, y: p.height / base});
 
-export { ParticleFlowfieldWCTC, OrbitAnimWCTC, BlobWCTC, FireWCTC, NetworkLoopWCTC, WaveWCTC }  
+  // Set canvas properties, only runs once
+  useEffect(() => {
+    sketch.setup = () => {
+      p.frameRate(30);
+      p.textSize(10);
+      p.fill(255);
+      p.strokeWeight(1);
+      p.stroke(255);
+    }
+    sketch.setup();
+  }, []);
+
+  // Create a grid, runs every time obj changes (ticker)
+  useEffect(() => {
+    const grid = [];
+    for (let x = 0; x < data.length; x++) {
+      const col = [];
+      let current = max;
+      for (let y = 0; y < base; y++) {
+        col.push({
+          x: x,
+          y: y,
+          date: data[x].Date,
+          price: current
+        });
+        current = current - pts;
+      }
+      grid.push(col);
+    }
+    
+    setGrid(grid); // Set state for Grid
+    setSelected(grid.at(0).at(0));
+  }, [obj]);
+
+  useEffect(() => {
+    
+    sketch.draw = () => {
+      p.clear();
+      p.noFill();
+      p.beginShape();
+      p.stroke(rgb.r, rgb.g, rgb.b);
+      for (let i = 0; i < data.length; i++) {
+        const x = p.map(i, 0, data.length, 0, p.width);
+        const y = p.map(data[i].Close, min, max, p.height, 0);
+        p.vertex(x, y);
+      }
+      p.endShape();
+      
+      if (grid) { // Make sure grid exists befor running calculations
+        if (p.mouseX > 0 && p.mouseX < p.width && p.mouseY > 0 && p.mouseY < p.height) {
+          new Line(c, p.createVector(0, p.mouseY), p.createVector(p.width, p.mouseY), false);
+          new Line(c, p.createVector(p.mouseX, 0), p.createVector(p.mouseX, p.height), false);
+          let x = p.floor(p.mouseX / cell.x);
+          let y = p.floor(p.mouseY / cell.y);
+          setSelected(grid[x][y]);
+        } else {
+          setSelected(null);
+        }
+      }
+      
+    }
+  
+    sketch.draw();
+  }, [grid, props.theme]);
+
+  return (
+    <div className="selected order-first">
+      {selected && (`${selected.date.format('dddd, DD MMMM YYYY')} ${selected.price.toFixed(4)}`)}
+    </div>
+  );
+}
+
+const GraphWTRC = withTRC(Graph);
+const BlobWTRC = withTRC(Blob);
+const FireWTRC = withTRC(Fire);
+const WaveWTRC = withTRC(Wave);
+const NetworkLoopWTRC = withTRC(NetworkLoop);
+const ParticleFlowfieldWTRC = withTRC(ParticleFlowfield);
+const OrbitAnimWTRC = withTRC(OrbitAnim);
+
+export { 
+  ParticleFlowfieldWTRC, OrbitAnimWTRC, BlobWTRC, FireWTRC, NetworkLoopWTRC, WaveWTRC,
+  GraphWTRC
+}  

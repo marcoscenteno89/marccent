@@ -6,8 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "grid": "node scripts/grid.mjs"
+    "lint": "next lint"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.5.1",
@@ -19,6 +18,7 @@
     "dayjs": "^1.11.10",
     "ga-4-react": "^0.1.281",
     "lodash": "^4.17.21",
+    "marked": "^18.1.0",
     "next": "14.0.4",
     "p5": "^1.9.0",
     "react": "^18",
@@ -32,6 +32,7 @@
     "@types/react-dom": "^18",
     "eslint": "^8",
     "eslint-config-next": "14.0.4",
+    "sass": "^1.77.8",
     "typescript": "^5"
   }
 }

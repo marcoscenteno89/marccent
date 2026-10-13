@@ -1,0 +1,230 @@
+@import url("@fortawesome/fontawesome-free/css/all.css");
+
+/*
+ * REMOVABLE marks rules that can go once the thing they serve goes
+ * (mostly Bootstrap, or flex helpers grid.css can replace). Search "REMOVABLE" to list them.
+ */
+
+/* ICONS: every Font Awesome icon is a perfect square of --icon-size (settings.css), glyph centered.
+   Same size everywhere, buttons included (a button's height comes from its icon). Scale one with font-size. */
+:is(.fa, .fa-solid, .fa-regular, .fa-brands) {
+  display: inline-grid;
+  place-items: center;
+  width: var(--icon-size);
+  aspect-ratio: 1 / 1;
+}
+
+/* DIVIDE: a line after every direct child except the last. Put .divide on a ul/ol, nav or any grid.
+   Stacked (plain list, .cols-1, or a layout-* below 40rem): border-bottom.
+   In a row (.grid with 2+ cols, .fixed, .auto-cols, or a layout-* from 40rem): border-right.
+   CSS can't tell when an auto-fill .grid wraps onto a new row; there it keeps the row rule. */
+.divide > :not(:last-child) {
+  border: 0 solid var(--bs-border-color);
+  border-bottom-width: 1px;
+}
+
+/* Square corners, so the line doesn't curve at its ends. :nth-child(n) matches every child; it is only there
+   to outrank component radii (e.g. .menu-link) that load later. */
+.divide > :nth-child(n) { border-radius: 0; }
+
+.divide:is(.grid, .auto-cols):not(.cols-1, [class*="layout-"]) > :not(:last-child) {
+  border-bottom-width: 0;
+  border-right-width: 1px;
+}
+
+.divide[class*="layout-"] > :not(:last-child) {
+  border-right-width: 0;
+  border-bottom-width: 1px;
+}
+
+@container (min-width: 40rem) {
+  .divide[class*="layout-"]:not(.layout-ends) > :not(:last-child) {
+    border-bottom-width: 0;
+    border-right-width: 1px;
+  }
+}
+
+@container (min-width: 56rem) {
+  .divide.layout-ends > :not(:last-child) {
+    border-bottom-width: 0;
+    border-right-width: 1px;
+  }
+}
+
+/* REMOVABLE: react-bootstrap Toast sizing; goes with Bootstrap. */
+.toast {
+  max-width: 250px;;
+}
+
+.toast-container>:not(:last-child) {
+  margin-bottom: 0.3rem !important;
+}
+
+.toast-header {
+  padding: 0.3rem 0.5rem !important;
+  font-size: 0.75rem;
+}
+
+.toast-body {
+  padding: 0.3rem 0.5rem !important;
+  font-size: 0.7rem;
+}
+
+canvas {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Rounded corners (replaces Bootstrap's .rounded). Radius comes from --radius in settings.css. */
+.round {
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+/* Height follows width; replaces the old JS-sized <Square> component. */
+.square {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+}
+
+.square .inner {
+  width: 90%;
+  height: 90%;
+}
+
+.circle {
+  border-radius: 50%;
+}
+
+.map {
+  min-height: 500px;
+}
+
+.fs-sm {
+  font-size: 0.8rem; 
+}
+
+.clock {
+  min-width: 180px;
+}
+
+.relative {
+  position: relative;
+  overflow: hidden;
+}
+
+.anim {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.fixed-layer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.blur-svg {
+  display: none;
+}
+
+.back {
+  z-index: -99;
+}
+
+.front {
+  z-index: 99;
+}
+
+.shadow-inset {
+  box-shadow: inset 0 0 2rem rgba(0,0,0,0.5);
+}
+
+/* Stock chart (stock_lookup.js). All grid: chart column, price column, date row. */
+.graph-container {
+  font-size: 12px;
+  font-weight: 100;
+  /* Chart | price column on the first row, dates under the chart. */
+  display: grid;
+  grid-template-columns: minmax(0, 19fr) minmax(0, 1fr);
+  border-bottom-left-radius: var(--bs-border-radius);
+  border-bottom-right-radius: var(--bs-border-radius);
+}
+/* !important: p5 writes inline width/height on the canvas. */
+.graph-container canvas {
+  height: auto !important;
+  aspect-ratio: 1 / 1 !important;
+}
+
+/* Date row (stock_lookup.js DateTable, a .cq .center grid): drop every other date as the row narrows.
+   Unnamed queries: the nearest container of a .single is the date row itself. */
+@container (width < 1200px) {
+  .single:nth-child(even):not(:last-child, :first-child) {
+    display: none;
+  }
+}
+
+@container (width < 800px) {
+  .single:nth-child(3n+1):not(:last-child, :first-child) {
+    display: none;
+  }
+}
+
+@container (width < 500px) {
+  .single:nth-child(3n+2):not(:last-child, :first-child) {
+    display: none;
+  }
+}
+
+.single {
+  text-align: center;
+  padding: 5px 0;
+}
+
+/* Hover readout above the stock chart (canvas.js Graph). Its height is mirrored by the price column's top offset. */
+.selected {
+  font-size: 1rem;
+  height: 50px;
+  display: grid;
+  align-items: center;
+  padding-left: 10px;
+}
+
+.single-line-form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.single-line-form > .alert {
+  display: none;
+}
+
+.single-line-form > * {
+  border-radius: 0;
+}
+
+.single-line-form > * {
+  margin-right: -1px;
+}
+
+.single-line-form > *:last-child {
+  border-top-right-radius: var(--bs-border-radius);
+  /* border-bottom-right-radius: var(--bs-border-radius); */
+}
+
+.single-line-form > *:first-child {
+  border-top-left-radius: var(--bs-border-radius);
+  /* border-bottom-left-radius: var(--bs-border-radius); */
+}
+
+/* REMOVABLE: cancels Bootstrap's mb-2 on the submit button; drop with the mb-2. */
+.single-line-form .mb-2 {
+  margin-bottom: 0 !important;
+}

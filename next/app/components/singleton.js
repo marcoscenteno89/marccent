@@ -2,7 +2,7 @@ import { Color } from "@marccent/util/class";
 import { get, post } from "@marccent/util";
 import { cloneDeep as cd } from 'lodash';
 import { Storage } from "@marccent/util/class";
-const marccent_server = process.env.NEXT_PUBLIC_SERVERURL;
+const marccent_server = process.env.NEXT_PUBLIC_SERVER;
 const storage = new Storage();
 
 class Theme {

@@ -1,13 +1,14 @@
 'use client';
 import { useState, useMemo, useEffect, useRef } from "react";
 import { Loader } from '@googlemaps/js-api-loader';
-import { withCTR } from "./hoc";
+import { withTR } from "./hoc";
+import { CLS } from "@/components/client/util";
 
 const Map = (props) => {
   const ref = useRef(null);
-  const { zoom, className, theme } = props;
+  const { zoom, theme } = props;
   const [center] = useState(props.center ? props.center : { lat: 43.49, lng: -112.034 });
-  className.add('col-12', 'map');
+  const m_cls = new CLS(props.className).add('map');
   const [map, setMap] = useState(null);
   const mapStyles = MapStyles(theme);
   const mapOptions = {
@@ -37,7 +38,7 @@ const Map = (props) => {
     }
   }, [theme, center, zoom])
 
-  return <div {...props} className={className.print()} require={{theme, map}}  ref={ref}></div>;
+  return <div {...props} className={m_cls.prt()} require={{theme, map}}  ref={ref}></div>;
 }
 
 const MapStyles = (theme) => {
@@ -61,6 +62,6 @@ const MapStyles = (theme) => {
   ]
 }
 
-const MapWTCL = withCTR(Map);
+const MapWTR = withTR(Map);
 
-export default MapWTCL;
+export default MapWTR;

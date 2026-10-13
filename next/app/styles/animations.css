@@ -1,0 +1,24 @@
+/*
+ * ANIMATIONS: transitions and keyframes for the site, one section per component. Imported at the top of
+ * components.css, so it loads BEFORE the component rules: to override a component transition here,
+ * use a more specific selector.
+ */
+
+/* ACCORDION OPEN / CLOSE (Accordion in components/client/component.js).
+   ::details-content is the box <details> shows and hides; its height slides between 0 and auto.
+   interpolate-size lets "auto" animate (inherited, so set once on the list). content-visibility is
+   what the browser flips to hide the body; allow-discrete holds it visible until the closing slide ends.
+   Browsers without ::details-content or interpolate-size open and close instantly. */
+.accordion { interpolate-size: allow-keywords; }
+
+.accordion-item::details-content {
+  block-size: 0;
+  overflow-y: clip;
+  transition: block-size .25s ease, content-visibility .25s ease allow-discrete;
+}
+.accordion-item[open]::details-content { block-size: auto; }
+
+@media (prefers-reduced-motion: reduce) {
+  .accordion-item::details-content,
+  .accordion-item > .accordion-header::after { transition: none; } /* outranks the caret transition in components.css */
+}

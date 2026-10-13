@@ -1,0 +1,257 @@
+/*
+ * Theme colors. Primary and secondary come from settings.css; set a base color and
+ * everything derived from it follows, in light and dark mode
+ * (dark = any element with data-theme="dark" or data-bs-theme="dark").
+ *
+ * Per color (primary, secondary, success, info, warning, danger, light, dark):
+ *   --{color}            base                     (set this)
+ *   --{color}-on         text on top of the base  (set this)
+ *   --{color}-emphasis   strong text tone, e.g. text on a subtle background
+ *   --{color}-subtle     soft background
+ *   --{color}-border     soft border
+ *   --{color}-hover      hover state of the base
+ *   --{color}-active     pressed state of the base
+ *
+ * Global: --link  --link-hover  --focus-ring  --focus-border
+ *
+ * Below the tokens: the --mc-* shades bootstrap.js sets at runtime (with defaults),
+ * then the color rules for components (buttons, alerts, gradients, panels).
+ */
+
+:root {
+  --primary: var(--mc-primary);
+  --primary-on: #fff;
+  --secondary: var(--mc-secondary);
+  --secondary-on: #fff;
+  --success: #198754;
+  --success-on: #fff;
+  --info: #0dcaf0;
+  --info-on: #000;
+  --warning: #ffc107;
+  --warning-on: #000;
+  --danger: #dc3545;
+  --danger-on: #fff;
+  --light: #f8f9fa;
+  --light-on: #000;
+  --dark: #212529;
+  --dark-on: #fff;
+}
+
+:root,
+[data-theme=light],
+[data-bs-theme=light] {
+  --primary-emphasis: color-mix(in srgb, var(--primary) 40%, #000);
+  --primary-subtle: color-mix(in srgb, var(--primary) 20%, #fff);
+  --primary-border: color-mix(in srgb, var(--primary) 40%, #fff);
+  --primary-hover: color-mix(in srgb, var(--primary) 85%, #000);
+  --primary-active: color-mix(in srgb, var(--primary) 80%, #000);
+  --secondary-emphasis: color-mix(in srgb, var(--secondary) 40%, #000);
+  --secondary-subtle: color-mix(in srgb, var(--secondary) 20%, #fff);
+  --secondary-border: color-mix(in srgb, var(--secondary) 40%, #fff);
+  --secondary-hover: color-mix(in srgb, var(--secondary) 85%, #000);
+  --secondary-active: color-mix(in srgb, var(--secondary) 80%, #000);
+  --success-emphasis: color-mix(in srgb, var(--success) 40%, #000);
+  --success-subtle: color-mix(in srgb, var(--success) 20%, #fff);
+  --success-border: color-mix(in srgb, var(--success) 40%, #fff);
+  --success-hover: color-mix(in srgb, var(--success) 85%, #000);
+  --success-active: color-mix(in srgb, var(--success) 80%, #000);
+  --info-emphasis: color-mix(in srgb, var(--info) 40%, #000);
+  --info-subtle: color-mix(in srgb, var(--info) 20%, #fff);
+  --info-border: color-mix(in srgb, var(--info) 40%, #fff);
+  --info-hover: color-mix(in srgb, var(--info) 85%, #000);
+  --info-active: color-mix(in srgb, var(--info) 80%, #000);
+  --warning-emphasis: color-mix(in srgb, var(--warning) 40%, #000);
+  --warning-subtle: color-mix(in srgb, var(--warning) 20%, #fff);
+  --warning-border: color-mix(in srgb, var(--warning) 40%, #fff);
+  --warning-hover: color-mix(in srgb, var(--warning) 85%, #000);
+  --warning-active: color-mix(in srgb, var(--warning) 80%, #000);
+  --danger-emphasis: color-mix(in srgb, var(--danger) 40%, #000);
+  --danger-subtle: color-mix(in srgb, var(--danger) 20%, #fff);
+  --danger-border: color-mix(in srgb, var(--danger) 40%, #fff);
+  --danger-hover: color-mix(in srgb, var(--danger) 85%, #000);
+  --danger-active: color-mix(in srgb, var(--danger) 80%, #000);
+  --light-emphasis: color-mix(in srgb, var(--light) 40%, #000);
+  --light-subtle: color-mix(in srgb, var(--light) 20%, #fff);
+  --light-border: color-mix(in srgb, var(--light) 40%, #fff);
+  --light-hover: color-mix(in srgb, var(--light) 85%, #000);
+  --light-active: color-mix(in srgb, var(--light) 80%, #000);
+  --dark-emphasis: color-mix(in srgb, var(--dark) 40%, #000);
+  --dark-subtle: color-mix(in srgb, var(--dark) 20%, #fff);
+  --dark-border: color-mix(in srgb, var(--dark) 40%, #fff);
+  --dark-hover: color-mix(in srgb, var(--dark) 85%, #000);
+  --dark-active: color-mix(in srgb, var(--dark) 80%, #000);
+  --link: var(--primary);
+  --link-hover: color-mix(in srgb, var(--link) 80%, #000);
+  --focus-ring: color-mix(in srgb, var(--primary) 25%, transparent);
+  --focus-border: color-mix(in srgb, var(--primary) 50%, #fff);
+}
+
+[data-theme=dark],
+[data-bs-theme=dark] {
+  --primary-emphasis: color-mix(in srgb, var(--primary) 60%, #fff);
+  --primary-subtle: color-mix(in srgb, var(--primary) 20%, #000);
+  --primary-border: color-mix(in srgb, var(--primary) 60%, #000);
+  --primary-hover: color-mix(in srgb, var(--primary) 85%, #000);
+  --primary-active: color-mix(in srgb, var(--primary) 80%, #000);
+  --secondary-emphasis: color-mix(in srgb, var(--secondary) 60%, #fff);
+  --secondary-subtle: color-mix(in srgb, var(--secondary) 20%, #000);
+  --secondary-border: color-mix(in srgb, var(--secondary) 60%, #000);
+  --secondary-hover: color-mix(in srgb, var(--secondary) 85%, #000);
+  --secondary-active: color-mix(in srgb, var(--secondary) 80%, #000);
+  --success-emphasis: color-mix(in srgb, var(--success) 60%, #fff);
+  --success-subtle: color-mix(in srgb, var(--success) 20%, #000);
+  --success-border: color-mix(in srgb, var(--success) 60%, #000);
+  --success-hover: color-mix(in srgb, var(--success) 85%, #000);
+  --success-active: color-mix(in srgb, var(--success) 80%, #000);
+  --info-emphasis: color-mix(in srgb, var(--info) 60%, #fff);
+  --info-subtle: color-mix(in srgb, var(--info) 20%, #000);
+  --info-border: color-mix(in srgb, var(--info) 60%, #000);
+  --info-hover: color-mix(in srgb, var(--info) 85%, #000);
+  --info-active: color-mix(in srgb, var(--info) 80%, #000);
+  --warning-emphasis: color-mix(in srgb, var(--warning) 60%, #fff);
+  --warning-subtle: color-mix(in srgb, var(--warning) 20%, #000);
+  --warning-border: color-mix(in srgb, var(--warning) 60%, #000);
+  --warning-hover: color-mix(in srgb, var(--warning) 85%, #000);
+  --warning-active: color-mix(in srgb, var(--warning) 80%, #000);
+  --danger-emphasis: color-mix(in srgb, var(--danger) 60%, #fff);
+  --danger-subtle: color-mix(in srgb, var(--danger) 20%, #000);
+  --danger-border: color-mix(in srgb, var(--danger) 60%, #000);
+  --danger-hover: color-mix(in srgb, var(--danger) 85%, #000);
+  --danger-active: color-mix(in srgb, var(--danger) 80%, #000);
+  --light-emphasis: color-mix(in srgb, var(--light) 60%, #fff);
+  --light-subtle: color-mix(in srgb, var(--light) 20%, #000);
+  --light-border: color-mix(in srgb, var(--light) 60%, #000);
+  --light-hover: color-mix(in srgb, var(--light) 85%, #000);
+  --light-active: color-mix(in srgb, var(--light) 80%, #000);
+  --dark-emphasis: color-mix(in srgb, var(--dark) 60%, #fff);
+  --dark-subtle: color-mix(in srgb, var(--dark) 20%, #000);
+  --dark-border: color-mix(in srgb, var(--dark) 60%, #000);
+  --dark-hover: color-mix(in srgb, var(--dark) 85%, #000);
+  --dark-active: color-mix(in srgb, var(--dark) 80%, #000);
+  --link: var(--primary-emphasis);
+  --link-hover: color-mix(in srgb, var(--link) 80%, #fff);
+  --focus-ring: color-mix(in srgb, var(--primary) 25%, transparent);
+  --focus-border: color-mix(in srgb, var(--primary) 50%, #000);
+}
+
+a { color: var(--link); }
+a:hover { color: var(--link-hover); }
+
+/* Runtime shades. components/client/bootstrap.js sets these on <html> from the saved theme;
+   until then they default to the tokens above. Kept on :root only so the runtime values win. */
+:root {
+  --mc-primary-bg-subtle: var(--primary-subtle);
+  --mc-primary-border-subtle: var(--primary-border);
+  --mc-primary-text-emphasis: var(--primary-emphasis);
+
+  --mc-secondary-bg-subtle: var(--secondary-subtle);
+  --mc-secondary-border-subtle: var(--secondary-border);
+  --mc-secondary-text-emphasis: var(--secondary-emphasis);
+}
+
+/* BACKGROUNDS */
+.bg-primary {
+  background-color: var(--mc-primary) !important;
+}
+
+.bg-secondary {
+  background-color: var(--mc-secondary) !important;
+}
+
+.linear-gradient {
+  background-image: linear-gradient(to right, var(--mc-primary), var(--mc-secondary))  !important;
+}
+
+.radial-gradient {
+  background-image: radial-gradient(circle at center, var(--mc-primary), var(--mc-secondary)) !important;
+}
+
+/* ALERTS
+   REMOVABLE (with Bootstrap): the .alert-* and .pagination rules below only feed
+   colors into Bootstrap's --bs-* variables. */
+.alert-primary {
+  --bs-alert-bg: var(--mc-primary-bg-subtle);
+  --bs-alert-border-color: var(--mc-primary-border-subtle);
+  --bs-alert-color: var(--mc-primary-text-emphasis)
+}
+
+.alert-primary .alert-link {
+  color: var(--mc-primary-text-emphasis);
+}
+
+.alert-secondary {
+  --bs-alert-bg: var(--mc-secondary-bg-subtle);
+  --bs-alert-border-color: var(--mc-secondary-border-subtle);
+  --bs-alert-color: var(--mc-secondary-text-emphasis)
+}
+
+.alert-secondary .alert-link {
+  color: var(--mc-secondary-text-emphasis);
+}
+
+/* PAGINATION */
+.pagination {
+  --bs-pagination-active-bg: var(--mc-primary);
+  --bs-pagination-color: var(--mc-primary-text-emphasis);
+  --bs-pagination-active-border-color: var(--mc-primary);
+}
+
+/* ACCORDION colors (layout in components.css). */
+.accordion-header:hover { background-color: var(--primary-subtle); }
+.accordion-item[open] > .accordion-header { background-color: var(--mc-secondary); color: var(--bs-body-color); }
+
+/* BUTTONS: colors (layout lives in components.css). Set the --btn-* values to recolor a button
+   (default: transparent, current text color). */
+.btn {
+  --btn-bg: transparent;
+  --btn-color: inherit;
+  --btn-border: currentColor;
+  --btn-hover-bg: var(--btn-bg);
+  --btn-hover-color: var(--btn-color);
+  --btn-icon-bg: color-mix(in srgb, var(--dark) 20%, transparent); /* icon tint: opposite of the theme */
+
+  border-color: var(--btn-border);
+  background-color: var(--btn-bg); /* not the shorthand, so an inline background-image (theme swatches) survives */
+  color: var(--btn-color);
+}
+
+[data-theme=dark] .btn,
+[data-bs-theme=dark] .btn { --btn-icon-bg: color-mix(in srgb, var(--light) 20%, transparent); }
+
+.btn-icon { background-color: var(--btn-icon-bg); }
+
+.btn:hover {
+  background-color: var(--btn-hover-bg);
+  border-color: var(--btn-hover-bg);
+  color: var(--btn-hover-color);
+}
+
+.btn:focus-visible {
+  outline: 0;
+  box-shadow: 0 0 0 .25rem var(--focus-ring);
+}
+
+/* SURFACES (.bg panels, light/dark/glass) */
+[data-bs-theme=light] .bg {
+  background-color: rgba(var(--bs-light-rgb), 1);
+  border-color: rgba(var(--bs-light-rgb), 0.7);
+}
+
+[data-bs-theme=dark] .bg {
+  background-color: rgba(var(--bs-dark-rgb), 1);
+  border-color: rgba(var(--bs-dark-rgb), 0.7);
+}
+
+.glass[data-bs-theme=light] .bg,
+.glass[data-bs-theme=dark] .bg {
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  backdrop-filter: blur(var(--glass-blur));
+}
+
+.glass[data-bs-theme=light] .bg {
+  background-color: rgba(var(--bs-light-rgb), var(--glass-opacity)) !important;
+}
+
+.glass[data-bs-theme=dark] .bg {
+  background-color: rgba(var(--bs-dark-rgb), var(--glass-opacity)) !important;
+}

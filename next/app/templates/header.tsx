@@ -1,91 +1,35 @@
-import Link from 'next/link';
-import { RainbowModeWCT, ThemeModeWCT, GlassModeWCT } from '../components/client/theme';
+"use client";
 
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { useEffect, useRef } from 'react';
+import { ThemeModeWT, GlassModeWT } from '../components/client/theme';
+import { Button } from '../components/client/util';
+import { Menu, main, social } from './menus';
+
+// Layout only: grid.css classes; menu look lives in styles/components.css.
+// Narrow: brand, main menu and tools stack as three rows. From 56rem: one row, brand and menu at the start, tools (col-last) at the end, empty space between.
 export default function Header() {
+  const header = useRef<HTMLElement>(null);
+  const pathname = usePathname();
+
+  // Menu dropdowns are <details>; close them after navigating.
+  useEffect(() => {
+    header.current?.querySelectorAll('details[open]').forEach(d => d.removeAttribute('open'));
+  }, [pathname]);
+
   return (
-    <header className="container-fluid sticky-md-top bg border-bottom">
-      <nav className="navbar navbar-expand-md">
-        <Link className="navbar-brand text-primary" href="/">Marccent</Link>
-        <button 
-          className="navbar-toggler" 
-          type="button" 
-          data-bs-toggle="collapse" 
-          data-bs-target="#navbarSupportedContent" 
-          aria-controls="navbarSupportedContent" 
-          aria-expanded="false" 
-          aria-label="Toggle navigation">
-          <span className="navbar-toggler-icon"></span>
-        </button>
-        <div className="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-            <li className="nav-item">
-              <Link className="nav-link" href="/about">About Me</Link>
-            </li>
-            <li className="nav-item py-2 py-lg-1 col-12 col-md-auto">
-              <div className="vr d-none d-md-flex h-100 mx-md-2"></div>
-              <hr className="d-md-none my-2" />
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link" href="/apps" >Apps</Link>
-            </li>
-            <li className="nav-item py-2 py-lg-1 col-12 col-md-auto">
-              <div className="vr d-none d-md-flex h-100 mx-md-2"></div>
-              <hr className="d-md-none my-2" />
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link" href="/theme" >Theme</Link>
-            </li>
-            <li className="nav-item py-2 py-lg-1 col-12 col-md-auto">
-              <div className="vr d-none d-md-flex h-100 mx-md-2"></div>
-              <hr className="d-md-none my-2" />
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link" href="/contact" >Contact</Link>
-            </li>
-          </ul>
-          <ul className="navbar-nav flex-row flex-wrap ms-md-auto">
-            <li className="nav-item col-12 col-md-auto">
-              <Link className="nav-link" href="https://codepen.io/marcos-centeno/pens/public" target="_blank" aria-label="Codepen Link">
-                <i className="fa-brands fa-codepen"></i>
-              </Link>
-            </li>
-            <li className="nav-item col-12 col-md-auto">
-              <Link className="nav-link" href="https://www.linkedin.com/in/marcos-centeno-0b1a7b65/" target="_blank" aria-label="Linkedin Link">
-                <i className="fa-brands fa-linkedin"></i>
-              </Link>
-            </li>
-            <li className="nav-item col-12 col-md-auto">
-              <Link className="nav-link" href="https://github.com/marcoscenteno89" target="_blank" aria-label="Github Link">
-                <i className="fa-brands fa-github"></i>
-              </Link>
-            </li>
-            <li className="nav-item py-2 py-lg-1 col-12 col-md-auto">
-              <div className="vr d-none d-md-flex h-100 mx-md-2"></div>
-              <hr className="d-md-none my-2" />
-            </li>
-            <GlassModeWCT />
-            <li className="nav-item py-2 py-lg-1 col-12 col-md-auto">
-              <div className="vr d-none d-md-flex h-100 mx-md-2"></div>
-              <hr className="d-md-none my-2" />
-            </li>
-            {/* <RainbowModeWCT className="fa-solid" /> */}
-            {/* <li className="nav-item py-2 py-lg-1 col-12 col-md-auto">
-              <div className="vr d-none d-md-flex h-100 mx-md-2"></div>
-              <hr className="d-md-none my-2 text-white-50" />
-            </li> */}
-            <ThemeModeWCT className="" />
-            <li className="nav-item py-2 py-lg-1 col-12 col-md-auto">
-              <div className="vr d-none d-md-flex h-100 mx-md-2"></div>
-              <hr className="d-md-none my-2" />
-            </li>
-            <li className="nav-item col-6 col-md-auto">
-              <Link href="#footer" className="btn btn-outline-secondary">
-                <i className="bi bi-brush"></i> Change Theme
-              </Link>
-            </li>
-          </ul>
+    <header ref={header} className="cq bg border-bottom sticky-md-top">
+      <div className="wrap wrap-fluid grid layout-ends items-center gap-2 pad">
+        <Link href="/" className="menu-link fs-5 fw-bold">Marccent</Link>
+        <Menu items={main} label="Main" className="divide" />
+        <div className="grid auto-cols items-center gap-2 col-last">
+          <Menu items={social} label="Social" iconOnly className="divide" />
+          <GlassModeWT />
+          <ThemeModeWT />
+          <Button icon="fa-solid fa-brush" href="#footer">Theme</Button>
         </div>
-      </nav>
+      </div>
     </header>
   );
 };

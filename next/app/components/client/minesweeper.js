@@ -1,11 +1,10 @@
 'use client'
 import React, { Component, Fragment } from "react";
-// import Alert from 'react-bootstrap/Alert';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import { SquareWC, Counter } from "./component";
+import { Counter } from "./component";
 import { Bomb, Flag } from "@/components/sac";
-import { WebAlert } from "./component";
+// import { WebAlert } from "./component";
 import { random } from 'lodash';
 
 class MineSweeper extends Component {
@@ -252,13 +251,13 @@ class MineSweeper extends Component {
     const b = this.state;
     const active = this.state.status !== '';
     return (
-      <div className="minesweeper">
-        <div className="align-items-center row p-1 mb-2 border rounded">
-          <div className="col-2"><Flag /> {b.mineCnt}</div>
-          <div className="col">
+      <div className="minesweeper grid cols-1 gap-2">
+        <div className="grid fixed cols-4 items-center gap-2 pad border round">
+          <div><Flag /> {b.mineCnt}</div>
+          <div>
             <Counter getTime={this.getTime} active={b.active} />
           </div>
-          <div className="col">
+          <div>
             <Form.Select onChange={(val) => this.dificulty(val.target.value)} value={b.dificulty}>
               <option value="1">Very Easy</option>
               <option value="2">Easy</option>
@@ -267,27 +266,24 @@ class MineSweeper extends Component {
               <option value="5">Very Hard</option>
             </Form.Select>
           </div>
-          <div className="col">
-            <Button variant="primary" onClick={async () => await this.startOver()}>
+          <div>
+            <Button variant="" onClick={async () => await this.startOver()}>
               Start Over
             </Button>
           </div>
         </div>
-        <SquareWC>
-          {this.state.grid.map((row, index) => 
-            <div className="row" style={{height: `calc(100% / ${b.size} - 2px)`}} key={index}>
-              {row.map((cell) => 
-                <Cell 
-                  cell={cell} 
-                  size={b.size} 
-                  key={`cell-${cell.id}`} 
-                  onClick={this.onClick} 
-                  onContextMenu={this.onContextMenu} />
-              )}
-            </div>
+        {/* One grid for the whole board; square cells (aspect-ratio) make a square board, no JS sizing. */}
+        <div className="grid fixed" style={{'--cols': b.size, '--gap': '2px'}}>
+          {this.state.grid.flat().map((cell) => 
+            <Cell 
+              cell={cell} 
+              size={b.size} 
+              key={`cell-${cell.id}`} 
+              onClick={this.onClick} 
+              onContextMenu={this.onContextMenu} />
           )}
-        </SquareWC>
-        <WebAlert variant="info" active={active} msg={this.state.status} />
+        </div>
+        {/* <WebAlert variant="info" active={active} msg={this.state.status} /> */}
       </div>
     )        
   }
@@ -310,9 +306,7 @@ class Cell extends Component {
   }
 
   render() {
-    const styles = {
-      width: `calc(100% / ${this.props.size})`,
-    }
+    const styles = { aspectRatio: '1 / 1' }
 
     let value = '';
     if (this.state.cell.flagged) value = <Flag />
@@ -323,7 +317,7 @@ class Cell extends Component {
 
     return  (
       <div 
-        className="col flex-center digit bg-primary rounded" 
+        className="center digit bg-primary round" 
         style={styles} 
         onClick={(e) => this.props.onClick(e, this.state.cell)}
         onContextMenu={(e) => this.props.onContextMenu(e, this.state.cell)}

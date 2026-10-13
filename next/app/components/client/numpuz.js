@@ -3,8 +3,8 @@ import React, { Component, Fragment } from "react";
 import Alert from 'react-bootstrap/Alert';
 import { Counter } from "./component";
 import Button from 'react-bootstrap/Button';
-import { withC, withT } from "./hoc";
-import { SquareWC } from "./component";
+import { withT } from "./hoc";
+import { CLS } from "@/components/client/util";
 
 class NumPuz extends Component {
   constructor(props) {
@@ -166,34 +166,31 @@ class NumPuz extends Component {
     if (!this.state.grid) return <Fragment>Loading...</Fragment>
     const grid = this.state.grid;
     return(
-      <div className="numpuz">
-        <div className="align-items-center row p-1 border rounded">
-          <div className="col">
+      <div className="numpuz grid cols-1 gap-2">
+        <div className="grid fixed cols-2 items-center gap-2 pad border round">
+          <div>
             <Counter getTime={this.getTime} active={this.state.active} />
           </div>
-          <div className="col">
-            <Button variant="secondary" onClick={() => this.startOver()}>
+          <div>
+            <Button variant="" onClick={() => this.startOver()}>
               Start Over
             </Button>
           </div>
         </div>
-        <SquareWC className="">
-          {this.state.grid.map((row, index) => 
-            <div className="row" style={{height: `calc(100% / ${grid.length} - 4px)`}} key={index}>
-              {row.map((cell, index) => 
-                <DigitWC 
-                  require={{grid: grid}}
-                  cell={cell} 
-                  key={`numpuz-cell${index}`}
-                  activate={this.activate}
-                  active={this.state.active}
-                  update={this.update}
-                  updateStatus={this.updateStatus}
-                  col={row.length} />
-              )}
-            </div>
+        {/* One grid for the whole board; square cells (aspect-ratio) make a square board, no JS sizing. */}
+        <div className="grid fixed" style={{'--cols': grid[0].length, '--gap': '4px'}}>
+          {grid.flat().map((cell, index) => 
+            <Digit 
+              require={{grid: grid}}
+              cell={cell} 
+              key={`numpuz-cell${index}`}
+              activate={this.activate}
+              active={this.state.active}
+              update={this.update}
+              updateStatus={this.updateStatus}
+              col={grid[0].length} />
           )}
-        </SquareWC>
+        </div>
         <Alert key="numpuz-info" variant="primary">{this.state.status}</Alert>
       </div>
     )
@@ -231,12 +228,12 @@ class Digit extends Component {
 
   render() {
     const cell = this.state.cell;
-    this.props.className.add('flex-center', 'rounded', 'col');
-    if (cell.value !== '') this.props.className.add('bg-primary');
+    const d_cls = new CLS(this.props.className);
+    d_cls.add('center', 'round', cell.value !== '' ? 'bg-primary' : '');
     return(
       <div 
-        className={this.props.className.print()}
-        style={{ width: `calc((100% / ${this.props.col}) - 4px)` }} 
+        className={d_cls.prt()}
+        style={{aspectRatio: '1 / 1'}}
         draggable={cell.draggable} 
         onDrop={(event) => this.onDrop(event)}
         onDragStart={(event) => this.onDragStart(event, cell)}
@@ -247,7 +244,6 @@ class Digit extends Component {
   }
 }
 
-const DigitWC = withC(Digit);
 const NumPuzWT = withT(NumPuz);
 
 export default NumPuzWT;
