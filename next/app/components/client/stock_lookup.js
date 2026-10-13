@@ -74,7 +74,7 @@ const StockLookup = () => {
   return (
     <div className="grid cols-1 gap-2">
       <Loading require={[data.ticker]}>
-        <Form className="single-line-form" onSubmit={(v, form) => getTicker(v.search, form.elements.search)}
+        <Form className="grid inline-form" onSubmit={(v, form) => getTicker(v.search, form.elements.search)}
           submitLabel="Search" submitIcon="magnifying-glass">
           <Input name="search" label="Ticker" placeholder={data.ticker} required />
         </Form>

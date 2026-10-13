@@ -48,10 +48,9 @@
 .text-gradient-darker { background-image: var(--gradient-darker); }
 
 /* PAGE COLORS: text, background, border, link and focus colors for light and dark mode
-   (dark = data-theme="dark" or data-bs-theme="dark" on any element). */
+   (dark = data-theme="dark" on any element; Body in components/client/theme.js sets it on <body>). */
 :root,
-[data-theme=light],
-[data-bs-theme=light] {
+[data-theme=light] {
   --body-color: #212529;
   --body-bg: #fff;
   --body-bg-rgb: 255, 255, 255;
@@ -68,8 +67,7 @@
   color-scheme: light;
 }
 
-[data-theme=dark],
-[data-bs-theme=dark] {
+[data-theme=dark] {
   --body-color: #dee2e6;
   --body-bg: #212529;
   --body-bg-rgb: 33, 37, 41;
@@ -88,11 +86,11 @@ a { color: var(--link); }
 a:hover { color: var(--link-hover); }
 
 /* SURFACES: .bg panels in light and dark mode; glass mode (.glass on <body>) makes them translucent and blurred. */
-[data-bs-theme=light] .bg {
+[data-theme=light] .bg {
   background-color: rgba(var(--light-rgb), 1);
   border-color: rgba(var(--light-rgb), 0.7);
 }
-[data-bs-theme=dark] .bg {
+[data-theme=dark] .bg {
   background-color: rgba(var(--dark-rgb), 1);
   border-color: rgba(var(--dark-rgb), 0.7);
 }
@@ -100,5 +98,5 @@ a:hover { color: var(--link-hover); }
   -webkit-backdrop-filter: blur(var(--glass-blur));
   backdrop-filter: blur(var(--glass-blur));
 }
-.glass[data-bs-theme=light] .bg { background-color: rgba(var(--light-rgb), var(--glass-opacity)) !important; }
-.glass[data-bs-theme=dark] .bg { background-color: rgba(var(--dark-rgb), var(--glass-opacity)) !important; }
+.glass[data-theme=light] .bg { background-color: rgba(var(--light-rgb), var(--glass-opacity)) !important; }
+.glass[data-theme=dark] .bg { background-color: rgba(var(--dark-rgb), var(--glass-opacity)) !important; }

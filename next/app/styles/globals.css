@@ -1,10 +1,5 @@
 @import url("@fortawesome/fontawesome-free/css/all.css");
 
-/*
- * REMOVABLE marks rules that can go once the thing they serve goes
- * (mostly Bootstrap, or flex helpers grid.css can replace). Search "REMOVABLE" to list them.
- */
-
 /* ICONS: every Font Awesome icon is a perfect square of --icon-size (settings.css), glyph centered.
    Same size everywhere, buttons included (a button's height comes from its icon). Scale one with font-size. */
 :is(.fa, .fa-solid, .fa-regular, .fa-brands) {
@@ -153,15 +148,3 @@ canvas {
   align-items: center;
   padding-left: 10px;
 }
-
-/* Input + submit button joined into one bar (stock_lookup.js search): the input takes the row, the button
-   its content width. Square inner corners and one shared border between them; only the outer top
-   corners are rounded. :nth-child(n) outranks .btn's radius, which loads later (components.css). */
-.single-line-form {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-}
-.single-line-form > :nth-child(n) { border-radius: 0; }
-.single-line-form > :not(:last-child) { border-right-width: 0; }
-.single-line-form > :first-child { border-top-left-radius: var(--radius); }
-.single-line-form > :last-child { border-top-right-radius: var(--radius); }

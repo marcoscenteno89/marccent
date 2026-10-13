@@ -33,7 +33,7 @@ const Body = (props) => {
   if (!theme) theme = {};
   const is_dark = theme.is_dark ? 'dark' : 'light';
   return (
-    <body className={cx(props.className, theme.glass && 'glass')} suppressHydrationWarning={true} data-bs-theme={is_dark}>
+    <body className={cx(props.className, theme.glass && 'glass')} suppressHydrationWarning={true} data-theme={is_dark}>
       {props.children}
     </body>
   )  

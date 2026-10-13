@@ -31,8 +31,8 @@ export default function ThemePage() {
         <h3>Customize Your Experience</h3>
         <p>Color Pickers: Use the color pickers to select your desired hue for the primary and secondary colors. The changes will be applied instantly throughout the website.</p>
         <p>Preview Panes: On the right, you&#39;ll see preview panes showcasing different UI components. As you adjust the colors, observe how the new palette influences buttons, menus, headlines, and more.</p>
-        <h3>Bootstrap Theme Color Playground</h3>
-        <p>Bored with the default look? With this interactive Theme Color Playground, you can unleash your creativity and play around with different color palettes to create a truly unique, personalized look for your Bootstrap website.</p>
+        <h3>Theme Color Playground</h3>
+        <p>Bored with the default look? With this interactive Theme Color Playground, you can unleash your creativity and play around with different color palettes to create a truly unique, personalized look for this website.</p>
       </div>
       <div className="wrap bg border round pad grid cols-1 gap-3">
         <div className="pad border round bg">
