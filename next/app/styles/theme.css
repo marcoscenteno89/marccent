@@ -14,7 +14,7 @@
  *
  * Global: --link  --link-hover  --focus-ring  --focus-border
  *
- * Below the tokens: the --mc-* shades bootstrap.js sets at runtime (with defaults),
+ * Below the tokens: the --mc-* shades theme-colors.js sets at runtime (with defaults),
  * then the color rules for components (buttons, alerts, gradients, panels).
  */
 
@@ -137,7 +137,7 @@
 a { color: var(--link); }
 a:hover { color: var(--link-hover); }
 
-/* Runtime shades. components/client/bootstrap.js sets these on <html> from the saved theme;
+/* Runtime shades. components/client/theme-colors.js sets these on <html> from the saved theme;
    until then they default to the tokens above. Kept on :root only so the runtime values win. */
 :root {
   --mc-primary-bg-subtle: var(--primary-subtle);

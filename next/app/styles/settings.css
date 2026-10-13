@@ -5,7 +5,7 @@
 
 :root {
   /* Brand colors. Every shade, button, alert and gradient is derived from these two
-     (see theme.css). components/client/bootstrap.js overrides them at runtime with the saved theme. */
+     (see theme.css). components/client/theme-colors.js overrides them at runtime with the saved theme. */
   --mc-primary: #0d6efd;
   --mc-secondary: #6c757d;
 

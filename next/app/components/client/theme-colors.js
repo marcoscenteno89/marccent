@@ -2,7 +2,8 @@
 import { useEffect, useContext } from "react";
 import { ThemeContext } from "@/components/context";
 
-const BootstrapClient = () => {
+// Applies the saved theme: writes the --mc-* color shades on :root whenever the theme changes. Renders nothing.
+const ThemeColors = () => {
   const { theme } = useContext(ThemeContext);
   useEffect( () => {
     if (theme) {
@@ -36,4 +37,4 @@ const BootstrapClient = () => {
   return null;
 }
 
-export { BootstrapClient }
+export { ThemeColors }
