@@ -12,10 +12,192 @@ import { ToastContainer, Form, Toast, Modal, Alert, Pagination } from 'react-boo
 import dayjs from "dayjs";
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { post } from "@marccent/util";
-import { Loading } from "@/components/client/util";
+import Link from 'next/link';
 import { ToastContext } from '@/components/context';
-import { CLS, STL } from '@/components/client/util';
-import { Button } from '@/components/button';
+
+/* ---------- classes ---------- */
+
+class CLS {
+  constructor() {
+    this.list = this.checkData(arguments);
+  }
+
+  checkData(arg) {
+    let list;
+    if (arg.length === 1) {
+      arg = arg[0];
+      if (!arg) return list = []
+      if (typeof arg === 'string') {
+        if (arg.includes(' ')) {
+          list = arg.split(' ');
+        } else if (arg.includes(',')) {
+          list = arg.split(',');
+        } else {
+          list = [arg]
+        }
+      }
+
+      if (typeof arg === 'object') list = arg;
+
+    } else {
+      list = Array.from(arg);
+    }
+    const filtered = list.filter(Boolean);
+    return filtered;
+  }
+
+  add() {
+    const arr = Array.from(arguments);
+    for (let i of arr) {
+      if (!this.list.includes(i)) this.list.push(i);
+    }
+    this.list = this.list.filter(Boolean);
+    return this;
+  }
+
+  remove() {
+    const arr = Array.from(arguments);
+    this.list = this.list.filter(item => !arr.includes(item));
+    return this;
+  }
+
+  prt() {
+    return this.list.join(' ');
+  }
+}
+
+class STL extends Object {
+  constructor(args) {
+    super();
+    for (let key in args) {
+      this[key] = args[key];
+    }
+  }
+
+  add(name, value) {
+    this[name] = value;
+    return this;
+  }
+
+  remove(name) {
+    delete this[name];
+    return this;
+  }
+}
+
+/* ---------- loading, alert, modal ---------- */
+
+const Loading = (props) => {
+  // height auto lets .square's aspect-ratio size it (spinner-grow sets a fixed height otherwise).
+  const style = {
+    width: '100%',
+    height: 'auto'
+  }
+  let ready = true;
+  for (let i of props.require) {
+    if (!i) ready = false;
+  }
+
+  return ready ? props.children :  (
+    <div className="square spinner-grow" style={style} role="status">
+      <span className="visually-hidden">Loading...</span>
+    </div>
+  );
+}
+
+const WebAlert = (props) => {
+  if (!props.active) return null
+  return (
+    <Alert variant={props.variant}>
+      <div dangerouslySetInnerHTML={{ __html: props.msg }} />
+    </Alert>
+  )
+}
+
+const WebModal = (props) => {
+  const { title, children, show, setShow } = props;
+  return (
+    <Modal show={show} onHide={() => setShow(false)}>
+      <Modal.Header closeButton>
+        <Modal.Title>{title}</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>{children}</Modal.Body>
+      <Modal.Footer>
+        <Button onClick={() => setShow(false)}>Close</Button>
+      </Modal.Footer>
+    </Modal>
+  )
+}
+
+/* ---------- icon and button ---------- */
+
+const cx = (...classes) => classes.filter(Boolean).join(' ');
+
+/**
+ * Icon: a Font Awesome icon. Decorative (aria-hidden); give its button or link the accessible name.
+ *
+ * @param {Object} props
+ * @param {string} [props.name] - Icon name without the prefix: "file" → fa-file.
+ * @param {string|false} [props.family="fa-solid"] - Style class. Override with "fa-brands" / "fa-regular",
+ *   or false to drop it (e.g. when className already carries full classes).
+ * @param {string} [props.className] - Extra classes.
+ * @param {Object} [props.style] - Inline styles. Any other prop goes on the <i> too.
+ * @returns {JSX.Element}
+ *
+ * @example <Icon name="file" />                              // <i class="fa-solid fa-file">
+ * @example <Icon name="github" family="fa-brands" />
+ * @example <Icon name="star" className="fs-lg" style={{ color: 'gold' }} />
+ * @example <Icon family={false} className="fa-brands fa-linkedin" />  // full classes from data
+ */
+const Icon = ({ name, family = 'fa-solid', className, ...rest }) => (
+  <i className={[family, name && `fa-${name}`, className].filter(Boolean).join(' ')} aria-hidden="true" {...rest} />
+);
+
+/**
+ * Button: icon on the left, label on the right (styles: .btn / .btn-text / .btn-link in styles/components.css).
+ * With an icon it looks like a button; the label hides below 8rem, leaving the icon, so the label is also
+ * its aria-label/title. Without an icon it looks like a plain text link.
+ * Renders a next/link <Link> when href is given, otherwise a <button type="button">.
+ * Icon-only buttons need an aria-label.
+ *
+ * @param {Object} props
+ * @param {string|false} [props.icon=false] - Icon name, rendered with <Icon> (above):
+ *   "star" → fa-solid fa-star. Starting with "fa-" it is taken as full classes instead, for other families
+ *   or extra classes: "fa-brands fa-github", "fa-solid fa-plus display-6".
+ * @param {string} [props.href] - Makes it a link.
+ * @param {string} [props.className] - Extra classes.
+ * @param {React.ReactNode} [props.children] - The label.
+ * @returns {JSX.Element}
+ *
+ * @example <Button icon="message" href="/contact">Message Me</Button>
+ * @example <Button icon="fa-brands fa-github" href={github}>Github</Button>
+ * @example <Button onClick={reset}>Start Over</Button>  // text link
+ */
+const Button = ({ icon = false, href, className, children, ...rest }) => {
+  if (!icon) {
+    const cls = cx('btn-link', className);
+    if (href) return <Link href={href} className={cls} {...rest}>{children}</Link>;
+    return <button type="button" className={cls} {...rest}>{children}</button>;
+  }
+  const label = typeof children === 'string' ? children : undefined;
+  const props = {
+    className: cx('btn', className),
+    ...(children && { 'aria-label': label, title: label }), // the label may hide, so it is also the accessible name
+    ...rest,
+  };
+  const content = (
+    <>
+      {icon.startsWith('fa-')
+        ? <Icon family={false} className={cx(icon, 'btn-icon')} />
+        : <Icon name={icon} className="btn-icon" />}
+      {children && <span className="btn-text">{children}</span>}
+    </>
+  );
+  if (href) return <Link href={href} {...props}>{content}</Link>;
+  return <button type="button" {...props}>{content}</button>;
+}
+
+/* ---------- components ---------- */
 
 const WebToast = () => {
   const { toast, setToast } = useContext(ToastContext);
@@ -134,22 +316,6 @@ const Input = (props) => {
   )
 }
 
-// const Input = (props) => {
-//   const ref = useRef(null);
-//   const [ label ] = useState(capitalize(props.name.replace(/_/g, ' ')));
-//   let n = { ...props };
-//   delete n.set;
-//   useEffect(() => props.set(ref.current, props.name), []);
-//   return (
-//     <Form.Group className="input-group mb-2">
-//       <Form.Label className="input-group-text m-0" htmlFor={`#id-${props.name}`}>
-//         {label}
-//       </Form.Label>
-//       <Form.Control ref={ref} id={`id-${n.name}`} {...n} placeholder={label} />
-//     </Form.Group>
-//   )
-// }
-
 const Blur = (props) => {
   const ref = useRef(null);
   const { style={}, id } = props;
@@ -169,26 +335,6 @@ const Blur = (props) => {
       </defs>
     </svg>
   )
-}
-
-const Counter2 = () => {
-  const start = useRef(dayjs());
-  dayjs.extend(relativeTime);
-  const [ time, setTime ] = useState(null);
-
-  useEffect(() => {
-    const interval = setInterval(() => setTime(dayjs(start).fromNow()), 1000);
-    return () => clearInterval(interval);
-  }, []);
-
-  const cls = ['clock', 'row'];
-  if (!time) return <div>Loading...</div>;
-  return (
-    <small>
-      <i className="fas fa-stopwatch" style={{marginRight: '0.5rem'}}></i> 
-      {time.format('h')} : {time.format('m')} : {time.format('s')}
-    </small>
-  );
 }
 
 // Live clock, updated every second. format is a dayjs format string.
@@ -285,83 +431,45 @@ class PopUp extends Component {
   }
 }
 
-class Counter extends Component {
+// Splits milliseconds into the zero-padded parts Counter shows and reports (tos = hundredths).
+const pad = (n) => String(n).padStart(2, '0');
+const splitTime = (ms) => ({
+  hour: pad(Math.floor(ms / 3600000)),
+  minute: pad(Math.floor(ms / 60000) % 60),
+  second: pad(Math.floor(ms / 1000) % 60),
+  tos: pad(Math.floor(ms / 10) % 100),
+});
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      tos: 0,
-      second: 0,
-      minute: 0,
-      hour: 0
+/**
+ * Stopwatch: runs while active is true. When active turns false it reports the time to getTime
+ * ({ hour, minute, second, tos }, zero-padded strings) and resets to zero.
+ * Time is read from the clock (Date.now) instead of counting ticks, so it stays exact when the
+ * browser slows timers (background tabs).
+ */
+const Counter = ({ active, getTime }) => {
+  const [ elapsed, setElapsed ] = useState(0);
+  const start = useRef(null);
+
+  useEffect(() => {
+    if (active) {
+      start.current = Date.now();
+      setElapsed(0);
+      const interval = setInterval(() => setElapsed(Date.now() - start.current), 50);
+      return () => clearInterval(interval); // also on unmount, so no timer leaks
     }
-  }
-
-  addZero(num) {
-    return num > 10 ? `${num}` : `0${num}`;
-  }
-
-  start() {
-    this.timer = setInterval(() => {
-      let st = this.state;
-      const nt = {
-        tos: st.tos,
-        second: st.second,
-        minute: st.minute,
-        hour: st.hour
-      }
-      if (st.tos > 9) {
-        nt.tos = 0;
-        nt.second = st.second + 1;
-      }
-      if (st.second > 59) {
-        nt.second = 0;
-        nt.minute = st.minute + 1;
-      }
-      if (st.minute > 59) {
-        nt.minute = 0;
-        nt.hour = st.hour + 1;
-      }
-      this.setState({
-        tos: nt.tos + 1,
-        second: nt.second,
-        minute: nt.minute,
-        hour: nt.hour
-      })
-    }, 100)
-  }
-  
-  stop() {
-    clearInterval(this.timer);
-    let time = {
-      tos: this.state.tos < 10 ? `${this.state.tos}0` : this.state.tos,
-      second: this.addZero(this.state.second),
-      minute: this.addZero(this.state.minute),
-      hour: this.addZero(this.state.hour)
+    if (start.current !== null) { // just stopped (not the first render): report and reset
+      getTime?.(splitTime(Date.now() - start.current));
+      start.current = null;
+      setElapsed(0);
     }
-    this.setState({ 
-      tos: 0,
-      second: 0,
-      minute: 0,
-      hour: 0
-    });
-    this.props.getTime(time);
-  }
+  }, [active]);
 
-  componentDidUpdate(e) {
-    if (this.props.active && this.state.tos === 0) this.start();
-    if (!this.props.active && this.state.tos > 0) this.stop(e);
-  }
-
-  render() {
-    const i = this.state;
-    return  (
-      <small className="timer">
-        <i className="fas fa-stopwatch" style={{marginRight: '0.5rem'}}></i> 
-        {this.addZero(i.hour)} : {this.addZero(i.minute)} : {this.addZero(i.second)} : {i.tos < 10 ? `${i.tos}0` : i.tos}
-      </small>
-    )        
-  }
+  const t = splitTime(elapsed);
+  return (
+    <small className="timer">
+      <Icon name="stopwatch" /> {t.hour} : {t.minute} : {t.second} : {t.tos}
+    </small>
+  );
 }
 
 const ContactUsForm = props => {
@@ -438,7 +546,8 @@ const AccordionItem = (props) => {
 }
 
 export { 
-  WebForm, WebToast, Blur, Loading, Clock,
+  CLS, STL, Icon, Button, Loading, WebAlert, WebModal,
+  WebForm, WebToast, Blur, Clock,
   WebPagination, Counter, ContactUsForm, Show, Input,
   Accordion, AccordionItem
 }

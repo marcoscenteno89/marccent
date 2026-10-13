@@ -5,12 +5,9 @@ import ListGroup from "react-bootstrap/ListGroup";
 import ListGroupItem from "react-bootstrap/ListGroupItem";
 import Alert from 'react-bootstrap/Alert';
 // import { WebForm } from "@/components/client/component";
-import { WebForm, Input } from "@/components/client/util";
-import { Button } from "@/components/button";
+import { WebForm, Input, Button, Loading, Accordion, AccordionItem } from "@/components/client/component";
 import { ThemeContext } from "@/components/context";
 import MapWTR from "@/components/client/map";
-import { Loading } from "@/components/client/util";
-import { Accordion, AccordionItem } from "@/components/client/component";
 
 export default function ThemePage() {
   const contextVal = useContext(ThemeContext);

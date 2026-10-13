@@ -1,11 +1,10 @@
 'use client'
 import React, { Component, Fragment } from "react";
 import Form from 'react-bootstrap/Form';
-import { Counter } from "./component";
+import { Counter, Button } from "./component";
 import { Bomb, Flag } from "@/components/sac";
 // import { WebAlert } from "./component";
 import { random } from 'lodash';
-import { Button } from "@/components/button";
 
 class MineSweeper extends Component {
   constructor(props) {

@@ -1,9 +1,8 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { WebForm, Input, Accordion, AccordionItem } from "./component";
+import { WebForm, Input, Accordion, AccordionItem, Loading } from "./component";
 import { cloneDeep as cd } from 'lodash';
 import { get } from "@marccent/util";
-import { Loading } from '@/components/client/util';
 import { GraphWTRC } from './canvas';
 import dayjs from 'dayjs';
 import ListGroup from 'react-bootstrap/ListGroup';

@@ -1,10 +1,8 @@
 'use client';
 import React, { Component, Fragment } from "react";
 import Alert from 'react-bootstrap/Alert';
-import { Counter } from "./component";
+import { Counter, CLS, Button } from "./component";
 import { withT } from "./hoc";
-import { CLS } from "@/components/client/util";
-import { Button } from "@/components/button";
 
 class NumPuz extends Component {
   constructor(props) {

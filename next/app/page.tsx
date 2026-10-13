@@ -1,6 +1,6 @@
 import { apps } from '@/components/server/list';
 import AppCard from '@/components/server/app-card';
-import { Button } from '@/components/button';
+import { Button } from '@/components/client/component';
 import { social, externalProps } from '@/templates/menus';
 import Markdown from '@/components/server/markdown';
 import { home } from '@/components/server/content';

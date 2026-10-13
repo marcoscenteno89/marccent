@@ -113,7 +113,7 @@
   .btn-icon { grid-column: 1 / -1; justify-self: center; }
 }
 
-/* Button without an icon (components/button.js): a plain text link, whether it renders <a> or <button>. */
+/* Button without an icon (components/client/component.js): a plain text link, whether it renders <a> or <button>. */
 .btn-link {
   padding: 0;
   border: 0;
