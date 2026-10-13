@@ -1,0 +1,75 @@
+/*
+ * UTILS: single-purpose classes (text, color, border, shadow, size, position).
+ * Scales come in three steps: -sm, -md, -lg.
+ * Load last (after components.css), so a util wins over a component's own rule without !important.
+ * Layout lives in grid.css and spacing comes from gap/.pad, so there are no flex or margin utils here.
+ */
+
+/* TEXT */
+.text-start { text-align: start; }
+.text-center { text-align: center; }
+.text-end { text-align: end; }
+.text-capitalize { text-transform: capitalize; }
+.text-uppercase { text-transform: uppercase; }
+.text-truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* FONT. fs-sm is relative (em): a bit smaller than the text around it. */
+.fs-sm { font-size: .875em; }
+.fs-md { font-size: 1.25rem; }
+.fs-lg { font-size: 1.5rem; }
+.fw-light { font-weight: 300; }
+.fw-normal { font-weight: 400; }
+.fw-bold { font-weight: 700; }
+
+/* COLOR: background from the theme tokens (theme.css) with readable text on top. */
+.bg-primary { background-color: var(--primary); color: var(--primary-on); }
+.bg-secondary { background-color: var(--secondary); color: var(--secondary-on); }
+.bg-success { background-color: var(--success); color: var(--success-on); }
+.bg-info { background-color: var(--info); color: var(--info-on); }
+.bg-warning { background-color: var(--warning); color: var(--warning-on); }
+.bg-danger { background-color: var(--danger); color: var(--danger-on); }
+.bg-light { background-color: var(--light); color: var(--light-on); }
+.bg-dark { background-color: var(--dark); color: var(--dark-on); }
+.opacity-25 { opacity: .25; }
+.opacity-50 { opacity: .5; }
+.opacity-75 { opacity: .75; }
+
+/* BORDER (radius: .round / .circle in globals.css) */
+.border { border: 1px solid var(--bs-border-color); }
+
+/* SHADOW */
+.shadow-sm { box-shadow: 0 .125rem .25rem rgb(0 0 0 / .075); }
+.shadow-md { box-shadow: 0 .5rem 1rem rgb(0 0 0 / .15); }
+.shadow-lg { box-shadow: 0 1rem 3rem rgb(0 0 0 / .175); }
+
+/* SIZE */
+.w-50 { width: 50%; }
+.w-100 { width: 100%; }
+.h-100 { height: 100%; }
+.vh-100 { height: 100vh; }
+
+/* OVERFLOW */
+.overflow-hidden { overflow: hidden; }
+.overflow-auto { overflow: auto; }
+
+/* DISPLAY. d-md-*: from 768px (Show in component.js). */
+.d-none { display: none; }
+.d-block { display: block; }
+.d-inline-block { display: inline-block; }
+@media (min-width: 768px) {
+  .d-md-none { display: none; }
+  .d-md-block { display: block; }
+  .d-md-inline-block { display: inline-block; }
+}
+
+/* POSITION. Overlays (toasts, the remove icon on theme cards); for layering in the flow use .stack (globals.css). */
+.position-relative { position: relative; }
+.position-absolute { position: absolute; }
+.position-fixed { position: fixed; }
+.bottom-0 { bottom: 0; }
+.bottom-100 { bottom: 100%; }
+.start-100 { left: 100%; }
+.end-0 { right: 0; }
+@media (min-width: 768px) {
+  .sticky-md-top { position: sticky; top: 0; z-index: 1020; }
+}

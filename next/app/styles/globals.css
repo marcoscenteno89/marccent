@@ -88,11 +88,6 @@ canvas {
   aspect-ratio: 1 / 1;
 }
 
-.square .inner {
-  width: 90%;
-  height: 90%;
-}
-
 .circle {
   border-radius: 50%;
 }
@@ -101,26 +96,12 @@ canvas {
   min-height: 500px;
 }
 
-.fs-sm {
-  font-size: 0.8rem; 
-}
-
-.clock {
-  min-width: 180px;
-}
-
-.relative {
-  position: relative;
-  overflow: hidden;
-}
-
-.anim {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-}
+/* STACK: every child in the same grid cell, layered in source order (later on top). Replaces
+   position: absolute overlays and z-index. Children stretch to fill the cell. The one track is pinned
+   (minmax(0, 1fr) both ways), so the cell is always the box's own size: tall content can't stretch it
+   (a canvas reads its size once, so a taller cell would draw an oval). */
+.stack { display: grid; grid-template: minmax(0, 1fr) / minmax(0, 1fr); }
+.stack > * { grid-area: 1 / 1; }
 
 .fixed-layer {
   position: fixed;
@@ -136,10 +117,6 @@ canvas {
 
 .back {
   z-index: -99;
-}
-
-.front {
-  z-index: 99;
 }
 
 .shadow-inset {
@@ -196,35 +173,14 @@ canvas {
   padding-left: 10px;
 }
 
+/* Input + submit button joined into one bar (stock_lookup.js search): the input takes the row, the button
+   its content width. Square inner corners and one shared border between them; only the outer top
+   corners are rounded. :nth-child(n) outranks .btn's radius, which loads later (components.css). */
 .single-line-form {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
 }
-
-.single-line-form > .alert {
-  display: none;
-}
-
-.single-line-form > * {
-  border-radius: 0;
-}
-
-.single-line-form > * {
-  margin-right: -1px;
-}
-
-.single-line-form > *:last-child {
-  border-top-right-radius: var(--bs-border-radius);
-  /* border-bottom-right-radius: var(--bs-border-radius); */
-}
-
-.single-line-form > *:first-child {
-  border-top-left-radius: var(--bs-border-radius);
-  /* border-bottom-left-radius: var(--bs-border-radius); */
-}
-
-/* REMOVABLE: cancels Bootstrap's mb-2 on the submit button; drop with the mb-2. */
-.single-line-form .mb-2 {
-  margin-bottom: 0 !important;
-}
+.single-line-form > :nth-child(n) { border-radius: 0; }
+.single-line-form > :not(:last-child) { border-right-width: 0; }
+.single-line-form > :first-child { border-top-left-radius: var(--bs-border-radius); }
+.single-line-form > :last-child { border-top-right-radius: var(--bs-border-radius); }

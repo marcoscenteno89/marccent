@@ -2,7 +2,7 @@ import { marked } from 'marked';
 
 /**
  * Renders a Markdown string as HTML. Server-only: marked never ships to the browser.
- * Only use with our own text (e.g. app/apps/list.tsx), never user input; the HTML is not sanitized.
+ * Only use with our own text (e.g. list.tsx and content.js in this folder), never user input; the HTML is not sanitized.
  * The output is a 1-col grid, so paragraphs and lists are spaced by gap (grid.css drops their margins).
  *
  * @param {Object} props

@@ -1,13 +1,12 @@
 'use client';
-import Link from "next/link";
 import { useContext } from "react";
 import ProgressBar from 'react-bootstrap/ProgressBar';
-import Button from "react-bootstrap/Button";
 import ListGroup from "react-bootstrap/ListGroup";
 import ListGroupItem from "react-bootstrap/ListGroupItem";
 import Alert from 'react-bootstrap/Alert';
 // import { WebForm } from "@/components/client/component";
 import { WebForm, Input } from "@/components/client/util";
+import { Button } from "@/components/button";
 import { ThemeContext } from "@/components/context";
 import MapWTR from "@/components/client/map";
 import { Loading } from "@/components/client/util";
@@ -50,7 +49,7 @@ export default function ThemePage() {
             'outline-primary', 'outline-secondary', 'outline-success', 'outline-danger', 
             'outline-warning', 'outline-info', 'outline-light', 'outline-dark'
           ].map((variant) => (
-            <Button key={variant} variant="">Select</Button>
+            <Button key={variant}>Select</Button>
           ))}
         </div>
 
@@ -202,7 +201,7 @@ export default function ThemePage() {
               <div className="card-body">
                 <h5 className="card-title">MineSweeper</h5>
                 <p className="card-text">Minesweeper is a single-player logic-based computer game played on a grid of squares. The objective is to clear the grid without detonating any hidden &quot;mines&quot; scattered throughout. Safe squares display numbers indicating the total number of adjacent mines. Players use these clues to strategically identify and flag the mines, progressing through the game by making calculated decisions based on the revealed information. The game offers different difficulty levels and is known for its challenging and strategic gameplay</p>
-                <Link href="/apps/minesweeper" className="btn">Go to Minesweeper</Link>
+                <Button icon="arrow-right" href="/apps/minesweeper">Go to Minesweeper</Button>
               </div>
             </div>
               <div className="card">
@@ -212,7 +211,7 @@ export default function ThemePage() {
                 <div className="card-body">
                   <h5 className="card-title">Number Puzzle</h5>
                   <p className="card-text">A number puzzle is an educational activity that helps children learn and practice various math concepts such as number sequencing, counting, and recognizing numerals. These puzzles often involve matching numbers, counting dots, or arranging number pieces in the correct order. They are designed to enhance problem-solving and cognitive skills while making learning math more engaging for children. Number puzzles can cover a range of numbers, from 0 to 20, 1 to 100, or other specific number ranges.</p>
-                  <Link href="/apps/numpuz" className="btn">Go to Number Puzzle</Link>
+                  <Button icon="arrow-right" href="/apps/numpuz">Go to Number Puzzle</Button>
                 </div>
               </div>
               <div className="card">
@@ -222,7 +221,7 @@ export default function ThemePage() {
                 <div className="card-body">
                   <h5 className="card-title">Weather App</h5>
                   <p className="card-text">This weather app is a digital application that provides users with up-to-date weather information for their specific location or other selected locations. It typically offers details such as the current temperature, rain forecast, humidity, wind speed, air quality index, and sunrise/sunset times. Some weather apps also include features like hourly and 10-day forecasts, and maps to visualize weather patterns. These app is designed to help users plan their activities and make informed decisions based on the latest weather conditions</p>
-                  <Link href="/apps/weather" className="btn">Go to Weather App</Link>
+                  <Button icon="arrow-right" href="/apps/weather">Go to Weather App</Button>
                 </div>
               </div>
           </div>

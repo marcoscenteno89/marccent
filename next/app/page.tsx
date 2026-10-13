@@ -1,9 +1,9 @@
-import { apps } from './apps/list';
+import { apps } from '@/components/server/list';
 import AppCard from '@/components/server/app-card';
-import { CompactButton } from '@/components/client/util';
+import { Button } from '@/components/button';
 import { social, externalProps } from '@/templates/menus';
 import Markdown from '@/components/server/markdown';
-import { home } from './content';
+import { home } from '@/components/server/content';
 
 export default function Home() {
 
@@ -17,7 +17,7 @@ export default function Home() {
           <Markdown text={home.intro} />
           <div className="grid fixed cols-4 gap-1">
             {social.map(s => (
-              <CompactButton key={s.href} icon={s.icon} href={s.href} {...externalProps(s)}>{s.name}</CompactButton>
+              <Button key={s.href} icon={s.icon} href={s.href} {...externalProps(s)}>{s.name}</Button>
             ))}
           </div>
         </div>

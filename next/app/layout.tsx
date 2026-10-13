@@ -17,7 +17,7 @@ import Footer from './templates/footer';
 import { Body } from './components/client/theme';
 import { ThemeProvider, ToastProvider } from "./components/context";
 import { WebToast } from "./components/client/component";
-import { site } from './content';
+import { site } from '@/components/server/content';
 
 // const inter = Inter({ subsets: ['latin'] })
 

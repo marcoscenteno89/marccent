@@ -1,5 +1,5 @@
 import Markdown from '@/components/server/markdown';
-import { privacyPolicy } from '@/content';
+import { privacyPolicy } from '@/components/server/content';
 
 export default function PrivacyPolicy() {
   return (

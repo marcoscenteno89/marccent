@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation';
-import { apps, findApp } from '../list';
+import { apps, findApp } from '@/components/server/list';
 import Markdown from '@/components/server/markdown';
 
 export const generateStaticParams = () => apps.map(app => ({ slug: app.url.split('/').pop() }));

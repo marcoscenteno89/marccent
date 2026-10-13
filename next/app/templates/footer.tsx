@@ -1,7 +1,7 @@
 import { dt } from "@/components/sac";
 import { ThemesWT, AnimListWT } from '@/components/client/theme';
 import Markdown from '@/components/server/markdown';
-import { site } from '@/content';
+import { site } from '@/components/server/content';
 
 export default function Footer() {
   return (

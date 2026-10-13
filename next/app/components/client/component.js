@@ -1,7 +1,7 @@
 'use client';
 import React, { Component, useState, useRef, useEffect, useContext, useCallback, useId } from 'react';
 import capitalize from 'lodash/capitalize';
-import { ToastContainer, Form, Toast, Button, Modal, Alert, Pagination } from 'react-bootstrap';
+import { ToastContainer, Form, Toast, Modal, Alert, Pagination } from 'react-bootstrap';
 // import ToastContainer from 'react-bootstrap/ToastContainer';
 // import Form from 'react-bootstrap/Form';
 // import Toast from 'react-bootstrap/Toast';
@@ -15,6 +15,7 @@ import { post } from "@marccent/util";
 import { Loading } from "@/components/client/util";
 import { ToastContext } from '@/components/context';
 import { CLS, STL } from '@/components/client/util';
+import { Button } from '@/components/button';
 
 const WebToast = () => {
   const { toast, setToast } = useContext(ToastContext);
@@ -101,7 +102,7 @@ const WebForm = (props) => {
     <Loading require={[form]}>
       <Form className={f_cls.prt()} style={f_stl}>
         {arr.map((key, i) => <Input key={`form-${i}`} set={set} {...key.props} />)} 
-        <Button onClick={submit} variant="">Submit</Button>
+        <Button onClick={submit}>Submit</Button>
         {/* <WebAlert variant="danger mb-2" active={alert !== ''} msg={alert} /> */}
       </Form>
     </Loading>
@@ -170,16 +171,6 @@ const Blur = (props) => {
   )
 }
 
-const SpCircle = props => {
-  return (
-    <div className="square center circle shadow-inset">
-      <div className="inner circle center linear-gradient shadow-inset">
-        <div className="inner circle center relative">{props.children}</div>
-      </div>
-    </div>
-  ) 
-}
-
 const Counter2 = () => {
   const start = useRef(dayjs());
   dayjs.extend(relativeTime);
@@ -200,27 +191,14 @@ const Counter2 = () => {
   );
 }
 
-const Clock = (props) => {
+// Live clock, updated every second. format is a dayjs format string.
+const Clock = ({ format = 'h:mm:ss A', className = '' }) => {
   const [ time, setTime ] = useState(dayjs());
-  const c_cls = new CLS(props.className).add('clock', 'grid', 'fixed', 'cols-4', 'gap-0', 'items-center', 'text-center');
   useEffect(() => {
     const interval = setInterval(() => setTime(dayjs()), 1000);
     return () => clearInterval(interval);
   }, []);
-  return (
-    <div className={c_cls.prt()}>
-      <span className="grid gap-0">
-        <small>Hr</small><small>{time.format('h')}</small>
-      </span>
-      <span className="grid gap-0">
-        <small>Min</small><small>{time.format('m')}</small> 
-      </span>
-      <span className="grid gap-0">
-        <small>Sec</small><small>{time.format('s')}</small>
-      </span>
-      <h2 className="center">{time.format('A')}</h2>
-    </div>
-  );
+  return <time className={className} dateTime={time.toISOString()}>{time.format(format)}</time>;
 }
 
 const WebPagination = (props) => {
@@ -298,8 +276,8 @@ class PopUp extends Component {
         <div style={{backgroundColor: a.mode}} className="body center">
           {b.children}
           <div className="center controller">
-            {b.controller ? <Button variant="" onClick={() => b.controller()}>{b.btnText}</Button> : ''}
-            <Button variant="" onClick={() => this.props.close()}>Close</Button>
+            {b.controller ? <Button onClick={() => b.controller()}>{b.btnText}</Button> : ''}
+            <Button onClick={() => this.props.close()}>Close</Button>
           </div>
         </div>
       </Modal>
@@ -460,7 +438,7 @@ const AccordionItem = (props) => {
 }
 
 export { 
-  WebForm, WebToast, Blur, Loading, SpCircle, Clock,
+  WebForm, WebToast, Blur, Loading, Clock,
   WebPagination, Counter, ContactUsForm, Show, Input,
   Accordion, AccordionItem
 }

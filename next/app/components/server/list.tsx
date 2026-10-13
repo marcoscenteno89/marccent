@@ -1,6 +1,6 @@
 import dynamic from 'next/dynamic';
 import type { ComponentType } from 'react';
-import { apps as text } from '@/content';
+import { apps as text } from '@/components/server/content';
 
 // Components load lazily, so importing this list (header, cards) doesn't pull every app's code into the page.
 const MineSweeper = dynamic(() => import('@/components/client/minesweeper'));
@@ -19,7 +19,7 @@ export type App = {
 };
 
 // Add a new app here; the apps page, home page, header and /apps/[slug] route all read from this list.
-// name, about and instructions live in app/content.js (keyed by slug); about and instructions are Markdown.
+// name, about and instructions live in content.js (this folder) (keyed by slug); about and instructions are Markdown.
 export const apps: App[] = [
   {
     name: text.minesweeper.name,

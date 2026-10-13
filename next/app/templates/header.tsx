@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 import { ThemeModeWT, GlassModeWT } from '../components/client/theme';
-import { Button } from '../components/client/util';
+import { Button } from '@/components/button';
 import { Menu, main, social } from './menus';
 
 // Layout only: grid.css classes; menu look lives in styles/components.css.
@@ -21,13 +21,13 @@ export default function Header() {
   return (
     <header ref={header} className="cq bg border-bottom sticky-md-top">
       <div className="wrap wrap-fluid grid layout-ends items-center gap-2 pad">
-        <Link href="/" className="menu-link fs-5 fw-bold">Marccent</Link>
+        <Link href="/" className="menu-link fs-md fw-bold">Marccent</Link>
         <Menu items={main} label="Main" className="divide" />
         <div className="grid auto-cols items-center gap-2 col-last">
           <Menu items={social} label="Social" iconOnly className="divide" />
           <GlassModeWT />
           <ThemeModeWT />
-          <Button icon="fa-solid fa-brush" href="#footer">Theme</Button>
+          <Button icon="brush" href="#footer">Theme</Button>
         </div>
       </div>
     </header>

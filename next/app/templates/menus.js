@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { apps } from '@/apps/list';
+import { apps } from '@/components/server/list';
 
 // Shared menus: edit a link here and the header, hero and contact page all pick it up.
 // name: visible text. label: aria-label for icon-only links. icon: full Font Awesome classes.
@@ -19,7 +19,7 @@ export const contact = [
 ];
 
 // Main navigation. An item with children is a dropdown; its href is the "browse all" page.
-// Apps come from apps/list, so adding an app there adds it here too.
+// Apps come from components/server/list, so adding an app there adds it here too.
 export const main = [
   { name: 'About Me', href: '/about' },
   {
@@ -61,7 +61,7 @@ const cx = (...names) => names.filter(Boolean).join(' ');
  *
  * @example <Menu items={main} label="Main" />
  * @example <Menu items={social} label="Social" iconOnly />
- * @example <Menu items={contact} label="Contact" iconOnly className="divide border round" linkClassName="fs-4" />
+ * @example <Menu items={contact} label="Contact" iconOnly className="divide border round" linkClassName="fs-lg" />
  * @example <Menu items={main} label="Footer" layout="grid cols-1" />
  */
 // Text menus split the width into equal columns (fixed). Icon-only menus size each column to its icon,
@@ -101,7 +101,7 @@ const MenuDropdown = ({ item, className, panelClassName, linkClassName }) => (
       {item.icon && <i className={item.icon} aria-hidden="true"></i>}
       <span>{item.name}</span>
     </summary>
-    <div className={cx('menu-panel bg border round shadow pad grid cols-1 gap-1', panelClassName)}>
+    <div className={cx('menu-panel bg border round shadow-md pad grid cols-1 gap-1', panelClassName)}>
       {item.children.map(child => <MenuLink key={child.href + child.name} item={child} className={linkClassName} />)}
     </div>
   </details>

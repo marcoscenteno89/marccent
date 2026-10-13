@@ -2,6 +2,7 @@
 // Recovered from ~/app/util-react/src (the old @marccent/util-react package), with missing imports fixed.
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import { Button } from '@/components/button';
 import capitalize from 'lodash/capitalize';
 import { Form as BsForm, Alert as BsAlert, Modal as BsModal } from 'react-bootstrap';
 
@@ -93,49 +94,6 @@ const Loading = (props) => {
       <span className="visually-hidden">Loading...</span>
     </div>
   );
-}
-
-/**
- * Button: icon on the left, label on the right (styles: .btn / .btn-text in globals.css).
- * The label truncates with "…" when the button runs out of room; the icon never shrinks.
- * Renders a next/link <Link> when href is given, otherwise a <button type="button">.
- * Icon-only buttons need an aria-label.
- *
- * @param {Object} props
- * @param {string} [props.icon] - Font Awesome classes, e.g. "fa-solid fa-message".
- * @param {string} [props.href] - Makes it a link.
- * @param {string} [props.className] - Extra classes (.btn is always added).
- * @param {React.ReactNode} [props.children] - The label.
- * @returns {JSX.Element}
- *
- * @example <Button icon="fa-solid fa-message" href="/contact">Message Me</Button>
- * @example <Button icon="fa-solid fa-rotate" onClick={reset}>Start Over</Button>
- */
-
-const Icon = ({ className, ...rest }) => (
-  <i className={className} aria-hidden="true" {...rest} />
-);
-
-const Button = ({ icon, href, className, children, ...rest }) => {
-  const cls = new CLS(className).add('btn').prt();
-  const content = (
-    <>
-      {icon && <Icon className={`btn-icon ${icon}`} />}
-      {children && <span className="btn-text">{children}</span>}
-    </>
-  );
-  if (href) return <Link href={href} className={cls} {...rest}>{content}</Link>
-  return <button type="button" className={cls} {...rest}>{content}</button>
-}
-
-// Hides the label when its slot is narrower than 8rem; the icon stays.
-const CompactButton = ({ wrapClassName, children, ...rest }) => {
-  const label = typeof children === 'string' ? children : undefined;
-  return (
-    <span className={new CLS(wrapClassName).add('btn-cq').prt()}>
-      <Button aria-label={label} title={label} {...rest}>{children}</Button>
-    </span>
-  )
 }
 
 const WebAlert = (props) => {
@@ -261,6 +219,6 @@ const WebForm = (props) => {
 
 export {
   CLS, STL,
-  Button, CompactButton, Loading, WebAlert as Alert, WebModal as Modal,
+  Loading, WebAlert as Alert, WebModal as Modal,
   WebForm, WebForm as Form, LabelInput, Input
 };

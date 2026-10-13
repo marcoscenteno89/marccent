@@ -1,11 +1,11 @@
 'use client'
 import React, { Component, Fragment } from "react";
 import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
 import { Counter } from "./component";
 import { Bomb, Flag } from "@/components/sac";
 // import { WebAlert } from "./component";
 import { random } from 'lodash';
+import { Button } from "@/components/button";
 
 class MineSweeper extends Component {
   constructor(props) {
@@ -267,7 +267,7 @@ class MineSweeper extends Component {
             </Form.Select>
           </div>
           <div>
-            <Button variant="" onClick={async () => await this.startOver()}>
+            <Button onClick={async () => await this.startOver()}>
               Start Over
             </Button>
           </div>

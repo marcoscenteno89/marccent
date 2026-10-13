@@ -130,6 +130,9 @@
 
 /* Inner padding for boxes (panels, cards, banners). Space between items comes from gap, not margins. */
 .pad { padding: var(--pad, 1rem); }
+/* One axis only: x = left and right, y = top and bottom. Same --pad, so give it one value (or two: start end). */
+.pad-x { padding-inline: var(--pad, 1rem); }
+.pad-y { padding-block: var(--pad, 1rem); }
 
 /* Text elements inside a grid drop their default margins; the grid's gap spaces them instead. */
 :is(.grid, .sub, .sub-x) > :is(h1, h2, h3, h4, h5, h6, p, ul, ol, dl, hr, figure, blockquote) { margin: 0; }

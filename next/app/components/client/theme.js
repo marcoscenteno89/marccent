@@ -7,7 +7,8 @@ import { WebForm } from "./component";
 import { withT } from "./hoc";
 import dynamic from 'next/dynamic';
 import { ToastContext } from '@/components/context';
-import { CLS, STL, Loading, Button } from '@/components/client/util';
+import { CLS, STL, Loading } from '@/components/client/util';
+import { Button } from '@/components/button';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
@@ -43,9 +44,8 @@ const Body = (props) => {
 
 const RainbowMode = (props) => {
   const rainbow = props.theme.rainbow;
-  const r_cls = new CLS(props.className).add(rainbow ? 'fa-wand-magic-sparkles' : 'fa-wand-magic');
   return (
-    <Button icon={r_cls.prt()} aria-label="Toggle rainbow mode" onClick={() => props.update({rainbow: !rainbow})} />
+    <Button icon={['fa-solid', rainbow ? 'fa-wand-magic-sparkles' : 'fa-wand-magic', props.className].filter(Boolean).join(' ')} aria-label="Toggle rainbow mode" onClick={() => props.update({rainbow: !rainbow})} />
   )  
 }
 
@@ -53,7 +53,7 @@ const ThemeMode = (props) => {
   const is_dark = props.theme.is_dark; // Oposite
   return (
     <Button
-      icon={`fa-solid ${is_dark ? 'fa-sun' : 'fa-moon'}`}
+      icon={is_dark ? 'sun' : 'moon'}
       onClick={() => props.update({is_dark: !is_dark})}>
       {is_dark ? 'Light' : 'Dark'}
     </Button>

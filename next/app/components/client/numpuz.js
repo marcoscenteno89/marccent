@@ -2,9 +2,9 @@
 import React, { Component, Fragment } from "react";
 import Alert from 'react-bootstrap/Alert';
 import { Counter } from "./component";
-import Button from 'react-bootstrap/Button';
 import { withT } from "./hoc";
 import { CLS } from "@/components/client/util";
+import { Button } from "@/components/button";
 
 class NumPuz extends Component {
   constructor(props) {
@@ -172,7 +172,7 @@ class NumPuz extends Component {
             <Counter getTime={this.getTime} active={this.state.active} />
           </div>
           <div>
-            <Button variant="" onClick={() => this.startOver()}>
+            <Button onClick={() => this.startOver()}>
               Start Over
             </Button>
           </div>

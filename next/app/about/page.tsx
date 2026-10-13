@@ -1,6 +1,6 @@
 import Image from 'react-bootstrap/Image';
 import Markdown from '@/components/server/markdown';
-import { about } from '@/content';
+import { about } from '@/components/server/content';
 
 // Grid only: no borders or radius; lines between parts come from .divide (globals.css).
 // Parts sit flush (gap-0) and carry their own .pad, so each line falls midway between them.

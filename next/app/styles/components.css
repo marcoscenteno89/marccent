@@ -52,8 +52,8 @@
 
 /*
  * BUTTONS (replaces Bootstrap's buttons module). Layout only; colors live in theme.css.
- * Layout: icon pinned left, label centered in the rest. Wrap the label in .btn-text; inside a .btn-cq
- * wrapper (CompactButton) the label is hidden below 8rem, leaving the icon. The icon never shrinks.
+ * Layout: icon pinned left, label centered in the rest. Wrap the label in .btn-text. An icon + label button
+ * hides its label below 8rem, leaving the icon centered. The icon never shrinks.
  * Buttons without .btn-text just center their content.
  */
 .btn {
@@ -89,7 +89,7 @@
   align-content: center;
   align-self: stretch;
   padding: .375rem .75rem;
-  overflow: hidden;       /* safety clip only; .btn-cq hides the label before it gets cut */
+  overflow: hidden;       /* safety clip only; the container query hides the label before it gets cut */
   white-space: nowrap;
 }
 
@@ -97,22 +97,33 @@
    left edge and sets the button's height. Its tint is in theme.css. An icon-only button is just the square. */
 .btn:has(> .btn-icon) { padding: 0; }
 
-/* Wrapper that lets a button drop its label when its slot gets narrow (see CompactButton in util.js).
-   display: grid fills the slot (block-level) and stretches the .btn inside, so no width hacks are needed.
-   Named, so other containers (.cq, .wrap) can't trigger it.
+/* Icon + label: the button measures its own width (a named size container, so .cq/.wrap can't trigger it).
    A size container has no content width of its own, so in a content-sized (auto) column it would collapse
-   to 0; contain-intrinsic-inline-size gives it one (--btn-cq-w, wide enough for the longest label). */
-.btn-cq:has(> .btn > .btn-text) {
+   to 0; contain-intrinsic-inline-size gives it one (--btn-cq-w, wide enough for the longest label).
+   As a grid item it still stretches to fill its slot. */
+.btn:has(> .btn-icon + .btn-text) {
   container: btn / inline-size;
   contain-intrinsic-inline-size: var(--btn-cq-w, 10rem);
-  display: grid;
 }
 
-/* Icon only: the label goes and the button shrinks to its square .btn-icon, centered in its slot. */
+/* Narrow: the label goes and the icon centers across the whole button (a container query can only style
+   what's inside the container, so the button keeps its width). */
 @container btn (width < 8rem) {
   .btn-text { display: none; }
-  .btn-cq > .btn:has(> .btn-text) { justify-self: center; } /* only the square .btn-icon is left */
+  .btn-icon { grid-column: 1 / -1; justify-self: center; }
 }
+
+/* Button without an icon (components/button.js): a plain text link, whether it renders <a> or <button>. */
+.btn-link {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--link);
+  font: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.btn-link:hover { color: var(--link-hover); }
 
 .btn:disabled,
 .btn.disabled {

@@ -80,7 +80,7 @@ export const contactPage = {
   `,
 };
 
-// App descriptions, keyed by the slug in the app's url (/apps/<slug>). apps/list.tsx reads these.
+// App descriptions, keyed by the slug in the app's url (/apps/<slug>). list.tsx (this folder) reads these.
 export const apps = {
   minesweeper: {
     name: 'Minesweeper',

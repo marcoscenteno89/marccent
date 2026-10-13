@@ -3,7 +3,7 @@ import React, { useEffect, useState, useContext, useCallback } from "react";
 import { get } from "@marccent/util";
 import dynamic from 'next/dynamic';
 import Image from 'react-bootstrap/Image';
-import { SpCircle, Clock } from "./component";
+import { Clock } from "./component";
 import MapWTR from "./map";
 import { Loading } from "@/components/client/util";
 import { WebForm, WebPagination, Accordion, AccordionItem } from "./component";
@@ -39,7 +39,7 @@ const Weather = () => {
       </WebForm>
       {/* --min: each panel needs ~24rem, so the forecast drops below the circle/map when the row is under ~49rem. */}
       <div className="grid cols-2 gap-3" style={{ '--min': '24rem' }}>
-        <div className="shadow grid cols-1 justify-center content-start gap-2 pad">
+        <div className="shadow-md grid cols-1 justify-center content-start gap-2 pad">
           <Circle temp={city.list[0]} />
           <MapWTR center={city.city.coord} zoom={10} />
         </div>
@@ -62,7 +62,7 @@ const History = (props) => {
     setList(props.list.slice(from, to));
   }
   return (
-    <div className="shadow pad round grid cols-1 content-start gap-2">
+    <div className="shadow-md pad round grid cols-1 content-start gap-2">
       <h3>Weather Forecast</h3>
       <Accordion>
         {list.map((item, index) => {
@@ -100,23 +100,18 @@ const Stat = ({ label, value, className = '' }) => (
   </div>
 )
 
-const Circle = (props) => {
-  const { temp } = props;
-  const icon = `https://openweathermap.org/img/w/${temp.weather[0].icon}.png`;
-  return (
-    <SpCircle>
-      <div className="anim"><WaveWTRC className="shadow-inset circle" /></div>
-      <div className="inner text-center col-center front" style={{marginTop:'-4rem'}}>
-        <Image 
-          src={icon} 
-          styles={{width: '75px', marginBottom: '-1.5rem'}} 
-          alt={temp.weather[0].description} />
-        <h3 style={{padding: '0', margin: '0.5rem'}}>{temp.main.temp}&#176;</h3>
-        <small>{dayjs().format('ddd DD, MMM, YYYY')}</small>
-        <Clock className="w-50 mt-3 border" />
-      </div>
-    </SpCircle>
-  )
-}
+// Current conditions: a gradient ring (5% pad) around the wave canvas, with the readout layered on the wave
+// (.stack). The readout's bottom padding lifts it above the waterline.
+const Circle = ({ temp }) => (
+  <div className="square circle linear-gradient shadow-inset stack pad" style={{ '--pad': '5%' }}>
+    <WaveWTRC className="circle shadow-inset" />
+    <div className="col-center text-center pad" style={{ '--pad': '0 0 20%' }}>
+      <Image src={`https://openweathermap.org/img/wn/${temp.weather[0].icon}@2x.png`} width={80} height={80} alt="" />
+      <span className="display-5 fw-bold">{Math.round(temp.main.temp)}&#176;</span>
+      <span className="text-capitalize">{temp.weather[0].description}</span>
+      <Clock format="ddd, MMM D · h:mm:ss A" className="fs-sm opacity-75" />
+    </div>
+  </div>
+)
 
 export default Weather;
