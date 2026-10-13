@@ -11,8 +11,7 @@ import './styles/grid.css';
 import './styles/globals.css';
 import './styles/components.css';
 import './styles/utils.css'; // last: utils win over component rules
-import { ThemeColors } from './components/client/theme-colors.js';
-import { CurrentAnimWT } from "./components/client/theme";
+import { CurrentAnimWT, UpdateThemeVariables } from "./components/client/theme";
 import Header from './templates/header';
 import Footer from './templates/footer';
 import { Body } from './components/client/theme';
@@ -60,7 +59,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <main className="wrap wrap-fluid grid cols-1 gap-5">{children}</main>
             <Footer />
             <Toast />
-            <ThemeColors />
+            <UpdateThemeVariables />
             <Script 
               strategy="lazyOnload"
               id="hotjar"

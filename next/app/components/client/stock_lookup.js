@@ -69,7 +69,7 @@ const StockLookup = () => {
    */
 
   // First load failed: say so instead of showing spinners forever.
-  if (err && !data.ticker) return <Alert variant="danger">{err}</Alert>;
+  if (err && !data.ticker) return <Alert className="bg-secondary-lighter">{err}</Alert>;
 
   return (
     <div className="grid cols-1 gap-2">

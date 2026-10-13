@@ -1,7 +1,7 @@
 'use client';
 import { useContext } from "react";
 // import { WebForm } from "@/components/client/component";
-import { Form, Field, StepForm, Step, Button, Loading, Accordion, AccordionItem, Alert } from "@/components/client/component";
+import { Form, Field, Input, StepForm, Step, Button, Loading, Accordion, AccordionItem, Alert } from "@/components/client/component";
 import { ThemeContext } from "@/components/context";
 import { apps } from "@/components/server/list";
 import AppCard from "@/components/server/app-card";
@@ -67,6 +67,13 @@ export default function ThemePage() {
               <Field name="message" as="textarea" rows={5} required/>
             </Form>
 
+            <h3>Inline Form</h3>
+            <Form className="grid inline-form" onSubmit={onClick} submitLabel="Search" submitIcon="magnifying-glass">
+              <Input name="city" required />
+              <Input name="state" />
+              <Input name="zip" inputMode="numeric" />
+            </Form>
+
             <h3>Step Form</h3>
             <StepForm onSubmit={onClick}>
               <Step name="Contact">
@@ -95,11 +102,9 @@ export default function ThemePage() {
 
         <div className="pad border round bg">
           <h3>Alerts</h3>
-          {[
-            'primary', 'secondary', 'success', 'danger', 'warning', 'info', 'light', 'dark'
-          ].map((variant) => (
-            <Alert key={variant} variant={variant}>
-              This is a {variant} alert with{' '}
+          {['bg-primary-lighter', 'bg-secondary-lighter', 'bg-gradient-lighter'].map((color) => (
+            <Alert key={color} className={color}>
+              This is a {color} alert with{' '}
               <a href="#" className="alert-link">an example link</a>. Give it a click if
               you like.
             </Alert>

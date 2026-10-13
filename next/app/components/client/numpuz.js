@@ -188,7 +188,7 @@ class NumPuz extends Component {
               col={grid[0].length} />
           )}
         </div>
-        <Alert variant="primary">{this.state.status}</Alert>
+        <Alert>{this.state.status}</Alert>
       </div>
     )
   }

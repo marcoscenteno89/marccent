@@ -143,7 +143,7 @@ const NetworkLoop = (props) => {
 const Wave = (props) => {
   const { sketch, canvas: c, p } = props.sketch;
   useEffect(() => {
-    props.cavasRef.current.classList.add('linear-gradient');
+    props.cavasRef.current.classList.add('bg-gradient');
     sketch.setup = () => {
       const circleSize = p.width * 2;
       const mass = p.createVector(circleSize, circleSize);

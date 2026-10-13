@@ -1,36 +1,7 @@
 /*
- * BASE: page defaults (replaces Bootstrap's root, reboot, type and images). Loaded first (layout.tsx).
- * Values match Bootstrap 5.3's, so the site looks the same without it.
+ * BASE: page defaults (replaces Bootstrap's reboot, type and images): box sizing, fonts, headings, spacing of
+ * text elements, form element resets. Loaded first (layout.tsx). No colors: those are all in theme.css.
  */
-
-/* SURFACE TOKENS: text, background and border colors for light and dark mode (dark = data-theme="dark" or
-   data-bs-theme="dark" on any element, like theme.css). Brand colors live in settings.css / theme.css. */
-:root,
-[data-theme=light],
-[data-bs-theme=light] {
-  --body-color: #212529;
-  --body-bg: #fff;
-  --body-bg-rgb: 255, 255, 255;
-  --muted-color: rgb(33 37 41 / .75); /* secondary text: placeholders, toast headers, disabled */
-  --muted-bg: #f8f9fa;                /* light shading: field labels, hovers */
-  --border-color: #dee2e6;
-  --border-subtle: rgb(0 0 0 / .175); /* translucent border for floating boxes (toast, modal) */
-  --light-rgb: 248, 249, 250;
-  --dark-rgb: 33, 37, 41;
-  color-scheme: light;
-}
-
-[data-theme=dark],
-[data-bs-theme=dark] {
-  --body-color: #dee2e6;
-  --body-bg: #212529;
-  --body-bg-rgb: 33, 37, 41;
-  --muted-color: rgb(222 226 230 / .75);
-  --muted-bg: #2b3035;
-  --border-color: #495057;
-  --border-subtle: rgb(255 255 255 / .15);
-  color-scheme: dark;
-}
 
 /* RESET */
 *,
@@ -43,8 +14,6 @@ body {
   font-size: var(--font-size);
   font-weight: 400;
   line-height: 1.5;
-  color: var(--body-color);
-  background-color: var(--body-bg);
   -webkit-text-size-adjust: 100%;
   -webkit-tap-highlight-color: transparent;
 }
@@ -82,9 +51,6 @@ p { margin-top: 0; margin-bottom: 1rem; }
 ol, ul, dl { margin-top: 0; margin-bottom: 1rem; }
 ol, ul { padding-left: 2rem; }
 small { font-size: .875em; }
-
-a { color: var(--link); }
-a:hover { color: var(--link-hover); }
 
 img, svg { vertical-align: middle; }
 .img-fluid { max-width: 100%; height: auto; }

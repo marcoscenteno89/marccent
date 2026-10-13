@@ -2,7 +2,7 @@
 import React, { useEffect, useState, useContext, useCallback } from "react";
 import { get } from "@marccent/util";
 import dynamic from 'next/dynamic';
-import { Clock, Loading, Form, Field, Pagination, Accordion, AccordionItem } from "./component";
+import { Clock, Loading, Form, Input, Pagination, Accordion, AccordionItem } from "./component";
 import MapWTR from "./map";
 import dayjs from "dayjs";
 const url = process.env.NEXT_PUBLIC_OPENWEATHERURL;
@@ -30,8 +30,8 @@ const Weather = () => {
   return (!city ? <Loading require={[]} /> : (
     <div className="grid cols-1 gap-3">
       <h3>{city.city.name}&apos;s Population: {city.city.population}</h3>
-      <Form onSubmit={(v) => update(v.city)} submitLabel="Search" submitIcon="magnifying-glass">
-        <Field name="city" required />
+      <Form className="grid inline-form" onSubmit={(v) => update(v.city)} submitLabel="Search" submitIcon="magnifying-glass">
+        <Input name="city" required />
       </Form>
       {/* --min: each panel needs ~24rem, so the forecast drops below the circle/map when the row is under ~49rem. */}
       <div className="grid cols-2 gap-3" style={{ '--min': '24rem' }}>
@@ -99,7 +99,7 @@ const Stat = ({ label, value, className = '' }) => (
 // Current conditions: a gradient ring (5% pad) around the wave canvas, with the readout layered on the wave
 // (.stack). The readout's bottom padding lifts it above the waterline.
 const Circle = ({ temp }) => (
-  <div className="square circle linear-gradient shadow-inset stack pad" style={{ '--pad': '5%' }}>
+  <div className="square circle bg-gradient shadow-inset stack pad" style={{ '--pad': '5%' }}>
     <WaveWTRC className="circle shadow-inset" />
     <div className="col-center text-center pad" style={{ '--pad': '0 0 20%' }}>
       <img src={`https://openweathermap.org/img/wn/${temp.weather[0].icon}@2x.png`} width={80} height={80} alt="" />

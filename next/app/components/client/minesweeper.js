@@ -280,7 +280,7 @@ class MineSweeper extends Component {
               onContextMenu={this.onContextMenu} />
           )}
         </div>
-        <Alert variant="info" active={active}>{this.state.status}</Alert>
+        <Alert active={active}>{this.state.status}</Alert>
       </div>
     )        
   }

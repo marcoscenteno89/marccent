@@ -1,5 +1,5 @@
 'use client';
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { ThemeContext } from "@/components/context";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules";
@@ -200,4 +200,20 @@ const ThemesWT = withT(Themes);
 const AnimListWT = withT(AnimList);
 const CurrentAnimWT = withT(CurrentAnim);
 
-export { Body, RainbowModeWT, ThemeModeWT, GlassModeWT, ThemesWT, AnimListWT, CurrentAnimWT }
+// Applies the saved theme: writes the six palette colors (styles/theme.css) on :root whenever the theme
+// changes, from the same Color shades the canvas animations use. Renders nothing.
+const UpdateThemeVariables = () => {
+  const { theme } = useContext(ThemeContext);
+  useEffect(() => {
+    if (!theme) return;
+    const root = document.documentElement.style;
+    for (const [ name, color ] of [[ 'primary', theme.primary() ], [ 'secondary', theme.secondary() ]]) {
+      root.setProperty(`--${name}`, color.hex);
+      root.setProperty(`--${name}-lighter`, color.lighter[1].hex); // 2 of 5 steps lighter
+      root.setProperty(`--${name}-darker`, color.darker[1].hex);   // 2 of 5 steps darker
+    }
+  }, [theme]);
+  return null;
+}
+
+export { Body, UpdateThemeVariables, RainbowModeWT, ThemeModeWT, GlassModeWT, ThemesWT, AnimListWT, CurrentAnimWT }

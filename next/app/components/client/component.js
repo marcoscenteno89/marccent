@@ -32,13 +32,13 @@ const Loading = (props) => {
 }
 
 /**
- * Alert (replaces react-bootstrap's): a colored message box. Layout in components.css, colors in theme.css.
- * @param {string} [variant="primary"] - primary, secondary, success, danger, warning, info, light, dark.
+ * Alert (replaces react-bootstrap's): a bordered message box (components.css), neutral unless colored.
+ * @param {string} [className="bg-primary-lighter"] - Replaces the default; any palette class (theme.css).
  * @param {boolean} [active=true] - false renders nothing. Links inside: <a className="alert-link">.
  */
-const Alert = ({ variant = 'primary', active = true, className, children }) => {
+const Alert = ({ active = true, className = 'bg-primary-lighter', children }) => {
   if (!active) return null;
-  return <div role="alert" className={cx('alert', `alert-${variant}`, className)}>{children}</div>;
+  return <div role="alert" className={cx('alert', className)}>{children}</div>;
 }
 
 /**
@@ -164,7 +164,7 @@ const Toast = () => {
           Layout in components.css, colors in theme.css, fade-in in animations.css. */}
       <div className="toasts pad">
         {toast.list.map((item, i) => (
-          <div key={`${+item.time}-${item.msg}`} className={cx('toast', item.type && `bg-${item.type}`)}
+          <div key={`${+item.time}-${item.msg}`} className="toast"
             role="alert" aria-live="assertive" aria-atomic="true">
             <div className="header">
               <strong>Marccent</strong>
@@ -199,6 +199,10 @@ const formValues = (form) => Object.fromEntries(new FormData(form));
  * @example
  * <Form onSubmit={(v) => search(v.city)} submitLabel="Search" submitIcon="magnifying-glass">
  *   <Field name="city" required />
+ * </Form>
+ * @example One row: fields and the button side by side (.inline-form, components.css)
+ * <Form className="grid inline-form" onSubmit={find}>
+ *   <Input name="city" required /><Input name="state" /><Input name="zip" />
  * </Form>
  */
 const Form = ({ onSubmit, submitLabel = 'Submit', submitIcon = 'paper-plane', className = 'grid gap-2 pairs', children, ...rest }) => (
@@ -281,7 +285,8 @@ const StepForm = ({ onSubmit, onStep, className = 'grid cols-1 gap-2', children,
     }}>
       <div className="grid fixed gap-0 divide border round" style={{ '--cols': steps.length }}>
         {steps.map((step, i) => (
-          <button key={step.props.name} type="button" className="page-link" aria-current={i === current ? 'step' : undefined}
+          <button key={step.props.name} type="button" aria-current={i === current ? 'step' : undefined}
+            className={cx('page-link', i === current && 'bg-primary-lighter text-primary-darker')}
             onClick={() => go(i)}>
             {i + 1}. {step.props.name}
           </button>
@@ -338,8 +343,8 @@ const Clock = ({ format = 'h:mm:ss A', className = '' }) => {
 
 // One pagination button. Outside Pagination, so it keeps its identity (and keyboard focus) across renders.
 const PageCell = ({ page, label, disabled, current, update, children }) => (
-  <button type="button" className="page-link" disabled={disabled} aria-label={label}
-    aria-current={page === current && !label ? 'page' : undefined} onClick={() => update(page)}>
+  <button type="button" className={cx('page-link', page === current && !label && 'bg-primary-lighter text-primary-darker')}
+    disabled={disabled} aria-label={label} aria-current={page === current && !label ? 'page' : undefined} onClick={() => update(page)}>
     {children}
   </button>
 );
@@ -416,16 +421,16 @@ const Counter = ({ active, getTime }) => {
  * fields; the result shows in an Alert under the form, and the form clears after a successful send.
  */
 const ContactUsForm = ({ className = 'grid cols-1 gap-2', style = { maxWidth: '400px' } }) => {
-  const [ result, setResult ] = useState(null); // { variant, msg } after a send
+  const [ result, setResult ] = useState(null); // { className, msg } after a send
 
   const send = async (values, form) => {
     const res = await post(`${process.env.NEXT_PUBLIC_SERVER}message/`, values);
     // post resolves to the JSON body with ok added, or to the Error itself when the request fails.
     if (res?.ok) {
-      setResult({ variant: 'success', msg: typeof res.response === 'string' ? res.response : 'Thanks! Your message was sent.' });
+      setResult({ className: 'bg-primary-lighter', msg: typeof res.response === 'string' ? res.response : 'Thanks! Your message was sent.' });
       form.reset();
     } else {
-      setResult({ variant: 'danger', msg: "Your message couldn't be sent. Please try again later." });
+      setResult({ className: 'bg-secondary-lighter', msg: "Your message couldn't be sent. Please try again later." });
     }
   }
 
@@ -437,7 +442,7 @@ const ContactUsForm = ({ className = 'grid cols-1 gap-2', style = { maxWidth: '4
         <Field name="email" type="email" autoComplete="email" required />
         <Field name="message" as="textarea" rows={4} required />
       </Form>
-      {result && <Alert variant={result.variant}>{result.msg}</Alert>}
+      {result && <Alert className={result.className}>{result.msg}</Alert>}
     </div>
   );
 }
