@@ -45,33 +45,34 @@ const cx = (...names) => names.filter(Boolean).join(' ');
  * No hooks, so it works in server and client components. An item with children becomes a
  * <details> dropdown; it stays open after navigating unless the parent closes it (see header.tsx).
  *
- * Classes: every part takes extra classes. A menu item can also carry its own className.
- * layout replaces the default layout classes; use it to swap them (adding e.g. "fixed" next to
- * "auto-cols" through className would just conflict). Extra gap-* classes override gap-0.
+ * Classes: the nav only gets "menu grid fixed gap-0" (.menu is the hook for styles/components.css);
+ * everything else (dividers, border, alignment) is passed in. layout replaces "fixed", e.g.
+ * "auto-cols cols-center" for icon-only menus (adding it through className would conflict with fixed).
+ * Every part takes extra classes; a menu item can also carry its own className.
  *
  * @param {Object} props
  * @param {Array} props.items - A menu, e.g. main or social. Item: { name, href, icon?, label?, external?, className?, children? }.
  * @param {string} props.label - aria-label for the <nav>, e.g. "Main".
  * @param {boolean} [props.iconOnly] - Show icons only; the item's label becomes the aria-label.
  * @param {string} [props.className] - Extra classes for the <nav>.
- * @param {string} [props.layout] - Replaces the default layout classes (text: "fixed", icon-only: "auto-cols cols-center").
+ * @param {Object} [props.style] - Inline styles for the <nav> (may override --cols).
+ * @param {string} [props.layout="fixed"] - Replaces "fixed": e.g. "auto-cols cols-center" (icons sized to fit,
+ *   centered) or "cols-1" (stacked).
  * @param {string} [props.linkClassName] - Extra classes for every link (dropdown links included).
  * @param {string} [props.dropdownClassName] - Extra classes for each dropdown <details>.
  * @param {string} [props.panelClassName] - Extra classes for each dropdown panel.
  *
  * @example <Menu items={main} label="Main" />
- * @example <Menu items={social} label="Social" iconOnly />
- * @example <Menu items={contact} label="Contact" iconOnly className="divide border round" linkClassName="fs-lg" />
- * @example <Menu items={main} label="Footer" layout="grid cols-1" />
+ * @example <Menu items={social} label="Social" iconOnly layout="auto-cols cols-center" />
+ * @example <Menu items={contact} label="Contact" iconOnly layout="auto-cols cols-center" className="divide border round" />
+ * @example <Menu items={main} label="Footer" layout="cols-1" />
  */
-// Text menus split the width into equal columns (fixed). Icon-only menus size each column to its icon,
-// so every link is a square, and center the group when the nav is wider than the icons.
-export const Menu = ({ items, label, iconOnly = false, className, layout, linkClassName, dropdownClassName, panelClassName }) => {
-  const defaultLayout = iconOnly ? 'auto-cols cols-center' : 'fixed';
+// fixed (default) splits the width into equal columns, one per item (--cols).
+export const Menu = ({ items, label, iconOnly = false, className, style, layout = 'fixed', linkClassName, dropdownClassName, panelClassName }) => {
   return (
     <nav
-      className={cx('menu grid gap-0 items-center', layout ?? defaultLayout, className)}
-      style={!layout && !iconOnly ? { '--cols': items.length } : undefined}
+      className={cx('menu grid gap-0', layout, className)}
+      style={{ '--cols': items.length, ...style }}
       aria-label={label}
     >
       {items.map(item => item.children

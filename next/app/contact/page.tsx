@@ -7,17 +7,17 @@ import { contactPage } from "@/components/server/content";
 export default function Contact() {
 
   return (
-    <section className="wrap wrap-fluid m-0 linear-gradient">
+    <section className="wrap wrap-fluid linear-gradient">
       <div className="wrap bg border round shadow-md overflow-hidden">
         <div className="grid cols-2 gap-0">
           <div>
-            <MapWTCL className="h-100" zoom={10} />
+            <MapWTCL className="h-100" zoom={10}/>
           </div>
           <div className="pad">
             <h1>{contactPage.title}</h1>
-            <Markdown text={contactPage.intro} />
-            <ContactUsForm />
-            <Menu items={contact} label="Contact links" iconOnly className="divide border round" />
+            <Markdown text={contactPage.intro}/>
+            <ContactUsForm/>
+            <Menu items={contact} label="Contact links" iconOnly layout="auto-cols cols-center" className="divide border round"/>
           </div>
         </div>
       </div>

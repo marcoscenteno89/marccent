@@ -11,13 +11,13 @@ import Markdown from './markdown';
  */
 export default function AppCard({ app }) {
   return (
-    <div className="card sub rows-4 gap-y-0 round">
+    <div className="bg border round sub rows-4 gap-y-0">
       <div className="bg-primary pad text-center">
         <i className={`h1 fa-solid ${app.icon}`}></i>
       </div>
-      <div className="card-body sub rows-3 gap-y-2">
-        <h5 className="card-title">{app.name}</h5>
-        <Markdown text={app.about} className="card-text" />
+      <div className="body sub rows-3 gap-y-2">
+        <h5>{app.name}</h5>
+        <Markdown text={app.about} />
         <Button icon="arrow-right" href={app.url}>{`Go to ${app.name}`}</Button>
       </div>
     </div>

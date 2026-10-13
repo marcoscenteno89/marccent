@@ -2,8 +2,7 @@
 import React, { useEffect, useState, useContext, useCallback } from "react";
 import { get } from "@marccent/util";
 import dynamic from 'next/dynamic';
-import Image from 'react-bootstrap/Image';
-import { Clock, Loading, WebForm, WebPagination, Accordion, AccordionItem } from "./component";
+import { Clock, Loading, Form, Field, Pagination, Accordion, AccordionItem } from "./component";
 import MapWTR from "./map";
 import dayjs from "dayjs";
 const url = process.env.NEXT_PUBLIC_OPENWEATHERURL;
@@ -20,7 +19,6 @@ const Weather = () => {
   const { toast, setToast } = useContext(ToastContext);
   const [ city, setCity ] = useState(null);
   useEffect(() => update('Idaho Falls'), []);
-  const onClick = (data) => update(data.city.value);
   const update = (q) => {
     get(new URL(`${openWeather}?q=${q}${token}`)).then(res => {
       res.city.coord.lng = res.city.coord.lon;
@@ -32,9 +30,9 @@ const Weather = () => {
   return (!city ? <Loading require={[]} /> : (
     <div className="grid cols-1 gap-3">
       <h3>{city.city.name}&apos;s Population: {city.city.population}</h3>
-      <WebForm callBack={onClick}>
-        <input type="text" name="city" required />
-      </WebForm>
+      <Form onSubmit={(v) => update(v.city)} submitLabel="Search" submitIcon="magnifying-glass">
+        <Field name="city" required />
+      </Form>
       {/* --min: each panel needs ~24rem, so the forecast drops below the circle/map when the row is under ~49rem. */}
       <div className="grid cols-2 gap-3" style={{ '--min': '24rem' }}>
         <div className="shadow-md grid cols-1 justify-center content-start gap-2 pad">
@@ -71,7 +69,7 @@ const History = (props) => {
                     Cells stretch to the row height (so .divide lines are full height); content is centered inside each. */}
                 <div className="grid fixed cols-4 gap-0 divide text-center">
                   <div className="span-2 grid cols-1 items-center text-start">{dayjs(item.dt_txt).format('ddd DD, h:mm A')}</div>
-                  <div className="col-center"><Image src={icon} alt={item.weather[0].description} /></div>
+                  <div className="col-center"><img src={icon} alt={item.weather[0].description} /></div>
                   <strong className="col-center">{Math.round(item.main.temp)}&#176;</strong>
                 </div>
               </>}>
@@ -84,7 +82,7 @@ const History = (props) => {
           )
         })}
       </Accordion>
-      <WebPagination total={total} current={current} pageSize={pageSize} update={update} />
+      <Pagination total={total} current={current} pageSize={pageSize} update={update} className="divide border round" />
     </div>
   )
 }
@@ -104,7 +102,7 @@ const Circle = ({ temp }) => (
   <div className="square circle linear-gradient shadow-inset stack pad" style={{ '--pad': '5%' }}>
     <WaveWTRC className="circle shadow-inset" />
     <div className="col-center text-center pad" style={{ '--pad': '0 0 20%' }}>
-      <Image src={`https://openweathermap.org/img/wn/${temp.weather[0].icon}@2x.png`} width={80} height={80} alt="" />
+      <img src={`https://openweathermap.org/img/wn/${temp.weather[0].icon}@2x.png`} width={80} height={80} alt="" />
       <span className="display-5 fw-bold">{Math.round(temp.main.temp)}&#176;</span>
       <span className="text-capitalize">{temp.weather[0].description}</span>
       <Clock format="ddd, MMM D · h:mm:ss A" className="fs-sm opacity-75" />

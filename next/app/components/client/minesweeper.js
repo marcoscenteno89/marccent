@@ -1,9 +1,8 @@
 'use client'
 import React, { Component, Fragment } from "react";
-import Form from 'react-bootstrap/Form';
 import { Counter, Button } from "./component";
 import { Bomb, Flag } from "@/components/sac";
-// import { WebAlert } from "./component";
+// import { Alert } from "./component";
 import { random } from 'lodash';
 
 class MineSweeper extends Component {
@@ -257,13 +256,13 @@ class MineSweeper extends Component {
             <Counter getTime={this.getTime} active={b.active} />
           </div>
           <div>
-            <Form.Select onChange={(val) => this.dificulty(val.target.value)} value={b.dificulty}>
+            <select className="input" aria-label="Difficulty" onChange={(val) => this.dificulty(val.target.value)} value={b.dificulty}>
               <option value="1">Very Easy</option>
               <option value="2">Easy</option>
               <option value="3">Normal</option>
               <option value="4">Hard</option>
               <option value="5">Very Hard</option>
-            </Form.Select>
+            </select>
           </div>
           <div>
             <Button onClick={async () => await this.startOver()}>
@@ -282,7 +281,7 @@ class MineSweeper extends Component {
               onContextMenu={this.onContextMenu} />
           )}
         </div>
-        {/* <WebAlert variant="info" active={active} msg={this.state.status} /> */}
+        {/* <Alert variant="info" active={active}>{this.state.status}</Alert> */}
       </div>
     )        
   }

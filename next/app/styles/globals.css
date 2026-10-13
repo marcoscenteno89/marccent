@@ -19,7 +19,7 @@
    In a row (.grid with 2+ cols, .fixed, .auto-cols, or a layout-* from 40rem): border-right.
    CSS can't tell when an auto-fill .grid wraps onto a new row; there it keeps the row rule. */
 .divide > :not(:last-child) {
-  border: 0 solid var(--bs-border-color);
+  border: 0 solid var(--border-color);
   border-bottom-width: 1px;
 }
 
@@ -111,8 +111,8 @@ canvas {
   /* Chart | price column on the first row, dates under the chart. */
   display: grid;
   grid-template-columns: minmax(0, 19fr) minmax(0, 1fr);
-  border-bottom-left-radius: var(--bs-border-radius);
-  border-bottom-right-radius: var(--bs-border-radius);
+  border-bottom-left-radius: var(--radius);
+  border-bottom-right-radius: var(--radius);
 }
 /* !important: p5 writes inline width/height on the canvas. */
 .graph-container canvas {
@@ -163,5 +163,5 @@ canvas {
 }
 .single-line-form > :nth-child(n) { border-radius: 0; }
 .single-line-form > :not(:last-child) { border-right-width: 0; }
-.single-line-form > :first-child { border-top-left-radius: var(--bs-border-radius); }
-.single-line-form > :last-child { border-top-right-radius: var(--bs-border-radius); }
+.single-line-form > :first-child { border-top-left-radius: var(--radius); }
+.single-line-form > :last-child { border-top-right-radius: var(--radius); }

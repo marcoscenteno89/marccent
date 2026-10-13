@@ -1,14 +1,6 @@
 'use client';
-import React, { Component, useState, useRef, useEffect, useContext, useCallback, useId } from 'react';
+import React, { useState, useRef, useEffect, useContext, useCallback, useId } from 'react';
 import capitalize from 'lodash/capitalize';
-import { Form, Modal, Alert, Pagination } from 'react-bootstrap';
-// import ToastContainer from 'react-bootstrap/ToastContainer';
-// import Form from 'react-bootstrap/Form';
-// import Toast from 'react-bootstrap/Toast';
-// import Button from 'react-bootstrap/Button';
-// import Modal from 'react-bootstrap/Modal';
-// import Alert from 'react-bootstrap/Alert';
-// import Pagination from 'react-bootstrap/Pagination';
 import dayjs from "dayjs";
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { post } from "@marccent/util";
@@ -24,7 +16,7 @@ const cx = (...classes) => classes.filter(Boolean).join(' ');
 /* ---------- loading, alert, modal ---------- */
 
 const Loading = (props) => {
-  // height auto lets .square's aspect-ratio size it (spinner-grow sets a fixed height otherwise).
+  // height auto lets .square's aspect-ratio size it.
   const style = {
     width: '100%',
     height: 'auto'
@@ -35,34 +27,51 @@ const Loading = (props) => {
   }
 
   return ready ? props.children :  (
-    <div className="square spinner-grow" style={style} role="status">
-      <span className="visually-hidden">Loading...</span>
-    </div>
+    <div className="square spinner" style={style} role="status" aria-label="Loading" />
   );
 }
 
-const WebAlert = (props) => {
-  if (!props.active) return null
-  return (
-    <Alert variant={props.variant}>
-      <div dangerouslySetInnerHTML={{ __html: props.msg }} />
-    </Alert>
-  )
+/**
+ * Alert (replaces react-bootstrap's): a colored message box. Layout in components.css, colors in theme.css.
+ * @param {string} [variant="primary"] - primary, secondary, success, danger, warning, info, light, dark.
+ * @param {boolean} [active=true] - false renders nothing. Links inside: <a className="alert-link">.
+ */
+const Alert = ({ variant = 'primary', active = true, className, children }) => {
+  if (!active) return null;
+  return <div role="alert" className={cx('alert', `alert-${variant}`, className)}>{children}</div>;
 }
 
-const WebModal = (props) => {
-  const { title, children, show, setShow } = props;
+/**
+ * Modal (replaces react-bootstrap's): a native <dialog>. The browser draws the backdrop, keeps focus inside
+ * and closes it on Esc; a click on the backdrop closes it too. Layout in components.css, colors in theme.css.
+ * @param {string} title @param {boolean} show @param {Function} setShow - Called with false on close.
+ * @param {React.ReactNode} [footer] - Extra footer buttons, before Close.
+ */
+const Modal = ({ title, show, setShow, footer, children }) => {
+  const ref = useRef(null);
+  const titleId = useId();
+  useEffect(() => {
+    const dialog = ref.current;
+    if (show && !dialog.open) dialog.showModal();
+    if (!show && dialog.open) dialog.close();
+  }, [show]);
+  // The dialog has no padding, so a click whose target is the dialog itself landed on the backdrop.
   return (
-    <Modal show={show} onHide={() => setShow(false)}>
-      <Modal.Header closeButton>
-        <Modal.Title>{title}</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>{children}</Modal.Body>
-      <Modal.Footer>
-        <Button onClick={() => setShow(false)}>Close</Button>
-      </Modal.Footer>
-    </Modal>
-  )
+    <dialog ref={ref} className="modal" aria-labelledby={titleId} onClose={() => setShow(false)}
+      onClick={(e) => e.target === ref.current && setShow(false)}>
+      <div className="grid divide">
+        <div className="header">
+          <h5 id={titleId}>{title}</h5>
+          <button type="button" className="btn-close" aria-label="Close" onClick={() => setShow(false)}><Icon name="xmark" /></button>
+        </div>
+        <div className="body">{children}</div>
+        <div className="footer">
+          {footer}
+          <Button onClick={() => setShow(false)}>Close</Button>
+        </div>
+      </div>
+    </dialog>
+  );
 }
 
 /* ---------- icon and button ---------- */
@@ -157,12 +166,12 @@ const Toast = () => {
         {toast.list.map((item, i) => (
           <div key={`${+item.time}-${item.msg}`} className={cx('toast', item.type && `bg-${item.type}`)}
             role="alert" aria-live="assertive" aria-atomic="true">
-            <div className="toast-header">
+            <div className="header">
               <strong>Marccent</strong>
               <small>{dayjs(item.time).fromNow()}</small>
-              <button type="button" className="btn-close" aria-label="Close" onClick={() => remove(i)} />
+              <button type="button" className="btn-close" aria-label="Close" onClick={() => remove(i)}><Icon name="xmark" /></button>
             </div>
-            <div className="toast-body">{item.msg}</div>
+            <div className="body">{item.msg}</div>
           </div>
         ))}
       </div>
@@ -170,83 +179,132 @@ const Toast = () => {
   )
 }
 
-const WebForm = (props) => {
-  const [ form, setForm ] = useState(null);
-  const [ alert, setAlert] = useState('');
-  useEffect(() => {
-    const obj = {};
-    for (let i of React.Children.toArray(props.children)) {
-      obj[i.props.name] = {
-        name: i.props.name,
-        value: i.props.value ? i.props.value : '',
-        label: capitalize(i.props.name.replace(/_/g, ' ')),
-        placeholder: i.props.placeholder ? i.props.placeholder : i.props.name.replace(/_/g, ' '),
-        ref: null
-      }
-    }
-    setForm(obj);
-  }, []);
+/* ---------- forms ---------- */
 
-  const set = (ref, name) => {
-    let newForm = { ...form };
-    newForm[name].ref = ref;
-    setForm(newForm);
-  }
+// Values of a form as a plain object: { name: value }. Several fields with one name (checkboxes) keep the last.
+const formValues = (form) => Object.fromEntries(new FormData(form));
 
-  const submit = useCallback(() =>  {
-    let msg = '';
-    Object.keys(form).map((key) => {
-      form[key].value = form[key].ref.value; // Update value
-      if (form[key].ref.type !== 'hidden') {
-        if (!form[key].ref.validity.valid) {
-          msg += `${form[key].label}: ${form[key].ref.validationMessage}</br>`;
-        }
-      }
-    });
-    if (msg !== '') { // Found Issues, set alert
-      setAlert(msg); 
-    } else { // No issues, clear alert and submit
-      setAlert('');
-      props.callBack(form);
-    }
-  });
-  
-  const arr = React.Children.toArray(props.children);
+/**
+ * Form: a native <form>. The browser validates the fields (required, type, pattern, min…) and shows its
+ * own messages before onSubmit runs, so there is no validation code here. Children are plain inputs,
+ * selects and textareas, or <Field> for a labelled one. Invalid fields are styled with :user-invalid.
+ *
+ * @param {Function} onSubmit - Called with (values, formElement); values is { name: value }.
+ * @param {string|false} [submitLabel="Submit"] - Submit button text; false for no button.
+ * @param {string} [submitIcon="paper-plane"] - Submit button icon (see Button).
+ * @param {string} [className="grid gap-2 pairs"] - Replaces the default classes. .pairs (grid.css) gives
+ *   every Field's label the same width.
+ * Any other prop (style, id, action, method…) goes on the <form>.
+ *
+ * @example
+ * <Form onSubmit={(v) => search(v.city)} submitLabel="Search" submitIcon="magnifying-glass">
+ *   <Field name="city" required />
+ * </Form>
+ */
+const Form = ({ onSubmit, submitLabel = 'Submit', submitIcon = 'paper-plane', className = 'grid gap-2 pairs', children, ...rest }) => (
+  <form className={className} {...rest} onSubmit={(e) => {
+    e.preventDefault(); // stay on the page; without onSubmit the form would post to its action instead
+    onSubmit?.(formValues(e.currentTarget), e.currentTarget);
+  }}>
+    {children}
+    {submitLabel && <Button type="submit" icon={submitIcon}>{submitLabel}</Button>}
+  </form>
+);
+
+// Readable text from a field name: "first_name" → "First name".
+const nameToLabel = (name) => capitalize(name.replace(/_/g, ' '));
+
+/**
+ * Input: just the input, its label text shown as the placeholder (and used as aria-label, since a placeholder
+ * is not a label and disappears while typing). Default text comes from the name: "first_name" → "First name".
+ * @param {string} name @param {string} [label] - Text for the placeholder and aria-label.
+ * @param {string} [as="input"] - "textarea" or "select" (a select shows no placeholder; it keeps the aria-label).
+ * Any other prop (type, required, placeholder to override, rows…) goes on the element.
+ *
+ * @example <Input name="email" type="email" required />  // placeholder "Email"
+ */
+const Input = ({ name, label, as: Tag = 'input', className, children, ...rest }) => {
+  const text = label ?? nameToLabel(name);
   return (
-    <Loading require={[form]}>
-      <Form className={props.className} style={props.style}>
-        {arr.map((key, i) => <Input key={`form-${i}`} set={set} {...key.props} />)} 
-        <Button onClick={submit}>Submit</Button>
-        {/* <WebAlert variant="danger mb-2" active={alert !== ''} msg={alert} /> */}
-      </Form>
-    </Loading>
-  )
+    <Tag name={name} className={cx('input', className)} aria-label={text}
+      placeholder={Tag === 'select' ? undefined : text} {...rest}>{children}</Tag>
+  );
 }
 
-const Input = (props) => {
-  
-  const ref = useRef(null);
-  const [ label ] = useState(capitalize(props.name.replace(/_/g, ' ')));
-  let n = { ...props };
-  delete n.set;
-  delete n['no-label']; // our own flag, not an HTML attribute
-  useEffect(() => props.set(ref.current, props.name), []);
-  
+/**
+ * Field: a label joined to its input in one box (.field, styles/components.css). The label defaults to the name: "first_name" → "First name".
+ * @param {string} name @param {string} [label] @param {string} [as="input"] - "textarea" or "select".
+ * Any other prop (type, required, placeholder, rows…) goes on the input.
+ */
+const Field = ({ name, label, as: Tag = 'input', className, children, ...rest }) => {
+  const id = useId();
   return (
-    <>
-      {props['no-label'] ? 
-        <Form.Control ref={ref} id={`id-${n.name}`} {...n} /> 
-      : 
-        <Form.Group className="input-group mb-2">
-          <Form.Label className="input-group-text m-0" htmlFor={`#id-${props.name}`}>
-            {label}
-          </Form.Label>
-          <Form.Control ref={ref} id={`id-${n.name}`} {...n} />
-        </Form.Group>
-      }
-    </>
-  )
+    <div className={cx('field sub-x', className)}>
+      <label className="field-label" htmlFor={id}>{label ?? nameToLabel(name)}</label>
+      <Tag id={id} name={name} className="input" {...rest}>{children}</Tag>
+    </div>
+  );
 }
+
+/**
+ * StepForm: a native form split into steps (<Step name="…">). All steps stay mounted (inactive ones are
+ * hidden), so the final values include every step. Next, and jumping ahead from the step list, check every
+ * step in between with the browser's own validation; going back is always allowed.
+ *
+ * @param {Function} onSubmit - Called with (values, formElement) after the last step.
+ * @param {Function} [onStep] - Called with (index, values) after moving to another step.
+ * @param {string} [className="grid cols-1 gap-2"] - Replaces the default classes.
+ *
+ * @example
+ * <StepForm onSubmit={save}>
+ *   <Step name="Contact"><Field name="email" type="email" required /></Step>
+ *   <Step name="Message"><Field name="message" as="textarea" rows={4} required /></Step>
+ * </StepForm>
+ */
+const StepForm = ({ onSubmit, onStep, className = 'grid cols-1 gap-2', children, ...rest }) => {
+  const steps = React.Children.toArray(children);
+  const [ current, setCurrent ] = useState(0);
+  const form = useRef(null);
+  const sets = useRef([]);
+  const last = steps.length - 1;
+  // reportValidity shows the browser's message on the first invalid field and returns false.
+  const valid = (i) => [...sets.current[i].elements].every(el => el.reportValidity());
+  const go = (to) => {
+    for (let i = current; i < to; i++) if (!valid(i)) return setCurrent(i); // stop at the first invalid step
+    setCurrent(to);
+    onStep?.(to, formValues(form.current));
+  };
+  return (
+    <form ref={form} className={className} {...rest} onSubmit={(e) => {
+      e.preventDefault();
+      onSubmit?.(formValues(e.currentTarget), e.currentTarget);
+    }}>
+      <div className="grid fixed gap-0 divide border round" style={{ '--cols': steps.length }}>
+        {steps.map((step, i) => (
+          <button key={step.props.name} type="button" className="page-link" aria-current={i === current ? 'step' : undefined}
+            onClick={() => go(i)}>
+            {i + 1}. {step.props.name}
+          </button>
+        ))}
+      </div>
+      {steps.map((step, i) => (
+        <fieldset key={step.props.name} ref={el => sets.current[i] = el} hidden={i !== current} aria-label={step.props.name}
+          className={cx('grid gap-2 pairs', step.props.className)}>
+          {step.props.children}
+        </fieldset>
+      ))}
+      <div className="grid fixed cols-2 gap-2">
+        <Button disabled={current === 0} onClick={() => go(current - 1)}>Back</Button>
+        {current < last
+          ? <Button icon="arrow-right" onClick={() => go(current + 1)}>Next</Button>
+          : <Button type="submit" icon="paper-plane">Submit</Button>}
+      </div>
+    </form>
+  );
+}
+
+// One step of a StepForm. Renders nothing itself; StepForm reads its name, className and children.
+const Step = () => null;
 
 const Blur = (props) => {
   const ref = useRef(null);
@@ -278,88 +336,38 @@ const Clock = ({ format = 'h:mm:ss A', className = '' }) => {
   return <time className={className} dateTime={time.toISOString()}>{time.format(format)}</time>;
 }
 
-const WebPagination = (props) => {
-  const { total, pageSize, current, update } = props;
-  const items = [];
-  const cnt = Math.floor(total / pageSize);
-  const pages = total % pageSize > 0 ? cnt + 1 : cnt;
+// One pagination button. Outside Pagination, so it keeps its identity (and keyboard focus) across renders.
+const PageCell = ({ page, label, disabled, current, update, children }) => (
+  <button type="button" className="page-link" disabled={disabled} aria-label={label}
+    aria-current={page === current && !label ? 'page' : undefined} onClick={() => update(page)}>
+    {children}
+  </button>
+);
+
+/**
+ * Pagination (replaces react-bootstrap's): first, previous, one button per page, next, last, as one row of
+ * equal cells (grid fixed, --cols = pages + 4). Layout in components.css, colors in theme.css.
+ * @param {number} total - Number of items. @param {number} pageSize - Items per page.
+ * @param {number} current - Current page (1-based). @param {Function} update - Called with the page to show.
+ * @param {string} [className] - Extra classes on the nav (default only "grid fixed gap-0"; add e.g.
+ *   "divide border round" for the bar look). @param {Object} [style] - Inline styles on the nav
+ *   (may override --cols).
+ */
+const Pagination = ({ total, pageSize, current, update, className, style }) => {
+  const pages = Math.ceil(total / pageSize);
   const first = current === 1;
-  const last = current === total.length;
-  const style = {
-    width: `calc(100% / ${pages + 4})`,
-    textAlign: 'center'
-  }
-
-  for (let o = 1; o <= pages; o++) {
-    const active = o === current;
-    items.push(
-      <Pagination.Item style={style}  key={o} onClick={()=> update(o)} active={active}>
-        {o}
-      </Pagination.Item>
-    );
-  }
-
+  const last = current === pages;
+  const cell = { current, update };
   return (
-    <Pagination className="my-1 pad border round">
-      <Pagination.First style={style} disabled={first} onClick={()=> update(1)} />
-      <Pagination.Prev style={style} disabled={first} onClick={()=> update(current - 1)} />
-      {items}
-      <Pagination.Next style={style} disabled={last} onClick={()=> update(current + 1)} />
-      <Pagination.Last style={style} disabled={last} onClick={()=> update(total)} />
-    </Pagination>
-
-  )
-}
-
-class PopUp extends Component {
-
-  render() {
-    const b = this.props;
-    const popup = {
-      overlay: {
-        backgroundColor: 'rgba(56,61,68,0.5)'
-      },
-      content: {
-        filter: `drop-shadow(0 0 10px rgba(0,0,0,0.8))`
-      }
-    }
-
-    const headingBreak = {
-      // background: `
-      //   radial-gradient(circle at bottom left, rgba(0,0,0,0) 2rem, ${a.hex.primary} 2rem) bottom left,
-      //   radial-gradient(circle at bottom right, rgba(0,0,0,0) 2rem, ${a.hex.secondary} 2rem) bottom right`,
-      backgroundSize: '2rem 100%',
-      backgroundRepeat: 'no-repeat'
-    }
-    const bodyBreak = {
-      // background: `
-      //   radial-gradient(circle at top left, rgba(0,0,0,0) 2rem, ${a.mode} 2rem) top left,
-      //   radial-gradient(circle at top right, rgba(0,0,0,0) 2rem, ${a.mode} 2rem) top right`,
-      backgroundSize: '50% 100%',
-      backgroundRepeat: 'no-repeat'
-    }
-      
-    return (
-      <Modal style={popup} className="modal" overlayClassName="overlay" isOpen={this.props.display}>
-        <div className="heading center">
-          <div  className="left"></div>
-          <div  className="right"></div>
-          <h2>{b.header}</h2>
-        </div>
-        <div style={headingBreak} className="break">
-          <div className="grad"></div>
-        </div>
-        <div style={bodyBreak} className="break"></div>
-        <div style={{backgroundColor: a.mode}} className="body center">
-          {b.children}
-          <div className="center controller">
-            {b.controller ? <Button onClick={() => b.controller()}>{b.btnText}</Button> : ''}
-            <Button onClick={() => this.props.close()}>Close</Button>
-          </div>
-        </div>
-      </Modal>
-    )
-  }
+    <nav className={cx('grid fixed gap-0', className)} style={{ '--cols': pages + 4, ...style }}
+      aria-label="Pages">
+      <PageCell {...cell} page={1} label="First page" disabled={first}>&laquo;</PageCell>
+      <PageCell {...cell} page={current - 1} label="Previous page" disabled={first}>&lsaquo;</PageCell>
+      {Array.from({ length: pages }, (_, i) => <PageCell {...cell} key={i} page={i + 1}>{i + 1}</PageCell>)}
+      <PageCell {...cell} page={current + 1} label="Next page" disabled={last}>&rsaquo;</PageCell>
+      <PageCell {...cell} page={pages} label="Last page" disabled={last}>&raquo;</PageCell>
+    </nav>
+  );
 }
 
 // Splits milliseconds into the zero-padded parts Counter shows and reports (tos = hundredths).
@@ -403,35 +411,34 @@ const Counter = ({ active, getTime }) => {
   );
 }
 
-const ContactUsForm = props => {
-  const [ active, setActive ] = useState(false);
-  const [ variant, setVariant ] = useState('success');
-  const [ alert, setAlert ] = useState('');
+/**
+ * ContactUsForm: name, email and message, posted to the server's message/ endpoint. The browser validates the
+ * fields; the result shows in an Alert under the form, and the form clears after a successful send.
+ */
+const ContactUsForm = ({ className = 'grid cols-1 gap-2', style = { maxWidth: '400px' } }) => {
+  const [ result, setResult ] = useState(null); // { variant, msg } after a send
 
-  const onClick = async (data) => {
-    
-    const obj = {};
-    Object.entries(data).forEach(([key, val]) => obj[val.name] = val.value );
-    const res = await post(`${process.env.NEXT_PUBLIC_SERVERURL}message/`, obj).then(res => res);
-    setVariant(res.ok ? 'success' : 'danger');
-    setAlert(res.ok ? res.response : res);
-    setActive(true);
+  const send = async (values, form) => {
+    const res = await post(`${process.env.NEXT_PUBLIC_SERVERURL}message/`, values);
+    // post resolves to the JSON body with ok added, or to the Error itself when the request fails.
+    if (res?.ok) {
+      setResult({ variant: 'success', msg: typeof res.response === 'string' ? res.response : 'Thanks! Your message was sent.' });
+      form.reset();
+    } else {
+      setResult({ variant: 'danger', msg: "Your message couldn't be sent. Please try again later." });
+    }
   }
-  const style = {
-    width: '100%',
-    maxWidth: '400px'
-  }
-  
+
   return (
-    <>
-      <WebForm style={style} callBack={onClick}>
-        <input type="text" name="first_name" required />
-        <input type="text" name="last_name" required />
-        <input type="text" name="email" required />
-        <input type="text" name="message" as="textarea" rows={4} required />
-      </WebForm>
-      {/* <WebAlert variant={`${variant} mb-2`} active={active} msg={alert} /> */}
-    </>
+    <div className={className} style={style}>
+      <Form onSubmit={send} submitLabel="Send">
+        <Field name="first_name" autoComplete="given-name" required />
+        <Field name="last_name" autoComplete="family-name" required />
+        <Field name="email" type="email" autoComplete="email" required />
+        <Field name="message" as="textarea" rows={4} required />
+      </Form>
+      {result && <Alert variant={result.variant}>{result.msg}</Alert>}
+    </div>
   );
 }
 
@@ -462,15 +469,15 @@ const AccordionItem = (props) => {
   const { header, children, className = '', name, defaultOpen = false } = props;
   return (
     <details className="accordion-item" name={name} open={defaultOpen}>
-      <summary className="accordion-header pad">{header}</summary>
-      <div className={`accordion-body pad ${className}`.trim()}>{children}</div>
+      <summary className="accordion-header header">{header}</summary>
+      <div className={cx('body', className)}>{children}</div>
     </details>
   );
 }
 
 export { 
-  cx, Icon, Button, Loading, WebAlert, WebModal,
-  WebForm, Toast, Blur, Clock,
-  WebPagination, Counter, ContactUsForm, Input,
+  cx, Icon, Button, Loading, Alert, Modal,
+  Form, Field, Input, StepForm, Step, Toast, Blur, Clock,
+  Pagination, Counter, ContactUsForm,
   Accordion, AccordionItem
 }

@@ -3,7 +3,7 @@ import { useContext, useState } from "react";
 import { ThemeContext } from "@/components/context";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules";
-import { WebForm, cx, Loading, Button } from "./component";
+import { Form, Field, Modal, cx, Loading, Button } from "./component";
 import { withT } from "./hoc";
 import dynamic from 'next/dynamic';
 import { ToastContext } from '@/components/context';
@@ -33,7 +33,7 @@ const Body = (props) => {
   if (!theme) theme = {};
   const is_dark = theme.is_dark ? 'dark' : 'light';
   return (
-    <body className={cx(props.className, 'body', theme.glass && 'glass')} suppressHydrationWarning={true} data-bs-theme={is_dark}>
+    <body className={cx(props.className, theme.glass && 'glass')} suppressHydrationWarning={true} data-bs-theme={is_dark}>
       {props.children}
     </body>
   )  
@@ -84,11 +84,11 @@ const Themes = (props) => {
     1200: {width: 1200, slidesPerView: 10}
   }
 
+  const current = props.theme.themeList[props.theme.active];
+
   const add = (data) => {
     setModal(false);
-    const newTheme = {}
-    Object.entries(data).forEach(([key, val]) => newTheme[val.name] = val.value);
-    props.setTheme(props.theme.add(newTheme));
+    props.setTheme(props.theme.add(data)); // data: { primary, secondary } from the form
     setToast(toast.add('Theme created successfully', 'success'));
   }
 
@@ -118,8 +118,7 @@ const Themes = (props) => {
             icon="fa-solid fa-circle-plus display-6"
             aria-label="Add Theme"
             style={b_slt}
-            onClick={() => setModal(true)}
-            data-bs-target={'#new-theme'} />
+            onClick={() => setModal(true)} />
         </SwiperSlide>
         {props.theme.themeList.map((single, i) => (
           <SwiperSlide key={`slide-${i}`}>
@@ -132,12 +131,15 @@ const Themes = (props) => {
           </SwiperSlide>
         ))}
       </Swiper>
-      {/* <WebModal title="Add New Theme" show={modal} setShow={setModal}>
-        <WebForm callBack={add}>
-          <input type="color" name="primary" className="form-control-color" required />
-          <input type="color" name="secondary" className="form-control-color" required />
-        </WebForm>
-      </WebModal> */}
+      {/* New theme: two color pickers, opened by the + button above. They start at the active theme's colors;
+          keyed by the active theme so they reset to it after a theme is added or picked. */}
+      <Modal title="Add New Theme" show={modal} setShow={setModal}>
+        <Form key={props.theme.active} onSubmit={add} submitLabel="Create Theme" submitIcon="circle-plus">
+          <Field type="color" name="primary" label="Primary color" defaultValue={current?.primary.hex} required />
+          <Field type="color" name="secondary" label="Secondary color" defaultValue={current?.secondary.hex} required />
+          <p className="fs-sm opacity-75">Pick the same color twice for a single-color theme.</p>
+        </Form>
+      </Modal>
       {/* <Status status={status} setStatus={setStatus} /> */}
     </>
   )  
@@ -159,54 +161,6 @@ const ThemeBtn = (props) => {
   )
 }
 
-const NewTheme = (props) => {
-  const [ status, setStatus ] = useState({ 
-    active: false,
-    msg: '',
-    type: 'danger'
-  }, []);
-
-  const [ form, setForm ] = useState({ 
-    primary: '',
-    secondary: '',
-  }, []);
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setForm({
-      ...form,
-      [name]: value,
-    });
-  };
-
-  return (
-    <WebForm>
-      {Object.keys(form).map((key, index) => {
-        const name = key.charAt(0).toUpperCase() + key.slice(1);
-        return (
-          <div key={key}>
-            <label className="sr-only" for={key}>Username</label>
-            <div className="input-group">
-              <div className="input-group-prepend">
-                <div className="input-group-text">Select {name} Color</div>
-              </div>
-              <input 
-                type="color" 
-                id={key} 
-                className="form-control" 
-                value={form[key]} 
-                onChange={handleChange} 
-                name={key} />
-            </div>
-          </div>
-        )}
-      )}
-      <p>Select same color for primary and secondary colors for single colored theme.</p>
-      {/* <Status status={status} setStatus={setStatus} /> */}
-    </WebForm>
-  )
-}
-
 const CurrentAnim = (props) => {
   const MainAnim = animations[props.theme.animation];
   return <MainAnim {...props} />;
@@ -225,7 +179,7 @@ const AnimList = (props) => {
       {animations.map((Anim, i) => {
         return (
           <SwiperSlide key={`slide-${i}`}>
-            <div className="card pad grid cols-1 gap-2">
+            <div className="bg border round pad grid cols-1 gap-2">
               <Anim style={{height: '200px'}} id={`footer-${i}`} className="round" />
               <Button onClick={() => props.update({animation: i})}>
                 {props.theme.animation === i ? 'Selected' : 'Select'}

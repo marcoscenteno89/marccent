@@ -1,11 +1,10 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { WebForm, Input, Accordion, AccordionItem, Loading } from "./component";
+import { Form, Input, Accordion, AccordionItem, Loading, Button } from "./component";
 import { cloneDeep as cd } from 'lodash';
 import { get } from "@marccent/util";
 import { GraphWTRC } from './canvas';
 import dayjs from 'dayjs';
-import ListGroup from 'react-bootstrap/ListGroup';
 
 const url = process.env.NEXT_PUBLIC_CLIENT;
 
@@ -96,13 +95,13 @@ const StockLookup = () => {
    * @returns {void}
    */
 
-  const onClick = (data) => getTicker(data.search.value, data.search.ref);
   return (
     <div className="grid cols-1 gap-2">
       <Loading require={[data.ticker]}>
-        <WebForm className="single-line-form" callBack={onClick}>
-          <Input type="text" name="search" no-label placeholder={data.ticker} required />
-        </WebForm>
+        <Form className="single-line-form" onSubmit={(v, form) => getTicker(v.search, form.elements.search)}
+          submitLabel="Search" submitIcon="magnifying-glass">
+          <Input name="search" label="Ticker" placeholder={data.ticker} required />
+        </Form>
       </Loading>
       <div className="grid layout-2-1 gap-3">
         <div>
@@ -140,13 +139,14 @@ const TickerList = (props) => {
       <Accordion>
         {list && list.map((country, i) => (
           <AccordionItem key={i} header={`${country.name} (${country.list.length})`} className="bg">
-              <ListGroup className="bg">
-                {country.list.map((item, idx) => (
-                  <ListGroup.Item onClick={() => props.callBack(item.Symbol)} className="bg" key={idx}>
-                    {item.Name}
-                  </ListGroup.Item>
+              {/* One link-style button per ticker, lines between them (.divide). */}
+              <ul className="grid cols-1 gap-0 divide" style={{ '--pad': '.5rem 0' }}>
+                {country.list.map((item) => (
+                  <li key={item.Symbol} className="pad">
+                    <Button onClick={() => props.callBack(item.Symbol)}>{item.Name}</Button>
+                  </li>
                 ))}
-              </ListGroup>
+              </ul>
           </AccordionItem>
         ))}
       </Accordion>

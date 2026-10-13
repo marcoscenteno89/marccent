@@ -22,11 +22,11 @@ export default function Header() {
     <header ref={header} className="cq bg border-bottom sticky-md-top">
       <div className="wrap wrap-fluid grid layout-ends items-center gap-2 pad">
         <Link href="/" className="menu-link fs-md fw-bold">Marccent</Link>
-        <Menu items={main} label="Main" className="divide" />
+        <Menu items={main} label="Main" className="divide"/>
         <div className="grid auto-cols items-center gap-2 col-last">
-          <Menu items={social} label="Social" iconOnly className="divide" />
-          <GlassModeWT />
-          <ThemeModeWT />
+          <Menu items={social} label="Social" iconOnly layout="auto-cols cols-center" className="divide"/>
+          <GlassModeWT/>
+          <ThemeModeWT/>
           <Button icon="brush" href="#footer">Theme</Button>
         </div>
       </div>

@@ -4,7 +4,7 @@ import Script from "next/script";
 import * as Sentry from "@sentry/react";
 import { Integrations } from "@sentry/tracing";
 import GA4React from 'ga-4-react';
-import './styles/bootstrap.scss';
+import './styles/base.css';
 import './styles/settings.css';
 import './styles/theme.css';
 import './styles/grid.css';

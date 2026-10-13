@@ -52,6 +52,14 @@
   grid-template-columns: subgrid;
 }
 
+/* Pairs: rows of two parts with the first column lined up, as wide as the widest first part (form labels,
+   <dl> terms, stat names). A .sub-x child snaps its two parts to the columns (the card subgrid, sideways);
+   any other child spans the full row. column-gap 0 keeps the two parts joined; rows keep the gap.
+   Must come after .grid. */
+.pairs { grid-template-columns: auto minmax(0, 1fr); column-gap: 0; }
+.pairs > * { grid-column: 1 / -1; }
+.pairs > .sub-x { grid-template-columns: subgrid; } /* outranks a child's own columns (e.g. .field) */
+
 /* Gap scale. Units are required: a bare 0 would break the width math. Must come after .grid. */
 .gap-0 { --gap: 0rem; }
 .gap-1 { --gap: .25rem; }
@@ -136,6 +144,8 @@
 
 /* Text elements inside a grid drop their default margins; the grid's gap spaces them instead. */
 :is(.grid, .sub, .sub-x) > :is(h1, h2, h3, h4, h5, h6, p, ul, ol, dl, hr, figure, blockquote) { margin: 0; }
+/* A list that is itself a grid is a layout, not running text: no bullets, no indent. */
+:is(ul, ol):is(.grid, .sub, .sub-x) { padding: 0; list-style: none; }
 
 @container (min-width: 40rem) {
   .layout-2-1 { grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); }

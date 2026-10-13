@@ -5,7 +5,6 @@ import { ThemeContext } from "@/components/context";
 const BootstrapClient = () => {
   const { theme } = useContext(ThemeContext);
   useEffect( () => {
-    require('bootstrap/dist/js/bootstrap.min.js');
     if (theme) {
       const pmode = theme.is_dark ? theme.primary().darker : theme.primary().lighter;
       const prev = theme.is_dark ? theme.primary().lighter : theme.primary().darker;

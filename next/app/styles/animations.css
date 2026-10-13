@@ -22,8 +22,21 @@
 .toast { animation: toast-in .15s linear; }
 @keyframes toast-in { from { opacity: 0; } }
 
+/* MODAL OPEN (Modal in components/client/component.js): fades in and slides down, like Bootstrap's. */
+.modal[open] { animation: modal-in .3s ease-out; }
+.modal[open]::backdrop { animation: toast-in .15s linear; } /* toast-in is a plain fade */
+@keyframes modal-in { from { opacity: 0; translate: 0 -50px; } }
+
+/* SPINNER PULSE (Loading in components/client/component.js), like Bootstrap's spinner-grow. Kept under reduced
+   motion (it says the page is busy), just slower. */
+.spinner { animation: spinner-grow .75s linear infinite; }
+@keyframes spinner-grow { 0% { transform: scale(0); } 50% { opacity: 1; transform: none; } }
+
 @media (prefers-reduced-motion: reduce) {
-  .toast { animation: none; }
+  .spinner { animation-duration: 1.5s; }
+  .toast,
+  .modal[open],
+  .modal[open]::backdrop { animation: none; }
   .accordion-item::details-content,
   .accordion-item > .accordion-header::after { transition: none; } /* outranks the caret transition in components.css */
 }

@@ -1,4 +1,3 @@
-import Image from 'react-bootstrap/Image';
 import Markdown from '@/components/server/markdown';
 import { about } from '@/components/server/content';
 
@@ -10,7 +9,7 @@ export default function About() {
       <div className="wrap bg grid cols-1 gap-0 divide">
 
         <div className="grid layout-1-3 gap-3 items-center pad">
-          <Image src={about.photo.src} className="img-fluid" alt={about.photo.alt} />
+          <img src={about.photo.src} className="img-fluid" alt={about.photo.alt} />
           <div className="grid cols-1 gap-2">
             <h4>{about.greeting}</h4>
             <h1>{about.title}</h1>
@@ -21,7 +20,7 @@ export default function About() {
         <div className="grid layout-1-2 gap-0 divide">
           <div className="grid cols-1 gap-2 content-start pad">
             <h4>{about.skillsTitle}</h4>
-            <ul className="list-unstyled grid cols-1 gap-0 divide" style={{ '--pad': '.5rem' } as React.CSSProperties}>
+            <ul className="grid cols-1 gap-0 divide" style={{ '--pad': '.5rem' } as React.CSSProperties}>
               {about.skills.map(skill => <li key={skill} className="pad">{skill}</li>)}
             </ul>
           </div>
@@ -29,7 +28,7 @@ export default function About() {
             <div className="pad">
               <Markdown text={about.job.header} />
             </div>
-            <ul className="list-unstyled grid cols-1 gap-0 divide" style={{ '--pad': '.5rem' } as React.CSSProperties}>
+            <ul className="grid cols-1 gap-0 divide" style={{ '--pad': '.5rem' } as React.CSSProperties}>
               {about.job.duties.map(duty => <li key={duty} className="pad">{duty}</li>)}
             </ul>
           </div>

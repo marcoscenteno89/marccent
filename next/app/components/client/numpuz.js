@@ -1,7 +1,6 @@
 'use client';
 import React, { Component, Fragment } from "react";
-import Alert from 'react-bootstrap/Alert';
-import { Counter, cx, Button } from "./component";
+import { Counter, cx, Button, Alert } from "./component";
 import { withT } from "./hoc";
 
 class NumPuz extends Component {
@@ -189,7 +188,7 @@ class NumPuz extends Component {
               col={grid[0].length} />
           )}
         </div>
-        <Alert key="numpuz-info" variant="primary">{this.state.status}</Alert>
+        <Alert variant="primary">{this.state.status}</Alert>
       </div>
     )
   }

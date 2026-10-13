@@ -166,50 +166,57 @@ a:hover { color: var(--link-hover); }
   background-image: radial-gradient(circle at center, var(--mc-primary), var(--mc-secondary)) !important;
 }
 
-/* ALERTS
-   REMOVABLE (with Bootstrap): the .alert-* and .pagination rules below only feed
-   colors into Bootstrap's --bs-* variables. */
-.alert-primary {
-  --bs-alert-bg: var(--mc-primary-bg-subtle);
-  --bs-alert-border-color: var(--mc-primary-border-subtle);
-  --bs-alert-color: var(--mc-primary-text-emphasis)
-}
+/* ALERTS colors (layout in components.css): text, background and border from each color's tokens. */
+.alert-primary { color: var(--primary-emphasis); background-color: var(--primary-subtle); border-color: var(--primary-border); }
+.alert-secondary { color: var(--secondary-emphasis); background-color: var(--secondary-subtle); border-color: var(--secondary-border); }
+.alert-success { color: var(--success-emphasis); background-color: var(--success-subtle); border-color: var(--success-border); }
+.alert-info { color: var(--info-emphasis); background-color: var(--info-subtle); border-color: var(--info-border); }
+.alert-warning { color: var(--warning-emphasis); background-color: var(--warning-subtle); border-color: var(--warning-border); }
+.alert-danger { color: var(--danger-emphasis); background-color: var(--danger-subtle); border-color: var(--danger-border); }
+.alert-light { color: var(--light-emphasis); background-color: var(--light-subtle); border-color: var(--light-border); }
+.alert-dark { color: var(--dark-emphasis); background-color: var(--dark-subtle); border-color: var(--dark-border); }
+.alert-link { color: inherit; font-weight: 700; }
 
-.alert-primary .alert-link {
+/* MODAL colors (layout in components.css). */
+.modal {
+  color: var(--body-color);
+  background-color: var(--body-bg);
+  border-color: var(--border-subtle);
+  box-shadow: 0 .5rem 1rem rgb(0 0 0 / .15);
+}
+.modal::backdrop { background-color: rgb(0 0 0 / .5); }
+
+/* PAGINATION colors (layout in components.css), same as the old Bootstrap pagination. */
+.page-link {
   color: var(--mc-primary-text-emphasis);
+  background-color: transparent; /* no background by default: the surface behind shows through */
+  transition: color .15s, background-color .15s;
 }
+.page-link:hover:not(:disabled) { background-color: var(--muted-bg); }
+.page-link[aria-current] { color: #fff; background-color: var(--mc-primary); } /* current page or step */
+.page-link:disabled { color: var(--muted-color); }
 
-.alert-secondary {
-  --bs-alert-bg: var(--mc-secondary-bg-subtle);
-  --bs-alert-border-color: var(--mc-secondary-border-subtle);
-  --bs-alert-color: var(--mc-secondary-text-emphasis)
-}
-
-.alert-secondary .alert-link {
-  color: var(--mc-secondary-text-emphasis);
-}
-
-/* PAGINATION */
-.pagination {
-  --bs-pagination-active-bg: var(--mc-primary);
-  --bs-pagination-color: var(--mc-primary-text-emphasis);
-  --bs-pagination-active-border-color: var(--mc-primary);
-}
+/* FORMS colors (layout in components.css), same as Bootstrap's form-control / input-group-text. */
+.input { color: var(--body-color); background-color: var(--body-bg); border-color: var(--border-color); }
+.input::placeholder { color: var(--muted-color); opacity: 1; }
+.input:focus { border-color: var(--focus-border); box-shadow: 0 0 0 .25rem var(--focus-ring); }
+.input:user-invalid { border-color: var(--danger); } /* only after the user touched it or tried to submit */
+.field-label { color: var(--body-color); background-color: var(--muted-bg); border-color: var(--border-color); }
 
 /* ACCORDION colors (layout in components.css). */
 .accordion-header:hover { background-color: var(--primary-subtle); }
-.accordion-item[open] > .accordion-header { background-color: var(--mc-secondary); color: var(--bs-body-color); }
+.accordion-item[open] > .accordion-header { background-color: var(--mc-secondary); color: var(--body-color); }
 
 /* TOASTS colors (layout in components.css): the old Bootstrap toast look, translucent body background. */
 .toast {
-  background-color: rgba(var(--bs-body-bg-rgb), .85);
-  border-color: var(--bs-border-color-translucent);
+  background-color: rgba(var(--body-bg-rgb), .85);
+  border-color: var(--border-subtle);
   box-shadow: 0 .5rem 1rem rgb(0 0 0 / .15);
 }
-.toast-header {
-  color: var(--bs-secondary-color);
-  background-color: rgba(var(--bs-body-bg-rgb), .85);
-  border-bottom-color: var(--bs-border-color-translucent);
+.toast > .header {
+  color: var(--muted-color);
+  background-color: rgba(var(--body-bg-rgb), .85);
+  border-bottom-color: var(--border-subtle);
 }
 
 /* BUTTONS: colors (layout lives in components.css). Set the --btn-* values to recolor a button
@@ -245,13 +252,13 @@ a:hover { color: var(--link-hover); }
 
 /* SURFACES (.bg panels, light/dark/glass) */
 [data-bs-theme=light] .bg {
-  background-color: rgba(var(--bs-light-rgb), 1);
-  border-color: rgba(var(--bs-light-rgb), 0.7);
+  background-color: rgba(var(--light-rgb), 1);
+  border-color: rgba(var(--light-rgb), 0.7);
 }
 
 [data-bs-theme=dark] .bg {
-  background-color: rgba(var(--bs-dark-rgb), 1);
-  border-color: rgba(var(--bs-dark-rgb), 0.7);
+  background-color: rgba(var(--dark-rgb), 1);
+  border-color: rgba(var(--dark-rgb), 0.7);
 }
 
 .glass[data-bs-theme=light] .bg,
@@ -261,9 +268,9 @@ a:hover { color: var(--link-hover); }
 }
 
 .glass[data-bs-theme=light] .bg {
-  background-color: rgba(var(--bs-light-rgb), var(--glass-opacity)) !important;
+  background-color: rgba(var(--light-rgb), var(--glass-opacity)) !important;
 }
 
 .glass[data-bs-theme=dark] .bg {
-  background-color: rgba(var(--bs-dark-rgb), var(--glass-opacity)) !important;
+  background-color: rgba(var(--dark-rgb), var(--glass-opacity)) !important;
 }

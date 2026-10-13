@@ -28,12 +28,3 @@
   --glass-blur: 20px;
   --glass-opacity: 0.4;
 }
-
-/* REMOVABLE (with Bootstrap): feeds the settings into Bootstrap. Declared on [data-bs-theme] too, because Bootstrap
-   re-declares its defaults on <body data-bs-theme>, which would hide a :root-only value. */
-:root,
-[data-bs-theme] {
-  --bs-body-font-family: var(--font-body);
-  --bs-body-font-size: var(--font-size);
-  --bs-border-radius: var(--radius);
-}
