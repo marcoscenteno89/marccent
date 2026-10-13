@@ -1,8 +1,7 @@
 'use client'
 import React, { Component, Fragment } from "react";
-import { Counter, Button } from "./component";
+import { Counter, Button, Alert } from "./component";
 import { Bomb, Flag } from "@/components/sac";
-// import { Alert } from "./component";
 import { random } from 'lodash';
 
 class MineSweeper extends Component {
@@ -281,7 +280,7 @@ class MineSweeper extends Component {
               onContextMenu={this.onContextMenu} />
           )}
         </div>
-        {/* <Alert variant="info" active={active}>{this.state.status}</Alert> */}
+        <Alert variant="info" active={active}>{this.state.status}</Alert>
       </div>
     )        
   }

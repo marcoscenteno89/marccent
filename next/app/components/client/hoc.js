@@ -15,18 +15,6 @@ const withLoader = (Component) => {
   return WithLoaderComponent;
 }
 
-const withComponent = (Component) => {
-  const WithComponentComponent = (props) => {
-    // const { theme } = useContext(ThemeContext);
-    return ( 
-      <Loading require={[theme]}>
-        <Component {...props} theme={theme} />
-      </Loading>
-    );
-  }
-  return WithComponentComponent;
-}
-
 const withThemeRead = (Component) => {
   const WithThemeReadComponent = (props) => {
     const { theme } = useContext(ThemeContext);

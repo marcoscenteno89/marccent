@@ -419,7 +419,7 @@ const ContactUsForm = ({ className = 'grid cols-1 gap-2', style = { maxWidth: '4
   const [ result, setResult ] = useState(null); // { variant, msg } after a send
 
   const send = async (values, form) => {
-    const res = await post(`${process.env.NEXT_PUBLIC_SERVERURL}message/`, values);
+    const res = await post(`${process.env.NEXT_PUBLIC_SERVER}message/`, values);
     // post resolves to the JSON body with ok added, or to the Error itself when the request fails.
     if (res?.ok) {
       setResult({ variant: 'success', msg: typeof res.response === 'string' ? res.response : 'Thanks! Your message was sent.' });

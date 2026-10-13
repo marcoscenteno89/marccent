@@ -271,7 +271,6 @@ const Graph = (props) => {
   const rgb = props.theme.rev().rgb;
   const [ grid, setGrid ] = useState(null);
   const [ selected, setSelected ] = useState(null);
-  const [ cell ] = useState({x: p.width / data.length, y: p.height / base});
 
   // Set canvas properties, only runs once
   useEffect(() => {
@@ -325,9 +324,10 @@ const Graph = (props) => {
         if (p.mouseX > 0 && p.mouseX < p.width && p.mouseY > 0 && p.mouseY < p.height) {
           new Line(c, p.createVector(0, p.mouseY), p.createVector(p.width, p.mouseY), false);
           new Line(c, p.createVector(p.mouseX, 0), p.createVector(p.mouseX, p.height), false);
-          let x = p.floor(p.mouseX / cell.x);
-          let y = p.floor(p.mouseY / cell.y);
-          setSelected(grid[x][y]);
+          // Cell size from the current data, so it stays right after switching tickers.
+          const x = p.floor(p.mouseX / (p.width / data.length));
+          const y = p.floor(p.mouseY / (p.height / base));
+          setSelected(grid[x]?.[y] ?? null);
         } else {
           setSelected(null);
         }

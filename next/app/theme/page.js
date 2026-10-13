@@ -3,6 +3,8 @@ import { useContext } from "react";
 // import { WebForm } from "@/components/client/component";
 import { Form, Field, StepForm, Step, Button, Loading, Accordion, AccordionItem, Alert } from "@/components/client/component";
 import { ThemeContext } from "@/components/context";
+import { apps } from "@/components/server/list";
+import AppCard from "@/components/server/app-card";
 import MapWTR from "@/components/client/map";
 
 export default function ThemePage() {
@@ -24,7 +26,6 @@ export default function ThemePage() {
     <section className="wrap wrap-fluid grid cols-1 gap-5">
       <div className="wrap bg border round pad">
         <h1>Theme Customizer</h1>
-        <div className="square bg-primary">this is a square</div>
         <div><hr/></div>
         <p>Unleash your creativity and make this website truly your own. With the interactive Theme Customizer, you can experiment with different color palettes and see the changes reflected across various components in real-time.</p>
         <h3>Customize Your Experience</h3>
@@ -36,13 +37,11 @@ export default function ThemePage() {
       <div className="wrap bg border round pad grid cols-1 gap-3">
         <div className="pad border round bg">
           <h3>Buttons</h3>
-          {[
-            'primary', 'secondary', 'success', 'danger', 'warning', 'info', 'light', 'dark',
-            'outline-primary', 'outline-secondary', 'outline-success', 'outline-danger', 
-            'outline-warning', 'outline-info', 'outline-light', 'outline-dark'
-          ].map((variant) => (
-            <Button key={variant}>Select</Button>
-          ))}
+          <div className="grid auto-cols gap-2">
+            <Button icon="star">Icon and label</Button>
+            <Button icon="star" aria-label="Icon only" />
+            <Button>Text link</Button>
+          </div>
         </div>
 
         <div className="pad border round">
@@ -200,37 +199,9 @@ export default function ThemePage() {
 
         <div className="pad border round bg">
           <h3>App List</h3>
-          <div className="grid cols-3 pad">
-            <div className="bg border round grid gap-0">
-              <div className="bg-primary pad text-center">
-                <i className="h1 fa-solid fa-bomb"></i>
-              </div>
-              <div className="body grid gap-2">
-                <h5>MineSweeper</h5>
-                <p>Minesweeper is a single-player logic-based computer game played on a grid of squares. The objective is to clear the grid without detonating any hidden &quot;mines&quot; scattered throughout. Safe squares display numbers indicating the total number of adjacent mines. Players use these clues to strategically identify and flag the mines, progressing through the game by making calculated decisions based on the revealed information. The game offers different difficulty levels and is known for its challenging and strategic gameplay</p>
-                <Button icon="arrow-right" href="/apps/minesweeper">Go to Minesweeper</Button>
-              </div>
-            </div>
-              <div className="bg border round grid gap-0">
-                <div className="bg-primary pad text-center">
-                  <i className="h1 fa-solid fa-hashtag"></i>
-                </div>
-                <div className="body grid gap-2">
-                  <h5>Number Puzzle</h5>
-                  <p>A number puzzle is an educational activity that helps children learn and practice various math concepts such as number sequencing, counting, and recognizing numerals. These puzzles often involve matching numbers, counting dots, or arranging number pieces in the correct order. They are designed to enhance problem-solving and cognitive skills while making learning math more engaging for children. Number puzzles can cover a range of numbers, from 0 to 20, 1 to 100, or other specific number ranges.</p>
-                  <Button icon="arrow-right" href="/apps/numpuz">Go to Number Puzzle</Button>
-                </div>
-              </div>
-              <div className="bg border round grid gap-0">
-                <div className="bg-primary pad text-center">
-                  <i className="h1 fa-solid fa-temperature-half"></i>
-                </div>
-                <div className="body grid gap-2">
-                  <h5>Weather App</h5>
-                  <p>This weather app is a digital application that provides users with up-to-date weather information for their specific location or other selected locations. It typically offers details such as the current temperature, rain forecast, humidity, wind speed, air quality index, and sunrise/sunset times. Some weather apps also include features like hourly and 10-day forecasts, and maps to visualize weather patterns. These app is designed to help users plan their activities and make informed decisions based on the latest weather conditions</p>
-                  <Button icon="arrow-right" href="/apps/weather">Go to Weather App</Button>
-                </div>
-              </div>
+          {/* Same cards as the home and apps pages, from the one apps list. */}
+          <div className="grid cols-3">
+            {apps.map(app => <AppCard key={app.url} app={app} />)}
           </div>
         </div>
       </div>

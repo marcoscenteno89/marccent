@@ -1,12 +1,10 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { Form, Input, Accordion, AccordionItem, Loading, Button } from "./component";
+import { Form, Input, Accordion, AccordionItem, Loading, Button, Alert } from "./component";
 import { cloneDeep as cd } from 'lodash';
 import { get } from "@marccent/util";
 import { GraphWTRC } from './canvas';
 import dayjs from 'dayjs';
-
-const url = process.env.NEXT_PUBLIC_CLIENT;
 
 /**
  * StockLookup is a React component that displays ticker data from an API.
@@ -29,63 +27,38 @@ const StockLookup = () => {
   });
 
   useEffect(() => {
-    const t = setTimeout(() => getTicker('SP500', null), 2000);
-    return () => clearTimeout(t);
+    getTicker('SP500', null);
   }, []);
   
   /**
-   * Retrieves ticker data from the API and updates the component state.
-   * 
+   * Loads a ticker and shows it. On failure the current chart stays: from the search box the browser shows
+   * the message on the field (cleared on the next keystroke); on the first load the error replaces the chart.
+   *
    * @param {string} ticker - The ticker symbol.
-   * @param {HTMLElement} field - The input field element.
-   * @returns {void}
+   * @param {HTMLInputElement|null} field - The search input, or null on the first load.
    */
-
   const getTicker = (ticker, field) => {
-    const obj = {}
-    try {
-      get(`${url}api/stock_lookup/ticker/${ticker}/`).then(res => {
-        if (Array.isArray(res)) {
-          setErr(false);
-          const dt = res.filter(i => i.Close !== null).reverse();
-          if (dt.length > 0) {
-            // Convert date strings to date objects
-            const dates = [];
-            for (let i of dt) {
-              const dateArr = i.Date.split('/');
-              i.Date = dayjs(`${dateArr[1]}/${dateArr[0]}/${dateArr[2]}`);
-              dates.push(i.Date);
-            }
-
-            // Generate data object and set state
-            let min = dt.reduce((min, i) => i.Close < min.Close ? i : min).Close;
-            let max = dt.reduce((max, i) => i.Close > max.Close ? i : max).Close;
-            let range = (max - min) * 0.2;
-            obj.min = min - range;
-            obj.max = max + range;
-            obj.dateList = dates;
-            obj.data = dt;
-            obj.ticker = ticker;
-            setData(cd(obj));
-          } else {
-            if (field) {
-              // Display error message in input field
-              field.value = '';
-              field.placeholder = res[0].Symbol;
-              field.classList.add('bg-danger');
-            }
-          }
-        } else {
-          // Most likely a server error
-          setData(true);
-          setErr(true);
-        }
-      }); 
-    } catch (error) {
-      setData(true);
-      setErr(true);
-      console.error(error);
-    }
+    const fail = (msg) => {
+      if (!field) return setErr(msg);
+      field.setCustomValidity(msg);
+      field.reportValidity();
+      field.addEventListener('input', () => field.setCustomValidity(''), { once: true });
+    };
+    // get() resolves to the JSON body, or to an error object when the request fails; only an array is data.
+    get(`/api/stock_lookup/ticker/${ticker}/`).then(res => {
+      const dt = Array.isArray(res) ? res.filter(i => i.Close !== null).reverse() : [];
+      if (!dt.length) return fail(`No price data for "${ticker}".`);
+      // Convert date strings (DD/MM/YYYY) to date objects
+      for (let i of dt) {
+        const [ day, month, year ] = i.Date.split('/');
+        i.Date = dayjs(`${month}/${day}/${year}`);
+      }
+      const min = Math.min(...dt.map(i => i.Close));
+      const max = Math.max(...dt.map(i => i.Close));
+      const range = (max - min) * 0.2;
+      setErr(false);
+      setData(cd({ min: min - range, max: max + range, dateList: dt.map(i => i.Date), data: dt, ticker }));
+    }).catch(() => fail(`Couldn't load "${ticker}". Please try again later.`));
   };
 
   /**
@@ -94,6 +67,9 @@ const StockLookup = () => {
    * @param {Object} data - The data object containing search value and reference.
    * @returns {void}
    */
+
+  // First load failed: say so instead of showing spinners forever.
+  if (err && !data.ticker) return <Alert variant="danger">{err}</Alert>;
 
   return (
     <div className="grid cols-1 gap-2">
@@ -127,7 +103,7 @@ const TickerList = (props) => {
   const [ list, setList ] = useState(null);
   useEffect(() => {
     try {
-      get(`${url}api/stock_lookup/ticker-list/`).then(res => {
+      get('/api/stock_lookup/ticker-list/').then(res => {
         if (Array.isArray(res))  setList(res);
       });
     } catch (error) {
