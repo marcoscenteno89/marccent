@@ -17,7 +17,7 @@ import Header from './templates/header';
 import Footer from './templates/footer';
 import { Body } from './components/client/theme';
 import { ThemeProvider, ToastProvider } from "./components/context";
-import { WebToast } from "./components/client/component";
+import { Toast } from "./components/client/component";
 import { site } from '@/components/server/content';
 
 // const inter = Inter({ subsets: ['latin'] })
@@ -59,7 +59,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             {/* Side gutter and the space between sections live here once; sections are single boxes. */}
             <main className="wrap wrap-fluid grid cols-1 gap-5">{children}</main>
             <Footer />
-            <WebToast />
+            <Toast />
             <BootstrapClient />
             <Script 
               strategy="lazyOnload"

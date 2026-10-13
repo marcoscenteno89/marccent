@@ -18,7 +18,12 @@
 }
 .accordion-item[open]::details-content { block-size: auto; }
 
+/* TOAST FADE-IN (Toast in components/client/component.js), like Bootstrap's .fade. */
+.toast { animation: toast-in .15s linear; }
+@keyframes toast-in { from { opacity: 0; } }
+
 @media (prefers-reduced-motion: reduce) {
+  .toast { animation: none; }
   .accordion-item::details-content,
   .accordion-item > .accordion-header::after { transition: none; } /* outranks the caret transition in components.css */
 }

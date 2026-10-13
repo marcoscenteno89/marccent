@@ -1,7 +1,7 @@
 'use client';
 import React, { Component, useState, useRef, useEffect, useContext, useCallback, useId } from 'react';
 import capitalize from 'lodash/capitalize';
-import { ToastContainer, Form, Toast, Modal, Alert, Pagination } from 'react-bootstrap';
+import { Form, Modal, Alert, Pagination } from 'react-bootstrap';
 // import ToastContainer from 'react-bootstrap/ToastContainer';
 // import Form from 'react-bootstrap/Form';
 // import Toast from 'react-bootstrap/Toast';
@@ -133,7 +133,7 @@ const Button = ({ icon = false, href, className, children, ...rest }) => {
 
 /* ---------- components ---------- */
 
-const WebToast = () => {
+const Toast = () => {
   const { toast, setToast } = useContext(ToastContext);
   const [counter, setCounter] = useState(0);
   const remove = (i) => setToast(toast.remove(i));
@@ -151,17 +151,21 @@ const WebToast = () => {
   // console.log(toast)
   return (
     <Loading require={[toast]}>
-      <ToastContainer className="position-fixed bottom-0 end-0 pad">
+      {/* Toasts (replaces react-bootstrap's): a grid stack in the bottom-right corner, newest last.
+          Layout in components.css, colors in theme.css, fade-in in animations.css. */}
+      <div className="toasts pad">
         {toast.list.map((item, i) => (
-          <Toast key={`toast-${i}`} bg={item.type} onClose={() => remove(i)}>
-            <Toast.Header>
-              <strong className="me-auto">Marccent</strong>
+          <div key={`${+item.time}-${item.msg}`} className={cx('toast', item.type && `bg-${item.type}`)}
+            role="alert" aria-live="assertive" aria-atomic="true">
+            <div className="toast-header">
+              <strong>Marccent</strong>
               <small>{dayjs(item.time).fromNow()}</small>
-            </Toast.Header>
-            <Toast.Body>{item.msg}</Toast.Body>
-          </Toast>
+              <button type="button" className="btn-close" aria-label="Close" onClick={() => remove(i)} />
+            </div>
+            <div className="toast-body">{item.msg}</div>
+          </div>
         ))}
-      </ToastContainer>
+      </div>
     </Loading>
   )
 }
@@ -466,7 +470,7 @@ const AccordionItem = (props) => {
 
 export { 
   cx, Icon, Button, Loading, WebAlert, WebModal,
-  WebForm, WebToast, Blur, Clock,
+  WebForm, Toast, Blur, Clock,
   WebPagination, Counter, ContactUsForm, Input,
   Accordion, AccordionItem
 }

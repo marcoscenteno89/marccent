@@ -37,7 +37,7 @@ $utilities: map-remove($utilities, "padding", "padding-x", "padding-y", "padding
 @import "bootstrap/scss/progress";
 @import "bootstrap/scss/list-group";
 @import "bootstrap/scss/close";
-@import "bootstrap/scss/toasts";
+// @import "bootstrap/scss/toasts"; // replaced by Toast (components/client/component.js)
 @import "bootstrap/scss/modal";
 // @import "bootstrap/scss/tooltip"; // unused
 // @import "bootstrap/scss/popover"; // unused

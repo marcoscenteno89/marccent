@@ -200,6 +200,18 @@ a:hover { color: var(--link-hover); }
 .accordion-header:hover { background-color: var(--primary-subtle); }
 .accordion-item[open] > .accordion-header { background-color: var(--mc-secondary); color: var(--bs-body-color); }
 
+/* TOASTS colors (layout in components.css): the old Bootstrap toast look, translucent body background. */
+.toast {
+  background-color: rgba(var(--bs-body-bg-rgb), .85);
+  border-color: var(--bs-border-color-translucent);
+  box-shadow: 0 .5rem 1rem rgb(0 0 0 / .15);
+}
+.toast-header {
+  color: var(--bs-secondary-color);
+  background-color: rgba(var(--bs-body-bg-rgb), .85);
+  border-bottom-color: var(--bs-border-color-translucent);
+}
+
 /* BUTTONS: colors (layout lives in components.css). Set the --btn-* values to recolor a button
    (default: transparent, current text color). */
 .btn {

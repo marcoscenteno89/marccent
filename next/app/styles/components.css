@@ -165,3 +165,46 @@
 
 /* Open item: a line between header and body. */
 .accordion-item[open] > .accordion-header { border-bottom: 1px solid var(--bs-border-color); }
+
+/* TOASTS (Toast in components/client/component.js; replaces Bootstrap's toasts module).
+   Sizes match the old Bootstrap toast with our overrides. Colors live in theme.css. */
+.toasts {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  z-index: 1090;
+  display: grid;
+  gap: .3rem;
+  width: max-content;
+  max-width: 100%;
+  pointer-events: none; /* clicks pass through the empty corner; the toasts themselves take them */
+}
+
+.toast {
+  width: 250px;
+  max-width: 100%;
+  font-size: .875rem;
+  pointer-events: auto;
+  background-clip: padding-box;
+  border: 1px solid;
+  border-radius: var(--radius);
+  overflow: hidden; /* header background follows the rounded corners */
+}
+
+/* Title takes the row; time and close button sit at the end. */
+.toast-header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: .5rem;
+  padding: .3rem .5rem;
+  font-size: .75rem;
+  background-clip: padding-box;
+  border-bottom: 1px solid;
+}
+
+.toast-body {
+  padding: .3rem .5rem;
+  font-size: .7rem;
+  overflow-wrap: break-word;
+}
