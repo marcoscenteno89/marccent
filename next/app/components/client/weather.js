@@ -2,7 +2,8 @@
 import React, { useEffect, useState, useContext, useCallback } from "react";
 import { get } from "@marccent/util";
 import dynamic from 'next/dynamic';
-import { Clock, Loading, Form, Input, Pagination, Accordion, AccordionItem } from "./component";
+import { Clock, Form, Pagination } from "./component";
+import { Loading, Input, Accordion, AccordionItem } from "@/components/server/component";
 import MapWTR from "./map";
 import dayjs from "dayjs";
 const url = process.env.NEXT_PUBLIC_OPENWEATHERURL;

@@ -2,7 +2,7 @@
 import { useState, useEffect, useContext, useRef } from 'react';
 import { CanvasManager, canvasObserver } from "@marccent/util/canvas";
 import { ThemeContext, ToastContext } from "@/components/context";
-import { cx, Loading } from "./component";
+import { cx, Loading } from "@/components/server/component";
 
 const withLoader = (Component) => {
   const WithLoaderComponent = (props) => {

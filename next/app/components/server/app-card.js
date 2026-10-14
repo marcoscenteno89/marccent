@@ -1,4 +1,4 @@
-import { Button } from '@/components/client/component';
+import { Button } from '@/components/server/component';
 import Markdown from './markdown';
 
 /**

@@ -2,7 +2,7 @@
 import { useState, useMemo, useEffect, useRef } from "react";
 import { Loader } from '@googlemaps/js-api-loader';
 import { withTR } from "./hoc";
-import { cx } from "./component";
+import { cx } from "@/components/server/component";
 
 const Map = (props) => {
   const ref = useRef(null);

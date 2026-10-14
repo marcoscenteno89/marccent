@@ -1,6 +1,7 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { Form, Input, Accordion, AccordionItem, Loading, Button, Alert } from "./component";
+import { Form } from "./component";
+import { Input, Accordion, AccordionItem, Loading, Button, Alert } from "@/components/server/component";
 import { cloneDeep as cd } from 'lodash';
 import { get } from "@marccent/util";
 import { GraphWTRC } from './canvas';
@@ -69,7 +70,7 @@ const StockLookup = () => {
    */
 
   // First load failed: say so instead of showing spinners forever.
-  if (err && !data.ticker) return <Alert className="bg-secondary-lighter">{err}</Alert>;
+  if (err && !data.ticker) return <Alert tone="secondary">{err}</Alert>;
 
   return (
     <div className="grid cols-1 gap-2">

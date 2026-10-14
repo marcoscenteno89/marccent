@@ -1,7 +1,8 @@
 'use client';
 import { useContext } from "react";
 // import { WebForm } from "@/components/client/component";
-import { Form, Field, Input, StepForm, Step, Button, Loading, Accordion, AccordionItem, Alert } from "@/components/client/component";
+import { Form, StepForm, Step } from "@/components/client/component";
+import { Field, Input, Button, Loading, Accordion, AccordionItem, Alert } from "@/components/server/component";
 import { ThemeContext } from "@/components/context";
 import { apps } from "@/components/server/list";
 import AppCard from "@/components/server/app-card";
@@ -102,9 +103,9 @@ export default function ThemePage() {
 
         <div className="pad border round bg">
           <h3>Alerts</h3>
-          {['bg-primary-lighter', 'bg-secondary-lighter', 'bg-gradient-lighter'].map((color) => (
-            <Alert key={color} className={color}>
-              This is a {color} alert with{' '}
+          {[{ tone: 'primary' }, { tone: 'secondary' }, { className: 'bg-gradient-lighter' }].map((props) => (
+            <Alert key={props.tone ?? props.className} {...props}>
+              This is a {props.tone ?? props.className} alert with{' '}
               <a href="#" className="alert-link">an example link</a>. Give it a click if
               you like.
             </Alert>

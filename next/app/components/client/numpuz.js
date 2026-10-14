@@ -1,6 +1,7 @@
 'use client';
 import React, { Component, Fragment } from "react";
-import { Counter, cx, Button, Alert } from "./component";
+import { Counter } from "./component";
+import { cx, Button, Alert } from "@/components/server/component";
 import { withT } from "./hoc";
 
 class NumPuz extends Component {

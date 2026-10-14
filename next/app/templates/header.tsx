@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 import { ThemeModeWT, GlassModeWT } from '../components/client/theme';
-import { Button } from '@/components/client/component';
+import { Button } from '@/components/server/component';
 import { Menu, main, social } from './menus';
 
 // Layout only: grid.css classes; menu look lives in styles/components.css.

@@ -20,15 +20,16 @@
   --gradient-darker: linear-gradient(to right, var(--primary-darker), var(--secondary-darker));
 }
 
-/* BACKGROUNDS */
+/* BACKGROUNDS. The base ones follow the mode (lighter in light mode, darker in dark mode: --*-mode in PAGE COLORS),
+   so text on them stays readable; -lighter and -darker are fixed shades. */
 .bg-primary-lighter { background-color: var(--primary-lighter); }
-.bg-primary { background-color: var(--primary); }
+.bg-primary { background-color: var(--primary-mode); }
 .bg-primary-darker { background-color: var(--primary-darker); }
 .bg-secondary-lighter { background-color: var(--secondary-lighter); }
-.bg-secondary { background-color: var(--secondary); }
+.bg-secondary { background-color: var(--secondary-mode); }
 .bg-secondary-darker { background-color: var(--secondary-darker); }
 .bg-gradient-lighter { background-image: var(--gradient-lighter); }
-.bg-gradient { background-image: var(--gradient); }
+.bg-gradient { background-image: var(--gradient-mode); }
 .bg-gradient-darker { background-image: var(--gradient-darker); }
 
 /* TEXT. The gradient versions paint the gradient through the letters. */
@@ -64,6 +65,13 @@
   --link-hover: var(--primary-darker);
   --focus-ring: color-mix(in srgb, var(--primary) 25%, transparent); /* glow around focused controls */
   --focus-border: color-mix(in srgb, var(--primary) 50%, #fff);
+  /* Mode shades: the fill behind text (bg-primary / bg-secondary / bg-gradient, current page or step, Alert). Fills use the
+     lighter shade in light mode and the darker in dark mode; -text is the opposite shade, for text on that fill. */
+  --primary-mode: var(--primary-lighter);
+  --primary-mode-text: var(--primary-darker);
+  --secondary-mode: var(--secondary-lighter);
+  --secondary-mode-text: var(--secondary-darker);
+  --gradient-mode: var(--gradient-lighter);
   color-scheme: light;
 }
 
@@ -78,6 +86,11 @@
   --link: var(--primary-lighter);
   --link-hover: var(--primary);
   --focus-border: color-mix(in srgb, var(--primary) 50%, #000);
+  --primary-mode: var(--primary-darker);
+  --primary-mode-text: var(--primary-lighter);
+  --secondary-mode: var(--secondary-darker);
+  --secondary-mode-text: var(--secondary-lighter);
+  --gradient-mode: var(--gradient-darker);
   color-scheme: dark;
 }
 

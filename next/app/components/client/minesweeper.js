@@ -1,6 +1,7 @@
 'use client'
 import React, { Component, Fragment } from "react";
-import { Counter, Button, Alert } from "./component";
+import { Counter } from "./component";
+import { Button, Alert } from "@/components/server/component";
 import { Bomb, Flag } from "@/components/sac";
 import { random } from 'lodash';
 
