@@ -1,64 +1,61 @@
 'use client';
-import { useState, useMemo, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { Loader } from '@googlemaps/js-api-loader';
 import { withTR } from "./hoc";
 import { cx } from "@/components/server/component";
 
-const Map = (props) => {
-  const ref = useRef(null);
-  const { zoom, theme } = props;
-  const [center] = useState(props.center ? props.center : { lat: 43.49, lng: -112.034 });
-  const [map, setMap] = useState(null);
-  const mapStyles = MapStyles(theme);
-  const mapOptions = {
-    center: center,
-    zoom: zoom,
-    styles: mapStyles
-  };
+/*
+ * Google Map in the site's theme colors. The map is created once; theme, center and zoom changes update it in
+ * place (a new search re-centers it, a theme switch recolors it) instead of rebuilding it.
+ */
 
-  useEffect(() => {
-    const init = async () => {
-      const loader = new Loader({
-        apiKey: process.env.NEXT_PUBLIC_GOOGLE_API,
-        version: "weekly",
-        libraries: ["places"]
-      });
-      const { Map } = await loader.importLibrary('maps');
-      setMap(new Map(ref.current, mapOptions));
-    }
-    init();
-  }, [theme])
+const DEFAULT_CENTER = { lat: 43.49, lng: -112.034 }; // Idaho Falls
 
-  useMemo(() => {
-    if (map) {
-      map.setCenter(new window.google.maps.LatLng(center));
-      map.setOptions({ styles: mapStyles});
-      setMap(map);
-    }
-  }, [theme, center, zoom])
-
-  return <div {...props} className={cx(props.className, 'map')} require={{theme, map}}  ref={ref}></div>;
+// One loader per page: the Maps script loads once however many maps there are (the loader also refuses a
+// second instance with different options).
+let loader = null;
+const loadMaps = () => {
+  loader ??= new Loader({ apiKey: process.env.NEXT_PUBLIC_GOOGLE_API, version: "weekly" });
+  return loader.importLibrary('maps');
 }
 
-const MapStyles = (theme) => {
-  const subtleA = theme.is_dark ? theme.dark.lighter[1].hex : theme.light.darker[1].hex;
-  const subtleB = theme.is_dark ? theme.dark.lighter[2].hex : theme.light.darker[2].hex;
-  const subtleC = theme.is_dark ? theme.dark.lighter[3].hex : theme.light.darker[3].hex;
-  const subtleD = theme.is_dark ? theme.dark.lighter[4].hex : theme.light.darker[4].hex;
-  const mode = theme.is_dark ? theme.dark.hex : theme.light.hex;
-  const primary = theme.themeList[theme.active].primary.hex;
-  const secondary = theme.themeList[theme.active].secondary.hex;
-  const primarySubtle = theme.themeList[theme.active].primary.lighter[4];
+const Map = ({ center = DEFAULT_CENTER, zoom = 10, theme, className, style }) => {
+  const ref = useRef(null);
+  const map = useRef(null);
+  const position = { lat: center.lat, lng: center.lng };
+
+  useEffect(() => {
+    let cancelled = false;
+    loadMaps().then(({ Map }) => {
+      if (!cancelled) map.current = new Map(ref.current, { center: position, zoom, styles: mapStyles(theme) });
+    });
+    return () => { cancelled = true; };
+  }, []);
+  useEffect(() => { map.current?.setOptions({ styles: mapStyles(theme) }); }, [theme]);
+  useEffect(() => {
+    map.current?.setCenter(position);
+    map.current?.setZoom(zoom);
+  }, [center.lat, center.lng, zoom]);
+
+  return <div ref={ref} className={cx(className, 'map')} style={style} />;
+}
+
+// A theme shade, falling back to the last one (util 2.x skips repeated shades, so lists can be short).
+const shade = (list, i) => (list[i] ?? list.at(-1))?.hex;
+
+const mapStyles = (theme) => {
+  const subtle = (i) => (theme.is_dark ? shade(theme.dark.lighter, i) : shade(theme.light.darker, i));
+  const { primary, secondary } = theme.themeList[theme.active];
   return [
-    {elementType: 'landscape', elementType: 'geometry', stylers: [{color: mode}]},
-    {featureType: 'poi', elementType: 'geometry', stylers: [{color: subtleA}]},
-    {featureType: 'poi.park', elementType: 'geometry', stylers: [{color: subtleB}]},
-    {featureType: 'road', elementType: 'geometry', stylers: [{color: secondary}]},
-    {featureType: 'transit', elementType: 'geometry', stylers: [{color: primary}]},
-    {featureType: 'water', elementType: 'geometry', stylers: [{color: subtleD}]},
-    {elementType: 'labels.text.stroke', stylers: [{color: primarySubtle}]},
-    {elementType: 'labels.text.fill', stylers: [{color: primary}]},
-  ]
+    { elementType: 'geometry', stylers: [{ color: theme.mode().hex }] },
+    { featureType: 'poi', elementType: 'geometry', stylers: [{ color: subtle(1) }] },
+    { featureType: 'poi.park', elementType: 'geometry', stylers: [{ color: subtle(2) }] },
+    { featureType: 'road', elementType: 'geometry', stylers: [{ color: secondary.hex }] },
+    { featureType: 'transit', elementType: 'geometry', stylers: [{ color: primary.hex }] },
+    { featureType: 'water', elementType: 'geometry', stylers: [{ color: subtle(4) }] },
+    { elementType: 'labels.text.stroke', stylers: [{ color: shade(primary.lighter, 4) }] },
+    { elementType: 'labels.text.fill', stylers: [{ color: primary.hex }] },
+  ];
 }
 
 const MapWTR = withTR(Map);

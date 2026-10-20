@@ -1,16 +1,16 @@
 import Markdown from '@/components/server/markdown';
 import { about } from '@/components/server/content';
 
-// Grid only: no borders or radius; lines between parts come from .divide (globals.css).
+// Grid only: no borders or radius; lines between parts come from .divide (theme.css).
 // Parts sit flush (gap-0) and carry their own .pad, so each line falls midway between them.
 export default function About() {
   return (
     <section className="wrap wrap-fluid">
       <div className="wrap bg grid cols-1 gap-0 divide">
 
-        <div className="grid layout-1-3 gap-3 items-center pad">
+        <div className="grid layout-1-3 items-center pad">
           <img src={about.photo.src} className="img-fluid" alt={about.photo.alt} />
-          <div className="grid cols-1 gap-2">
+          <div className="grid cols-1 gap-sm">
             <h4>{about.greeting}</h4>
             <h1>{about.title}</h1>
             <Markdown text={about.intro} />
@@ -18,7 +18,7 @@ export default function About() {
         </div>
 
         <div className="grid layout-1-2 gap-0 divide">
-          <div className="grid cols-1 gap-2 content-start pad">
+          <div className="grid cols-1 gap-sm content-start pad">
             <h4>{about.skillsTitle}</h4>
             <ul className="grid cols-1 gap-0 divide" style={{ '--pad': '.5rem' } as React.CSSProperties}>
               {about.skills.map(skill => <li key={skill} className="pad">{skill}</li>)}

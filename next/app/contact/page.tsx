@@ -8,7 +8,7 @@ export default function Contact() {
 
   return (
     <section className="wrap wrap-fluid bg-gradient">
-      <div className="wrap bg border round shadow-md overflow-hidden">
+      <div className="wrap bg border round shadow overflow-hidden">
         <div className="grid cols-2 gap-0">
           <div>
             <MapWTCL className="h-100" zoom={10}/>

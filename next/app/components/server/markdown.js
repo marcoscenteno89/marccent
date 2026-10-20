@@ -14,5 +14,5 @@ export default function Markdown({ text, className = '' }) {
   const lines = text.replace(/^\n+|\s+$/g, '').split('\n');
   const indent = Math.min(...lines.filter(l => l.trim()).map(l => l.match(/^ */)[0].length));
   const html = marked.parse(lines.map(l => l.slice(indent)).join('\n'));
-  return <div className={`grid cols-1 gap-2 ${className}`} dangerouslySetInnerHTML={{ __html: html }} />;
+  return <div className={`grid cols-1 gap-sm ${className}`} dangerouslySetInnerHTML={{ __html: html }} />;
 }

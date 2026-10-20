@@ -1,245 +1,87 @@
 'use client';
-import React, { Component, Fragment } from "react";
+import React, { useState, useEffect } from "react";
 import { Counter } from "./component";
-import { cx, Button, Alert } from "@/components/server/component";
-import { withT } from "./hoc";
+import { cx, Button, Alert, Board, Loading } from "@/components/server/component";
+import { Grid } from "@/components/grid_helper";
 
-class NumPuz extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      grid: null,
-      active: false,
-      status: '',
-      empty: {},
-      size: 4
-    }
-    this.update = this.update.bind(this);
-    this.updateStatus = this.updateStatus.bind(this);
-    this.activate = this.activate.bind(this);
-    this.getTime = this.getTime.bind(this);
+/*
+ * Number puzzle (15-puzzle): slide tiles into the gap until they read 1, 2, 3… row by row, gap last. Click a
+ * tile beside the gap, or drag it onto the gap (touch screens can't drag, so clicking always works). The board
+ * is a grid_helper Grid whose cells stay put while their values move; a move stores a shallow copy of the game
+ * so React re-renders.
+ */
+
+const SIZE = 4;
+
+// The value cell i holds when solved: 1, 2, 3… and the gap (null) last.
+const solvedValue = (grid, i) => (i === grid.size - 1 ? null : i + 1);
+
+// Percent of cells in their solved place.
+const progress = (grid) => Math.round(grid.cells.filter((cell, i) => cell.value === solvedValue(grid, i)).length / grid.size * 100);
+
+// A solved board shuffled by sliding the gap around at random (never straight back). Shuffling the numbers
+// themselves gives an unsolvable board half the time; legal moves from the solved board can always be undone.
+const newGame = () => {
+  const grid = new Grid(SIZE, SIZE, (row, col, i) => ({ row, col, value: i === SIZE * SIZE - 1 ? null : i + 1 }));
+  let gap = grid.get(SIZE - 1, SIZE - 1);
+  let previous = null;
+  for (let move = 0; move < SIZE * SIZE * 30; move++) {
+    const options = grid.neighbors(gap.row, gap.col, { diagonal: false }).filter((cell) => cell !== previous);
+    const tile = options[Math.floor(Math.random() * options.length)];
+    gap.value = tile.value;
+    tile.value = null;
+    previous = gap;
+    gap = tile;
   }
-
-  async componentDidMount() {
-    await this.generateGrid();
-    this.update(this.state.empty);
-  }
-
-  shuffle(arr) {
-    return arr.sort(() => Math.random() - 0.5);
-  }
-
-  getEmpty(grid) {
-    let result = [];
-    for (let row in grid) {
-      for (let cell in grid[row]) {
-        if (grid[row][cell].value === '') {
-          result.push(grid[row][cell]);
-          return result;
-        }
-      }
-    }
-  }
-
-  generateGrid() {
-    const grid = [];
-    const items = [];
-    let count = 1;
-    const size = this.state.size;
-    for (let i = 0; i < size; i++) {
-      for (let o = 0; o < size; o++) {
-        items.push(count);
-        count++;
-      }
-    }
-    items[items.length - 1] = '';
-    let randomItems = this.shuffle(items);
-    for (let x = 0; x < size; x++) {
-      const inner = []
-      for (let y = 0; y < size; y++) {
-        inner.push({
-          draggable: true,
-          droppable: false,
-          value: randomItems.shift(),
-          empty: false,
-          x: x,
-          y: y
-        });
-      }
-      grid.push(inner);
-    }
-    let empty = this.getEmpty(grid);
-    this.setState({ 
-      grid: grid,
-      empty: {
-        x: empty[0].x,
-        y: empty[0].y
-      }
-     })
-  }
-
-  activate() {
-    this.setState({ active: true })
-  }
-
-  updateStatus(status) {
-    this.setState({ status: status })
-  }
-
-  getTime(time) {
-    this.setState({
-      status: `${this.state.status} 
-        Your time is ${time.hour} : ${time.minute} : ${time.second} : ${time.tos}`
-    });
-  }
-
-  update(newObj) {
-    
-    let grid = this.state.grid;
-    let empty = this.state.empty;
-
-    // REST DRAGGABLE CELLS
-    for (let row in grid) {
-      for (let cell in grid[row]) {
-        grid[row][cell].draggable = false;
-      }
-    }
-
-    // OLD EMPTY
-    grid[empty.x][empty.y].empty = false;
-    grid[empty.x][empty.y].droppable = false;
-    grid[empty.x][empty.y].value = grid[newObj.x][newObj.y].value;
-
-    // NEW EMPTY
-    grid[newObj.x][newObj.y].empty = true;
-    grid[newObj.x][newObj.y].droppable = true;
-    grid[newObj.x][newObj.y].draggable = false;
-    grid[newObj.x][newObj.y].value = "";
-
-    // Make nearby items draggable
-    if (grid[newObj.x][newObj.y - 1]) grid[newObj.x][newObj.y - 1].draggable = true;
-    if (grid[newObj.x][newObj.y + 1]) grid[newObj.x][newObj.y + 1].draggable = true;
-    if (grid[newObj.x - 1]) {
-      if (grid[newObj.x - 1][newObj.y]) grid[newObj.x - 1][newObj.y].draggable = true;
-    }
-    if (grid[newObj.x + 1]) {
-      if (grid[newObj.x + 1][newObj.y]) grid[newObj.x + 1][newObj.y].draggable = true;
-    }
-
-    this.setState({ 
-      grid: grid,
-    }, () => {
-      this.setState({
-        empty: {
-          x: newObj.x,
-          y: newObj.y
-        }
-      }, () => {
-        let win = [1, 2, 3, 4, 5, 6, 7, 8, '']
-        let count = 0;
-        let correct = 0;
-        for (let row in grid) {
-          for (let cell in grid[row]) {
-            if (grid[row][cell].value === win[count]) {
-              correct++;
-            }
-            count++;
-          }
-        }
-        if (correct === win.length) {
-          this.updateStatus(`You won, Congratulations.`);
-          this.setState({ active: false })
-        } else {
-          this.updateStatus(`${Math.round((correct / win.length) * 100)}% Completed`);
-        }
-      })
-    });
-  }
-
-  startOver() {
-
-  }
-  
-  render() {
-    if (!this.state.grid) return <Fragment>Loading...</Fragment>
-    const grid = this.state.grid;
-    return(
-      <div className="numpuz grid cols-1 gap-2">
-        <div className="grid fixed cols-2 items-center gap-2 pad border round">
-          <div>
-            <Counter getTime={this.getTime} active={this.state.active} />
-          </div>
-          <div>
-            <Button onClick={() => this.startOver()}>
-              Start Over
-            </Button>
-          </div>
-        </div>
-        {/* One grid for the whole board; square cells (aspect-ratio) make a square board, no JS sizing. */}
-        <div className="grid fixed" style={{'--cols': grid[0].length, '--gap': '4px'}}>
-          {grid.flat().map((cell, index) => 
-            <Digit 
-              require={{grid: grid}}
-              cell={cell} 
-              key={`numpuz-cell${index}`}
-              activate={this.activate}
-              active={this.state.active}
-              update={this.update}
-              updateStatus={this.updateStatus}
-              col={grid[0].length} />
-          )}
-        </div>
-        <Alert>{this.state.status}</Alert>
-      </div>
-    )
-  }
+  return { grid, gap, active: false, won: false, status: '' };
 }
 
-class Digit extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      cell: this.props.cell
-    }
-  }
+const NumPuz = () => {
+  // Shuffled in the browser: a random board rendered on the server wouldn't match the browser's (hydration).
+  const [ game, setGame ] = useState(null);
+  useEffect(() => setGame(newGame()), []);
+  if (!game) return <Loading require={[]} />;
+  const { grid, gap } = game;
+  const besideGap = (cell) => Math.abs(cell.row - gap.row) + Math.abs(cell.col - gap.col) === 1;
 
-  onDragStart(event, cell) {
-    if (!this.props.active) this.props.activate();
-    event.dataTransfer.setData("cell", JSON.stringify(cell));
-  }
-
-  onDragOver(event) {
-    event.preventDefault();
-  }
-
-  onDrop(event) {
-    let cell = JSON.parse(event.dataTransfer.getData("cell"));
-    if (!cell.draggable) {
-      this.props.updateStatus('Invalid Move');
-      return false;
-    }
-    this.props.update({ 
-      x: parseInt(cell.x), 
-      y: parseInt(cell.y) 
+  const move = (tile) => {
+    if (game.won || tile.value === null) return;
+    if (!besideGap(tile)) return setGame({ ...game, status: 'Invalid Move' });
+    gap.value = tile.value;
+    tile.value = null;
+    const done = progress(grid);
+    setGame({
+      ...game, gap: tile, active: done < 100, won: done === 100,
+      status: done === 100 ? 'You won, Congratulations.' : `${done}% Completed`
     });
   }
 
-  render() {
-    const cell = this.state.cell;
-    return(
-      <div 
-        className={cx(this.props.className, 'center round', cell.value !== '' && 'bg-primary')}
-        style={{aspectRatio: '1 / 1'}}
-        draggable={cell.draggable} 
-        onDrop={(event) => this.onDrop(event)}
-        onDragStart={(event) => this.onDragStart(event, cell)}
-        onDragOver={(event) => this.onDragOver(event)}>
-        <h2>{cell.value}</h2>
+  // The Counter reports the time when it stops; only a solved puzzle shows it.
+  const showTime = (time) => setGame((current) => current.won
+    ? { ...current, status: `${current.status} Your time is ${time.hour} : ${time.minute} : ${time.second} : ${time.tos}` }
+    : current);
+
+  return (
+    <div className="numpuz grid cols-1 gap-sm">
+      <div className="grid fixed cols-2 items-center gap-sm pad border round">
+        <Counter getTime={showTime} active={game.active} />
+        <Button onClick={() => setGame(newGame())}>Start Over</Button>
       </div>
-    )
-  }
+      <Board grid={grid} gap="4px">
+        {(cell, i) => (
+          <button type="button" key={i} className={cx('center round', cell.value !== null && 'bg-primary')}
+            draggable={!game.won && besideGap(cell)}
+            onClick={() => move(cell)}
+            onDragStart={(e) => e.dataTransfer.setData('text/plain', String(i))}
+            onDragOver={(e) => cell === gap && e.preventDefault()} // only the gap accepts a drop
+            onDrop={(e) => { e.preventDefault(); move(grid.cells[Number(e.dataTransfer.getData('text/plain'))]); }}>
+            <span className="h2">{cell.value}</span>
+          </button>
+        )}
+      </Board>
+      <Alert active={game.status !== ''}>{game.status}</Alert>
+    </div>
+  );
 }
 
-const NumPuzWT = withT(NumPuz);
-
-export default NumPuzWT;
+export default NumPuz;

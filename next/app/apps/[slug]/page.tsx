@@ -13,11 +13,11 @@ export default function AppPage({ params }: { params: { slug: string } }) {
 
   const text = (
     <>
-      <div className="grid cols-1 gap-2">
+      <div className="grid cols-1 gap-sm">
         <h4>About</h4>
         <Markdown text={app.about} />
       </div>
-      <div className="grid cols-1 gap-2">
+      <div className="grid cols-1 gap-sm">
         <h4>Instructions</h4>
         <Markdown text={app.instructions} />
       </div>
@@ -27,17 +27,17 @@ export default function AppPage({ params }: { params: { slug: string } }) {
   // items-start: columns keep their own height, so short text isn't stretched to match the app.
   return (
     <section className="wrap wrap-fluid">
-      <div className="wrap bg border round pad grid cols-1 gap-3">
+      <div className="wrap bg border round pad grid cols-1">
         <h1 className="text-center">{app.name}</h1>
         {app.layout === 'side' ? (
-          <div className="grid cols-2 gap-3 items-start">
+          <div className="grid cols-2 items-start">
             <Component />
-            <div className="grid cols-1 gap-3">{text}</div>
+            <div className="grid cols-1">{text}</div>
           </div>
         ) : (
           <>
             <Component />
-            <div className="grid cols-2 gap-3 items-start">{text}</div>
+            <div className="grid cols-2 items-start">{text}</div>
           </>
         )}
       </div>

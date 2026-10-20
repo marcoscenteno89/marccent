@@ -1,329 +1,106 @@
 'use client'
-import React, { Component, Fragment } from "react";
+import React, { useState } from "react";
 import { Counter } from "./component";
-import { Button, Alert } from "@/components/server/component";
-import { Bomb, Flag } from "@/components/sac";
-import { random } from 'lodash';
+import { Icon, Button, Alert, Board } from "@/components/server/component";
+import { Grid } from "@/components/grid_helper";
 
-class MineSweeper extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      size: 15, // ROW SIZE
-      grid: false,
-      mines: false,
-      mineCnt: 0,
-      dificulty: 3,
-      gameOver: false,
-      active: false,
-      time: 0, 
-      revealedCnt: 0,
-      status: ''
-    }
-    this.getTime = this.getTime.bind(this);
-    this.startOver = this.startOver.bind(this);
-    this.lost = this.lost.bind(this);
-  }
-  async componentDidMount() {
-    await this.startOver();
-  }
-  
-  onClick = (e, cell) => {
-    if (this.state.gameOver || cell.revealed) return;
-    if (!this.state.active) this.setState({ active: true });
-    let newGrid = this.state.grid;
-    if (cell.mine) { // Do this if user hits mine 
-      this.lost();
-    } else {
-      let gridData = this.reveal(newGrid, cell.x, cell.y, 0);
-      let count = this.state.revealedCnt - gridData.newNonMinesCnt;
-      if (count === 0) { // User won game
-        this.win();
-      } else { // Game continues
-        this.setState({
-          grid: gridData.grid,
-          revealedCnt: count,
-        });
-      }
-    }
-  }
+/*
+ * Minesweeper. The board is a grid_helper Grid of cells that are changed in place; a move then stores a shallow
+ * copy of the game so React re-renders. Mines are placed on the first reveal, away from that cell and its
+ * neighbours, so the first click is always safe and opens an area. Flag with a right click, or switch the flag
+ * button on (touch screens have no right click).
+ */
 
-  onContextMenu = (e, cell) => {
-    e.preventDefault();
-    if (!this.state.active) this.setState({ active: true });
-    let mineCnt = this.state.mineCnt;
-    let grid = this.state.grid;
-    if (grid[cell.x][cell.y].flagged) {
-      grid[cell.x][cell.y].flagged = false;
-      mineCnt = mineCnt + 1;
-    } else {
-      if (mineCnt === 0) {
-        alert('No more flags available.');
-        return;
-      }
-      grid[cell.x][cell.y].flagged = true;
-      mineCnt = mineCnt - 1;
-    }
-    this.setState({
-      grid: grid,
-      mineCnt: mineCnt
-    });
-  }
+const LEVELS = [ 'Very Easy', 'Easy', 'Normal', 'Hard', 'Very Hard' ];
 
-  async startOver() {
-    let i = this.state;
-    this.setState({
-      gameOver: false,
-      active: false,
-      mineCnt: i.size * i.dificulty,
-      revealedCnt: (i.size * i.size) - (i.size * i.dificulty),
-      status: '',
-      time: 0,
-      grid: false
-    }, async () => await this.createGrid());
-  }
-
-  lost() {
-    const grid = this.state.grid;
-    for(let i of this.state.mines) {
-      grid[i.x][i.y].revealed = true; // Reveals all mines
-    }
-    this.setState({
-      grid: grid,
-      gameOver: true,
-      active: false,
-      status: 'You Lost!'
-    });
-  }
-
-  win() {
-    this.setState({
-      gameOver: true,
-      active: false,
-      status: 'You won, Congratulations.'
-    });
-  }
-
-  async createGrid() {
-    const grid = []
-    let digitId = 1;
-    for (let x = 0; x < this.state.size; x++) {
-      const inner = []
-      for (let y = 0; y < this.state.size; y++) {
-        inner.push({
-          mine: false,
-          revealed: false,
-          flagged: false,
-          value: 0,
-          x: x,
-          y: y,
-          id: digitId++
-        });
-      }
-      grid.push(inner);
-    }
-    let data = await this.generateMines(grid);
-    let completedGrid = await this.generateHints(data.grid);
-    this.setState({
-      grid: completedGrid,
-      mines: data.mines
-    });
-  }
-
-  generateMines(grid) {
-    const mines = []
-    let count = 0;
-    while (count < this.state.mineCnt) {
-      let x = random(0, this.state.size - 1);
-      let y = random(0, this.state.size - 1);
-      if (!grid[x][y]['mine']) {
-        grid[x][y]['mine'] = true;
-        grid[x][y]['value'] = <Bomb />;
-        mines.push({
-          x: x, 
-          y: y
-        });
-        count++;
-      }
-    }
-    return { grid, mines };
-  }
-
-  generateHints(grid) { // Check every cell and add number of mines of nerby cells
-    const callback = (current, data=false) => current.mine ? data.cell.value++ : false;
-    for (let x = 0; x < this.state.size; x++) {
-      for (let y = 0; y < this.state.size; y++) {
-        if (grid[x][y].mine) continue;
-        this.checkNearBy(x, y, {
-          grid: grid,
-          callback: callback, 
-          cell: grid[x][y], 
-          sendBack: {} 
-        });
-      }
-    }
-    return grid;
-  }
-
-  cellExists(grid, x, y) {
-    return x > -1 && x < grid.length && y > -1 && y < grid[0].length ? true : false;
-  }
-
-  checkNearBy(x, y, data) { // Check every cell around current one
-    let arr = [-1, 0, 1] // Create a 9 cell Matrix
-    for (let i of arr) {
-      for (let o of arr) {
-        let tl = this.cellExists(data.grid, x + i, y + o ); // Check if current cell exists
-        if (tl) data.callback(data.grid[x + i][y + o], data);
-      }
-    }
-    return data.sendBack;
-  }
-
-  reveal(grid, x, y, newNonMinesCnt) {
-    if (grid[x][y].revealed) return;
-    const flipCallback = (cur, data) => {
-      if (cur.value === 0 && !cur.revealed) data.sendBack.push(cur);
-    }
-
-    const revealCallback = (cur, data) => {
-      if (!cur.revealed) {
-        cur.revealed = true;
-        data.sendBack++;
-      }
-      return data.sendBack;
-    }
-
-    let flipped = []
-    flipped.push(grid[x][y]);
-    while (flipped.length !== 0) {
-      let s = flipped.pop();
-      if (!s.revealed) {
-        newNonMinesCnt++;
-        s.revealed = true;
-      }
-      if (s.value !== 0) break;
-      // Check surrounding cells to check for empty cells and them to flipped array
-      flipped = this.checkNearBy(s.x,s.y, {
-        grid: this.state.grid,
-        callback: flipCallback, 
-        sendBack: flipped
-      });
-      // Reveal surronding cells and add them to count down, user wins when count down hits 0
-      newNonMinesCnt = this.checkNearBy(s.x,s.y, {
-        grid: this.state.grid,
-        callback: revealCallback, 
-        sendBack: newNonMinesCnt
-      });
-    }
-    return {grid, newNonMinesCnt};
-  }
-
-  getTime(time) {
-    this.setState({ 
-      status: `${this.state.status} 
-        Your time is ${time.hour} : ${time.minute} : ${time.second} : ${time.tos}` 
-    });
-  }
-
-  addRows(num, difficulty, frequency) {
-    // Num is the starting point
-    // Frequency is the amount of rows added per difficulty level
-    for (let i = 0; i < difficulty; i++) num = num + frequency;
-    return num;
-  }
-
-  dificulty = async (dificulty) => {
-    // this.addrows() returns the number of rows per dificulty level
-    let size = this.addRows(6, dificulty, 3);
-    this.setState({
-      size: size,
-      dificulty: dificulty,
-      mineCnt: size * dificulty,
-      active: false
-    }, async () => await this.startOver());
-  }
-
-  render() {
-    if (!this.state.grid) return <Fragment>Loading...</Fragment>
-    const b = this.state;
-    const active = this.state.status !== '';
-    return (
-      <div className="minesweeper grid cols-1 gap-2">
-        <div className="grid fixed cols-4 items-center gap-2 pad border round">
-          <div><Flag /> {b.mineCnt}</div>
-          <div>
-            <Counter getTime={this.getTime} active={b.active} />
-          </div>
-          <div>
-            <select className="input" aria-label="Difficulty" onChange={(val) => this.dificulty(val.target.value)} value={b.dificulty}>
-              <option value="1">Very Easy</option>
-              <option value="2">Easy</option>
-              <option value="3">Normal</option>
-              <option value="4">Hard</option>
-              <option value="5">Very Hard</option>
-            </select>
-          </div>
-          <div>
-            <Button onClick={async () => await this.startOver()}>
-              Start Over
-            </Button>
-          </div>
-        </div>
-        {/* One grid for the whole board; square cells (aspect-ratio) make a square board, no JS sizing. */}
-        <div className="grid fixed" style={{'--cols': b.size, '--gap': '2px'}}>
-          {this.state.grid.flat().map((cell) => 
-            <Cell 
-              cell={cell} 
-              size={b.size} 
-              key={`cell-${cell.id}`} 
-              onClick={this.onClick} 
-              onContextMenu={this.onContextMenu} />
-          )}
-        </div>
-        <Alert active={active}>{this.state.status}</Alert>
-      </div>
-    )        
-  }
+// A fresh, unmined board. Level 1-5: the board grows by 3 cells a side per level, with `size` mines per level.
+const newGame = (level) => {
+  const size = 6 + 3 * level;
+  const mines = size * level;
+  return {
+    level, size, mines,
+    flags: mines, // flags left to place
+    safeLeft: size * size - mines, // cells to reveal to win
+    mined: false,
+    over: false,
+    active: false, // timer running
+    status: '',
+    grid: new Grid(size, size, (row, col, id) => ({ row, col, id, mine: false, revealed: false, flagged: false, hint: 0 }))
+  };
 }
 
-class Cell extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      cell: this.props.cell
+// Mines everywhere except the first revealed cell and its neighbours, then each cell's count of mines around it.
+const placeMines = (game, first) => {
+  const { grid } = game;
+  const safe = new Set([ first, ...grid.neighbors(first.row, first.col) ]);
+  for (const cell of grid.sample(game.mines, (cell) => !safe.has(cell))) cell.mine = true;
+  grid.forEach((cell, row, col) => {
+    cell.hint = grid.neighbors(row, col).filter((near) => near.mine).length;
+  });
+  game.mined = true;
+}
+
+const MineSweeper = () => {
+  const [ game, setGame ] = useState(() => newGame(3));
+  const [ flagMode, setFlagMode ] = useState(false);
+  const update = (changes = {}) => setGame({ ...game, ...changes });
+
+  const reveal = (cell) => {
+    if (game.over || cell.revealed || cell.flagged) return;
+    if (!game.mined) placeMines(game, cell);
+    if (cell.mine) {
+      for (const mine of game.grid.filter((c) => c.mine)) mine.revealed = true;
+      return update({ over: true, active: false, status: 'You Lost!' });
     }
+    // Empty cells (no mines around) open their neighbours; numbered ones stop the spread.
+    const opened = game.grid.floodFill(cell.row, cell.col, (c) => c.hint === 0, { enter: (c) => !c.revealed && !c.flagged });
+    for (const c of opened) c.revealed = true;
+    const safeLeft = game.safeLeft - opened.length;
+    if (safeLeft === 0) return update({ safeLeft, over: true, active: false, status: 'You won, Congratulations.' });
+    update({ safeLeft, active: true });
   }
 
-  bgStart(a, e) {
-    e.target.style.background = a.grad;
+  const flag = (cell) => {
+    if (game.over || cell.revealed) return;
+    if (!cell.flagged && game.flags === 0) return update({ status: 'No more flags available.' });
+    cell.flagged = !cell.flagged;
+    update({ flags: game.flags + (cell.flagged ? -1 : 1), active: true, status: '' });
   }
 
-  bgLeave(a, e) {
-    e.target.style.background = a.mode;
-  }
+  // The Counter reports the time when it stops; only a finished game shows it.
+  const showTime = (time) => setGame((current) => current.over
+    ? { ...current, status: `${current.status} Your time is ${time.hour} : ${time.minute} : ${time.second} : ${time.tos}` }
+    : current);
 
-  render() {
-    const styles = { aspectRatio: '1 / 1' }
-
-    let value = '';
-    if (this.state.cell.flagged) value = <Flag />
-    if (this.state.cell.revealed) {
-      styles.opacity = '0.7';
-      if (this.state.cell.value !== 0) value  = this.state.cell.value;
-    } 
-
-    return  (
-      <div 
-        className="center digit bg-primary round" 
-        style={styles} 
-        onClick={(e) => this.props.onClick(e, this.state.cell)}
-        onContextMenu={(e) => this.props.onContextMenu(e, this.state.cell)}
-        key={`digit-${this.state.cell.id}`}> 
-          {value} 
+  return (
+    <div className="minesweeper grid cols-1 gap-sm">
+      <div className="grid fixed cols-4 items-center gap-sm pad border round">
+        <Button icon="flag" aria-pressed={flagMode}
+          aria-label={`Flag mode, ${game.flags} flags left`} onClick={() => setFlagMode(!flagMode)}>
+          {String(game.flags)}
+        </Button>
+        <Counter getTime={showTime} active={game.active} />
+        <select className="input" aria-label="Difficulty" value={game.level}
+          onChange={(e) => setGame(newGame(Number(e.target.value)))}>
+          {LEVELS.map((name, i) => <option key={name} value={i + 1}>{name}</option>)}
+        </select>
+        <Button onClick={() => setGame(newGame(game.level))}>Start Over</Button>
       </div>
-    )       
-  }
+      <Board grid={game.grid} gap="2px">
+        {(cell) => (
+          <button type="button" key={cell.id} className="center bg-primary round"
+            style={{ opacity: cell.revealed ? 0.7 : undefined }}
+            onClick={() => (flagMode ? flag(cell) : reveal(cell))}
+            onContextMenu={(e) => { e.preventDefault(); flag(cell); }}>
+            {cell.revealed
+              ? (cell.mine ? <Icon name="bomb" /> : cell.hint || '')
+              : (cell.flagged && <Icon name="flag" />)}
+          </button>
+        )}
+      </Board>
+      <Alert active={game.status !== ''}>{game.status}</Alert>
+    </div>
+  );
 }
 
 export default MineSweeper;
