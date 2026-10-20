@@ -1,8 +1,8 @@
 /* Defaults live on .grid (not :root) so a nested grid never inherits its parent's count or gap. */
 .grid {
-  --cols: 3;      /* max columns per row */
-  --min: var(--grid-min, 14rem);   /* narrowest a column may get before the row wraps */
-  --gap: var(--grid-gap, 1rem);
+  --cols: var(--grid-cols);      /* max columns per row */
+  --min: var(--grid-min);   /* narrowest a column may get before the row wraps */
+  --gap: var(--grid-gap);
   /* Width one column would have at --cols per row; never narrower than --min, never wider than the grid. */
   --_col: max(var(--min), (100% - (var(--cols) - 1) * var(--gap)) / var(--cols));
   display: grid;
@@ -60,20 +60,15 @@
 .pairs > * { grid-column: 1 / -1; }
 .pairs > .sub-x { grid-template-columns: subgrid; } /* outranks a child's own columns (e.g. .field) */
 
-/* Gap scale. Units are required: a bare 0 would break the width math. Must come after .grid. */
+/* Gap: three sizes, -sm, base and -lg. The base is the default (--grid-gap), so it has no class; -0 removes
+   the gap. Units are required: a bare 0 would break the width math. Must come after .grid. */
 .gap-0 { --gap: 0rem; }
-.gap-1 { --gap: .25rem; }
-.gap-2 { --gap: .5rem; }
-.gap-3 { --gap: 1rem; }
-.gap-4 { --gap: 1.5rem; }
-.gap-5 { --gap: 3rem; }
-/* Row gap only (safe: it does not affect how many columns fit). Must come after .grid and .sub. */
+.gap-sm { --gap: var(--space-sm); }
+.gap-lg { --gap: var(--space-lg); }
+/* Row gap only, same steps (safe: it does not affect how many columns fit). Must come after .grid and .sub. */
 .gap-y-0 { row-gap: 0; }
-.gap-y-1 { row-gap: .25rem; }
-.gap-y-2 { row-gap: .5rem; }
-.gap-y-3 { row-gap: 1rem; }
-.gap-y-4 { row-gap: 1.5rem; }
-.gap-y-5 { row-gap: 3rem; }
+.gap-y-sm { row-gap: var(--space-sm); }
+.gap-y-lg { row-gap: var(--space-lg); }
 
 /* Pack rows at the top when the grid is taller than its content (e.g. a stretched column). */
 .content-start { align-content: start; }
@@ -123,24 +118,29 @@
 
 /* --wrap is reset on every .wrap so a nested .wrap never inherits its parent's size (e.g. none from .wrap-fluid). */
 .wrap {
-  --wrap: var(--wrap-max, 75rem);
+  --wrap: var(--wrap-max);
   width: 100%;
   max-width: var(--wrap);
   margin-inline: auto;
-  padding-inline: var(--wrap-pad, 1rem);
+  padding-inline: var(--wrap-pad);
 }
 
-.wrap-sm { --wrap: 40rem; }
-.wrap-md { --wrap: 48rem; }
-.wrap-lg { --wrap: 64rem; }
-.wrap-xl { --wrap: 80rem; }
+.wrap-sm { --wrap: var(--wrap-sm); }
+.wrap-lg { --wrap: var(--wrap-lg); }
 .wrap-fluid { --wrap: none; }
 
 /* Inner padding for boxes (panels, cards, banners). Space between items comes from gap, not margins. */
-.pad { padding: var(--pad, 1rem); }
-/* One axis only: x = left and right, y = top and bottom. Same --pad, so give it one value (or two: start end). */
-.pad-x { padding-inline: var(--pad, 1rem); }
-.pad-y { padding-block: var(--pad, 1rem); }
+.pad { padding: var(--pad); }
+.pad-sm { padding: var(--space-sm); }
+.pad-lg { padding: var(--space-lg); }
+/* One axis only: x = left and right, y = top and bottom, in the same three sizes. The base uses --pad, so give
+   it one value (or two: start end). Safe on a .wrap: -y leaves its side padding alone. */
+.pad-x { padding-inline: var(--pad); }
+.pad-x-sm { padding-inline: var(--space-sm); }
+.pad-x-lg { padding-inline: var(--space-lg); }
+.pad-y { padding-block: var(--pad); }
+.pad-y-sm { padding-block: var(--space-sm); }
+.pad-y-lg { padding-block: var(--space-lg); }
 
 /* Text elements inside a grid drop their default margins; the grid's gap spaces them instead. */
 :is(.grid, .sub, .sub-x) > :is(h1, h2, h3, h4, h5, h6, p, ul, ol, dl, hr, figure, blockquote) { margin: 0; }
@@ -185,3 +185,10 @@
 .fixed > .span-8 { grid-column: span 8; }
 .fixed > .span-9 { grid-column: span 9; }
 .fixed > .span-10 { grid-column: span 10; }
+
+/* STACK: every child in the same grid cell, layered in source order (later on top). Replaces
+   position: absolute overlays and z-index. Children stretch to fill the cell. The one track is pinned
+   (minmax(0, 1fr) both ways), so the cell is always the box's own size: tall content can't stretch it
+   (a canvas reads its size once, so a taller cell would draw an oval). */
+.stack { display: grid; grid-template: minmax(0, 1fr) / minmax(0, 1fr); }
+.stack > * { grid-area: 1 / 1; }

@@ -8,10 +8,38 @@ import './styles/base.css';
 import './styles/settings.css';
 import './styles/theme.css';
 import './styles/grid.css';
-import './styles/globals.css';
+import './styles/custom.css';
 import './styles/components.css';
 import './styles/utils.css'; // last: utils win over component rules
-import { CurrentAnimWT, UpdateThemeVariables } from "./components/client/theme";
+// Optional design style (styles/design-styles/): type, shape, depth and effects over the site's own colors.
+// Keep at most one uncommented; comment them all for the plain theme.
+// import './styles/design-styles/minimal.css';
+import './styles/design-styles/modern.css';
+// import './styles/design-styles/professional.css';
+// import './styles/design-styles/elegant.css';
+// import './styles/design-styles/techy.css';
+// import './styles/design-styles/glassmorphism.css';
+// import './styles/design-styles/neumorphism.css';
+// import './styles/design-styles/papercut.css';
+// import './styles/design-styles/brutalism.css';
+// import './styles/design-styles/retro.css';
+// import './styles/design-styles/playful.css';
+// import './styles/design-styles/editorial.css';
+// import './styles/design-styles/bento.css';
+// import './styles/design-styles/handdrawn.css';
+// import './styles/design-styles/notebook.css';
+// import './styles/design-styles/terminal.css';
+// import './styles/design-styles/swiss.css';
+// import './styles/design-styles/art-deco.css';
+// import './styles/design-styles/comic.css';
+// import './styles/design-styles/organic.css';
+// import './styles/design-styles/claymorphism.css';
+// import './styles/design-styles/aurora.css';
+// import './styles/design-styles/cyberpunk.css';
+// import './styles/design-styles/memphis.css';
+// import './styles/design-styles/kinetic.css';
+import { UpdateThemeVariables } from "./components/client/theme";
+import { CurrentAnimWT } from "./components/client/animations";
 import Header from './templates/header';
 import Footer from './templates/footer';
 import { Body } from './components/client/theme';
@@ -49,14 +77,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className="">
       <ThemeProvider>
         <ToastProvider>
-          {/* Body is a 1-col grid: header, main and footer are spaced by its gap. */}
-          <Body className="grid cols-1 gap-5">
+          {/* Body is a 1-col grid: header, main and footer are spaced by its gap. It is also the container (.cq)
+              the header's layout-ends measures, since an element can't measure itself. */}
+          <Body className="cq grid cols-1 gap-lg">
             <div className="fixed-layer back">
               <CurrentAnimWT id="main" />
             </div>
             <Header />
-            {/* Side gutter and the space between sections live here once; sections are single boxes. */}
-            <main className="wrap wrap-fluid grid cols-1 gap-5">{children}</main>
+            <main className="grid cols-1 gap-lg">{children}</main>
             <Footer />
             <Toast />
             <UpdateThemeVariables />

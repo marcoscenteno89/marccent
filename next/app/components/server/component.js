@@ -76,7 +76,7 @@ const Icon = ({ name, family = 'fa-solid', className, ...rest }) => (
  * @param {Object} props
  * @param {string|false} [props.icon=false] - Icon name, rendered with <Icon> (above):
  *   "star" → fa-solid fa-star. Starting with "fa-" it is taken as full classes instead, for other families
- *   or extra classes: "fa-brands fa-github", "fa-solid fa-plus display-6".
+ *   or extra classes: "fa-brands fa-github", "fa-solid fa-plus display".
  * @param {string} [props.href] - Makes it a link.
  * @param {string} [props.className] - Extra classes.
  * @param {React.ReactNode} [props.children] - The label.
@@ -155,7 +155,7 @@ const Field = ({ name, label, as: Tag = 'input', className, children, ...rest })
  * Lines between items come from .divide; look in components.css, animation in animations.css, colors in theme.css.
  * @example
  * <Accordion defaultOpen={0}>
- *   <AccordionItem header="Title" className="grid cols-1 gap-2">Body</AccordionItem>
+ *   <AccordionItem header="Title" className="grid cols-1 gap-sm">Body</AccordionItem>
  * </Accordion>
  */
 const Accordion = (props) => {
@@ -182,6 +182,21 @@ const AccordionItem = (props) => {
   );
 }
 
+/* ---------- board ---------- */
+
+/**
+ * Board: a grid_helper Grid as a game board, one square cell per grid cell in a single `.grid fixed` (cells
+ * are stored row by row, the order CSS grid fills). Layout in components.css.
+ * @param {import('@/components/grid_helper').Grid} grid
+ * @param {(cell: any, index: number) => React.ReactNode} children - renders one cell (give it a key)
+ * @param {string} [gap] - space between cells, e.g. '2px'
+ */
+const Board = ({ grid, gap, className, children }) => (
+  <div className={cx('board grid fixed', className)} style={{ '--cols': grid.cols, '--gap': gap }}>
+    {grid.cells.map(children)}
+  </div>
+);
+
 export {
-  cx, Icon, Button, Loading, Alert, Input, Field, Accordion, AccordionItem
+  cx, Icon, Button, Loading, Alert, Input, Field, Accordion, AccordionItem, Board
 }

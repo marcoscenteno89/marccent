@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { cx } from '@/components/server/component';
 import { apps } from '@/components/server/list';
 
 // Shared menus: edit a link here and the header, hero and contact page all pick it up.
@@ -36,9 +37,6 @@ export const main = [
 
 // Usage: <a href={s.href} {...externalProps(s)}>
 export const externalProps = (link) => link.external ? { target: '_blank', rel: 'noopener noreferrer' } : {};
-
-// Joins class names, skipping empty ones.
-const cx = (...names) => names.filter(Boolean).join(' ');
 
 /**
  * Menu: renders any menu above (styles: .menu-* in styles/components.css).
@@ -102,7 +100,7 @@ const MenuDropdown = ({ item, className, panelClassName, linkClassName }) => (
       {item.icon && <i className={item.icon} aria-hidden="true"></i>}
       <span>{item.name}</span>
     </summary>
-    <div className={cx('menu-panel bg border round shadow-md pad grid cols-1 gap-1', panelClassName)}>
+    <div className={cx('menu-panel bg border round shadow pad grid cols-1 gap-sm', panelClassName)}>
       {item.children.map(child => <MenuLink key={child.href + child.name} item={child} className={linkClassName} />)}
     </div>
   </details>

@@ -10,12 +10,12 @@ export default function Home() {
   return (
     <>
       {/* Hero keeps two layers: the section fills the screen height and centers the box. */}
-      <section className="vh-100 col-center">
-        <div className="wrap bg border round pad grid cols-1 gap-2">
+      <section className="wrap wrap-fluid vh-100 col-center">
+        <div className="wrap bg border round pad grid cols-1 gap-sm">
           <h4>{home.greeting}</h4>
           <h1>{home.title}</h1>
           <Markdown text={home.intro} />
-          <div className="grid fixed cols-4 gap-1">
+          <div className="grid fixed cols-4 gap-sm icon-only-md">
             {social.map(s => (
               <Button key={s.href} icon={s.icon} href={s.href} {...externalProps(s)}>{s.name}</Button>
             ))}
@@ -23,10 +23,12 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="wrap bg border pad grid cols-1 gap-3 round">
-        <h1 className="text-center">{home.appsTitle}</h1>
-        <div className="grid cols-3">
-          {apps.map(app => <AppCard key={app.url} app={app} />)}
+      <section className="wrap wrap-fluid">
+        <div className="wrap bg border pad grid cols-1 round">
+          <h1 className="text-center">{home.appsTitle}</h1>
+          <div className="grid cols-4">
+            {apps.map(app => <AppCard key={app.url} app={app} />)}
+          </div>
         </div>
       </section>
     </>

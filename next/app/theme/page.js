@@ -24,7 +24,7 @@ export default function ThemePage() {
   const onClick = (data) => console.log(data);
 
   return (
-    <section className="wrap wrap-fluid grid cols-1 gap-5">
+    <section className="wrap wrap-fluid grid cols-1 gap-lg">
       <div className="wrap bg border round pad">
         <h1>Theme Customizer</h1>
         <div><hr/></div>
@@ -35,10 +35,10 @@ export default function ThemePage() {
         <h3>Theme Color Playground</h3>
         <p>Bored with the default look? With this interactive Theme Color Playground, you can unleash your creativity and play around with different color palettes to create a truly unique, personalized look for this website.</p>
       </div>
-      <div className="wrap bg border round pad grid cols-1 gap-3">
+      <div className="wrap bg border round pad grid cols-1">
         <div className="pad border round bg">
           <h3>Buttons</h3>
-          <div className="grid auto-cols gap-2">
+          <div className="grid auto-cols gap-sm">
             <Button icon="star">Icon and label</Button>
             <Button icon="star" aria-label="Icon only" />
             <Button>Text link</Button>

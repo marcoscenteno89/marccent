@@ -14,32 +14,47 @@
 .text-truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
 /* FONT. fs-sm is relative (em): a bit smaller than the text around it. */
-.fs-sm { font-size: .875em; }
-.fs-md { font-size: 1.25rem; }
-.fs-lg { font-size: 1.5rem; }
-.fw-light { font-weight: 300; }
-.fw-normal { font-weight: 400; }
-.fw-bold { font-weight: 700; }
+.fs-sm { font-size: var(--small-size); }
+.fs-lg { font-size: var(--text-lg); }
+.fw-light { font-weight: var(--weight-light); }
+.fw-normal { font-weight: var(--weight-normal); }
+.fw-bold { font-weight: var(--weight-bold); }
 
 /* OPACITY (colors: the palette classes in theme.css) */
 .opacity-25 { opacity: .25; }
 .opacity-50 { opacity: .5; }
 .opacity-75 { opacity: .75; }
 
-/* BORDER (radius: .round / .circle in globals.css) */
-.border { border: 1px solid var(--border-color); }
-.border-bottom { border-bottom: 1px solid var(--border-color); }
+/* BORDER */
+.border { border: var(--border-width) solid var(--border-color); }
+.border-bottom { border-bottom: var(--border-width) solid var(--border-color); }
+/* Rounded corners (replaces Bootstrap's .rounded). Radius comes from --radius in settings.css. */
+.round {
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.circle {
+  border-radius: 50%;
+}
 
 /* SHADOW */
-.shadow-sm { box-shadow: 0 .125rem .25rem rgb(0 0 0 / .075); }
-.shadow-md { box-shadow: 0 .5rem 1rem rgb(0 0 0 / .15); }
-.shadow-lg { box-shadow: 0 1rem 3rem rgb(0 0 0 / .175); }
+.shadow-sm { box-shadow: var(--shadow-sm); }
+.shadow { box-shadow: var(--shadow); }
+.shadow-lg { box-shadow: var(--shadow-lg); }
+.shadow-inset {
+  box-shadow: inset 0 0 var(--space-lg) rgba(0,0,0,0.5);
+}
 
 /* SIZE */
 .w-50 { width: 50%; }
 .w-100 { width: 100%; }
 .h-100 { height: 100%; }
 .vh-100 { height: 100vh; }
+/* Height follows width; replaces the old JS-sized <Square> component. */
+.square {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+}
 
 /* OVERFLOW */
 .overflow-hidden { overflow: hidden; }
@@ -50,14 +65,22 @@
 .d-block { display: block; }
 .d-inline-block { display: inline-block; }
 
-/* POSITION. Overlays (toasts, the remove icon on theme cards); for layering in the flow use .stack (globals.css). */
+/* POSITION. Overlays (toasts, the fixed background layer); for layering in the flow use .stack (grid.css). */
 .position-relative { position: relative; }
 .position-absolute { position: absolute; }
 .position-fixed { position: fixed; }
 .bottom-0 { bottom: 0; }
-.bottom-100 { bottom: 100%; }
-.start-100 { left: 100%; }
 .end-0 { right: 0; }
+.fixed-layer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+.back {
+  z-index: -99;
+}
 @media (min-width: 768px) {
   .sticky-md-top { position: sticky; top: 0; z-index: 1020; }
 }

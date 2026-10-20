@@ -1,118 +1,32 @@
-@import url("@fortawesome/fontawesome-free/css/all.css");
-
-/* ICONS: every Font Awesome icon is a perfect square of --icon-size (settings.css), glyph centered.
-   Same size everywhere, buttons included (a button's height comes from its icon). Scale one with font-size. */
-:is(.fa, .fa-solid, .fa-regular, .fa-brands) {
-  display: inline-grid;
-  place-items: center;
-  width: var(--icon-size);
-  aspect-ratio: 1 / 1;
-}
-
-/* DIVIDE: a line after every direct child except the last. Put .divide on a ul/ol, nav or any grid.
-   Stacked (plain list, .cols-1, or a layout-* below 40rem): border-bottom.
-   In a row (.grid with 2+ cols, .fixed, .auto-cols, or a layout-* from 40rem): border-right.
-   CSS can't tell when an auto-fill .grid wraps onto a new row; there it keeps the row rule. */
-.divide > :not(:last-child) {
-  border: 0 solid var(--border-color);
-  border-bottom-width: 1px;
-}
-
-/* Square corners, so the line doesn't curve at its ends. :nth-child(n) matches every child; it is only there
-   to outrank component radii (e.g. .menu-link) that load later. */
-.divide > :nth-child(n) { border-radius: 0; }
-
-.divide:is(.grid, .auto-cols):not(.cols-1, [class*="layout-"]) > :not(:last-child) {
-  border-bottom-width: 0;
-  border-right-width: 1px;
-}
-
-.divide[class*="layout-"] > :not(:last-child) {
-  border-right-width: 0;
-  border-bottom-width: 1px;
-}
-
-@container (min-width: 40rem) {
-  .divide[class*="layout-"]:not(.layout-ends) > :not(:last-child) {
-    border-bottom-width: 0;
-    border-right-width: 1px;
-  }
-}
-
-@container (min-width: 56rem) {
-  .divide.layout-ends > :not(:last-child) {
-    border-bottom-width: 0;
-    border-right-width: 1px;
-  }
-}
-
-canvas {
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-}
-
-/* Rounded corners (replaces Bootstrap's .rounded). Radius comes from --radius in settings.css. */
-.round {
-  border-radius: var(--radius);
-  overflow: hidden;
-}
-
-/* Height follows width; replaces the old JS-sized <Square> component. */
-.square {
-  width: 100%;
-  aspect-ratio: 1 / 1;
-}
-
-.circle {
-  border-radius: 50%;
-}
+/*
+ * CUSTOM: this site's own styles, the ones that stay with the site if the theme is split out (map, stock chart,
+ * footer sliders and theme cards, mobile nav; their sizes are the "Site-specific" block in settings.css).
+ * Shared pieces live in the theme files: colors and .divide in theme.css, layout and .stack in grid.css, components
+ * and icons in components.css, single-purpose helpers in utils.css. Loaded after grid.css, before components.css.
+ */
 
 .map {
-  min-height: 500px;
-}
-
-/* STACK: every child in the same grid cell, layered in source order (later on top). Replaces
-   position: absolute overlays and z-index. Children stretch to fill the cell. The one track is pinned
-   (minmax(0, 1fr) both ways), so the cell is always the box's own size: tall content can't stretch it
-   (a canvas reads its size once, so a taller cell would draw an oval). */
-.stack { display: grid; grid-template: minmax(0, 1fr) / minmax(0, 1fr); }
-.stack > * { grid-area: 1 / 1; }
-
-.fixed-layer {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  min-height: var(--map-height);
 }
 
 .blur-svg {
   display: none;
 }
 
-.back {
-  z-index: -99;
-}
-
-.shadow-inset {
-  box-shadow: inset 0 0 2rem rgba(0,0,0,0.5);
-}
-
 /* Stock chart (stock_lookup.js). All grid: chart column, price column, date row. */
 .graph-container {
-  font-size: 12px;
-  font-weight: 100;
+  font-size: var(--chart-font-size);
+  font-weight: var(--chart-font-weight);
   /* Chart | price column on the first row, dates under the chart. */
   display: grid;
   grid-template-columns: minmax(0, 19fr) minmax(0, 1fr);
   border-bottom-left-radius: var(--radius);
   border-bottom-right-radius: var(--radius);
 }
-/* !important: p5 writes inline width/height on the canvas. */
-.graph-container canvas {
-  height: auto !important;
-  aspect-ratio: 1 / 1 !important;
+/* Square chart: the Scene sizes the canvas to this box. */
+.graph-container .canvas {
+  height: auto;
+  aspect-ratio: 1 / 1;
 }
 
 /* Date row (stock_lookup.js DateTable, a .cq .center grid): drop every other date as the row narrows.
@@ -137,14 +51,67 @@ canvas {
 
 .single {
   text-align: center;
-  padding: 5px 0;
+  padding: var(--chart-date-pad) 0;
 }
 
 /* Hover readout above the stock chart (canvas.js Graph). Its height is mirrored by the price column's top offset. */
 .selected {
-  font-size: 1rem;
-  height: 50px;
+  font-size: var(--font-size);
+  height: var(--chart-readout-height);
   display: grid;
   align-items: center;
-  padding-left: 10px;
+  padding-left: var(--chart-readout-pad);
+}
+
+/* SWIPER (footer sliders: components/client/theme-slider.js, animations.js). Swiper sizes its slides from its own width, so
+   as a grid item it must be allowed to shrink (min-width: 0); with the default min-width: auto it grows
+   to fit its slides, Swiper re-measures, and the page locks up in a resize loop. */
+.swiper { min-width: 0; max-width: 100%; }
+
+/* The slider is a grid so its dots and scrollbar leave their overlay spot and sit below the slides,
+   spaced by gap. The column is pinned (minmax(0, 1fr)): an auto column would size to the slides,
+   which Swiper sizes from the column, in a loop. .swiper > … outranks Swiper's absolute rules. */
+.swiper { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-sm); }
+.swiper > .swiper-pagination.swiper-pagination-bullets,
+.swiper > .swiper-scrollbar.swiper-scrollbar-horizontal { position: static; }
+
+/* THEME CARDS (footer theme slider, components/client/theme-slider.js): the cards are built from grid.css / utils classes on the markup; the
+   one thing CSS has to say is each slide's width, since the slider sizes slides itself (slidesPerView="auto").
+   width: 100%: Swiper's own CSS centers the slider with auto side margins, which shrink a slider of content-sized
+   slides to fit them, so the cards start at the left. The padding leaves room for the cards' shadows, which the
+   slider's overflow would otherwise clip. */
+.theme-slider { width: 100%; padding: var(--space); }
+.theme-slider .swiper-slide { width: 9.5rem; }
+
+/* MOBILE NAV (templates/header.tsx). From 56rem (the body's width, the header's layout-ends breakpoint) the
+   toggle hides and .nav-collapse is display: contents, so its two menus are the header's own grid items:
+   brand | main menu | social icons (in the empty column, pushed to its end) | theme tools (.col-last).
+   Below 56rem the first row is brand, then empty space, then toggle | theme tools at the right end; .nav-collapse (main menu stacked as a list, then
+   the social icons) is hidden until the toggle adds .open to the header, then fills row 2.
+   .btn.nav-toggle outranks .btn's display. */
+.nav-collapse { display: contents; }
+.btn.nav-toggle { display: none; }
+.nav-social { justify-self: end; }
+/* Theme tools: pushed to the right edge, the buttons packed together with only the grid gap between them. */
+.theme-tools { justify-self: end; justify-content: end; }
+
+@container (width < 56rem) {
+  /* The brand's column takes the spare room (never narrower than the brand), so the toggle and tools sit at the right. */
+  .site-header { grid-template-columns: minmax(max-content, 1fr) auto auto; }
+  .btn.nav-toggle { display: inline-grid; }
+  .site-header > .theme-tools { grid-column: auto; }
+  /* Row 2 is placed first, so brand, toggle and tools fill row 1 in source order. */
+  .nav-collapse { display: grid; grid-row: 2; grid-column: 1 / -1; gap: var(--space-sm); padding-bottom: var(--space-sm); }
+  .site-header:not(.open) .nav-collapse { display: none; }
+  /* Main menu: one link per row, a line between them, text at the start. */
+  .site-header .nav-collapse > .menu:not(.nav-social) { grid-template-columns: minmax(0, 1fr); }
+  .site-header .nav-collapse > .menu.divide:not(.nav-social) > :not(:last-child) {
+    border-right-width: 0;
+    border-bottom-width: var(--border-width);
+  }
+  .site-header .nav-collapse > .menu > .menu-link,
+  .site-header .nav-collapse > .menu > .menu-dropdown > summary { justify-content: start; }
+  .nav-social { justify-self: start; }
+  /* The Apps dropdown opens in place, pushing the rest down, instead of floating over the page. */
+  .site-header .nav-collapse .menu-panel { position: static; margin-top: var(--space-xs); }
 }

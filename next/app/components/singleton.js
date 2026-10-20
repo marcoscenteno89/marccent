@@ -39,7 +39,9 @@ class Theme {
   }
 
   async getThemesFromServer() {
-    let data = await get(`${marccent_server}option/?name=theme`).then(res => res);
+    // Gives up after 5s (get() then returns { ok: false }), so an unreachable server falls back to the theme below
+    // instead of leaving first-time visitors on loading spinners.
+    let data = await get(`${marccent_server}option/?name=theme`, { signal: AbortSignal.timeout(5000) });
     if (data.ok) {
       this.dark = new Color(data.filter(i => i.name === 'theme_dark')[0].value);
       this.light = new Color(data.filter(i => i.name === 'theme_light')[0].value);
@@ -53,7 +55,7 @@ class Theme {
       }
     } else {
       console.log('Error getting themes from server. Loading hardcoded theme');
-      this.dark = new Color('#212529');
+      this.dark = new Color('#1a1a1a');
       this.light = new Color('#FFFFFF');
       this.themeList.push({
         primary: new Color('#1f64cf'),

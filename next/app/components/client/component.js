@@ -48,6 +48,9 @@ const Modal = ({ title, show, setShow, footer, children }) => {
 
 /* ---------- components ---------- */
 
+// Toast types with a color (settings.css): toast.add(msg, 'success') fills it like <Alert tone="success">.
+const TONES = ['primary', 'secondary', 'success', 'danger', 'info'];
+
 const Toast = () => {
   const { toast, setToast } = useContext(ToastContext);
   const [counter, setCounter] = useState(0);
@@ -71,7 +74,8 @@ const Toast = () => {
       <div className="toasts pad">
         {toast.list.map((item, i) => (
           <div key={`${+item.time}-${item.msg}`} className="toast"
-            role="alert" aria-live="assertive" aria-atomic="true">
+            role="alert" aria-live="assertive" aria-atomic="true"
+            style={TONES.includes(item.type) ? { backgroundColor: `var(--${item.type}-mode)`, color: `var(--${item.type}-mode-text)` } : undefined}>
             <div className="header">
               <strong>Marccent</strong>
               <small>{dayjs(item.time).fromNow()}</small>
@@ -110,7 +114,7 @@ const useSubmit = (onSubmit) => {
 
 // Submit button: a spinner in place of the icon, and disabled, while the form is busy.
 const SubmitButton = ({ busy, icon = 'paper-plane', children }) => (
-  <Button type="submit" icon={busy ? 'fa-solid fa-spinner fa-spin' : icon} disabled={busy}>{children}</Button>
+  <Button type="submit" icon={busy ? 'fa-solid fa-spinner fa-spin' : icon} disabled={busy} className="primary">{children}</Button>
 );
 
 /**
@@ -122,7 +126,7 @@ const SubmitButton = ({ busy, icon = 'paper-plane', children }) => (
  *   promise, the submit button is disabled (with a spinner) until it settles.
  * @param {string|false} [submitLabel="Submit"] - Submit button text; false for no button.
  * @param {string} [submitIcon="paper-plane"] - Submit button icon (see Button).
- * @param {string} [className="grid gap-2 pairs"] - Replaces the default classes. .pairs (grid.css) gives
+ * @param {string} [className="grid gap-sm pairs"] - Replaces the default classes. .pairs (grid.css) gives
  *   every Field's label the same width.
  * Any other prop (style, id, action, method…) goes on the <form>.
  *
@@ -135,7 +139,7 @@ const SubmitButton = ({ busy, icon = 'paper-plane', children }) => (
  *   <Input name="city" required /><Input name="state" /><Input name="zip" />
  * </Form>
  */
-const Form = ({ onSubmit, submitLabel = 'Submit', submitIcon = 'paper-plane', className = 'grid gap-2 pairs', children, ...rest }) => {
+const Form = ({ onSubmit, submitLabel = 'Submit', submitIcon = 'paper-plane', className = 'grid gap-sm pairs', children, ...rest }) => {
   const [ busy, submit ] = useSubmit(onSubmit);
   return (
     <form className={className} aria-busy={busy || undefined} {...rest} onSubmit={submit}>
@@ -152,7 +156,7 @@ const Form = ({ onSubmit, submitLabel = 'Submit', submitIcon = 'paper-plane', cl
  *
  * @param {Function} onSubmit - Called with (values, formElement) after the last step.
  * @param {Function} [onStep] - Called with (index, values) after moving to another step.
- * @param {string} [className="grid cols-1 gap-2"] - Replaces the default classes.
+ * @param {string} [className="grid cols-1 gap-sm"] - Replaces the default classes.
  *
  * @example
  * <StepForm onSubmit={save}>
@@ -160,7 +164,7 @@ const Form = ({ onSubmit, submitLabel = 'Submit', submitIcon = 'paper-plane', cl
  *   <Step name="Message"><Field name="message" as="textarea" rows={4} required /></Step>
  * </StepForm>
  */
-const StepForm = ({ onSubmit, onStep, className = 'grid cols-1 gap-2', children, ...rest }) => {
+const StepForm = ({ onSubmit, onStep, className = 'grid cols-1 gap-sm', children, ...rest }) => {
   const steps = React.Children.toArray(children);
   const [ current, setCurrent ] = useState(0);
   const [ busy, submit ] = useSubmit(onSubmit);
@@ -187,11 +191,11 @@ const StepForm = ({ onSubmit, onStep, className = 'grid cols-1 gap-2', children,
       </div>
       {steps.map((step, i) => (
         <fieldset key={step.props.name} ref={el => sets.current[i] = el} hidden={i !== current} aria-label={step.props.name}
-          className={cx('grid gap-2 pairs', step.props.className)}>
+          className={cx('grid gap-sm pairs', step.props.className)}>
           {step.props.children}
         </fieldset>
       ))}
-      <div className="grid fixed cols-2 gap-2">
+      <div className="grid fixed cols-2 gap-sm">
         <Button disabled={current === 0} onClick={() => go(current - 1)}>Back</Button>
         {current < last
           ? <Button icon="arrow-right" onClick={() => go(current + 1)}>Next</Button>
@@ -313,7 +317,7 @@ const Counter = ({ active, getTime }) => {
  * ContactUsForm: name, email and message, posted to the server's message/ endpoint. The browser validates the
  * fields; the result shows in an Alert under the form, and the form clears after a successful send.
  */
-const ContactUsForm = ({ className = 'grid cols-1 gap-2', style = { maxWidth: '400px' } }) => {
+const ContactUsForm = ({ className = 'grid cols-1 gap-sm', style = { maxWidth: '400px' } }) => {
   const [ result, setResult ] = useState(null); // { tone, msg } after a send
 
   const send = async (values, form) => {
