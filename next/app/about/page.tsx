@@ -1,7 +1,7 @@
-import Markdown from '@/components/server/markdown';
-import { about } from '@/components/server/content';
+import Markdown from '@/components/markdown';
+import { about } from '@/lib/content';
 
-// Grid only: no borders or radius; lines between parts come from .divide (theme.css).
+// Grid only: no borders or radius; lines between parts come from .divide (colors.css).
 // Parts sit flush (gap-0) and carry their own .pad, so each line falls midway between them.
 export default function About() {
   return (
@@ -9,7 +9,7 @@ export default function About() {
       <div className="wrap bg grid cols-1 gap-0 divide">
 
         <div className="grid layout-1-3 items-center pad">
-          <img src={about.photo.src} className="img-fluid" alt={about.photo.alt} />
+          <img src={about.photo.src} alt={about.photo.alt} />
           <div className="grid cols-1 gap-sm">
             <h4>{about.greeting}</h4>
             <h1>{about.title}</h1>

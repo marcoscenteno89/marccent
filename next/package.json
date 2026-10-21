@@ -47,15 +47,14 @@
     "@googlemaps/js-api-loader": "^1.16.2",
     "@marccent/util": "github:marcoscenteno89/util",
     "@sentry/react": "^7.109.0",
-    "@sentry/tracing": "^7.109.0",
     "dayjs": "^1.11.10",
-    "ga-4-react": "^0.1.281",
     "lodash": "^4.17.21",
     "marked": "^18.1.0",
     "next": "14.2.35",
     "p5": "^1.9.0",
     "react": "^18",
     "react-dom": "^18",
+    "server-only": "^0.0.1",
     "swiper": "^12.2.0"
   },
   "devDependencies": {

@@ -1,0 +1,55 @@
+/*
+ * STYLES ENTRY: the only stylesheet layout.tsx imports. The order below is the cascade, from broad to specific
+ * (ITCSS): when two rules are equally specific, the later file wins. Variables don't depend on this order:
+ * defaults and themes are weightless (:where), so settings.css always beats them.
+ */
+
+/* Variables */
+@import "./tokens/defaults.css";      /* every variable's default */
+@import "./settings.css";             /* this site's overrides: active lines beat the defaults and any theme */
+
+/* Elements and colors */
+@import "./base/base.css";            /* reset, typography, form elements */
+@import "./tokens/colors.css";        /* color classes: bg-*, text-*, .btn color modifiers, .divide, surfaces */
+
+/* Layout */
+@import "./layout.css";               /* grid, wrap, stack, padding, gaps */
+
+/* Site */
+@import "./site.css";                 /* this site only: map, stock chart, sliders, theme cards, mobile nav */
+
+/* Components */
+@import "./base/animations.css";      /* keyframes and open/close motion, before the components that use them */
+@import "./components.css";          /* buttons, menu, toast, modal, forms, icons… */
+@import "./hovers.css";              /* hover effects (.hover-*), after the components so they can replace a component's own hover */
+
+/* Utilities: last, so a single-purpose class beats a component's own rule */
+@import "./utilities.css";
+
+/* THEME (optional): type, shape, depth and effects over the site's own colors. Keep at most one active; comment
+   them all out for the plain look. Its effects load last so they beat the components; its variables stay weightless. */
+/* @import "./themes/minimal.css"; */
+@import "./themes/modern.css";
+/* @import "./themes/professional.css"; */
+/* @import "./themes/elegant.css"; */
+/* @import "./themes/techy.css"; */
+/* @import "./themes/glassmorphism.css"; */
+/* @import "./themes/neumorphism.css"; */
+/* @import "./themes/papercut.css"; */
+/* @import "./themes/brutalism.css"; */
+/* @import "./themes/retro.css"; */
+/* @import "./themes/playful.css"; */
+/* @import "./themes/editorial.css"; */
+/* @import "./themes/bento.css"; */
+/* @import "./themes/handdrawn.css"; */
+/* @import "./themes/notebook.css"; */
+/* @import "./themes/terminal.css"; */
+/* @import "./themes/swiss.css"; */
+/* @import "./themes/art-deco.css"; */
+/* @import "./themes/comic.css"; */
+/* @import "./themes/organic.css"; */
+/* @import "./themes/claymorphism.css"; */
+/* @import "./themes/aurora.css"; */
+/* @import "./themes/cyberpunk.css"; */
+/* @import "./themes/memphis.css"; */
+/* @import "./themes/kinetic.css"; */

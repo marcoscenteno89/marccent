@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120" role="img" aria-label="Marccent mark, network">
+  <title>Marccent mark, network</title>
+  <defs><linearGradient id="g" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="120" y2="120"><stop offset="0" stop-color="#1f64cf"/><stop offset="1" stop-color="#1ecbe1"/></linearGradient></defs>
+  <g fill="none" stroke="url(#g)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+    <polygon points="60,8 105,34 105,86 60,112 15,86 15,34"/>
+    <polyline points="36,82 36,40 60,64 84,40 84,82" stroke-width="4"/><g fill="url(#g)" stroke="none"><circle cx="36" cy="82" r="7"/><circle cx="36" cy="40" r="7"/><circle cx="60" cy="64" r="7"/><circle cx="84" cy="40" r="7"/><circle cx="84" cy="82" r="7"/></g>
+  </g>
+</svg>

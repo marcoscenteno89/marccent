@@ -1,5 +1,5 @@
-import Markdown from '@/components/server/markdown';
-import { privacyPolicy } from '@/components/server/content';
+import Markdown from '@/components/markdown';
+import { privacyPolicy } from '@/lib/content';
 
 export default function PrivacyPolicy() {
   return (
@@ -12,7 +12,7 @@ export default function PrivacyPolicy() {
             {section.cards?.map(card => (
               <div key={card.title} className="bg border round grid gap-0 divide">
                 <div className="header">{card.title}</div>
-                <div className="body">
+                <div className="pad grid cols-1">
                   <p>{card.text}</p>
                 </div>
               </div>

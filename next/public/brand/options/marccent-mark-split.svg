@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120" role="img" aria-label="Marccent mark, split">
+  <title>Marccent mark, split</title>
+  <defs><linearGradient id="g" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="120" y2="120"><stop offset="0" stop-color="#1f64cf"/><stop offset="1" stop-color="#1ecbe1"/></linearGradient></defs>
+  <g fill="none" stroke="url(#g)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+    <polygon points="60,8 105,34 105,86 60,112 15,86 15,34"/>
+    <line x1="36" y1="40" x2="36" y2="82"/><line x1="84" y1="40" x2="84" y2="82"/><polyline points="46,44 60,62 74,44"/>
+  </g>
+</svg>

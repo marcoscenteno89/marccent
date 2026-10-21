@@ -1,6 +1,6 @@
-import { apps } from '@/components/server/list';
-import AppCard from '@/components/server/app-card';
-import { appsPage } from '@/components/server/content';
+import { apps } from '@/components/apps/list';
+import AppCard from '@/components/apps/app-card';
+import { appsPage } from '@/lib/content';
 
 export default function Apps() {
   return (

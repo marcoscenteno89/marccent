@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120" role="img" aria-label="Marccent, dark">
+  <title>Marccent, dark</title>
+  <defs></defs>
+  <g transform="translate(0 0) scale(1)">
+    <mask id="m" maskUnits="userSpaceOnUse" x="0" y="0" width="120" height="120">
+      <polygon points="60,8 105,34 105,86 60,112 15,86 15,34" fill="#fff"/>
+      <polyline points="42,130 42,56 60,74 78,56 78,130" stroke="#000" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <polygon points="42,130 42,60 60,78 78,60 78,130" fill="#000"/>
+    </mask>
+    <polygon points="60,8 105,34 105,86 60,112 15,86 15,34" fill="#1a1a1a" mask="url(#m)"/>
+  </g>
+</svg>

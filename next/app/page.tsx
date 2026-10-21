@@ -1,9 +1,9 @@
-import { apps } from '@/components/server/list';
-import AppCard from '@/components/server/app-card';
-import { Button } from '@/components/server/component';
-import { social, externalProps } from '@/templates/menus';
-import Markdown from '@/components/server/markdown';
-import { home } from '@/components/server/content';
+import { apps } from '@/components/apps/list';
+import AppCard from '@/components/apps/app-card';
+import { Button } from '@/components/ui/button';
+import { social, externalProps } from '@/components/layout/menus';
+import Markdown from '@/components/markdown';
+import { home } from '@/lib/content';
 
 export default function Home() {
 
