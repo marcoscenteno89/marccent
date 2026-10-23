@@ -1,10 +1,17 @@
 import Markdown from '@/components/markdown';
 import { privacyPolicy } from '@/lib/content';
 
+export const metadata = {
+  title: privacyPolicy.meta.title,
+  description: privacyPolicy.meta.description,
+  alternates: { canonical: '/privacy-policy' },
+};
+
 export default function PrivacyPolicy() {
   return (
     <section className="wrap wrap-fluid">
       <div className="wrap bg border round pad grid cols-1">
+        <h1>{privacyPolicy.title}</h1>
         {privacyPolicy.sections.map((section, i) => (
           <div key={i} className="pad border round grid cols-1">
             {section.heading && <h2>{section.heading}</h2>}

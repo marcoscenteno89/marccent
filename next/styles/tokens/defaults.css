@@ -9,7 +9,7 @@
  * The only sizes left as literals elsewhere are @media / @container breakpoints (a variable can't be used there)
  * and the close button's em-based geometry. Variables not here are per-element plumbing, set on their own
  * selectors so nested elements don't inherit them: --cols / --min / --gap on .grid, --wrap on .wrap (layout.css),
- * --pad on .toast (components.css).
+ * --pad on .toast (components/toast.css).
  */
 
 :where(:root) {
@@ -26,15 +26,15 @@
   --secondary-lighter: color-mix(in srgb, var(--secondary) 60%, #fff);
   --secondary-darker: color-mix(in srgb, var(--secondary) 60%, #000);
 
-  /* Status colors (the usual names, in softer shades): danger for destructive actions, success for confirmations,
+  /* Status colors (the usual names, in bright neon-pastel shades): danger for destructive actions, success for confirmations,
      info for notes. Fixed; the theme changer doesn't touch them. Shades are mixed like the brand colors. */
-  --danger: #c94f5d;   /* muted rose red */
+  --danger: #ff5555;   /* bright coral red */
   --danger-lighter: color-mix(in srgb, var(--danger) 60%, #fff);
   --danger-darker: color-mix(in srgb, var(--danger) 60%, #000);
-  --success: #3f9b72;  /* jade */
+  --success: #50fa7b;  /* neon mint green */
   --success-lighter: color-mix(in srgb, var(--success) 60%, #fff);
   --success-darker: color-mix(in srgb, var(--success) 60%, #000);
-  --info: #5e81ac;     /* dusty steel blue */
+  --info: #8be9fd;     /* electric sky cyan */
   --info-lighter: color-mix(in srgb, var(--info) 60%, #fff);
   --info-darker: color-mix(in srgb, var(--info) 60%, #000);
 
@@ -85,9 +85,9 @@
   --wrap-max: 75rem;           /* max width of .wrap containers; .wrap-sm / .wrap-lg are multiples (SCALES) */
   --wrap-pad: var(--space);    /* side padding of .wrap containers */
   --pad: var(--space);         /* inner padding of boxes (.pad, .header) */
-  --icon-size: calc(1.5em + var(--space) * 1.25); /* every icon's square (ICONS in components.css); em = the icon's font size */
+  --icon-size: calc(1.5em + var(--space) * 1.25); /* every icon's square (components/icons.css); em = the icon's font size */
 
-  /* Components (components.css) */
+  /* Components (components/) */
   --btn-weight: 600;           /* button labels: semibold, between --weight-heading and --weight-bold */
   --btn-pad-x: 1rem;           /* space on each side of a button's label; the button is as wide as label + this */
   --toast-width: 250px;
@@ -98,14 +98,7 @@
   /* Glass mode */
   --glass-blur: 20px;
   --glass-opacity: 0.4;
-
-  /* Site-specific (site.css; leaves with the site when the theme is split out) */
-  --map-height: 500px;         /* min height of the map */
-  --chart-font-size: 12px;     /* stock chart labels */
-  --chart-font-weight: 100;
-  --chart-date-pad: 5px;       /* above and below each date under the chart */
-  --chart-readout-height: 50px; /* hover readout above the chart; the price column is offset by the same amount */
-  --chart-readout-pad: 10px;
+  --theme-glass: 0;            /* 1 in a design theme that is glass already (themes/): the Glass toggle turns off */
 }
 
 /* SCALES: the steps of each size family, as multiples of its base above. */

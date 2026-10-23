@@ -2,9 +2,10 @@
 import { useRef, useEffect, useId } from 'react';
 import { cx } from '@/lib/cx';
 import { Button } from './button';
+import '@/styles/components/modal.css';
 
 /**
- * ModalPanel: what a modal shows, without the <dialog>, in one of two looks (components.css):
+ * ModalPanel: what a modal shows, without the <dialog>, in one of two looks (styles/components/modal.css):
  *  - default: a bordered box, the title and a ✕ on top, then the body and the buttons at the end, lines between.
  *  - "ticket" (the old client's PopUp): a band in the theme gradient with the title (centered, a size larger),
  *    a notch cut into each side,

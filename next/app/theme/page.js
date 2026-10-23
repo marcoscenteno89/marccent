@@ -160,6 +160,7 @@ export default function ThemePage() {
           <Button onClick={() => say('Text button')}>Text button</Button>
           <Button icon="toggle-on" aria-pressed="true">Pressed</Button>
           <Button icon="ban" disabled>Disabled</Button>
+          <Button icon="link-slash" href="/" disabled>Disabled link</Button>
           <button type="button" className="btn-close col-center" aria-label="Close"><Icon name="xmark" /></button>
         </Row>
         <Row label="Filled" note=".btn + a color">
@@ -184,6 +185,14 @@ export default function ThemePage() {
             <Button icon="brush" className="outline-gradient">Theme</Button>
           </div>
         </div>
+        <Demo name="Animated">data-canvas on a button: a canvas animation behind its icon and label (on dark, so the label reads over the theme colors)</Demo>
+        <Row>
+          {[['blob', 'droplet'], ['fire', 'fire'], ['wave', 'water'], ['network-loop', 'diagram-project'],
+            ['particle-flowfield', 'wind'], ['orbit', 'circle-notch'], ['snow', 'snowflake'],
+            ['fireflies', 'star'], ['leaves', 'leaf'], ['rain', 'cloud-rain'], ['bubbles', 'water']].map(([anim, ic]) => (
+            <Button key={anim} icon={ic} className="dark" data-canvas={anim}>{anim}</Button>
+          ))}
+        </Row>
       </Section>
 
       <Section name="Hover effects" intro="Hover classes (styles/hovers.css) work on any element and draw in the theme's colors (--hover-from / --hover-to override them). A pressed toggle shows the same effect.">
@@ -266,6 +275,20 @@ export default function ThemePage() {
             <Button key={fx} icon={icon(i, 7)} className={`${look(OUTLINED.filter(c => c !== 'outline-gradient'), i)} hover-${fx}`}>{fx}</Button>
           ))}
         </Row>
+        <Demo name="Shapes">For .shape-* elements (a shape cuts away anything drawn outside it): grow, spin, flip, morph, float (on a wrapper), and shine</Demo>
+        <div className="grid gap-lg items-center justify-center text-center" style={{ '--cols': 6, '--min': '7rem' }}>
+          {[
+            ['hover-grow', <div key="g" className="shape-pentagon bg-gradient hover-grow" style={{ width: '5.5rem' }} />],
+            ['hover-spin', <div key="s" className="shape-star bg-gradient hover-spin" style={{ width: '6rem' }} />],
+            ['hover-flip', <div key="f" className="shape-hexagon bg-primary col-center hover-flip" style={{ width: '5.5rem' }}><Icon name="coins" className="fs-lg" /></div>],
+            ['hover-morph', <div key="m" className="shape-star bg-gradient hover-morph" style={{ width: '6rem', '--hover-shape':
+              'polygon(50% 0, 79.4% 9.5%, 97.6% 34.5%, 97.6% 65.5%, 79.4% 90.5%, 50% 100%, 20.6% 90.5%, 2.4% 65.5%, 2.4% 34.5%, 20.6% 9.5%)' }} />],
+            ['hover-float', <div key="w" className="hover-float"><div className="shape-heart bg-danger" style={{ width: '6rem' }} /></div>],
+            ['hover-shine', <div key="b" className="shape-bubble bg-secondary col-center hover-shine" style={{ width: '7rem', paddingBottom: '25%' }}>Hi!</div>],
+          ].map(([label, shape]) => (
+            <div key={label} className="grid cols-1 gap-sm justify-center">{shape}<small className="opacity-75">{label}</small></div>
+          ))}
+        </div>
       </Section>
 
       <Section name="Forms" intro="Native forms: the browser validates (required, type…) before onSubmit runs.">

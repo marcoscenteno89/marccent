@@ -1,18 +1,82 @@
 'use client';
-import React, { useState, useRef, useEffect, useId } from 'react';
+import React, { useState, useRef, useEffect, useId, forwardRef } from 'react';
 import { cx } from '@/lib/cx';
 import { Clock } from '@/components/ui/clock';
+import { watchInView } from '@/lib/in-view';
+import { Store, useStore } from '@/lib/store';
 
 /*
  * Motion effects ported from the anthem site: Orbit (the ag page's click-to-rotate circle), Countdown (the gooey
  * 5..0 counter) and Parallax / useParallax (scroll parallax). Countdown's look is in animations.css.
- * All three respect prefers-reduced-motion.
+ * All three respect prefers-reduced-motion. The motion itself is plain-JS classes (OrbitPlayer, Spins,
+ * CountdownTimer, ParallaxMotion); the components only mount them and render.
  */
 
 /* ---------- orbit ---------- */
 
 const localMs = () => Date.now() - new Date().getTimezoneOffset() * 60000; // ms since 1970 in local time
 const reducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/**
+ * OrbitPlayer: which Orbit item is picked and how far the pointer has turned, plus autoPlay's timers, in plain JS.
+ * attach(el) starts autoPlay on the orbit's box (it plays only while on screen and, unless synced, waits while the
+ * pointer is over it or focus is inside it); destroy() stops it.
+ */
+class OrbitPlayer extends Store {
+  constructor({ count, start, startAngle, offset, autoPlay, interval, sync }) {
+    super();
+    Object.assign(this, { count, start, startAngle, offset, autoPlay, interval, sync });
+    this.step = 360 / count;
+    this.active = start;
+    this.turn = this.angleOf(start) + offset;
+    this.inView = false;
+    this.paused = false;
+    this.cleanup = [];
+  }
+
+  angleOf(i) { return i * this.step + this.startAngle; }
+
+  select(i) {
+    const delta = ((this.angleOf(i) + this.offset - this.turn) % 360 + 540) % 360 - 180; // -180..180: never spins the long way
+    this.turn += delta;
+    this.active = i;
+    this.emit();
+    this.schedule(); // any change of item (by click or by the timer) starts the wait over
+  }
+
+  attach(el) {
+    if (!this.autoPlay) return;
+    this.cleanup.push(watchInView(el, (inView) => { this.inView = inView; this.schedule(); }));
+    if (this.sync) return;
+    const pause = (paused) => { this.paused = paused; this.schedule(); };
+    const on = (type, fn) => { el.addEventListener(type, fn); this.cleanup.push(() => el.removeEventListener(type, fn)); };
+    on('mouseenter', () => pause(true));
+    on('mouseleave', () => pause(false));
+    on('focusin', () => pause(true));
+    on('focusout', (e) => !el.contains(e.relatedTarget) && pause(false));
+  }
+
+  // One timer per pick.
+  schedule() {
+    clearTimeout(this.timer);
+    if (!this.autoPlay || !this.inView) return;
+    const { interval, count, start } = this;
+    if (this.sync) {
+      this.firstTick ??= Math.floor(localMs() / interval);
+      const wait = interval - (localMs() % interval) + 5; // just past the next boundary
+      this.timer = setTimeout(() => this.select((start + Math.floor(localMs() / interval) - this.firstTick) % count), wait);
+      return;
+    }
+    if (this.paused || reducedMotion()) return;
+    this.timer = setTimeout(() => this.select((this.active + 1) % count), interval);
+  }
+
+  destroy() {
+    clearTimeout(this.timer);
+    this.cleanup.forEach((fn) => fn());
+    this.cleanup = [];
+  }
+}
 
 /**
  * Orbit: items ring a circle (a thin ring in the theme gradient); clicking one shows its title and text in
@@ -43,41 +107,14 @@ const Orbit = ({ items, start = 0, startAngle = 0, wheel, center, hub = true, of
   sync = false, className, style }) => {
   const list = typeof items === 'number' ? null : items;
   const count = list ? list.length : items;
-  const step = 360 / count;
-  const angleOf = (i) => i * step + startAngle;
+  const angleOf = (i) => i * (360 / count) + startAngle;
   const wedge = Math.min(40, 320 / count); // the pointer's default width (deg): narrower as items crowd
   // Each item's share of the ring (2 pi x radius x 1.1 / count), up to 20% of the box.
   const itemSize = `min(20cqi, calc(var(--orbit-radius) * ${(6.9 / count).toFixed(4)}))`;
-  const [ active, setActive ] = useState(start);
-  const [ turn, setTurn ] = useState(angleOf(start) + offset);
-  const [ tick, setTick ] = useState(0);         // counts synced ticks, so the next one is always scheduled
-  const [ paused, setPaused ] = useState(false); // pointer over it or focus inside: autoPlay waits
-  const firstTick = useRef(null);
-  const select = (i) => {
-    const delta = ((angleOf(i) + offset - turn) % 360 + 540) % 360 - 180; // -180..180: never spins the long way
-    setTurn(turn + delta);
-    setActive(i);
-  };
-  // One timer per pick: any change of item (by click or by the timer) starts the wait over.
-  useEffect(() => {
-    if (!autoPlay) return;
-    if (sync) {
-      firstTick.current ??= Math.floor(localMs() / interval);
-      const wait = interval - (localMs() % interval) + 5; // just past the next boundary
-      const timer = setTimeout(() => {
-        select((start + Math.floor(localMs() / interval) - firstTick.current) % count);
-        setTick(t => t + 1);
-      }, wait);
-      return () => clearTimeout(timer);
-    }
-    if (paused || reducedMotion()) return;
-    const timer = setTimeout(() => select((active + 1) % count), interval);
-    return () => clearTimeout(timer);
-  }, [autoPlay, sync, paused, interval, active, turn, count, tick]);
-  const pause = sync ? {} : {
-    onMouseEnter: () => setPaused(true), onMouseLeave: () => setPaused(false),
-    onFocus: () => setPaused(true), onBlur: (e) => !e.currentTarget.contains(e.relatedTarget) && setPaused(false),
-  };
+  const player = useStore(() => new OrbitPlayer({ count, start, startAngle, offset, autoPlay, interval, sync }));
+  const { active, turn } = player;
+  const box = useRef(null);
+  useEffect(() => player.attach(box.current), []);
   // Turning motion: off for visitors who ask for reduced motion (read once mounted: the server can't know).
   const [ still, setStill ] = useState(false);
   useEffect(() => setStill(reducedMotion()), []);
@@ -85,7 +122,7 @@ const Orbit = ({ items, start = 0, startAngle = 0, wheel, center, hub = true, of
   // The ring, the pointer and the items all sit on one circle, --orbit-radius from the center.
   const circle = { width: 'calc(var(--orbit-radius) * 2)', aspectRatio: 1, placeSelf: 'center' };
   return (
-    <div className={cx('cq', className)} style={{ '--orbit-radius': '40cqi', ...style }} {...pause}>
+    <div ref={box} className={cx('cq', className)} style={{ '--orbit-radius': '40cqi', ...style }}>
       <div className="stack square circle" style={{ placeItems: 'center' }}>
         {/* The pointer: a wedge aimed at the picked item, fading in from the middle so the hub's text stays clear. */}
         <div className="circle" style={{ ...circle,
@@ -110,7 +147,7 @@ const Orbit = ({ items, start = 0, startAngle = 0, wheel, center, hub = true, of
               // A circle on the track, the picked one filled with the gradient. --icon-size: a Font Awesome icon fills
               // it instead of keeping its own minimum size, so a small button on a crowded ring stays round.
               const button = {
-                className: cx('circle border bg', i === active && 'bg-gradient', !sync && 'hover-grow'),
+                className: cx('circle border bg', i === active && 'bg-gradient'),
                 style: { display: 'grid', placeItems: 'center', width: '70%', aspectRatio: 1, padding: 0, color: 'inherit',
                   fontSize: 'min(var(--text-lg), calc(var(--item) * .3))', '--icon-size': '100%', cursor: sync ? 'default' : 'pointer',
                   borderColor: i === active ? 'var(--primary)' : undefined },
@@ -120,7 +157,7 @@ const Orbit = ({ items, start = 0, startAngle = 0, wheel, center, hub = true, of
                   transform: `rotate(${angleOf(i)}deg) translate(var(--orbit-radius)) rotate(${-angleOf(i)}deg)` }}>
                   {sync
                     ? <span {...button} aria-hidden="true">{icon}</span>
-                    : <button type="button" {...button} aria-label={item.title} aria-pressed={i === active} onClick={() => select(i)}>{icon}</button>}
+                    : <button type="button" {...button} aria-label={item.title} aria-pressed={i === active} onClick={() => player.select(i)}>{icon}</button>}
                 </li>
               );
             })}
@@ -164,35 +201,53 @@ const OrbitClock = ({ className }) => {
 /* ---------- spins ---------- */
 
 /**
- * useSpins: turns every [data-lap] element inside ref's box round and round, with the browser's animation API (no CSS
+ * Spins: turns every [data-lap] element inside el round and round, with the browser's animation API (no CSS
  * needed): a full turn every data-lap seconds, starting at data-from degrees, clockwise (data-dir="1") or back
  * (data-dir="-1": a child that turns back as its parent turns stays upright). They all wait while the pointer is over
- * the box or focus is inside it (pause: false to keep going), and hold still for visitors who ask for reduced motion.
+ * the box or focus is inside it (pause: false to keep going), only move while on screen (watchInView), and hold still
+ * for visitors who ask for reduced motion.
  * Give each element its start angle inline too (rotate: data-from), so it's in place before the script runs.
- * @param {React.RefObject} ref
+ * destroy() stops them.
+ * @param {Element} el
  * @param {{ pause?: boolean }} [options]
  */
-const useSpins = (ref, { pause = true } = {}) => {
-  useEffect(() => {
-    if (reducedMotion()) return;
-    const el = ref.current;
-    const spins = [ ...el.querySelectorAll('[data-lap]') ].map(e => {
+class Spins {
+  constructor(el, { pause = true } = {}) {
+    this.el = el;
+    this.inView = false;
+    this.hovered = false;
+    this.cleanup = [];
+    if (reducedMotion()) { this.animations = []; return; }
+    this.animations = [ ...el.querySelectorAll('[data-lap]') ].map(e => {
       const lap = Number(e.dataset.lap) * 1000, from = Number(e.dataset.from ?? 0), dir = Number(e.dataset.dir ?? 1);
-      return e.animate([ { rotate: `${from}deg` }, { rotate: `${from + dir * 360}deg` } ], { duration: lap, iterations: Infinity });
+      const a = e.animate([ { rotate: `${from}deg` }, { rotate: `${from + dir * 360}deg` } ], { duration: lap, iterations: Infinity });
+      a.pause(); // starts once on screen
+      return a;
     });
-    if (!pause) return () => spins.forEach(a => a.cancel());
-    const stop = () => spins.forEach(a => a.pause());
-    const play = () => spins.forEach(a => a.play());
-    const blur = (e) => !el.contains(e.relatedTarget) && play();
-    el.addEventListener('mouseenter', stop); el.addEventListener('mouseleave', play);
-    el.addEventListener('focusin', stop); el.addEventListener('focusout', blur);
-    return () => {
-      spins.forEach(a => a.cancel());
-      el.removeEventListener('mouseenter', stop); el.removeEventListener('mouseleave', play);
-      el.removeEventListener('focusin', stop); el.removeEventListener('focusout', blur);
-    };
-  }, []);
-};
+    this.cleanup.push(watchInView(el, (inView) => { this.inView = inView; this.sync(); }));
+    if (!pause) return;
+    const hover = (hovered) => { this.hovered = hovered; this.sync(); };
+    const on = (type, fn) => { el.addEventListener(type, fn); this.cleanup.push(() => el.removeEventListener(type, fn)); };
+    on('mouseenter', () => hover(true));
+    on('mouseleave', () => hover(false));
+    on('focusin', () => hover(true));
+    on('focusout', (e) => !el.contains(e.relatedTarget) && hover(false));
+  }
+
+  // Plays only while on screen and (with pause) not hovered or focused.
+  sync() { this.animations.forEach(a => (this.inView && !this.hovered ? a.play() : a.pause())); }
+
+  destroy() {
+    this.animations.forEach(a => a.cancel());
+    this.cleanup.forEach((fn) => fn());
+  }
+}
+
+/** useSpins: a Spins on ref's box for the component's lifetime. */
+const useSpins = (ref, options) => useEffect(() => {
+  const spins = new Spins(ref.current, options);
+  return () => spins.destroy();
+}, []);
 
 /* ---------- solar system ---------- */
 
@@ -238,7 +293,7 @@ const SolarSystem = ({ className, style }) => {
                   '--ring-hole': 'calc(100% - 1px)', background: 'var(--border-color)', pointerEvents: 'none' }} />
                 <div className="stack" data-lap={p.lap} data-from={from} data-dir={1}
                   style={{ width: `${p.radius * 2}cqi`, aspectRatio: 1, rotate: `${from}deg`, pointerEvents: 'none' }}>
-                  <button type="button" className="stack hover-grow" aria-label={p.name} aria-pressed={active === i}
+                  <button type="button" className="stack" aria-label={p.name} aria-pressed={active === i}
                     onClick={() => setActive(active === i ? null : i)} data-lap={p.lap} data-from={-from} data-dir={-1}
                     style={{ placeSelf: 'center end', translate: '50% 0', rotate: `${-from}deg`, placeItems: 'center',
                       padding: 0, border: 0, background: 'none', cursor: 'pointer', pointerEvents: 'auto' }}>
@@ -272,11 +327,11 @@ const COUNTDOWN_HOLD = 1000;
  * Size with --countdown-size (style), color with `color`.
  * @param {number|null} digit - 0..9.
  */
-const GooDigit = ({ digit, className, style, ...rest }) => {
+const GooDigit = forwardRef(({ digit, className, style, ...rest }, ref) => {
   const filter = 'goo' + useId().replace(/:/g, ''); // useId's colons break url(#...)
   return (
     <>
-      <div className={cx('countdown', className)} data-digit={digit ?? undefined} style={{ ...style, filter: `url(#${filter})` }} {...rest}>
+      <div ref={ref} className={cx('countdown', className)} data-digit={digit ?? undefined} style={{ ...style, filter: `url(#${filter})` }} {...rest}>
         <i /><i /><i /><i /><i />
       </div>
       <svg className="countdown-filter" aria-hidden="true">
@@ -288,73 +343,106 @@ const GooDigit = ({ digit, className, style, ...rest }) => {
       </svg>
     </>
   );
+});
+GooDigit.displayName = 'GooDigit';
+
+/**
+ * CountdownTimer: counts el (a GooDigit's box) down from `from` to 0 by setting its data-digit, with a collapsed
+ * dot between digits. Calls onDone once 0 has shown, and stays on 0. destroy() stops it.
+ */
+class CountdownTimer {
+  constructor(el, from, onDone) {
+    this.el = el;
+    this.onDone = onDone;
+    this.n = Math.min(Math.max(from, 0), 9);
+    this.show();
+  }
+  set(digit) {
+    if (digit === null) delete this.el.dataset.digit;
+    else this.el.dataset.digit = digit;
+    this.el.setAttribute('aria-label', digit ?? '');
+  }
+  show() {
+    this.set(null);
+    this.timer = setTimeout(() => {
+      this.set(this.n);
+      this.timer = setTimeout(() => (this.n-- > 0 ? this.show() : this.onDone?.()), COUNTDOWN_HOLD);
+    }, COUNTDOWN_GAP);
+  }
+  destroy() { clearTimeout(this.timer); }
 }
 
 /**
- * Countdown: a GooDigit counting down from `from` to 0. Calls onDone once 0 has shown, and stays on 0.
+ * Countdown: a GooDigit run by a CountdownTimer.
  * @param {number} [from=5] - Starting digit, 0..9.
  * @param {Function} [onDone]
  */
 const Countdown = ({ from = 5, onDone, className, style }) => {
-  const [ digit, setDigit ] = useState(null);
+  const ref = useRef(null);
   const done = useRef(onDone);
   done.current = onDone;
   useEffect(() => {
-    let n = Math.min(Math.max(from, 0), 9);
-    let timer;
-    const show = () => {
-      setDigit(null);
-      timer = setTimeout(() => {
-        setDigit(n);
-        timer = setTimeout(() => (n-- > 0 ? show() : done.current?.()), COUNTDOWN_HOLD);
-      }, COUNTDOWN_GAP);
-    };
-    show();
-    return () => clearTimeout(timer);
+    const timer = new CountdownTimer(ref.current, from, () => done.current?.());
+    return () => timer.destroy();
   }, [from]);
-  return <GooDigit digit={digit} className={className} style={style} role="timer" aria-label={digit ?? ''} />;
+  return <GooDigit ref={ref} digit={null} className={className} style={style} role="timer" />;
 }
 
 /* ---------- parallax ---------- */
 
 /**
- * Moves the ref'd element along y as the page scrolls: 0 when its parent is centered in the window, then
- * (parent's distance from center) x speed. Positive speed lags the scroll (a background feel), negative leads it.
+ * ParallaxMotion: moves node along y as the page scrolls: 0 when its parent is centered in the window, then
+ * (how far the window's center is past the parent's) x speed. Positive speed lags the scroll (a background feel: it
+ * slides down in its parent as you scroll down), negative leads it.
  * Measures the parent, not the element, so its own movement doesn't feed back. Runs only while the parent is
  * near the screen, once per frame, and stays still for reduced motion. Give the parent overflow: clip to hide
- * the edges the element uncovers.
+ * the edges the element uncovers. destroy() stops it.
+ * @param {HTMLElement} node @param {number} [speed=0.2]
+ */
+class ParallaxMotion {
+  constructor(node, speed = 0.2) {
+    this.node = node;
+    this.parent = node.parentElement;
+    this.speed = speed;
+    this.motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    this.frame = 0;
+    this.visible = false;
+    this.observer = new IntersectionObserver(([ entry ]) => { this.visible = entry.isIntersecting; this.queue(); },
+      { rootMargin: '25% 0px' });
+    this.observer.observe(this.parent);
+    window.addEventListener('scroll', this.queue, { passive: true });
+    window.addEventListener('resize', this.queue);
+    this.motion.addEventListener('change', this.draw);
+  }
+  draw = () => {
+    this.frame = 0;
+    const box = this.parent.getBoundingClientRect();
+    // Distance of the window's center past the parent's: as the page scrolls down it grows, so the element slides
+    // down inside its parent (it lags; far layers sink behind near ones).
+    const offset = (window.innerHeight / 2 - (box.top + box.height / 2)) * this.speed;
+    this.node.style.translate = this.motion.matches ? '' : `0 ${offset.toFixed(1)}px`;
+  };
+  queue = () => { if (this.visible && !this.frame) this.frame = requestAnimationFrame(this.draw); };
+  destroy() {
+    this.observer.disconnect();
+    window.removeEventListener('scroll', this.queue);
+    window.removeEventListener('resize', this.queue);
+    this.motion.removeEventListener('change', this.draw);
+    cancelAnimationFrame(this.frame);
+  }
+}
+
+/**
+ * useParallax: a ParallaxMotion on the ref'd element for the component's lifetime.
  * @param {number} [speed=0.2]
  * @returns {React.RefObject}
  */
 const useParallax = (speed = 0.2) => {
   const ref = useRef(null);
   useEffect(() => {
-    const node = ref.current;
-    const parent = node?.parentElement;
-    if (!parent) return;
-    const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
-    let frame = 0;
-    let visible = false;
-    const draw = () => {
-      frame = 0;
-      const box = parent.getBoundingClientRect();
-      const offset = (box.top + box.height / 2 - window.innerHeight / 2) * speed;
-      node.style.translate = motion.matches ? '' : `0 ${offset.toFixed(1)}px`;
-    };
-    const queue = () => { if (visible && !frame) frame = requestAnimationFrame(draw); };
-    const observer = new IntersectionObserver(([ entry ]) => { visible = entry.isIntersecting; queue(); },
-      { rootMargin: '25% 0px' });
-    observer.observe(parent);
-    window.addEventListener('scroll', queue, { passive: true });
-    window.addEventListener('resize', queue);
-    motion.addEventListener('change', draw);
-    return () => {
-      observer.disconnect();
-      window.removeEventListener('scroll', queue);
-      window.removeEventListener('resize', queue);
-      motion.removeEventListener('change', draw);
-      cancelAnimationFrame(frame);
-    };
+    if (!ref.current?.parentElement) return;
+    const parallax = new ParallaxMotion(ref.current, speed);
+    return () => parallax.destroy();
   }, [speed]);
   return ref;
 }
@@ -368,4 +456,7 @@ const Parallax = ({ speed = 0.2, as: Tag = 'div', className, children }) => {
   return <Tag ref={ref} className={cx('parallax', className)}>{children}</Tag>;
 }
 
-export { Orbit, OrbitClock, SolarSystem, useSpins, GooDigit, Countdown, Parallax, useParallax, reducedMotion };
+export {
+  Orbit, OrbitPlayer, OrbitClock, SolarSystem, Spins, useSpins, GooDigit, Countdown, CountdownTimer, Parallax, useParallax,
+  ParallaxMotion, reducedMotion
+};

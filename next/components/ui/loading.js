@@ -1,10 +1,12 @@
 // Shared: no 'use client' (no state or effects), so it renders on the server or in the browser, wherever it's used.
 
+import '@/styles/components/loading.css';
+
 /**
  * Loading: its children once every `require` value is truthy; until then, a loader that fills its parent's width.
  * @param {any[]} require
  * @param {'spinner'|'ring'|'dots'|'bars'|'pulse'|'orbit'|'bar'|'flip'} [kind='spinner'] - spinner: the pulsing dot
- *   (.spinner); the rest: the .loader-* classes (components.css).
+ *   (.spinner); the rest: the .loader-* classes (styles/components/loading.css).
  * @param {string} [className] - e.g. text-primary, for the loaders drawn in the text color.
  */
 const Loading = ({ require = [], kind = 'spinner', className, children }) => {

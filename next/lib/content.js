@@ -3,38 +3,215 @@
 // so keep template literals indented. Lists that get their own styling are plain arrays.
 // Only our own text goes here: Markdown output is not sanitized.
 
+// Site-wide facts: the metadata (layout.tsx), structured data (lib/schema.js), sitemap, robots, llms.txt and the
+// social image all read these, so search engines and AI answer engines get one consistent story.
 export const site = {
   title: 'Marccent',
-  description: 'Marcos Centeno Portfolio Website',
+  url: 'https://marccent.com',
+  tagline: 'A grid-first CSS theme, and the live site that demos it',
+  description: 'Marccent is a grid-first CSS theme built by Marcos Centeno, a full-stack web developer in Idaho Falls, Idaho. This site is its live demo: every page, card, form, chart and animation is built from the theme.',
+  keywords: [
+    'Marccent', 'Marcos Centeno', 'CSS theme', 'CSS grid layout', 'design system', 'dark mode', 'glassmorphism',
+    'CSS shapes', 'parallax', 'canvas animations', 'React', 'Next.js', 'full-stack web developer', 'Idaho Falls',
+  ],
+  locale: 'en_US',
+  author: {
+    name: 'Marcos Centeno',
+    jobTitle: 'Full-stack web developer',
+    email: 'marcoscenteno89@gmail.com',
+    city: 'Idaho Falls',
+    region: 'ID',
+    country: 'US',
+    image: '/marcos-cartoon.svg',
+  },
+  updated: '2026-10-22', // shown as "last updated" and used in the sitemap and structured data
   footer: (year) => `Copyright ©${year} Marccent. All rights reserved | [Privacy Policy](/privacy-policy)`,
+  footerBlurb: `
+    **This site is the demo.** Marccent is a CSS theme, and every page here (the apps, the landing pages, this footer)
+    is built from it. Pick colors below and watch the whole site follow.
+  `,
+  footerExplore: 'Explore',
+  footerConnect: 'Connect',
+};
+
+// Numbers shown on the home page and in the FAQ. Keep them in step with the code: themes = styles/themes/*.css,
+// shapes = .shape-* in utilities.css, animations = canvas.js backgrounds, scenery = scenery-paths.js layers.
+export const theme = {
+  name: 'Marccent',
+  stats: [
+    { value: 27, label: 'design styles', icon: 'swatchbook' },
+    { value: 39, label: 'CSS shapes', icon: 'shapes' },
+    { value: 11, label: 'canvas animations', icon: 'wand-magic-sparkles' },
+    { value: 29, label: 'parallax layers', icon: 'mountain-sun' },
+    { value: 6, label: 'demo landing pages', icon: 'window-maximize' },
+  ],
 };
 
 export const home = {
-  greeting: 'Hello',
-  title: 'I am Marcos Centeno',
-  intro: `
-    A full-stack web developer based in Idaho Falls, ID. With 6+ years of expertise designing, developing,
-    and troubleshooting responsive user interfaces and web applications. Skilled
-    in Vanilla Javascript, CSS, Python, PHP, and frameworks like React, Django,
-    WordPress and Bootstrap.
-  `,
-  appsTitle: 'Marccent App List',
+  meta: {
+    title: 'Marccent: a grid-first CSS theme by Marcos Centeno',
+    description: 'Meet Marccent, a grid-first CSS theme with 27 design styles, light, dark and glass modes, CSS shapes, parallax and canvas animations. This whole site is its live demo.',
+  },
+  hero: {
+    kicker: 'Live demo site · Marccent theme',
+    title: 'The theme is the product. This site is the demo.',
+    intro: `
+      Hi, I'm **Marcos Centeno**, a full-stack web developer in Idaho Falls, Idaho. I'm building **Marccent**: a
+      grid-first CSS theme. Every page you see here (the cards, forms, charts and the mountains behind this text) is
+      made from it.
+    `,
+    primary: { label: 'Explore the theme', href: '/theme', icon: 'palette' },
+    secondary: { label: 'About me', href: '/about', icon: 'user' },
+  },
+  what: {
+    kicker: 'The product',
+    title: 'What is Marccent?',
+    // The direct answer first: answer engines quote the opening sentences.
+    answer: `
+      **Marccent is a CSS theme built around CSS Grid.** It gives a site its layout, colors, type, buttons, forms,
+      shapes and motion from a small set of plain classes, so pages are built from markup instead of one-off CSS. It
+      started as my way off Bootstrap; now it runs this whole site with no CSS framework underneath.
+    `,
+    features: [
+      { icon: 'table-cells', title: 'Grid first', text: 'Columns, subgrids, stacks and auto-fitting cards from a handful of classes like grid, cols-3, stack and pairs.' },
+      { icon: 'swatchbook', title: '27 design styles', text: 'Glassmorphism, brutalism, editorial, terminal, claymorphism and more: pick one in the footer or the header tools and the whole site changes its look.' },
+      { icon: 'circle-half-stroke', title: 'Light, dark and glass', text: 'Every color is derived from four: primary, secondary, dark and light. Modes and palettes re-theme every page at once.' },
+      { icon: 'hexagon-nodes', title: 'Shapes and scenery', text: 'Hexagons, tickets, ribbons and 36 more shapes, plus silhouette layers that stack into landscapes.' },
+      { icon: 'leaf', title: 'Motion that rests', text: 'Canvas animations and timers run only while on screen and stand still for visitors who ask for reduced motion.' },
+      { icon: 'code', title: 'Light on JavaScript', text: 'Widgets are plain JS classes behind thin React wrappers, so the logic is not tied to one framework.' },
+    ],
+  },
+  live: {
+    kicker: 'Try it now',
+    title: 'Re-theme the whole site from here',
+    text: `
+      Pick a design style, dark mode, glass or a color card and every section on this page follows, because none of
+      it has colors of its own. To theme just one section, use the mini editor under it.
+    `,
+    card: { label: 'Live canvas', title: 'Drawn in your theme colors', text: 'Change the colors and the blobs follow.' },
+  },
+  // The mini theme editors (components/theme/mini-editor.js): each changes only the section right above it.
+  mini: {
+    title: 'Theme the section above',
+    text: 'A design style, the mode, glass and a color card, for this one section: the rest of the site stays as it is.',
+  },
+  band: {
+    title: 'Every color on this site comes from two you pick.',
+    text: 'Even the animations: this one is drawn in your theme colors, and runs only while you can see it.',
+  },
+  showcase: {
+    kicker: 'The demo',
+    title: 'See every part of the theme',
+    text: 'Each Design page shows one part of the theme, live, in the colors and mode you pick.',
+    // tile: Collage tile props (widgets/collage.js); the page adds the button from href.
+    tiles: [
+      { href: '/theme', src: 'blue1', size: 'feature', overlay: 'tint', label: 'Theme', title: 'Colors, type, buttons, forms', text: 'Every building block in the active theme, hover effects included.', icon: 'palette' },
+      { href: '/animations', canvas: 'network-loop', size: 'square', overlay: 'glass', label: 'Animations', title: 'Canvas in your colors', icon: 'wand-magic-sparkles' },
+      { href: '/shapes', src: 'pink3', size: 'square', overlay: 'focus', label: 'Shapes', title: '39 CSS shapes', icon: 'shapes' },
+      { href: '/parallax', src: 'teal3', size: 'landscape', overlay: 'blur', label: 'Parallax', title: 'Landscapes that scroll in layers', icon: 'mountain-sun' },
+      { href: '/widgets', src: 'orange4', size: 'landscape', overlay: 'glass', label: 'Widgets', title: 'Calendars, gauges, timelines and more', icon: 'puzzle-piece' },
+      { href: '/images', src: 'purple1', size: 'landscape', overlay: 'blur', label: 'Images', title: 'Every photo card overlay', icon: 'images' },
+    ],
+  },
+  landing: {
+    kicker: 'Real-world pages',
+    title: 'Six made-up companies, one theme',
+    text: 'Each landing page sets its own palette and font and nothing else: the layout, cards and widgets all come from Marccent.',
+    pages: [
+      { name: 'Pulsegrid', href: '/landing/pulsegrid', icon: 'wave-square', kind: 'Product analytics' },
+      { name: 'Ridgeline', href: '/landing/ridgeline', icon: 'mountain', kind: 'Guided treks' },
+      { name: 'Brightside Dental', href: '/landing/brightside', icon: 'tooth', kind: 'Family dentistry' },
+      { name: 'Fernbank', href: '/landing/fernbank', icon: 'seedling', kind: 'Online banking' },
+      { name: 'Signal Summit', href: '/landing/signal-summit', icon: 'tower-broadcast', kind: 'Developer conference' },
+      { name: 'Starfall Mesa', href: '/landing/starfall', icon: 'moon', kind: 'Dark-sky lodge' },
+    ],
+  },
+  now: {
+    kicker: 'Right now',
+    title: 'What I am working on',
+    text: `
+      Marccent grows one step at a time, and this site moves with it. Here is where it has been, and where it is going.
+    `,
+    // Dates from the repository history.
+    events: [
+      { date: 'Oct 6, 2026', icon: 'table-cells', title: 'A CSS Grid layout system', text: 'The first piece: grid classes to replace the Bootstrap grid.' },
+      { date: 'Oct 13, 2026', icon: 'scissors', title: 'Bootstrap removed', text: 'The last Bootstrap and react-bootstrap code gone; colors cut down to a primary and secondary palette.' },
+      { date: 'Oct 20, 2026', icon: 'swatchbook', title: 'Design styles', text: '27 optional looks, from glass to terminal, with self-hosted fonts.' },
+      { date: 'Oct 21, 2026', icon: 'shapes', title: 'Design pages and a logo', text: 'Shapes, widgets, parallax scenery, canvas animations and the Marccent brand.' },
+      { date: 'Now', icon: 'code', title: 'Less React', text: 'Moving widget logic into plain JavaScript classes with thin React wrappers.' },
+      { date: 'Next', icon: 'box-open', title: 'A theme for other projects', text: 'Packaging Marccent so it can style sites beyond this one.' },
+    ],
+  },
+  apps: {
+    kicker: 'Built with it',
+    title: 'Apps and games',
+    text: 'Small apps that put the theme to work: games, live weather and stock charts.',
+  },
+  faqTitle: 'Questions about Marccent',
+  cta: {
+    title: 'Have a project, or a question about the theme?',
+    text: 'I am always happy to talk about web work, collaborations or what Marccent can do.',
+    button: { label: 'Get in touch', href: '/about#contact', icon: 'paper-plane' },
+  },
 };
+
+// Questions and answers, shown on the home page and sent as FAQPage structured data. Answers are plain text (no
+// Markdown): answer engines read them as they are.
+export const faq = [
+  { q: 'What is Marccent?', a: 'Marccent is a grid-first CSS theme by Marcos Centeno. It provides layout, colors, typography, buttons, forms, CSS shapes, parallax scenery and canvas animations through plain CSS classes and small components.' },
+  { q: 'Is this website a demo of the theme?', a: 'Yes. marccent.com is the live demo site for the Marccent theme. Every page, including the apps, the design pages and the six landing pages for made-up companies, is built from the theme.' },
+  { q: 'Who built Marccent?', a: 'Marcos Centeno, a full-stack web developer in Idaho Falls, Idaho, who has built websites and web applications since 2016.' },
+  { q: 'Does Marccent use Bootstrap or Tailwind?', a: 'No. Marccent started as a replacement for Bootstrap and now runs without any CSS framework. Layout comes from its own CSS Grid classes.' },
+  { q: 'How do I change the colors or the mode?', a: 'Use the switches in the header for dark mode and glass, and the theme cards in the footer for colors. Every color in the theme is derived from a primary, a secondary, a dark and a light color, so the whole site follows.' },
+  { q: 'What are design styles?', a: 'Design styles are 27 optional looks for the theme, such as glassmorphism, brutalism, editorial and terminal. Each one is a single CSS file that restyles the whole site without changing its markup, and visitors can switch between them live in the footer.' },
+  { q: 'Can I change the theme of one section only?', a: 'Yes. Switch the theme controls in the header from Site to Section, click a section, then use the mode, glass and color controls: only that section changes. Reset puts it back to the site theme.' },
+  { q: 'Do the animations slow the page down?', a: 'They are built not to. Canvas animations and timers run only while they are on screen, decorative canvases draw at a lower resolution, and everything stands still for visitors who ask for reduced motion.' },
+];
 
 export const appsPage = {
   title: 'Marccent App List',
 };
 
+// The About page, which is also the contact page (/contact redirects to its #contact section).
 export const about = {
-  greeting: 'Hello',
-  title: 'I am Marcos Centeno',
+  meta: {
+    title: 'About Marcos Centeno and contact',
+    description: 'Marcos Centeno is a full-stack web developer in Idaho Falls, Idaho, building the Marccent CSS theme. Read about his work and send him a message.',
+  },
+  greeting: 'Hello, I am',
+  title: 'Marcos Centeno',
+  role: 'Full-stack web developer · Idaho Falls, Idaho',
   intro: `
-    A full-stack web developer with 6+ years of expertise designing, developing,
-    and troubleshooting responsive user interfaces and web applications. Skilled
-    in Vanilla Javascript, CSS, Python, PHP, and frameworks like React, Django,
-    WordPress and Bootstrap.
+    I design, build and troubleshoot responsive interfaces and web applications, and have done so since 2016. I work
+    in vanilla JavaScript, CSS, Python and PHP, with React, Next.js, Django and WordPress. Lately most of my evenings go
+    into **Marccent**, the CSS theme this site is built on.
   `,
-  photo: { src: '/mcr.webp', alt: "Marcos Centeno's Picture" },
+  photo: { src: '/marcos-cartoon.svg', alt: 'Cartoon portrait of Marcos Centeno' }, // drawn from public/mcr.webp
+  facts: [
+    { icon: 'location-dot', text: 'Idaho Falls, Idaho' },
+    { icon: 'briefcase', text: 'Web developer since 2016' },
+    { icon: 'palette', text: 'Building the Marccent theme' },
+  ],
+  focus: {
+    kicker: 'Right now',
+    title: 'What I am trying to accomplish',
+    items: [
+      { icon: 'table-cells', title: 'A theme anyone can build with', text: 'Marccent should make a good-looking, accessible page out of plain markup, with no framework and no one-off CSS.' },
+      { icon: 'flask', title: 'Proof in public', text: 'This site is the test: if the apps, the landing pages and the design pages all hold up in every style and mode, the theme works.' },
+      { icon: 'code', title: 'Less framework, more web', text: 'I am moving logic into plain JavaScript classes and leaning on what CSS can do today: grid, subgrid, container queries, cascade layers.' },
+    ],
+  },
+  experienceTitle: 'Experience',
+  experienceHeading: 'Where I build for the web',
+  jobs: [
+    {
+      date: 'Feb 2016 – present',
+      icon: 'briefcase',
+      title: 'Web Developer, Anthem Broadband',
+      text: 'Idaho Falls, ID. Front end, WordPress and Django, from page animations to build tooling and servers.',
+    },
+  ],
+  dutiesTitle: 'What the job involves',
   skillsTitle: 'Skills',
   skills: [
     'Javascript', 'CSS', 'HTML 5', 'React', 'Bootstrap', 'PHP', 'Wordpress', 'Python', 'Django', 'Linux',
@@ -42,11 +219,6 @@ export const about = {
     'Ability to conduct research', 'Willingness to Learn',
   ],
   job: {
-    header: `
-      **Anthem Broadband**, Idaho Falls, ID — Web Developer
-
-      Feb 2016 - PRESENT
-    `,
     duties: [
       'Writing reusable, modular JavaScript code following best practices.',
       'Consuming RESTful APIs and working with JSON using async/await and promises.',
@@ -65,19 +237,20 @@ export const about = {
       'Familiarity with Nginx web server configuration.',
     ],
   },
-  techTitle: 'Technologies used in this website',
-  tech: [
-    'fa-brands fa-js', 'fa-brands fa-react', 'fa-brands fa-css3', 'fa-brands fa-bootstrap',
-    'fa-brands fa-cloudflare', 'fa-solid fa-font-awesome', 'fa-brands fa-python', 'fa-brands fa-hotjar',
-    'fa-brands fa-docker', 'fa-brands fa-ubuntu',
-  ],
-};
-
-export const contactPage = {
-  title: 'Get in Touch',
-  intro: `
-    I'm always excited to discuss new projects, job opportunities, and other potential collaborations. Whether you have a question about my services, want to explore working together, or just want to connect - don't hesitate to reach out!
-  `,
+  mini: {
+    title: 'Theme the section above',
+    text: 'Only that section changes. The header and footer controls theme the whole site.',
+  },
+  band: {
+    title: 'Based in Idaho Falls, Idaho',
+    text: 'Open to new projects, job opportunities and collaborations.',
+  },
+  contact: {
+    kicker: 'Contact',
+    title: 'Get in touch',
+    intro: "I'm always glad to talk about new projects, job opportunities, collaborations or the Marccent theme. Send a message, or reach me on any of the links below.",
+    mapCaption: 'Idaho Falls, Idaho',
+  },
 };
 
 // App descriptions, keyed by the slug in the app's url (/apps/<slug>). components/apps/list.tsx reads these.
@@ -85,7 +258,7 @@ export const apps = {
   minesweeper: {
     name: 'Minesweeper',
     about: `
-      Minesweeper is a single-player logic-based computer game played on a grid of squares. The objective is to clear the grid without detonating any hidden "mines" scattered throughout. Safe squares display numbers indicating the total number of adjacent mines. Players use these clues to strategically identify and flag the mines, progressing through the game by making calculated decisions based on the revealed information. The game offers different difficulty levels and is known for its challenging and strategic gameplay.
+      Clear the grid without hitting a mine. Each number tells you how many mines touch that square: use them to find and flag the mines. Right-click to plant a flag where you suspect one, and reveal every safe square to win. One wrong click ends the game.
     `,
     instructions: `
       Click "Play" to begin the game.
@@ -103,7 +276,7 @@ export const apps = {
   numpuz: {
     name: 'Number Puzzle',
     about: `
-      A number puzzle is an educational activity that helps children learn and practice various math concepts such as number sequencing, counting, and recognizing numerals. These puzzles often involve matching numbers, counting dots, or arranging number pieces in the correct order. They are designed to enhance problem-solving and cognitive skills while making learning math more engaging for children. Number puzzles can cover a range of numbers, from 0 to 20, 1 to 100, or other specific number ranges.
+      The classic 15-puzzle: slide the tiles into the empty space until they read 1 to 15 in order. Click a tile next to the gap, or drag it in. A timer tracks your speed and a percentage shows how close you are to solving it.
     `,
     instructions: `
       Numpuz is a type of number riddle puzzle that typically involves arranging a set of numbers or symbols in a particular pattern or sequence. Here are some general rules for playing a Numpuz puzzle:
@@ -120,7 +293,7 @@ export const apps = {
   weather: {
     name: 'Weather App',
     about: `
-      This weather app is a digital application that provides users with up-to-date weather information for their specific location or other selected locations. It typically offers details such as the current temperature, rain forecast, humidity, wind speed, air quality index, and sunrise/sunset times. Some weather apps also include features like hourly and 10-day forecasts, and maps to visualize weather patterns. These app is designed to help users plan their activities and make informed decisions based on the latest weather conditions.
+      Search any city to see its current weather on a map and the forecast in 3-hour steps: temperature, humidity and more. Page through the coming days one day at a time, with the map and colors following your site theme.
     `,
     instructions: `
       Type a city name in the search box and submit to load its forecast.
@@ -129,7 +302,7 @@ export const apps = {
   stock_lookup: {
     name: 'Stock Lookup',
     about: `
-      Charts the last 100 daily closing values of the most popular stock market indexes, using data from [FRED](https://fred.stlouisfed.org/) (Federal Reserve Bank of St. Louis).
+      Charts the last 100 daily closing values of the most popular stock market indexes, using data from [FRED](https://fred.stlouisfed.org/) (Federal Reserve Bank of St. Louis). Pick an index from the list or search any FRED series, then hover over the chart to read the exact value for each day.
     `,
     instructions: `
       Pick an index from the list, or type its FRED series ID (for example \`SP500\`) in the search box and submit. Hover over the chart to read values.
@@ -139,12 +312,17 @@ export const apps = {
 
 // Privacy policy: one box per section. cards (optional) render as a card each, after the body.
 export const privacyPolicy = {
+  meta: {
+    title: 'Privacy Policy',
+    description: 'How Marccent (marccent.com) collects, uses and protects visitor information, and your rights under the CCPA and GDPR.',
+  },
+  title: 'Privacy Policy',
   sections: [
     {
       body: `
         At Marccent, accessible from marccent.com, one of our main priorities is the privacy of our visitors. This Privacy Policy document contains types of information that is collected and recorded by Marccent and how we use it.
 
-        If you have additional questions or require more information about our Privacy Policy, do not hesitate to contact us.
+        If you have additional questions or require more information about our Privacy Policy, do not hesitate to [contact us](/about#contact).
 
         This Privacy Policy applies only to our online activities and is valid for visitors to our website with regards to the information that they shared and/or collect in Marccent. This policy is not applicable to any information collected offline or via channels other than this website. Our Privacy Policy was created with the help of the [Free Privacy Policy Generator](https://www.privacypolicygenerator.info/#wizard).
       `,
@@ -170,11 +348,11 @@ export const privacyPolicy = {
       body: `
         We use the information we collect in various ways, including to:
 
-        - Provide, operate, and maintain our webste
-        - Improve, personalize, and expand our webste
-        - Understand and analyze how you use our webste
+        - Provide, operate, and maintain our website
+        - Improve, personalize, and expand our website
+        - Understand and analyze how you use our website
         - Develop new products, services, features, and functionality
-        - Communicate with you, either directly or through one of our partners, including for customer service, to provide you with updates and other information relating to the webste, and for marketing and promotional purposes
+        - Communicate with you, either directly or through one of our partners, including for customer service, to provide you with updates and other information relating to the website, and for marketing and promotional purposes
         - Send you emails
         - Find and prevent fraud
       `,

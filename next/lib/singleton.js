@@ -5,6 +5,9 @@ import { Storage } from "@marccent/util/class";
 const marccent_server = process.env.NEXT_PUBLIC_SERVER;
 const storage = new Storage();
 
+// The settings a section can override in section scope (Theme.update / value).
+const SECTION_KEYS = [ 'active', 'is_dark', 'glass', 'design' ];
+
 class Theme {
   constructor() {
     if (Theme.instance == null) {
@@ -13,6 +16,10 @@ class Theme {
       this.is_dark = true;
       this.rainbow = false;
       this.glass = false;
+      this.scope = 'global'; // 'global': the toggles and theme cards change the whole site; 'section': only the target section
+      this.target = null;    // the section being themed in section scope (a key from lib/section-theme.js), if any
+      this.sections = {};    // per-section overrides: { [key]: { active?, is_dark?, glass?, design? } }
+      this.design = null;    // the design style (lib/design.js); null: the site's default
       this.dark;
       this.light;
       this.themeList = [];
@@ -31,6 +38,10 @@ class Theme {
       this.rainbow = theme.rainbow;
       this.is_dark = theme.is_dark;
       this.glass = theme.glass;
+      this.scope = theme.scope ?? 'global';
+      this.target = null; // picked again on each visit
+      this.sections = theme.sections ?? {};
+      this.design = theme.design ?? null;
       this.dark = theme.dark;
       this.light = theme.light;
       this.themeList.push(...theme.themeList);
@@ -76,11 +87,47 @@ class Theme {
   remove(index) {
     this.themeList.splice(index, 1);
     if (index < this.active) this.active = this.active - 1;
+    // Sections that used the removed theme go back to the site's; later ones shift down with the list.
+    for (const o of Object.values(this.sections)) {
+      if (o.active === index) delete o.active;
+      else if (o.active > index) o.active--;
+    }
     return this.save();
   }
 
+  // In section scope the section settings (SECTION_KEYS) go to the target section only; everything else, and every
+  // setting in global scope, to the whole site. In section scope with no target, section settings are ignored.
   update(obj) {
-    Object.entries(obj).forEach(([key, val]) => this[key] = val );
+    const local = this.scope === 'section';
+    Object.entries(obj).forEach(([key, val]) => {
+      if (!local || !SECTION_KEYS.includes(key)) this[key] = val;
+      else if (this.target) this.sections[this.target] = { ...this.sections[this.target], [key]: val };
+    });
+    return this.save();
+  }
+
+  // Section settings straight into one section, whatever the scope (the mini theme editor: components/theme/mini-editor.js).
+  updateSection(key, obj) {
+    for (const [ k, v ] of Object.entries(obj)) if (SECTION_KEYS.includes(k)) this.sections[key] = { ...this.sections[key], [k]: v };
+    return this.save();
+  }
+
+  // A section setting as the controls should show it: the target section's own value in section scope, else the site's.
+  value(key) {
+    const own = this.scope === 'section' && this.target ? this.sections[this.target]?.[key] : undefined;
+    return own ?? this[key];
+  }
+
+  // Everything back to how the site starts: the first palette, dark mode, no glass or rainbow, the default design
+  // style, no section overrides, site scope. Saved palettes stay.
+  reset() {
+    Object.assign(this, { active: 0, is_dark: true, glass: false, rainbow: false, design: null, sections: {}, scope: 'global', target: null });
+    return this.save();
+  }
+
+  // Drops the overrides of one section (key), or of every section whose key starts with prefix (a page's path + '#').
+  resetSections({ key, prefix } = {}) {
+    for (const k of Object.keys(this.sections)) if (k === key || (prefix && k.startsWith(prefix))) delete this.sections[k];
     return this.save();
   }
 
@@ -163,4 +210,4 @@ const themeSI = async () => await new Theme();
 
 const toastSI = new Toast();
 
-export { themeSI, toastSI }
+export { themeSI, toastSI, SECTION_KEYS }

@@ -1,3 +1,6 @@
+/* LAYOUT: in the layout layer (layers.css), below the components, so a component can reshape its own grid
+   (.inline-form, .nav) without outranking .grid. */
+@layer layout {
 /* Defaults live on .grid (not :root) so a nested grid never inherits its parent's count or gap. */
 .grid {
   --cols: var(--grid-cols);      /* max columns per row */
@@ -202,3 +205,4 @@
    (a canvas reads its size once, so a taller cell would draw an oval). */
 .stack { display: grid; grid-template: minmax(0, 1fr) / minmax(0, 1fr); }
 .stack > * { grid-area: 1 / 1; }
+}

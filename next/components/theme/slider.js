@@ -4,21 +4,20 @@
 import { useContext, useState, useEffect } from "react";
 import { ToastContext } from '@/lib/context';
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules";
+import { A11y } from "swiper/modules";
 import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
-import 'swiper/css/scrollbar';
 import { Form } from '@/components/ui/form';
 import { Modal } from '@/components/ui/modal';
 import { Field } from '@/components/ui/field';
 import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
 import { withT } from "./hoc";
+import { usePager, SliderPager } from '@/components/widgets/slider-pager';
 
 const Themes = (props) => {
   const { toast, setToast } = useContext(ToastContext);
   const [ modal, setModal ] = useState(false);
+  const pager = usePager();
   const current = props.theme.themeList[props.theme.active];
   const status = useStatusColors();
 
@@ -41,33 +40,35 @@ const Themes = (props) => {
 
   return (
     <>
-      <Swiper
-        modules={[Navigation, Pagination, Scrollbar, A11y]}
-        scrollbar={{ draggable: true }}
-        className="theme-slider w-100 pad"
-        slidesPerView="auto"
-        spaceBetween={16} /* = the default grid gap (--grid-gap, --space: 1rem) */
-        navigation
-        pagination={{ clickable: true }}
-      >
-        <SwiperSlide key={`slide-add`}>
-          <button type="button" className="bg border round shadow col-center gap-sm h-100 w-100" onClick={() => setModal(true)}>
-            <Icon name="circle-plus" />
-            <span className="fs-sm">Add theme</span>
-          </button>
-        </SwiperSlide>
-        {props.theme.themeList.map((single, i) => (
-          <SwiperSlide key={`slide-${i}`}>
-            <ThemeCard
-              data={single}
-              id={i}
-              active={i === props.theme.active}
-              status={status}
-              update={() => props.update({active:i})}
-              remove={remove} />
+      <div className="grid cols-1 gap-sm">
+        <Swiper
+          {...pager.swiperProps}
+          modules={[...pager.swiperProps.modules, A11y]}
+          className="theme-slider w-100"
+          style={{ padding: '3.5rem' }} /* room for a hovered card: its glow reaches 2.5rem out (hovers.css) and it grows 5% */
+          slidesPerView="auto"
+          spaceBetween={32} /* px between slides (--space-lg: 2rem) */
+        >
+          <SwiperSlide key={`slide-add`}>
+            <button type="button" className="bg border round shadow col-center gap-sm h-100 w-100 hover-holographic" onClick={() => setModal(true)}>
+              <Icon name="circle-plus" />
+              <span className="fs-sm">Add theme</span>
+            </button>
           </SwiperSlide>
-        ))}
-      </Swiper>
+          {props.theme.themeList.map((single, i) => (
+            <SwiperSlide key={`slide-${i}`}>
+              <ThemeCard
+                data={single}
+                id={i}
+                active={i === props.theme.value('active')}
+                status={status}
+                update={() => props.update({active:i})}
+                remove={remove} />
+            </SwiperSlide>
+          ))}
+        </Swiper>
+        <SliderPager pager={pager} />
+      </div>
       {/* New theme: two color pickers, opened by the + button above. They start at the active theme's colors;
           keyed by the active theme so they reset to it after a theme is added or picked. */}
       <Modal title="Add New Theme" show={modal} setShow={setModal}>
@@ -107,7 +108,7 @@ const ThemeCard = (props) => {
     ...status,
   ];
   return (
-    <div className="bg border round shadow grid cols-1 gap-0">
+    <div className="bg border round shadow grid cols-1 gap-0 hover-holographic">
       <div className="square" style={{ backgroundImage: bg }} role="img" aria-label={`Theme #${id} colors`} />
       <div className="pad-sm grid auto-cols items-center gap-sm">
         <ul className="grid cols-1 text-uppercase" style={{ '--gap': 'var(--space-xs)', fontSize: 'var(--text-xs)' }}>

@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from 'react';
 import { cx } from '@/lib/cx';
 import { useSpins, GooDigit, reducedMotion } from '@/components/visuals/effects';
 import { HexGrid } from './layout';
+import { useInView } from '@/lib/in-view';
 
 /*
  * Showcase widgets: an atom, an analog clock, a flip clock of gooey digits, shape loaders and a fan of cards. No CSS
@@ -10,16 +11,21 @@ import { HexGrid } from './layout';
  */
 
 /**
- * useLoop: plays keyframes on ref's element forever (the browser's animation API), unless the visitor asks for
+ * useLoop: plays keyframes on ref's element forever (the browser's animation API) while it's on screen, unless the
+ * visitor asks for
  * reduced motion.
  * @param {React.RefObject} ref @param {Keyframe[]} keyframes @param {KeyframeAnimationOptions} options
  */
 const useLoop = (ref, keyframes, options) => {
+  const inView = useInView(ref);
+  const anim = useRef(null);
   useEffect(() => {
     if (reducedMotion() || !ref.current) return;
-    const a = ref.current.animate(keyframes, { iterations: Infinity, ...options });
-    return () => a.cancel();
+    anim.current = ref.current.animate(keyframes, { iterations: Infinity, ...options });
+    anim.current.pause(); // starts once on screen
+    return () => anim.current.cancel();
   }, []);
+  useEffect(() => { inView ? anim.current?.play() : anim.current?.pause(); }, [ inView ]);
 };
 
 /**
@@ -64,11 +70,14 @@ const Atom = ({ laps = [ 3, 4, 5 ], className, style }) => {
  */
 const AnalogClock = ({ className, style }) => {
   const [ now, setNow ] = useState(null);
+  const box = useRef(null);
+  const inView = useInView(box);
   useEffect(() => {
     setNow(new Date());
+    if (!inView) return; // ticks only while on screen
     const t = setInterval(() => setNow(new Date()), 1000);
     return () => clearInterval(t);
-  }, []);
+  }, [ inView ]);
   const secs = now ? now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds() : 0;
   const hand = (deg, width, length, color) => (
     <div className="stack" style={{ gridArea: '1 / 1', width: '100%', height: '100%', rotate: `${deg}deg`, transition: 'rotate .3s cubic-bezier(.34, 1.56, .64, 1)' }}>
@@ -76,7 +85,7 @@ const AnalogClock = ({ className, style }) => {
     </div>
   );
   return (
-    <div className={cx('stack', className)} style={{ aspectRatio: 1, ...style }} role="img"
+    <div ref={box} className={cx('stack', className)} style={{ aspectRatio: 1, ...style }} role="img"
       aria-label={now ? now.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }) : 'Clock'}>
       <div className="shape-squircle bg-gradient" style={{ gridArea: '1 / 1', width: '100%' }} />
       <div className="shape-squircle bg" style={{ gridArea: '1 / 1', width: '94%', placeSelf: 'center' }} />
@@ -102,11 +111,14 @@ const AnalogClock = ({ className, style }) => {
  */
 const FlipClock = ({ size = '3rem', className }) => {
   const [ now, setNow ] = useState(null);
+  const box = useRef(null);
+  const inView = useInView(box);
   useEffect(() => {
     setNow(new Date());
+    if (!inView) return; // ticks only while on screen
     const t = setInterval(() => setNow(new Date()), 1000);
     return () => clearInterval(t);
-  }, []);
+  }, [ inView ]);
   const parts = now ? [ now.getHours(), now.getMinutes(), now.getSeconds() ].map(n => String(n).padStart(2, '0')) : [ '--', '--', '--' ];
   const colon = (
     <span className="grid cols-1" style={{ gap: `calc(${size} / 5)` }} aria-hidden="true">
@@ -115,7 +127,7 @@ const FlipClock = ({ size = '3rem', className }) => {
     </span>
   );
   return (
-    <div className={cx('grid auto-cols cols-center items-center gap-0 text-primary', className)} role="timer"
+    <div ref={box} className={cx('grid auto-cols cols-center items-center gap-0 text-primary', className)} role="timer"
       aria-label={now ? now.toLocaleTimeString() : ''}>
       {parts.map((pair, i) => (
         <span key={i} className="grid auto-cols items-center gap-0" style={{ gap: `calc(${size} / 6)` }}>

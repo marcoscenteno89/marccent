@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-labelledby="t">
+  <title id="t">Cartoon portrait of Marcos Centeno</title>
+  <!-- Flat cartoon drawn from the photo (public/mcr.webp): swept-up dark hair, short beard and mustache, gray raglan
+       shirt with a white front. On the brand gradient (public/brand/brand-guide.md). -->
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1f64cf"/>
+      <stop offset="1" stop-color="#1ecbe1"/>
+    </linearGradient>
+    <radialGradient id="glow" cx=".5" cy=".42" r=".55">
+      <stop offset="0" stop-color="#fff" stop-opacity=".28"/>
+      <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="400" height="400" fill="url(#bg)"/>
+  <rect width="400" height="400" fill="url(#glow)"/>
+
+  <!-- Shirt: white front, gray raglan sleeves, dark collar -->
+  <path d="M30 400 C40 335 105 302 200 298 C295 302 360 335 370 400 Z" fill="#f4f4f2"/>
+  <path d="M30 400 C38 345 82 314 138 302 L172 400 Z" fill="#878c93"/>
+  <path d="M370 400 C362 345 318 314 262 302 L228 400 Z" fill="#878c93"/>
+  <path d="M145 298 Q200 342 255 298" fill="none" stroke="#1d1d1f" stroke-width="13" stroke-linecap="round"/>
+
+  <!-- Neck -->
+  <path d="M166 244 L166 300 Q200 326 234 300 L234 244 Z" fill="#dcab83"/>
+
+  <!-- Ears -->
+  <ellipse cx="129" cy="192" rx="13" ry="21" fill="#e9b992"/>
+  <ellipse cx="271" cy="192" rx="13" ry="21" fill="#e9b992"/>
+  <path d="M126 185 Q133 192 127 200" fill="none" stroke="#c99a76" stroke-width="3" stroke-linecap="round"/>
+  <path d="M274 185 Q267 192 273 200" fill="none" stroke="#c99a76" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- Face -->
+  <path d="M130 168 C130 112 160 94 200 94 C240 94 270 112 270 168 C270 228 244 274 200 278 C156 274 130 228 130 168 Z" fill="#f2c7a2"/>
+  <ellipse cx="160" cy="218" rx="14" ry="8" fill="#e8a688" opacity=".35"/>
+  <ellipse cx="240" cy="218" rx="14" ry="8" fill="#e8a688" opacity=".35"/>
+
+  <!-- Beard: stubble along the jaw, a fuller chin, the mustache -->
+  <path d="M138 214 C146 256 172 280 200 282 C228 280 254 256 262 214 C254 246 232 262 200 264 C168 262 146 246 138 214 Z" fill="#3a2a20" opacity=".55"/>
+  <path d="M176 258 C182 276 192 284 200 284 C208 284 218 276 224 258 C214 266 186 266 176 258 Z" fill="#2c1f17" opacity=".85"/>
+  <path d="M174 241 C180 231 192 230 200 234 C208 230 220 231 226 241 C216 239 208 240 200 240 C192 240 184 239 174 241 Z" fill="#2c1f17" opacity=".9"/>
+  <path d="M184 252 C190 262 210 262 216 252 L216 258 C208 266 192 266 184 258 Z" fill="#2c1f17" opacity=".45"/>
+
+  <!-- Mouth -->
+  <path d="M184 248 Q200 244 216 248 Q200 257 184 248 Z" fill="#c47c6d"/>
+
+  <!-- Nose -->
+  <path d="M200 184 Q195 208 191 219 Q200 226 209 219" fill="none" stroke="#c4906c" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Eyes -->
+  <ellipse cx="170" cy="186" rx="12" ry="7.5" fill="#fff"/>
+  <ellipse cx="230" cy="186" rx="12" ry="7.5" fill="#fff"/>
+  <circle cx="171" cy="186" r="5.5" fill="#5a3a22"/>
+  <circle cx="229" cy="186" r="5.5" fill="#5a3a22"/>
+  <circle cx="171" cy="186" r="2.6" fill="#141010"/>
+  <circle cx="229" cy="186" r="2.6" fill="#141010"/>
+  <circle cx="173" cy="184" r="1.4" fill="#fff"/>
+  <circle cx="231" cy="184" r="1.4" fill="#fff"/>
+  <path d="M157 183 Q170 175 183 182" fill="none" stroke="#3a2a20" stroke-width="2" stroke-linecap="round"/>
+  <path d="M217 182 Q230 175 243 183" fill="none" stroke="#3a2a20" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Eyebrows -->
+  <path d="M152 170 Q169 159 188 166" fill="none" stroke="#24180f" stroke-width="7.5" stroke-linecap="round"/>
+  <path d="M212 166 Q231 159 248 170" fill="none" stroke="#24180f" stroke-width="7.5" stroke-linecap="round"/>
+
+  <!-- Hair: short at the sides, swept up and over on top -->
+  <path d="M127 180 C120 124 138 88 172 76 C190 62 228 60 250 72 C276 84 286 112 278 152 C276 164 274 172 271 180
+           C268 154 262 136 252 128 C236 138 206 132 186 120 C176 130 160 138 148 134 C138 148 132 162 127 180 Z" fill="#24180f"/>
+  <path d="M150 104 C152 70 182 46 222 50 C252 53 272 70 270 100 C262 90 248 84 236 84 C214 74 184 78 150 104 Z" fill="#24180f"/>
+  <path d="M214 52 C236 40 258 48 262 66 C250 58 236 56 222 60 Z" fill="#24180f"/>
+  <path d="M186 120 C206 112 236 106 262 116" fill="none" stroke="#3b2a1e" stroke-width="5" stroke-linecap="round"/>
+  <path d="M176 92 C200 82 228 82 248 92" fill="none" stroke="#3b2a1e" stroke-width="4" stroke-linecap="round"/>
+</svg>

@@ -5,6 +5,8 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import { ToastContext } from '@/lib/context';
 import { Loading } from './loading';
 import { Icon } from './icon';
+import '@/styles/components/toast.css';
+import '@/styles/components/close.css';
 
 // Toast types with a color (defaults.css): toast.add(msg, 'success') fills it like <Alert tone="success">.
 const TONES = ['primary', 'secondary', 'success', 'danger', 'info'];
@@ -27,7 +29,7 @@ const Toast = () => {
   return (
     <Loading require={[toast]}>
       {/* Toasts: a grid stack in the bottom-right corner, newest last.
-          Layout in components.css, colors in colors.css, fade-in in animations.css. */}
+          Layout in styles/components/toast.css, colors in colors.css, fade-in in animations.css. */}
       <div className="toasts position-fixed bottom-0 end-0 pad">
         {toast.list.map((item, i) => (
           <div key={`${+item.time}-${item.msg}`} className="toast round shadow"

@@ -1,5 +1,6 @@
 'use client';
 import { cx } from '@/lib/cx';
+import '@/styles/components/pagination.css';
 
 // One pagination button. Outside Pagination, so it keeps its identity (and keyboard focus) across renders.
 const PageCell = ({ page, label, disabled, current, update, children }) => (
@@ -11,7 +12,7 @@ const PageCell = ({ page, label, disabled, current, update, children }) => (
 
 /**
  * Pagination: first, previous, one button per page, next, last, as one row of
- * equal cells (grid fixed, --cols = pages + 4). Layout in components.css, colors in colors.css.
+ * equal cells (grid fixed, --cols = pages + 4). Layout in styles/components/pagination.css, colors in colors.css.
  * @param {number} total - Number of items. @param {number} pageSize - Items per page.
  * @param {number} current - Current page (1-based). @param {Function} update - Called with the page to show.
  * @param {string} [className] - Extra classes on the nav (default only "grid fixed gap-0"; add e.g.

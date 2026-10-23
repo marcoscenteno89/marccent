@@ -38,7 +38,7 @@ const Map = ({ center = DEFAULT_CENTER, zoom = 10, theme, className, style }) =>
     map.current?.setZoom(zoom);
   }, [center.lat, center.lng, zoom]);
 
-  return <div ref={ref} className={className} style={{ minHeight: 'var(--map-height)', ...style }} />;
+  return <div ref={ref} className={className} style={{ minHeight: 'var(--map-height, 500px)', ...style }} />;
 }
 
 // A theme shade, falling back to the last one (util 2.x skips repeated shades, so lists can be short).

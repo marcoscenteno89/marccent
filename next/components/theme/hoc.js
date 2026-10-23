@@ -2,8 +2,10 @@
 import { useState, useEffect, useContext, useRef } from 'react';
 import { Scene, canvasObserver } from "@marccent/util/canvas";
 import { ThemeContext, ToastContext } from "@/lib/context";
+import { SECTION_KEYS } from "@/lib/singleton";
 import { cx } from '@/lib/cx';
 import { Loading } from '@/components/ui/loading';
+import '@/styles/components/canvas.css';
 
 const withLoader = (Component) => {
   const WithLoaderComponent = (props) => {
@@ -32,9 +34,14 @@ const withTheme = (Component) => {
   const WiththemeComponent = (props) => {
     const { theme, setTheme } = useContext(ThemeContext);
     const { toast, setToast } = useContext(ToastContext);
+    // In section scope the controls need a section first (components/theme/scope.js picks one).
     const update = (obj) => {
+      if (theme.scope === 'section' && !theme.target && Object.keys(obj).some(k => SECTION_KEYS.includes(k))) {
+        setToast(toast.add('Pick a section first (the crosshairs button), or switch the scope to Site', 'info'));
+        return;
+      }
       setTheme(theme.update(obj));
-      setToast(toast.add('Theme Updated'));
+      setToast(toast.add(theme.scope === 'section' ? 'Section updated' : 'Theme Updated'));
     };
     return (
       <Loading require={[theme, toast]}>
@@ -123,4 +130,4 @@ const withT= (Component) => withTheme(Component);
 const withTRC = (Component, opts) => withThemeRead(withCanvas(Component, opts));
 const withTR = (Component) => withThemeRead(Component);
 
-export { withTheme, withCanvas, withTRC, withT, withTR }
+export { withTheme, withCanvas, withTRC, withT, withTR, decorativeObserver, DECORATIVE_FPS }

@@ -1,7 +1,8 @@
 'use client';
-import { useState, useRef, useEffect } from 'react';
+import { useRef, useEffect } from 'react';
 import { Icon } from './icon';
 import { cx } from '@/lib/cx';
+import '@/styles/components/clock.css';
 
 // Splits milliseconds into the zero-padded parts Counter shows and reports (tos = hundredths).
 const pad = (n) => String(n).padStart(2, '0');
@@ -11,37 +12,58 @@ const splitTime = (ms) => ({
   second: pad(Math.floor(ms / 1000) % 60),
   tos: pad(Math.floor(ms / 10) % 100),
 });
+const format = (t) => `${t.hour}:${t.minute}:${t.second}.${t.tos}`;
 
 /**
- * Stopwatch: runs while active is true. When active turns false it reports the time to getTime
- * ({ hour, minute, second, tos }, zero-padded strings) and resets to zero.
- * Time is read from the clock (Date.now) instead of counting ticks, so it stays exact when the
- * browser slows timers (background tabs).
+ * Stopwatch: writes the elapsed time into el. start() starts from zero; stop() stops, resets el to zero and
+ * returns the time ({ hour, minute, second, tos }, zero-padded strings), or null if it wasn't running.
+ * Time is read from the clock (Date.now) instead of counting ticks, so it stays exact when the browser slows
+ * timers (background tabs).
+ */
+class Stopwatch {
+  constructor(el) {
+    this.el = el;
+    this.started = null;
+  }
+  show(ms) { this.el.textContent = format(splitTime(ms)); }
+  start() {
+    this.stop();
+    this.started = Date.now();
+    this.show(0);
+    this.interval = setInterval(() => this.show(Date.now() - this.started), 50);
+  }
+  stop() {
+    clearInterval(this.interval);
+    if (this.started === null) return null;
+    const time = splitTime(Date.now() - this.started);
+    this.started = null;
+    this.show(0);
+    return time;
+  }
+  destroy() { clearInterval(this.interval); }
+}
+
+/**
+ * Counter: a Stopwatch that runs while active is true. When active turns false it reports the time to getTime
+ * and resets to zero.
  */
 const Counter = ({ active, getTime, className }) => {
-  const [ elapsed, setElapsed ] = useState(0);
-  const start = useRef(null);
-
+  const ref = useRef(null);
+  const watch = useRef(null);
   useEffect(() => {
-    if (active) {
-      start.current = Date.now();
-      setElapsed(0);
-      const interval = setInterval(() => setElapsed(Date.now() - start.current), 50);
-      return () => clearInterval(interval); // also on unmount, so no timer leaks
-    }
-    if (start.current !== null) { // just stopped (not the first render): report and reset
-      getTime?.(splitTime(Date.now() - start.current));
-      start.current = null;
-      setElapsed(0);
-    }
-  }, [active]);
-
-  const t = splitTime(elapsed);
+    watch.current = new Stopwatch(ref.current);
+    return () => watch.current.destroy(); // no timer leaks on unmount
+  }, []);
+  useEffect(() => {
+    if (active) return watch.current.start();
+    const time = watch.current.stop();
+    if (time) getTime?.(time);
+  }, [ active ]);
   return (
     <small className={cx('timer', className)}>
-      <Icon name="stopwatch" /> {t.hour}:{t.minute}:{t.second}.{t.tos}
+      <Icon name="stopwatch" /> <span ref={ref}>{format(splitTime(0))}</span>
     </small>
   );
 }
 
-export { Counter };
+export { Counter, Stopwatch };

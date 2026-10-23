@@ -1,7 +1,9 @@
 /*
  * BASE: page defaults: box sizing, fonts, headings, spacing of
- * text elements, form element resets. Loaded first (layout.tsx). No colors: those are all in colors.css.
+ * text elements, form element resets. No colors: those are all in colors.css.
+ * In the lowest layer (base, main.css), so every component and every unlayered file beats it.
  */
+@layer base {
 
 /* RESET */
 *,
@@ -67,7 +69,7 @@ img, svg { vertical-align: middle; }
    so any class wins; not inside Google Maps, whose tiles break when their width is capped. */
 :where(img:not(.gm-style img)) { max-width: 100%; height: auto; }
 
-/* FORM ELEMENTS: take the page font; fieldsets are plain groups (StepForm steps). Look: .input (components.css). */
+/* FORM ELEMENTS: take the page font; fieldsets are plain groups (StepForm steps). Look: .input (components/form.css). */
 input, button, select, optgroup, textarea {
   margin: 0;
   font-family: inherit;
@@ -85,4 +87,5 @@ fieldset {
   margin: 0;
   padding: 0;
   border: 0;
+}
 }

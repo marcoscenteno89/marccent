@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { cx } from '@/lib/cx';
 import { Icon } from '@/components/ui/icon';
+import '@/styles/components/button.css';
 
 /*
  * Navigation widgets: a radial menu, a step bar of chevrons and a tab bar with a sliding indicator. No CSS of their
@@ -34,7 +35,7 @@ const RadialMenu = ({ items, radius = '5rem', label = 'Quick menu', className })
           <Tag key={item.label} href={item.href} type={item.href ? undefined : 'button'} aria-label={item.label} title={item.label}
             tabIndex={open ? 0 : -1} aria-hidden={!open}
             onClick={(e) => { item.onClick?.(e); setOpen(false); }}
-            className="circle border bg col-center hover-grow"
+            className="circle border bg col-center"
             style={{ width: size, aspectRatio: 1, padding: 0, color: 'inherit', cursor: 'pointer',
               transform: open ? `rotate(${angle}deg) translate(${radius}) rotate(${-angle}deg)` : 'none',
               opacity: open ? 1 : 0, pointerEvents: open ? 'auto' : 'none',

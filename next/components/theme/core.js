@@ -5,6 +5,7 @@
 import { useContext, useEffect } from "react";
 import { ThemeContext } from "@/lib/context";
 import { cx } from '@/lib/cx';
+import { DEFAULT_DESIGN } from '@/lib/design';
 
 const Body = (props) => {
   let { theme } = useContext(ThemeContext);
@@ -33,6 +34,8 @@ const UpdateThemeVariables = () => {
     }
     if (theme.dark) root.setProperty('--dark', theme.dark.hex);
     if (theme.light) root.setProperty('--light', theme.light.hex);
+    // The design style (styles/designs.css is scoped by it); the server renders the default (layout.tsx).
+    document.documentElement.dataset.design = theme.design ?? DEFAULT_DESIGN;
   }, [theme]);
   return null;
 }

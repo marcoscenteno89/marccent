@@ -1,7 +1,7 @@
 /*
  * UTILS: single-purpose classes (text, color, border, shadow, size, position).
  * Scales come in three steps: -sm, -md, -lg.
- * Load last (after components.css), so a util wins over a component's own rule without !important.
+ * Unlayered and loaded last, so a util wins over a component's own rule (components layer, layers.css) without !important.
  * Layout lives in layout.css and spacing comes from gap/.pad, so there are no flex or margin utils here.
  */
 

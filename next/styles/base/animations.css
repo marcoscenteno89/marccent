@@ -1,7 +1,6 @@
 /*
- * ANIMATIONS: transitions and keyframes for the site, one section per component. Imported at the top of
- * components.css, so it loads BEFORE the component rules: to override a component transition here,
- * use a more specific selector.
+ * ANIMATIONS: transitions and keyframes for the site, one section per component. Unlayered (main.css), so
+ * a rule here beats a component's own transition (components layer, layers.css) whatever the specificity.
  */
 
 /* ACCORDION OPEN / CLOSE (Accordion in components/ui/accordion.js).
@@ -32,7 +31,7 @@
 .spinner { animation: spinner-grow var(--spinner-duration) linear infinite; }
 @keyframes spinner-grow { 0% { transform: scale(0); } 50% { opacity: 1; transform: none; } }
 
-/* LOADERS (the .loader-* classes in components.css). Kept under reduced motion (they say the page is busy), slower. */
+/* LOADERS (the .loader-* classes in components/loading.css). Kept under reduced motion (they say the page is busy), slower. */
 .loader-ring, .loader-orbit, .loader-spin { animation: loader-spin 1s linear infinite; }
 .loader-spin { animation-duration: 1.4s; animation-timing-function: cubic-bezier(.65, 0, .35, 1); }
 @keyframes loader-spin { to { rotate: 1turn; } }
@@ -149,6 +148,11 @@
 /* PARALLAX (Parallax / useParallax in components/visuals/effects.js): the script sets translate every frame. */
 .parallax { will-change: translate; }
 
+/* OFF SCREEN: PauseOffscreen (components/pause-offscreen.js) marks sections, slides and the footer data-offscreen while
+   they're scrolled away; every CSS animation inside one holds still until it's back. !important: an animation
+   shorthand anywhere (.loader-*, an inline one) resets play-state to running, whatever its weight. */
+[data-offscreen], [data-offscreen] *, [data-offscreen] *::before, [data-offscreen] *::after { animation-play-state: paused !important; }
+
 @media (prefers-reduced-motion: reduce) {
   .spinner { animation-duration: calc(var(--spinner-duration) * 2); }
   :is(.loader-ring, .loader-orbit, .loader-spin, .loader-breathe, .loader-dots, .loader-bars, .loader-bar, .loader-flip),
@@ -158,5 +162,5 @@
   .modal[open]::backdrop { animation: none; }
   .countdown > i { transition: none; }
   .accordion-item::details-content,
-  .accordion-item > .accordion-header::after { transition: none; } /* outranks the caret transition in components.css */
+  .accordion-item > .accordion-header::after { transition: none; } /* beats the caret transition in components/accordion.css */
 }

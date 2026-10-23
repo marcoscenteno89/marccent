@@ -20,7 +20,7 @@ export default function NotFound() {
         </div>
         <div className="row-wrap gap-sm cols-center">
           <Button icon="house" href="/" className="primary">Go home</Button>
-          <Button icon="message" href="/contact" className="outline-primary">Contact me</Button>
+          <Button icon="message" href="/about#contact" className="outline-primary">Contact me</Button>
         </div>
       </div>
     </section>

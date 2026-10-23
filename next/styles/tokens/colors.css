@@ -127,7 +127,7 @@
    they read in both modes and with any theme color (the theme changer's own shades can sit too close together,
    e.g. a light cyan): the fill is the color over the page background, the text the color over the page text,
    the border the color itself; hover deepens the fill. .btn:is(…) outranks .btn and, with :hover, .btn:hover
-   (components.css loads later). */
+   (this file is unlayered, so it beats the components layer anyway). */
 .btn.primary { --tone: var(--primary); }
 .btn.secondary { --tone: var(--secondary); }
 .btn.danger { --tone: var(--danger); }
@@ -153,8 +153,8 @@
 
 /* OUTLINE BUTTONS: the default .btn look (no fill, a 1px border) in one color: the border in the color itself,
    the text and icon in its readable shade for the mode (--*-mode-text), the icon tint and hover a wash of it.
-   Use on a .btn: <Button className="outline-primary" …>. Loaded before components.css, so .btn.outline-* is
-   specific enough to beat .btn and .btn:hover. */
+   Use on a .btn: <Button className="outline-primary" …>. Unlayered, so .btn.outline-* beats
+   .btn and .btn:hover (components layer, layers.css). */
 .outline-primary { --outline: var(--primary); --outline-text: var(--primary-mode-text); }
 .outline-secondary { --outline: var(--secondary); --outline-text: var(--secondary-mode-text); }
 .outline-danger { --outline: var(--danger); --outline-text: var(--danger-mode-text); }
@@ -168,6 +168,15 @@
   background-color: color-mix(in srgb, var(--outline) 12%, transparent);
 }
 
+/* Colored buttons hover in their own color: every hover effect (hovers.css) draws from --hover-from to --hover-to,
+   the theme's primary → secondary by default; a colored button, filled or outline, takes its color for both, so a
+   delete button glows red and a success one green. Plain, light, dark and gradient buttons keep the theme's pair. */
+.btn:is(.primary, .secondary, .danger, .success, .info) { --hover-from: var(--tone); --hover-to: var(--tone); }
+.btn:is(.outline-primary, .outline-secondary, .outline-danger, .outline-success, .outline-info) {
+  --hover-from: var(--outline);
+  --hover-to: var(--outline);
+}
+
 /* Gradient outline: a border can't be a gradient and keep rounded corners, so the border goes transparent and
    ::before draws a 1px gradient ring just inside it (the ring's middle is masked out). .btn's overflow: hidden
    would clip anything drawn over the border itself. :where() keeps position: relative weak, so a .btn that is
@@ -179,7 +188,7 @@
   position: absolute;
   inset: 0;
   padding: var(--border-width);
-  border-radius: max(0px, calc(var(--radius) - var(--border-width)));
+  border-radius: inherit; /* the button's own corners, whatever a theme makes them (pills) */
   background: var(--gradient);
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   -webkit-mask-composite: xor;
@@ -203,8 +212,8 @@
   border-bottom-width: var(--border-width);
 }
 
-/* Square corners, so the line doesn't curve at its ends. :nth-child(n) matches every child; it is only there
-   to outrank component radii (e.g. .menu-link) that load later. */
+/* Square corners, so the line doesn't curve at its ends. This file is unlayered, so it beats component radii
+   (e.g. .menu-link, components layer); :nth-child(n) (every child) only adds weight. */
 .divide > :nth-child(n) { border-radius: 0; }
 
 .divide:is(.grid, .auto-cols):not(.cols-1, [class*="layout-"]) > :not(:last-child) {
@@ -231,9 +240,25 @@
   }
 }
 
-body { color: var(--body-color); background-color: var(--body-bg); }
-a { color: var(--link); }
-a:hover { color: var(--link-hover); }
+/* Component lines that change the ones above. Here, not in the component's file, because components sit in a
+   lower layer (layers.css) and couldn't beat them. Nav (nav.css): below 56rem the main menu is stacked, so the
+   line goes below each link. Inline form (form.css): from 40rem the button's border matches the fields'. */
+@container (width < 56rem) {
+  .nav .nav-collapse > .menu.divide:not(.nav-end) > :not(:last-child) {
+    border-right-width: 0;
+    border-bottom-width: var(--border-width);
+  }
+}
+@container (min-width: 40rem) {
+  .inline-form > .btn { border-color: var(--border-color); }
+}
+
+/* Element colors: in the base layer (layers.css) like the reset, so any component's color (.menu-link inherits) wins. */
+@layer base {
+  body { color: var(--body-color); background-color: var(--body-bg); }
+  a { color: var(--link); }
+  a:hover { color: var(--link-hover); }
+}
 
 /* SURFACES: .bg panels in light and dark mode; glass mode (.glass on <body>) makes them translucent and blurred. */
 [data-theme] .bg {

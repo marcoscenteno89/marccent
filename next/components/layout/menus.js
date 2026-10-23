@@ -1,19 +1,20 @@
 import Link from 'next/link';
 import { cx } from '@/lib/cx';
 import { apps } from '@/components/apps/list';
+import '@/styles/components/menu.css';
 
 // Shared menus: edit a link here and the header, hero and contact page all pick it up.
 // name: visible text. label: aria-label for icon-only links. icon: full Font Awesome classes.
 // external: opens in a new tab (spread target/rel from externalProps); internal links stay in the site.
 
 export const social = [
-  { name: 'Message Me', href: '/contact', label: 'Message Me', icon: 'fa-solid fa-message', external: false },
+  { name: 'Message Me', href: '/about#contact', label: 'Message Me', icon: 'fa-solid fa-message', external: false },
   { name: 'Codepen', href: 'https://codepen.io/marcos-centeno/pens/public', label: 'Codepen Link', icon: 'fa-brands fa-codepen', external: true },
   { name: 'Linkedin', href: 'https://www.linkedin.com/in/marcos-centeno-0b1a7b65/', label: 'Linkedin Link', icon: 'fa-brands fa-linkedin', external: true },
   { name: 'Github', href: 'https://github.com/marcoscenteno89', label: 'Github Link', icon: 'fa-brands fa-github', external: true },
 ];
 
-// Contact page: email first, then the external links (Message Me would point at the page itself).
+// The About page's contact section: email first, then the external links (Message Me would point at the page itself).
 export const contact = [
   { name: 'Email', href: 'mailto:marcoscenteno89@gmail.com', label: 'Email Me', icon: 'fa-solid fa-envelope', external: true },
   ...social.filter(s => s.external),
@@ -22,7 +23,7 @@ export const contact = [
 // Main navigation. An item with children is a dropdown; its href is the "browse all" page.
 // Apps come from components/apps/list, so adding an app there adds it here too.
 export const main = [
-  { name: 'About Me', href: '/about' },
+  { name: 'About', href: '/about' },
   {
     name: 'Apps',
     href: '/apps',
@@ -38,20 +39,34 @@ export const main = [
       { name: 'Theme', href: '/theme', icon: 'fa-solid fa-palette' },
       { name: 'Shapes', href: '/shapes', icon: 'fa-solid fa-shapes' },
       { name: 'Widgets', href: '/widgets', icon: 'fa-solid fa-puzzle-piece' },
+      { name: 'Parallax', href: '/parallax', icon: 'fa-solid fa-mountain-sun' },
+      { name: 'Images', href: '/images', icon: 'fa-solid fa-images' },
+      { name: 'Animations', href: '/animations', icon: 'fa-solid fa-wand-magic-sparkles' },
     ],
   },
-  { name: 'Contact', href: '/contact' },
+  {
+    name: 'Landing Pages',
+    href: '/landing/pulsegrid',
+    children: [
+      { name: 'Pulsegrid', href: '/landing/pulsegrid', icon: 'fa-solid fa-wave-square' },
+      { name: 'Ridgeline', href: '/landing/ridgeline', icon: 'fa-solid fa-mountain' },
+      { name: 'Brightside Dental', href: '/landing/brightside', icon: 'fa-solid fa-tooth' },
+      { name: 'Fernbank', href: '/landing/fernbank', icon: 'fa-solid fa-seedling' },
+      { name: 'Signal Summit', href: '/landing/signal-summit', icon: 'fa-solid fa-tower-broadcast' },
+      { name: 'Starfall Mesa', href: '/landing/starfall', icon: 'fa-solid fa-moon' },
+    ],
+  },
 ];
 
 // Usage: <a href={s.href} {...externalProps(s)}>
 export const externalProps = (link) => link.external ? { target: '_blank', rel: 'noopener noreferrer' } : {};
 
 /**
- * Menu: renders any menu above (styles: .menu-* in styles/components.css).
+ * Menu: renders any menu above (styles: .menu-* in styles/components/menu.css).
  * No hooks, so it works in server and client components. An item with children becomes a
  * <details> dropdown; it stays open after navigating unless the parent closes it (see header.tsx).
  *
- * Classes: the nav only gets "menu grid fixed gap-0" (.menu is the hook for styles/components.css);
+ * Classes: the nav only gets "menu grid fixed gap-0" (.menu is the hook for styles/components/menu.css);
  * everything else (dividers, border, alignment) is passed in. layout replaces "fixed", e.g.
  * "auto-cols cols-center" for icon-only menus (adding it through className would conflict with fixed).
  * Every part takes extra classes; a menu item can also carry its own className.

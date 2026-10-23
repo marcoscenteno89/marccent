@@ -1,5 +1,6 @@
 // Shared: no 'use client' (no state or effects), so it renders on the server or in the browser, wherever it's used.
 import { cx } from '@/lib/cx';
+import '@/styles/components/board.css';
 
 /**
  * Board: a grid_helper Grid as a game board, one square cell per grid cell in a single `.grid fixed` (cells

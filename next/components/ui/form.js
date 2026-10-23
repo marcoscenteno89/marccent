@@ -2,6 +2,8 @@
 import React, { useState, useRef } from 'react';
 import { cx } from '@/lib/cx';
 import { Button } from './button';
+import '@/styles/components/form.css';
+import '@/styles/components/pagination.css';
 
 // Values of a form as a plain object: { name: value }. Several fields with one name (checkboxes) keep the last.
 const formValues = (form) => Object.fromEntries(new FormData(form));
@@ -48,7 +50,7 @@ const SubmitButton = ({ busy, icon = 'paper-plane', children }) => (
  * <Form onSubmit={(v) => search(v.city)} submitLabel="Search" submitIcon="magnifying-glass">
  *   <Field name="city" required />
  * </Form>
- * @example One row: fields and the button side by side (.inline-form, components.css)
+ * @example One row: fields and the button side by side (.inline-form, styles/components/form.css)
  * <Form className="grid inline-form" onSubmit={find}>
  *   <Input name="city" required /><Input name="state" /><Input name="zip" />
  * </Form>

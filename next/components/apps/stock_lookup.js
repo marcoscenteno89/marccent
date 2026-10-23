@@ -112,8 +112,8 @@ const TickerList = ({ onSelect }) => {
 
 // Price labels down the side, highest first: one per `step`, starting from min.
 const PriceTable = ({ min, step }) => (
-  /* Rows stretch to equal heights; the top offset is the height of the .selected readout above the chart. */
-  <div className="grid cols-1 gap-0" style={{ paddingTop: 'var(--chart-readout-height)' }}>
+  /* Rows stretch to equal heights; the top offset is the height of the .chart-readout above the chart. */
+  <div className="grid cols-1 gap-0" style={{ paddingTop: 'var(--chart-readout-height, 50px)' }}>
     {Array.from({ length: BASE / 10 }, (_, i) => min + (BASE / 10 - 1 - i) * step).map((price, i) => (
       <div className="grid cols-1 items-end justify-center" key={i}>{Math.trunc(price)}</div>
     ))}
@@ -123,7 +123,7 @@ const PriceTable = ({ min, step }) => (
 const DateTable = ({ dates }) => (
   <div className="cq center">
     {dates.map((date, i) => (
-      <div className="single text-center" key={i}>
+      <div className="chart-date text-center" key={i}>
         <div>{date.format('DD')} </div><div>{date.format('MM')}</div>
       </div>
     ))}

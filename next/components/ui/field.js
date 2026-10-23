@@ -2,6 +2,7 @@
 import { useId } from 'react';
 import capitalize from 'lodash/capitalize';
 import { cx } from '@/lib/cx';
+import '@/styles/components/form.css';
 
 // Readable text from a field name: "first_name" → "First name".
 const nameToLabel = (name) => capitalize(name.replace(/_/g, ' '));
@@ -25,7 +26,7 @@ const Input = ({ name, label, as: Tag = 'input', className, children, ...rest })
 }
 
 /**
- * Field: a label joined to its input in one box (.field, styles/components.css). The label defaults to the name: "first_name" → "First name".
+ * Field: a label joined to its input in one box (.field, styles/components/form.css). The label defaults to the name: "first_name" → "First name".
  * @param {{ name: string, label?: string, as?: string, className?: string, children?: React.ReactNode, [attr: string]: any }} props
  *   as: "input" (default), "textarea" or "select". Any other prop (type, required, placeholder, rows…) goes on the
  *   input.

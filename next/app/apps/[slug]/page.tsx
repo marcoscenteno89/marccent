@@ -17,7 +17,7 @@ export default function AppPage({ params }: { params: { slug: string } }) {
         <h4>About</h4>
         <Markdown text={app.about} />
       </div>
-      <div className="grid cols-1 gap-sm">
+      <div id="instructions" className="grid cols-1 gap-sm">
         <h4>Instructions</h4>
         <Markdown text={app.instructions} />
       </div>

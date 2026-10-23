@@ -1,0 +1,21 @@
+@import "../layers.css";
+/* ACCORDION (Accordion in components/ui/accordion.js).
+   Lines between items come from .divide on the list. Colors live in colors.css; the open/close
+   animation in animations.css. */
+@layer components {
+
+/* The summary is a .header (layout above); the caret (::after) is one more end column. */
+.accordion-header {
+  list-style: none;           /* hide the default triangle */
+  cursor: pointer;
+  user-select: none;
+}
+.accordion-header::-webkit-details-marker { display: none; }  /* Safari */
+.accordion-header::after { content: '\25BE'; transition: rotate var(--duration); } /* ▾ caret */
+.accordion-item[open] > .accordion-header::after { rotate: 180deg; }
+.accordion-header:hover { background-color: var(--muted-bg); }
+.accordion-header:focus-visible { outline: 0; box-shadow: inset 0 0 0 var(--focus-width) var(--focus-ring); }
+
+/* Open item: a line between header and body. */
+.accordion-item[open] > .accordion-header { border-bottom: var(--border-width) solid var(--border-color); }
+}

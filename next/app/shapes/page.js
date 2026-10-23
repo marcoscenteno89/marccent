@@ -1,10 +1,11 @@
 import { Icon } from '@/components/ui/icon';
 import { GalleryHeader, Section, Demo } from '@/components/gallery';
 import { HexGrid } from '@/components/widgets/layout';
+import '@/styles/components/button.css';
 
 /*
- * Shapes gallery: every .shape-* class (utilities.css), the hovers made for shapes (hovers.css) and honeycombs built
- * from hexagons on a grid. A server page: shapes and hovers are CSS only.
+ * Shapes gallery: every .shape-* class (utilities.css) and honeycombs built from hexagons on a grid. The hovers made
+ * for shapes are on the theme page, with every other hover. A server page: shapes are CSS only.
  */
 
 export const metadata = { title: 'Shapes' };
@@ -29,29 +30,16 @@ export default function ShapesPage() {
   return (
     <div className="wrap grid cols-1 gap-lg">
       <GalleryHeader title="Shapes" sections={SECTIONS}>
-        <p>Cut any element to a shape with one class, give it a hover made for shapes, or tile hexagons into a honeycomb.</p>
+        <p>Cut any element to a shape with one class, or tile hexagons into a honeycomb.</p>
       </GalleryHeader>
 
       <Section name="Shapes" intro="utilities.css: a .shape-* class cuts any element to that shape; a width sizes it, the shape sets its proportions.">
         <div className="grid gap-sm" style={{ '--cols': 8, '--min': '6rem' }}>
           {SHAPES.map(name => (
             <div key={name} className="sub rows-2 gap-y-sm justify-center text-center">
-              <div className={`shape-${name} bg-gradient self-end hover-grow`} style={{ width: '4.5rem', '--notch': '.5rem' }} />
+              <div className={`shape-${name} bg-gradient self-end`} style={{ width: '4.5rem', '--notch': '.5rem' }} />
               <small className="opacity-75">{name}</small>
             </div>
-          ))}
-        </div>
-        <Demo name="Hovers for shapes">hovers.css: grow (on every shape above), spin, flip, morph, float (on a wrapper), and shine from the hover effects</Demo>
-        <div className="grid gap-lg items-center justify-center text-center" style={{ '--cols': 5, '--min': '7rem' }}>
-          {[
-            ['hover-spin', <div key="s" className="shape-star bg-gradient hover-spin" style={{ width: '6rem' }} />],
-            ['hover-flip', <div key="f" className="shape-hexagon bg-primary col-center hover-flip" style={{ width: '5.5rem' }}><Icon name="coins" className="fs-lg" /></div>],
-            ['hover-morph', <div key="m" className="shape-star bg-gradient hover-morph" style={{ width: '6rem', '--hover-shape':
-              'polygon(50% 0, 79.4% 9.5%, 97.6% 34.5%, 97.6% 65.5%, 79.4% 90.5%, 50% 100%, 20.6% 90.5%, 2.4% 65.5%, 2.4% 34.5%, 20.6% 9.5%)' }} />],
-            ['hover-float', <div key="w" className="hover-float"><div className="shape-heart bg-danger" style={{ width: '6rem' }} /></div>],
-            ['hover-shine', <div key="b" className="shape-bubble bg-secondary col-center hover-shine" style={{ width: '7rem', paddingBottom: '25%' }}>Hi!</div>],
-          ].map(([label, shape]) => (
-            <div key={label} className="grid cols-1 gap-sm justify-center">{shape}<small className="opacity-75">{label}</small></div>
           ))}
         </div>
         <Demo name="Content in shapes">An icon in a hexagon, text in a bubble, and a ring with a custom hole (--ring-hole)</Demo>
@@ -75,7 +63,7 @@ export default function ShapesPage() {
       <Section name="Honeycomb" intro="HexGrid (components/widgets/layout.js) places .shape-hexagon tiles on a grid. Every row track is a quarter of a hexagon; each hexagon spans four, and each row of hexagons starts three tracks below the last, so the rows interlock. Every other row starts one column in; labels hide on phones (.icon-only-sm).">
         <HexGrid perRow={HEX_ROW} className="w-100" style={{ maxWidth: '44rem', justifySelf: 'center' }}>
           {HONEYCOMB.map(([icon, label], i) => (
-            <div key={label} className={`shape-hexagon col-center text-center hover-grow icon-only-sm ${['bg-primary', 'bg-gradient', 'bg-secondary', 'bg-gradient-darker'][i % 4]}`}>
+            <div key={label} className={`shape-hexagon col-center text-center icon-only-sm ${['bg-primary', 'bg-gradient', 'bg-secondary', 'bg-gradient-darker'][i % 4]}`}>
               <Icon name={icon} className="fs-lg" />
               <small className="btn-text">{label}</small>
             </div>
@@ -86,7 +74,7 @@ export default function ShapesPage() {
           {HEX_FLOWER.map((_, i) => {
             const [icon, label] = i === 3 ? ['hexagon-nodes', 'Center'] : HONEYCOMB[i];
             return (
-              <div key={label} className={`shape-hexagon col-center text-center hover-grow icon-only-sm ${i === 3 ? 'bg-gradient' : 'bg-primary-darker'}`}>
+              <div key={label} className={`shape-hexagon col-center text-center icon-only-sm ${i === 3 ? 'bg-gradient' : 'bg-primary-darker'}`}>
                 <Icon name={icon} className="fs-lg" />
                 <small className="btn-text">{label}</small>
               </div>

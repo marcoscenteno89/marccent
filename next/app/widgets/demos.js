@@ -1,5 +1,6 @@
 'use client';
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext, useRef } from 'react';
+import { useInView } from '@/lib/in-view';
 import { Button } from '@/components/ui/button';
 import { RadialMenu } from '@/components/widgets/nav';
 import { Radar, Speedometer } from '@/components/widgets/data';
@@ -36,12 +37,14 @@ const RadarDemo = () => {
 
 const SpeedometerDemo = () => {
   const [ value, setValue ] = useState(62);
+  const box = useRef(null);
+  const inView = useInView(box); // wanders only while on screen
   useEffect(() => {
-    if (reducedMotion()) return;
+    if (reducedMotion() || !inView) return;
     const t = setInterval(() => setValue(v => Math.min(Math.max(v + (Math.random() - .45) * 40, 0), 120)), 2000);
     return () => clearInterval(t);
-  }, []);
-  return <Speedometer value={value} max={120} unit="km/h" label="Speed" className="w-100" style={{ maxWidth: '18rem' }} />;
+  }, [ inView ]);
+  return <div ref={box} className="w-100 col-center"><Speedometer value={value} max={120} unit="km/h" label="Speed" className="w-100" style={{ maxWidth: '18rem' }} /></div>;
 }
 
 // Events spread round today (worked out in the browser, so they're always near the visitor's today).

@@ -2,26 +2,33 @@
  * HOVERS: hover effects as their own classes, separate from color, so any element (button, card, link, image) can
  * take one and swap it without touching its look. Each draws in the theme's colors, --hover-from and --hover-to
  * (default: primary and secondary; set them on an element to change one), and times itself with --hover-duration
- * (defaults.css). Loaded after components.css, so an effect can replace a
+ * (defaults.css). Unlayered, so it beats the components layer (layers.css): an effect can replace a
  * component's own hover. The pressed state of a toggle ([aria-pressed="true"]) shows the same effect.
  * Moving parts stay still for visitors who ask for reduced motion.
  * Each hover state repeats its class (.hover-x.hover-x:is(:hover, …)): one more class of specificity, so an effect
  * you put on an element beats the hover of its color class (.btn.primary:hover) and of a design theme.
  */
 
-/* HOLOGRAPHIC: grows a little, glows in both theme colors, and a band of them sweeps diagonally across it.
-   The band is ::after (::before is taken by .outline-gradient); isolation keeps it behind the element's content
-   but in front of its background, so the content needs no class. */
-.hover-holographic {
+/* DEFAULT COLORS: every effect draws from --hover-from to --hover-to, the theme's primary and secondary unless the
+   element sets them. Weightless (:where), so a color class wins: a colored button (.btn.danger, .btn.outline-success…,
+   colors.css) hovers in its own color, and a style="--hover-from: …" on any element still overrides both. */
+:where(.btn, [class*="hover-"]) {
   --hover-from: var(--primary);
   --hover-to: var(--secondary);
+}
+
+/* HOLOGRAPHIC: grows a little, glows in both theme colors, and a band of them sweeps diagonally across it.
+   The band is ::after (::before is taken by .outline-gradient); isolation keeps it behind the element's content
+   but in front of its background, so the content needs no class. The site's default: every .btn without a hover-*
+   class of its own has it, no class needed; cards take .hover-holographic. */
+:is(.hover-holographic, :where(.btn):not([class*="hover-"])) {
   isolation: isolate;
   overflow: hidden;
   transition: transform var(--hover-duration) ease, box-shadow var(--hover-duration) ease,
     background-color var(--duration), color var(--duration);
 }
-:where(.hover-holographic) { position: relative; } /* weightless: an element positioned otherwise keeps that */
-.hover-holographic::after {
+:where(.hover-holographic, .btn:not([class*="hover-"])) { position: relative; } /* weightless: an element positioned otherwise keeps that */
+:is(.hover-holographic, :where(.btn):not([class*="hover-"]))::after {
   content: "";
   position: absolute;
   top: -50%;
@@ -36,18 +43,18 @@
   pointer-events: none;
   transition: transform var(--hover-duration) ease, opacity var(--hover-duration) ease;
 }
-.hover-holographic.hover-holographic:is(:hover, [aria-pressed="true"]) {
+:is(.hover-holographic.hover-holographic, .btn:not([class*="hover-"])):is(:hover, [aria-pressed="true"]) {
   transform: scale(1.05);
   box-shadow: 0 0 1.25rem color-mix(in srgb, var(--hover-from) 45%, transparent),
     0 0 2.5rem color-mix(in srgb, var(--hover-to) 35%, transparent);
 }
-.hover-holographic.hover-holographic:is(:hover, [aria-pressed="true"])::after {
+:is(.hover-holographic.hover-holographic, .btn:not([class*="hover-"])):is(:hover, [aria-pressed="true"])::after {
   opacity: 1;
   transform: rotate(-45deg) translateY(100%);
 }
 @media (prefers-reduced-motion: reduce) {
-  .hover-holographic.hover-holographic:is(:hover, [aria-pressed="true"]) { transform: none; }
-  .hover-holographic.hover-holographic:is(:hover, [aria-pressed="true"])::after { transform: rotate(-45deg); }
+  :is(.hover-holographic.hover-holographic, .btn:not([class*="hover-"])):is(:hover, [aria-pressed="true"]) { transform: none; }
+  :is(.hover-holographic.hover-holographic, .btn:not([class*="hover-"])):is(:hover, [aria-pressed="true"])::after { transform: rotate(-45deg); }
 }
 
 /* UNDERLINE: a line in the theme gradient draws in above the element (from the left) and below it (from the right).
@@ -55,8 +62,6 @@
    hover-holographic or .outline-gradient; a .btn clips it (overflow: hidden). */
 :where(.hover-underline) { position: relative; display: inline-block; } /* weightless: grid / block layouts win */
 .hover-underline {
-  --hover-from: var(--primary);
-  --hover-to: var(--secondary);
   text-decoration: none; /* the drawn lines replace a link's own underline */
 }
 .hover-underline::before,
@@ -81,20 +86,14 @@
 
 /* RISE: a fill in the theme gradient rises from the bottom while the icon inside (i, svg or img) spins once and
    turns light to stay readable on it. For icon links and icon buttons; the shape comes from the element's own
-   classes (e.g. circle border). Per element colors (brand colors on social icons): --hover-from / --hover-to.
-   A .btn or menu link whose label isn't showing rises too, with no class needed: an icon-only button or menu link
-   (the header's social icons) always, and an
-   .icon-only-sm / -md button below its step (components.css). The rules are written once per case: base (any width),
-   then the same inside each container query. */
-:is(.hover-rise, .btn:has(> .btn-icon):not(:has(> .btn-text)), .menu-link:has(> i:only-child)) {
-  --hover-from: var(--primary);
-  --hover-to: var(--secondary);
+   classes (e.g. circle border). Per element colors (brand colors on social icons): --hover-from / --hover-to. */
+.hover-rise {
   isolation: isolate;
   overflow: hidden;
   transition: color var(--hover-duration);
 }
-:where(.hover-rise, .btn:has(> .btn-icon):not(:has(> .btn-text)), .menu-link:has(> i:only-child)) { position: relative; } /* weightless: an element positioned otherwise keeps that */
-:is(.hover-rise, .btn:has(> .btn-icon):not(:has(> .btn-text)), .menu-link:has(> i:only-child))::after {
+:where(.hover-rise) { position: relative; } /* weightless: an element positioned otherwise keeps that */
+.hover-rise::after {
   content: "";
   position: absolute;
   inset: 0;
@@ -104,43 +103,14 @@
   pointer-events: none;
   transition: translate var(--hover-duration);
 }
-:is(.hover-rise, .btn:has(> .btn-icon):not(:has(> .btn-text)), .menu-link:has(> i:only-child)) :is(i, svg, img) { transition: transform var(--hover-duration), color var(--hover-duration); }
-:is(.hover-rise.hover-rise, .btn.btn:has(> .btn-icon):not(:has(> .btn-text)), .menu-link.menu-link:has(> i:only-child)):is(:hover, :focus-visible, [aria-pressed="true"]) { color: var(--light); }
-:is(.hover-rise.hover-rise, .btn.btn:has(> .btn-icon):not(:has(> .btn-text)), .menu-link.menu-link:has(> i:only-child)):is(:hover, :focus-visible, [aria-pressed="true"])::after { translate: 0 0; }
-:is(.hover-rise.hover-rise, .btn.btn:has(> .btn-icon):not(:has(> .btn-text)), .menu-link.menu-link:has(> i:only-child)):is(:hover, :focus-visible, [aria-pressed="true"]) :is(i, svg, img) { transform: rotateY(360deg); }
+.hover-rise :is(i, svg, img) { transition: transform var(--hover-duration), color var(--hover-duration); }
+.hover-rise.hover-rise:is(:hover, :focus-visible, [aria-pressed="true"]) { color: var(--light); }
+.hover-rise.hover-rise:is(:hover, :focus-visible, [aria-pressed="true"])::after { translate: 0 0; }
+.hover-rise.hover-rise:is(:hover, :focus-visible, [aria-pressed="true"]) :is(i, svg, img) { transform: rotateY(360deg); }
 
-/* Labelled buttons drop to their icon below a step (.icon-only-sm: 40rem, .icon-only-md: 56rem), so they rise there. */
-@container (width < 40rem) {
-  :is(.btn.icon-only-sm, .icon-only-sm .btn):has(> .btn-icon) {
-    --hover-from: var(--primary); --hover-to: var(--secondary); position: relative; isolation: isolate; overflow: hidden;
-    transition: color var(--hover-duration);
-  }
-  :is(.btn.icon-only-sm, .icon-only-sm .btn):has(> .btn-icon)::after {
-    content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(to top, var(--hover-from), var(--hover-to));
-    translate: 0 100%; pointer-events: none; transition: translate var(--hover-duration);
-  }
-  :is(.btn.icon-only-sm, .icon-only-sm .btn):has(> .btn-icon) :is(i, svg, img) { transition: transform var(--hover-duration), color var(--hover-duration); }
-  :is(.btn.btn.icon-only-sm, .icon-only-sm .btn.btn):has(> .btn-icon):is(:hover, :focus-visible, [aria-pressed="true"]) { color: var(--light); }
-  :is(.btn.btn.icon-only-sm, .icon-only-sm .btn.btn):has(> .btn-icon):is(:hover, :focus-visible, [aria-pressed="true"])::after { translate: 0 0; }
-  :is(.btn.btn.icon-only-sm, .icon-only-sm .btn.btn):has(> .btn-icon):is(:hover, :focus-visible, [aria-pressed="true"]) :is(i, svg, img) { transform: rotateY(360deg); }
-}
-@container (width < 56rem) {
-  :is(.btn.icon-only-md, .icon-only-md .btn):has(> .btn-icon) {
-    --hover-from: var(--primary); --hover-to: var(--secondary); position: relative; isolation: isolate; overflow: hidden;
-    transition: color var(--hover-duration);
-  }
-  :is(.btn.icon-only-md, .icon-only-md .btn):has(> .btn-icon)::after {
-    content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(to top, var(--hover-from), var(--hover-to));
-    translate: 0 100%; pointer-events: none; transition: translate var(--hover-duration);
-  }
-  :is(.btn.icon-only-md, .icon-only-md .btn):has(> .btn-icon) :is(i, svg, img) { transition: transform var(--hover-duration), color var(--hover-duration); }
-  :is(.btn.btn.icon-only-md, .icon-only-md .btn.btn):has(> .btn-icon):is(:hover, :focus-visible, [aria-pressed="true"]) { color: var(--light); }
-  :is(.btn.btn.icon-only-md, .icon-only-md .btn.btn):has(> .btn-icon):is(:hover, :focus-visible, [aria-pressed="true"])::after { translate: 0 0; }
-  :is(.btn.btn.icon-only-md, .icon-only-md .btn.btn):has(> .btn-icon):is(:hover, :focus-visible, [aria-pressed="true"]) :is(i, svg, img) { transform: rotateY(360deg); }
-}
 @media (prefers-reduced-motion: reduce) {
-  :is(.hover-rise, .btn:has(> .btn-icon))::after, :is(.hover-rise, .btn:has(> .btn-icon)) :is(i, svg, img) { transition: none; }
-  :is(.hover-rise.hover-rise, .btn.btn:has(> .btn-icon)):is(:hover, :focus-visible, [aria-pressed="true"]) :is(i, svg, img) { transform: none; }
+  .hover-rise::after, .hover-rise :is(i, svg, img) { transition: none; }
+  .hover-rise.hover-rise:is(:hover, :focus-visible, [aria-pressed="true"]) :is(i, svg, img) { transform: none; }
 }
 
 /* EXPAND: for an icon + label .btn (Button with icon and text). At rest a pill the size of its icon, the label
@@ -149,8 +119,6 @@
    .icon-only-*. Uses ::before (fill) and ::after (glow): doesn't combine with the other effects or
    .outline-gradient. The width animates where interpolate-size is supported; elsewhere it snaps. */
 .btn.hover-expand {
-  --hover-from: var(--primary);
-  --hover-to: var(--secondary);
   interpolate-size: allow-keywords;
   isolation: isolate;
   overflow: visible; /* the glow sits outside */
@@ -183,16 +151,19 @@
 }
 .btn.hover-expand::before { z-index: -1; }                               /* the fill */
 .btn.hover-expand::after { z-index: -2; top: .6rem; filter: blur(.9rem); } /* the glow, lower and blurred */
-.btn.hover-expand.hover-expand:is(:hover, :focus-visible, [aria-pressed="true"]) { width: fit-content; }
+/* Only hover and keyboard focus open it; a pressed toggle keeps the fill (below) but stays the icon, so it still
+   reads as the icon at rest and expands like any other on hover. :focus-within: a control inside it (a select as the
+   label: the mini theme editor's design style) keeps it open while in use, its own list open off the button. */
+.btn.hover-expand.hover-expand:is(:hover, :focus-visible, :focus-within) { width: fit-content; }
 /* Light text on the gradient; a filled button (a color class) instead expands in its own color, fill and glow alike,
    and keeps its own text color. */
-.btn.hover-expand.hover-expand:not(.primary, .secondary, .danger, .success, .info, .light, .dark, .gradient):is(:hover, :focus-visible, [aria-pressed="true"]) { color: var(--light); }
+.btn.hover-expand.hover-expand:not(.primary, .secondary, .danger, .success, .info, .light, .dark, .gradient):is(:hover, :focus-visible, :focus-within, [aria-pressed="true"]) { color: var(--light); }
 .btn.hover-expand:is(.primary, .secondary, .danger, .success, .info, .light, .dark, .gradient)::before,
 .btn.hover-expand:is(.primary, .secondary, .danger, .success, .info, .light, .dark, .gradient)::after { background: inherit; }
-.btn.hover-expand.hover-expand:is(:hover, :focus-visible, [aria-pressed="true"])::before { opacity: 1; }
-.btn.hover-expand.hover-expand:is(:hover, :focus-visible, [aria-pressed="true"])::after { opacity: .5; }
-.btn.hover-expand.hover-expand:is(:hover, :focus-visible, [aria-pressed="true"]) > .btn-icon { scale: 0; transition-delay: 0s; }
-.btn.hover-expand.hover-expand:is(:hover, :focus-visible, [aria-pressed="true"]) > .btn-text {
+.btn.hover-expand.hover-expand:is(:hover, :focus-visible, :focus-within, [aria-pressed="true"])::before { opacity: 1; }
+.btn.hover-expand.hover-expand:is(:hover, :focus-visible, :focus-within, [aria-pressed="true"])::after { opacity: .5; }
+.btn.hover-expand.hover-expand:is(:hover, :focus-visible, :focus-within) > .btn-icon { scale: 0; transition-delay: 0s; }
+.btn.hover-expand.hover-expand:is(:hover, :focus-visible, :focus-within) > .btn-text {
   scale: 1;
   transition-delay: calc(var(--hover-duration) / 2); /* in once the icon is gone */
 }
@@ -264,7 +235,6 @@
 /* HALO: an outline floats away from the element and fades while a soft glow in the theme's primary fills it from
    inside. No pseudo-elements; while hovered its glow replaces a button's focus ring. */
 .hover-halo {
-  --hover-from: var(--primary);
   outline: var(--border-width) solid color-mix(in srgb, currentColor 50%, transparent);
   outline-offset: 0;
   transition: outline-offset calc(var(--hover-duration) * 2.5) cubic-bezier(.19, 1, .22, 1),
@@ -302,8 +272,6 @@
 /* TRACE: a segment of the outline (in the theme's secondary) travels once round the element while it fills
    lightly with the primary. The dash is 31% of the outline in a 131% pattern, so it's hidden before and after. */
 .hover-trace {
-  --hover-from: var(--primary);
-  --hover-to: var(--secondary);
   transition: background-color calc(var(--hover-duration) * 2) ease-in-out, color var(--duration);
 }
 .hover-trace .trace {
@@ -425,7 +393,6 @@
    background, so they read as cut-outs in either mode. No pseudo-elements, so they combine with the other
    effects; outer shadows aren't clipped by a .btn's overflow. */
 :is(.hover-rings, .hover-inset-ring, .hover-offset, .hover-frame, .hover-tabs, .hover-double, .hover-corners, .hover-pill) {
-  --hover-from: var(--primary);
   transition: box-shadow var(--hover-duration) ease-in-out, background-color var(--hover-duration) ease-in-out,
     color var(--hover-duration) ease-in-out, letter-spacing var(--hover-duration) ease-in-out,
     border-radius var(--hover-duration) ease-in-out, border-color var(--hover-duration) ease-in-out;
@@ -485,7 +452,6 @@
 
 /* FILLS: the element fills with the theme's primary (--hover-from) in different ways and its text turns light.
    Made for outlined or plain elements (e.g. .outline-primary). */
-:is(.hover-fill, .hover-stripes, .hover-bloom, .hover-wipe, .hover-split, .hover-slide) { --hover-from: var(--primary); }
 /* Fills in from the edges (an inset shadow grows over it). */
 .hover-fill { transition: box-shadow var(--hover-duration) ease-in-out, color var(--hover-duration) ease-in-out; }
 .hover-fill.hover-fill:is(:hover, :focus-visible, [aria-pressed="true"]) { color: var(--light); box-shadow: inset 0 0 2.5rem 2.5rem var(--hover-from); }
@@ -566,8 +532,6 @@
 /* FLOAT: rises with a glow in the theme colors around its outline. Put it on a WRAPPER round the shape: a glow on
    the shape itself would be cut off with everything else outside it. */
 .hover-float {
-  --hover-from: var(--primary);
-  --hover-to: var(--secondary);
   transition: translate var(--hover-duration) ease, filter var(--hover-duration) ease;
 }
 .hover-float.hover-float:is(:hover, :focus-visible, :focus-within, [aria-pressed="true"]) {
