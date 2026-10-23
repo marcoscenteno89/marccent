@@ -2,14 +2,14 @@
 import { useState, useEffect, useRef } from 'react';
 import dynamic from 'next/dynamic';
 import dayjs from 'dayjs';
-import { useInView } from '@/lib/in-view';
-import { toastSI } from '@/lib/toasts';
-import { reducedMotion } from '@/components/visuals/effects';
-import { Form, StepForm, Step } from '@/components/ui/form';
-import { Input, Field } from '@/components/ui/field';
+import { useInView } from 'marccent-theme/lib/in-view';
+import { toastSI } from 'marccent-theme/lib/toasts';
+import { reducedMotion } from 'marccent-theme/components/visuals/effects';
+import { Form, StepForm, Step } from 'marccent-theme/components/ui/form';
+import { Input, Field } from 'marccent-theme/components/ui/field';
 import { Calendar, Scheduler } from '@/components/widgets/calendar';
 import { Speedometer, Radar } from '@/components/widgets/data';
-import '@/styles/components/clock.css';
+import 'marccent-theme/styles/components/clock.css';
 
 /*
  * The landing pages' pieces that need state, timers or the toast: signup and contact forms, bookings, and numbers
@@ -221,7 +221,7 @@ const EventCountdown = ({ to, className }) => {
 // Canvas animations (visuals/canvas.js) as backdrops, loaded only in the browser; they pause off screen (theme/hoc.js).
 const CANVASES = { network: 'NetworkLoopCanvas', particles: 'ParticleFlowfieldCanvas', blob: 'BlobCanvas', wave: 'WaveCanvas' };
 const loaders = Object.fromEntries(Object.entries(CANVASES).map(([ k, name ]) =>
-  [ k, dynamic(() => import('@/components/visuals/canvas').then(m => m[name]), { ssr: false }) ]));
+  [ k, dynamic(() => import('marccent-theme/components/visuals/canvas').then(m => m[name]), { ssr: false }) ]));
 
 /** Backdrop: a canvas animation filling its cell (put it first in a .stack). @param {'network'|'particles'|'blob'|'wave'} kind */
 const Backdrop = ({ kind = 'network', id, className }) => {

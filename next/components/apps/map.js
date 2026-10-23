@@ -1,9 +1,9 @@
 'use client';
 import { useEffect, useRef, useState } from "react";
 import { Loader } from '@googlemaps/js-api-loader';
-import { withThemeRead } from "@/components/theme/hoc";
-import { cx } from '@/lib/cx';
-import { cssBackground } from '@/lib/css-color';
+import { withThemeRead } from "marccent-theme/components/theme/hoc";
+import { cx } from 'marccent-theme/lib/cx';
+import { cssBackground } from 'marccent-theme/lib/css-color';
 
 /*
  * Google Map in the site's theme colors. The map is created once; theme, center and zoom changes update it in

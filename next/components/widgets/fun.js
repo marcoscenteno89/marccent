@@ -1,9 +1,9 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
-import { cx } from '@/lib/cx';
-import { useSpins, GooDigit, reducedMotion } from '@/components/visuals/effects';
-import { HexGrid } from './layout';
-import { useInView } from '@/lib/in-view';
+import { cx } from 'marccent-theme/lib/cx';
+import { useSpins, GooDigit, reducedMotion } from 'marccent-theme/components/visuals/effects';
+import { HexGrid } from 'marccent-theme/components/widgets/layout';
+import { useInView } from 'marccent-theme/lib/in-view';
 
 /*
  * Showcase widgets: an atom, an analog clock, a flip clock of gooey digits, shape loaders and a fan of cards. No CSS

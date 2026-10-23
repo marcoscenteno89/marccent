@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
-import { cx } from '@/lib/cx';
-import { reducedMotion } from '@/components/visuals/effects';
+import { cx } from 'marccent-theme/lib/cx';
+import { reducedMotion } from 'marccent-theme/components/visuals/effects';
 
 /*
  * Data widgets: a ring gauge, a radar chart and a speedometer. No CSS of their own: stack, shape and color classes,

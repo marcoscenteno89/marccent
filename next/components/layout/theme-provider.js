@@ -1,15 +1,12 @@
 'use client';
-// The theme wired to this site: ThemeProvider (lib/context.js) with Next's path, so elements' own themes follow
-// client navigation, and the site's toasts for the theme's messages. layout.tsx is a server component, so the hook
-// and the callback live here.
+// The theme wired to this site: ThemeProvider (marccent-theme/lib/context) with Next's path, so elements' own themes
+// and the canvas backgrounds follow client navigation. layout.tsx is a server component, so the hook lives here.
+// The theme's messages go to its own toasts (the default notify).
 import { usePathname } from 'next/navigation';
-import { ThemeProvider } from '@/lib/context';
-import { toastSI } from '@/lib/toasts';
-
-const notify = (msg, tone) => toastSI.add(msg, tone);
+import { ThemeProvider } from 'marccent-theme/lib/context';
 
 const SiteThemeProvider = ({ children }) => (
-  <ThemeProvider path={usePathname()} notify={notify}>{children}</ThemeProvider>
+  <ThemeProvider path={usePathname()}>{children}</ThemeProvider>
 );
 
 export { SiteThemeProvider };

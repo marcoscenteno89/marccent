@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/button';
+import { Button } from 'marccent-theme/components/ui/button';
 import { Logo } from '@/components/brand/logo';
 
 /*

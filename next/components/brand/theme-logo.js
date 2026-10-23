@@ -1,6 +1,6 @@
 'use client';
 import { useContext } from 'react';
-import { ThemeContext } from '@/lib/context';
+import { ThemeContext } from 'marccent-theme/lib/context';
 import { Logo } from './logo';
 
 // The brand's own colors (the default theme set): the gradient logo is drawn in these.

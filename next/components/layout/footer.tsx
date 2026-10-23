@@ -1,5 +1,5 @@
 import { dt } from "@/lib/sac";
-import { ThemeEditor } from '@/components/theme/editor';
+import { ThemeEditor } from 'marccent-theme/components/theme/editor';
 import { Menu, main, contact } from '@/components/layout/menus';
 import { Logo } from '@/components/brand/logo';
 import Markdown from '@/components/markdown';

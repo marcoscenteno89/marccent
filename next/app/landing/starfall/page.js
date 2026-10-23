@@ -1,10 +1,10 @@
 import '@fontsource-variable/josefin-sans';
 import '@fontsource-variable/lora';
-import { Icon } from '@/components/ui/icon';
-import { Button } from '@/components/ui/button';
-import { Scenery } from '@/components/visuals/scenery';
-import { SolarSystem } from '@/components/visuals/effects';
-import { TabBar } from '@/components/widgets/nav';
+import { Icon } from 'marccent-theme/components/ui/icon';
+import { Button } from 'marccent-theme/components/ui/button';
+import { Scenery } from 'marccent-theme/components/visuals/scenery';
+import { SolarSystem } from 'marccent-theme/components/visuals/effects';
+import { TabBar } from 'marccent-theme/components/widgets/nav';
 import { Calendar } from '@/components/widgets/calendar';
 import ThemedMap from '@/components/apps/map';
 import { Page, Full, Box } from '../blocks';

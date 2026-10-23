@@ -3,12 +3,12 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
-import { ModeToggle, GlassToggle, ThemeReset } from '@/components/theme/toggles';
-import { Button } from '@/components/ui/button';
+import { ModeToggle, GlassToggle, ThemeReset } from 'marccent-theme/components/theme/toggles';
+import { Button } from 'marccent-theme/components/ui/button';
 import { Menu, main, social, externalProps } from './menus';
 import { ThemeLogo } from '@/components/brand/theme-logo';
-import '@/styles/components/menu.css';
-import '@/styles/components/nav.css';
+import 'marccent-theme/styles/components/menu.css';
+import 'marccent-theme/styles/components/nav.css';
 
 // Layout only: layout.css classes; menu look lives in styles/components/menu.css.
 // Narrow (below 56rem, the body's width): brand at the start, the menu toggle and the theme tools together at the

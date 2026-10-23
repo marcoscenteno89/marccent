@@ -1,12 +1,12 @@
-import { Button } from '@/components/ui/button';
-import { Icon } from '@/components/ui/icon';
+import { Button } from 'marccent-theme/components/ui/button';
+import { Icon } from 'marccent-theme/components/ui/icon';
 import { Menu, social, contact, externalProps } from '@/components/layout/menus';
 import { SectionHead } from '@/components/layout/section-head';
 import ContactForm from '@/components/layout/contact-form';
 import MapWTCL from '@/components/apps/map';
 import { CanvasBand } from '@/components/layout/canvas-band';
-import { MiniThemeEditor } from '@/components/theme/mini-editor';
-import { StatCard, Timeline } from '@/components/widgets/layout';
+import { MiniThemeEditor } from 'marccent-theme/components/theme/mini-editor';
+import { StatCard, Timeline } from 'marccent-theme/components/widgets/layout';
 import Markdown from '@/components/markdown';
 import JsonLd from '@/components/json-ld';
 import { profilePage } from '@/lib/schema';

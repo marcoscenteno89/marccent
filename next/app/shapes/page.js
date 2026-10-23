@@ -1,7 +1,7 @@
-import { Icon } from '@/components/ui/icon';
+import { Icon } from 'marccent-theme/components/ui/icon';
 import { GalleryHeader, Section, Demo } from '@/components/gallery';
-import { HexGrid } from '@/components/widgets/layout';
-import '@/styles/components/button.css';
+import { HexGrid } from 'marccent-theme/components/widgets/layout';
+import 'marccent-theme/styles/components/button.css';
 
 /*
  * Shapes gallery: every .shape-* class (utilities.css) and honeycombs built from hexagons on a grid. The hovers made

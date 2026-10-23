@@ -1,13 +1,13 @@
 'use client';
 import React, { useEffect } from "react";
-import { Counter } from '@/components/ui/counter';
-import { cx } from '@/lib/cx';
-import { Button } from '@/components/ui/button';
-import { Alert } from '@/components/ui/alert';
-import { Board } from '@/components/ui/board';
-import { Loading } from '@/components/ui/loading';
-import { Grid } from "@/lib/grid_helper";
-import { Store, useStore } from "@/lib/store";
+import { Counter } from 'marccent-theme/components/ui/counter';
+import { cx } from 'marccent-theme/lib/cx';
+import { Button } from 'marccent-theme/components/ui/button';
+import { Alert } from 'marccent-theme/components/ui/alert';
+import { Board } from 'marccent-theme/components/ui/board';
+import { Loading } from 'marccent-theme/components/ui/loading';
+import { Grid } from "marccent-theme/lib/grid_helper";
+import { Store, useStore } from "marccent-theme/lib/store";
 
 /*
  * Number puzzle (15-puzzle): slide tiles into the gap until they read 1, 2, 3… row by row, gap last. Click a

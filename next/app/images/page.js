@@ -1,8 +1,8 @@
-import { Icon } from '@/components/ui/icon';
+import { Icon } from 'marccent-theme/components/ui/icon';
 import { GalleryHeader, Section } from '@/components/gallery';
-import { Collage, Spinner, Light, Ghost, Stars, Progress } from '@/components/widgets/collage';
-import { Clock } from '@/components/ui/clock';
-import { Orbit } from '@/components/visuals/effects';
+import { Collage, Spinner, Light, Ghost, Stars, Progress } from 'marccent-theme/components/widgets/collage';
+import { Clock } from 'marccent-theme/components/ui/clock';
+import { Orbit } from 'marccent-theme/components/visuals/effects';
 import { Atom, AnalogClock, FlipClock } from '@/components/widgets/fun';
 import { LoopCountdown } from './live';
 

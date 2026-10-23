@@ -1,19 +1,19 @@
 import type { Metadata, Viewport } from 'next';
 import '@/styles/main.css'; // all styles, in cascade order (styles/main.css); the optional theme is picked there
-import { SiteTheme, ScopeThemes } from "@/components/theme/core";
+import { SiteTheme, ScopeThemes } from "marccent-theme/components/theme/core";
 import Header from '@/components/layout/header';
 import Footer from '@/components/layout/footer';
-import { Body } from '@/components/theme/core';
+import { Body } from 'marccent-theme/components/theme/core';
 import { SiteThemeProvider } from '@/components/layout/theme-provider';
-import { Toast } from '@/components/ui/toast';
-import { Goo } from '@/components/ui/goo';
+import { Toast } from 'marccent-theme/components/ui/toast';
+import { Goo } from 'marccent-theme/components/ui/goo';
 import { Analytics } from '@/components/analytics';
-import { PauseOffscreen } from '@/components/pause-offscreen';
-import { CanvasScanner } from '@/components/visuals/canvas-scanner';
+import { PauseOffscreen } from 'marccent-theme/components/pause-offscreen';
+import { CanvasScanner } from 'marccent-theme/components/visuals/canvas-scanner';
 import JsonLd from '@/components/json-ld';
 import { siteGraph } from '@/lib/schema';
 import { site } from '@/lib/content';
-import { DEFAULT_DESIGN } from '@/lib/design';
+import { DEFAULT_DESIGN } from 'marccent-theme/lib/design';
 
 // Defaults for every page; a page's own metadata replaces the parts it sets. Titles read "<page> · Marccent".
 // The social image comes from app/opengraph-image.tsx.

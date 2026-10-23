@@ -1,9 +1,9 @@
 import '@fontsource-variable/inter-tight';
-import { Icon } from '@/components/ui/icon';
-import { Button } from '@/components/ui/button';
+import { Icon } from 'marccent-theme/components/ui/icon';
+import { Button } from 'marccent-theme/components/ui/button';
 import { RingGauge, Radar } from '@/components/widgets/data';
-import { StepBar } from '@/components/widgets/nav';
-import { Orbit } from '@/components/visuals/effects';
+import { StepBar } from 'marccent-theme/components/widgets/nav';
+import { Orbit } from 'marccent-theme/components/visuals/effects';
 import { Page, Full, Box } from '../blocks';
 import { SignupBar, ContactForm, CountUp, LiveSpeedometer } from '../parts';
 

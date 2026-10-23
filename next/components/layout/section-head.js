@@ -1,5 +1,5 @@
 // Shared: no 'use client' (no state or effects), so it renders on the server or in the browser.
-import { cx } from '@/lib/cx';
+import { cx } from 'marccent-theme/lib/cx';
 
 /**
  * SectionHead: a section's heading: a small spaced-capitals kicker in the primary, the title, and a line of text.

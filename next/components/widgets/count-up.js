@@ -1,7 +1,7 @@
 'use client';
 import { useRef, useEffect } from 'react';
-import { watchInView } from '@/lib/in-view';
-import { reducedMotion } from '@/components/visuals/effects';
+import { watchInView } from 'marccent-theme/lib/in-view';
+import { reducedMotion } from 'marccent-theme/components/visuals/effects';
 
 /**
  * countUp: writes a number into el, counting from 0 to `to` (eased) the first time el scrolls into view; at once for

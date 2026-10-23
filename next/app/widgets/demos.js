@@ -1,13 +1,13 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
-import { useInView } from '@/lib/in-view';
-import { Button } from '@/components/ui/button';
-import { RadialMenu } from '@/components/widgets/nav';
+import { useInView } from 'marccent-theme/lib/in-view';
+import { Button } from 'marccent-theme/components/ui/button';
+import { RadialMenu } from 'marccent-theme/components/widgets/nav';
 import { Radar, Speedometer } from '@/components/widgets/data';
 import { Calendar, Scheduler } from '@/components/widgets/calendar';
 import dayjs from 'dayjs';
-import { reducedMotion } from '@/components/visuals/effects';
-import { toastSI } from '@/lib/toasts';
+import { reducedMotion } from 'marccent-theme/components/visuals/effects';
+import { toastSI } from 'marccent-theme/lib/toasts';
 
 /*
  * The Widgets page's demos that need state or the toast: a radial menu that says what was picked, a radar with a

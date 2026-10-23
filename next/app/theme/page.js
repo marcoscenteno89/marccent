@@ -1,25 +1,25 @@
 'use client';
 import { useContext, useState, useEffect } from "react";
-import { Button } from '@/components/ui/button';
-import { Icon } from '@/components/ui/icon';
-import { Loading } from '@/components/ui/loading';
-import { Alert } from '@/components/ui/alert';
-import { Field, Input } from '@/components/ui/field';
-import { Form, StepForm, Step } from '@/components/ui/form';
-import { Accordion, AccordionItem } from '@/components/ui/accordion';
-import { Board } from '@/components/ui/board';
-import { Modal } from '@/components/ui/modal';
-import { Pagination } from '@/components/ui/pagination';
-import { Clock } from '@/components/ui/clock';
-import { Counter } from '@/components/ui/counter';
+import { Button } from 'marccent-theme/components/ui/button';
+import { Icon } from 'marccent-theme/components/ui/icon';
+import { Loading } from 'marccent-theme/components/ui/loading';
+import { Alert } from 'marccent-theme/components/ui/alert';
+import { Field, Input } from 'marccent-theme/components/ui/field';
+import { Form, StepForm, Step } from 'marccent-theme/components/ui/form';
+import { Accordion, AccordionItem } from 'marccent-theme/components/ui/accordion';
+import { Board } from 'marccent-theme/components/ui/board';
+import { Modal } from 'marccent-theme/components/ui/modal';
+import { Pagination } from 'marccent-theme/components/ui/pagination';
+import { Clock } from 'marccent-theme/components/ui/clock';
+import { Counter } from 'marccent-theme/components/ui/counter';
 import { Menu } from '@/components/layout/menus';
 import { GalleryHeader, Section, Demo, Row } from '@/components/gallery';
-import { Countdown } from '@/components/visuals/effects';
-import { StatCard } from '@/components/widgets/layout';
-import { Grid } from '@/lib/grid_helper';
-import { cssBackground } from '@/lib/css-color';
-import { ThemeContext } from "@/lib/context";
-import { toastSI } from "@/lib/toasts";
+import { Countdown } from 'marccent-theme/components/visuals/effects';
+import { StatCard } from 'marccent-theme/components/widgets/layout';
+import { Grid } from 'marccent-theme/lib/grid_helper';
+import { cssBackground } from 'marccent-theme/lib/css-color';
+import { ThemeContext } from "marccent-theme/lib/context";
+import { toastSI } from "marccent-theme/lib/toasts";
 
 /*
  * Theme gallery: the site's building blocks (colors, type, buttons, forms, overlays, navigation, data, layout) in the

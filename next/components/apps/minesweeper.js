@@ -1,14 +1,14 @@
 'use client'
-import { cx } from '@/lib/cx';
+import { cx } from 'marccent-theme/lib/cx';
 import React, { useState } from "react";
-import { Counter } from '@/components/ui/counter';
-import { Icon } from '@/components/ui/icon';
-import { Button } from '@/components/ui/button';
-import { Alert } from '@/components/ui/alert';
-import { Board } from '@/components/ui/board';
-import { Grid } from "@/lib/grid_helper";
-import { Store, useStore } from "@/lib/store";
-import '@/styles/components/form.css';
+import { Counter } from 'marccent-theme/components/ui/counter';
+import { Icon } from 'marccent-theme/components/ui/icon';
+import { Button } from 'marccent-theme/components/ui/button';
+import { Alert } from 'marccent-theme/components/ui/alert';
+import { Board } from 'marccent-theme/components/ui/board';
+import { Grid } from "marccent-theme/lib/grid_helper";
+import { Store, useStore } from "marccent-theme/lib/store";
+import 'marccent-theme/styles/components/form.css';
 
 /*
  * Minesweeper. MinesweeperGame holds the game in plain JS (a grid_helper Grid of cells changed in place); the

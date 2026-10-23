@@ -14,8 +14,8 @@ import dayOfYear from 'dayjs/plugin/dayOfYear';
 import isLeapYear from 'dayjs/plugin/isLeapYear';
 import minMax from 'dayjs/plugin/minMax';
 import calendar from 'dayjs/plugin/calendar';
-import { cx } from '@/lib/cx';
-import { Button } from '@/components/ui/button';
+import { cx } from 'marccent-theme/lib/cx';
+import { Button } from 'marccent-theme/components/ui/button';
 
 dayjs.extend(weekOfYear); dayjs.extend(isoWeek); dayjs.extend(isBetween); dayjs.extend(isSameOrBefore);
 dayjs.extend(isSameOrAfter); dayjs.extend(isToday); dayjs.extend(relativeTime); dayjs.extend(advancedFormat);

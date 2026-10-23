@@ -3,7 +3,7 @@ import { apps, findApp } from '@/components/apps/list';
 import AppCard from '@/components/apps/app-card';
 import Markdown from '@/components/markdown';
 import { SectionHead } from '@/components/layout/section-head';
-import { Accordion, AccordionItem } from '@/components/ui/accordion';
+import { Accordion, AccordionItem } from 'marccent-theme/components/ui/accordion';
 import { Full } from '../../landing/blocks';
 
 export const generateStaticParams = () => apps.map(app => ({ slug: app.url.split('/').pop() }));

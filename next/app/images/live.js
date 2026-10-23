@@ -1,7 +1,7 @@
 'use client';
 // The images page's moving pieces that need state: a countdown that starts over once it reaches 0.
 import { useState } from 'react';
-import { Countdown } from '@/components/visuals/effects';
+import { Countdown } from 'marccent-theme/components/visuals/effects';
 
 /** LoopCountdown: Countdown from `from` to 0, then again (a new key remounts it). */
 const LoopCountdown = ({ from = 9, style }) => {

@@ -1,10 +1,10 @@
 'use client'; // the form keeps its result in state and sends from the browser
 import { useState } from 'react';
 import { post } from '@marccent/util';
-import { Form } from '@/components/ui/form';
-import { Field } from '@/components/ui/field';
-import { Button } from '@/components/ui/button';
-import { Alert } from '@/components/ui/alert';
+import { Form } from 'marccent-theme/components/ui/form';
+import { Field } from 'marccent-theme/components/ui/field';
+import { Button } from 'marccent-theme/components/ui/button';
+import { Alert } from 'marccent-theme/components/ui/alert';
 
 type Result = { tone: 'success' | 'danger', msg: string };
 
