@@ -3,13 +3,13 @@ import React, { useEffect, useRef } from "react";
 import {
   Ellipse, Rect, createColor, linearGradient, randomPosition, metaballPath, glowSprite, randomWanderPath, wander
 } from "@marccent/util/canvas";
-import { withTRC } from "@/components/theme/hoc";
+import { withThemeCanvas } from "@/components/theme/hoc";
 import { Grid } from "@/lib/grid_helper";
 
 /*
  * Canvas animations on @marccent/util 2.x, each a class (extends Animation): setup() builds its objects once,
  * theme(t) takes the theme's colors, draw() draws a frame, destroy() cleans up. animate(Class) turns one into a
- * component on a withTRC canvas (hoc.js withCanvas: props.sketch.canvas is a util Scene). Animations with few
+ * component on a withThemeCanvas canvas (hoc.js withCanvas: props.sketch.canvas is a util Scene). Animations with few
  * objects use util Shapes (c.add(), c.run()); ones with hundreds (Fire, ParticleFlowfield, OrbitAnim) keep them in a
  * ParticlePool and draw straight to the 2D context, since a Shape per item costs too much per frame. The stock chart
  * is one too (Chart), with its own small wrapper (Graph) since it also takes a ticker.
@@ -22,7 +22,7 @@ const avgSide = (p) => (p.width + p.height) / 2;
 
 // The color of the see-through animations (Snow, Rain, Bubbles) as { r, g, b }: the fixed one, or white on dark;
 // on light, white wouldn't show, so the theme's primary.
-const overlayRgb = (anim, t) => (anim.fixed ? rgbOf(anim.p, anim.fixed[0]) : (t.is_dark ? t.rev() : t.primary()).rgb);
+const overlayRgb = (anim, t) => (anim.fixed ? rgbOf(anim.p, anim.fixed[0]) : (t.isDark ? t.rev() : t.primary()).rgb);
 
 // Any CSS color p5 reads ("#fff", "white", "rgb(…)") as { r, g, b }, like a theme color's .rgb.
 const rgbOf = (p, color) => { const [ r, g, b ] = p.color(color).levels; return { r, g, b }; };
@@ -81,7 +81,7 @@ class ParticlePool {
 /**
  * Animation: the base class of every background. A subclass builds its objects once in setup(), takes per-theme
  * values (colors, gradients) in theme(t), draws one frame in draw() and undoes what setup started (timers, Scene
- * objects) in destroy(). animate() (below) runs it on a withTRC canvas. this.c is the util Scene, this.p its p5
+ * objects) in destroy(). animate() (below) runs it on a withThemeCanvas canvas. this.c is the util Scene, this.p its p5
  * instance and this.el the div the canvas sits in. colors: CSS colors that replace the theme's in theme(t), so the
  * animation keeps them whatever the theme (white snow, red fire over a photo); this.fixed, or null for the theme's.
  */
@@ -331,7 +331,7 @@ class ParticleFlowfield extends Animation {
 
   theme(t) {
     this.gradient = themeGradient(this.c, t, this.fixed);
-    this.blend = t.is_dark ? 'lighter' : 'difference';
+    this.blend = t.isDark ? 'lighter' : 'difference';
   }
 
   draw() {
@@ -484,7 +484,7 @@ class Snow extends Animation {
 }
 
 /**
- * animate: runs an Animation class on a withTRC canvas, as a React component. The instance is built once (and
+ * animate: runs an Animation class on a withThemeCanvas canvas, as a React component. The instance is built once (and
  * destroyed on unmount); on every theme change it takes the new theme, becomes the sketch's draw and draws one
  * frame right away, so a paused canvas (off screen, reduced motion) still shows the change. A colors prop (an
  * array of CSS colors) replaces the theme's, read once when it's built.
@@ -503,11 +503,11 @@ const animate = (AnimationClass) => {
       a.theme(props.theme);
       sketch.draw = () => a.draw();
       sketch.draw();
-    }, [props.theme]);
+    }, [props.theme, props.theme.version]);
     return null;
   };
   Animated.displayName = AnimationClass.name;
-  return withTRC(Animated);
+  return withThemeCanvas(Animated);
 };
 
 // Fireflies: a few dozen glowing dots that wander (each turns a little every frame, steered by noise) and blink at
@@ -809,7 +809,7 @@ class Chart extends Animation {
   }
 }
 
-// Graph: a Chart on a withTRC canvas, with the readout it writes into. Like animate(), plus data() on a new ticker.
+// Graph: a Chart on a withThemeCanvas canvas, with the readout it writes into. Like animate(), plus data() on a new ticker.
 const Graph = (props) => {
   const { sketch, canvas } = props.sketch;
   const readout = useRef(null);
@@ -825,26 +825,26 @@ const Graph = (props) => {
     c.theme(props.theme);
     sketch.draw = () => c.draw();
     sketch.draw();
-  }, [props.obj, props.theme]);
+  }, [props.obj, props.theme, props.theme.version]);
   return <div ref={readout} className="chart-readout order-first" />;
 }
 
-const GraphWTRC = withTRC(Graph, { decorative: false }); // a chart people read: full sharpness, no pausing
-const BlobWTRC = animate(Blob);
-const FireWTRC = animate(Fire);
-const WaveWTRC = animate(Wave);
-const NetworkLoopWTRC = animate(NetworkLoop);
-const ParticleFlowfieldWTRC = animate(ParticleFlowfield);
-const OrbitAnimWTRC = animate(OrbitAnim);
-const SnowWTRC = animate(Snow);
-const FirefliesWTRC = animate(Fireflies);
-const LeavesWTRC = animate(Leaves);
-const RainWTRC = animate(Rain);
-const BubblesWTRC = animate(Bubbles);
+const GraphCanvas = withThemeCanvas(Graph, { decorative: false }); // a chart people read: full sharpness, no pausing
+const BlobCanvas = animate(Blob);
+const FireCanvas = animate(Fire);
+const WaveCanvas = animate(Wave);
+const NetworkLoopCanvas = animate(NetworkLoop);
+const ParticleFlowfieldCanvas = animate(ParticleFlowfield);
+const OrbitAnimCanvas = animate(OrbitAnim);
+const SnowCanvas = animate(Snow);
+const FirefliesCanvas = animate(Fireflies);
+const LeavesCanvas = animate(Leaves);
+const RainCanvas = animate(Rain);
+const BubblesCanvas = animate(Bubbles);
 
 export {
-  ParticleFlowfieldWTRC, OrbitAnimWTRC, BlobWTRC, FireWTRC, NetworkLoopWTRC, WaveWTRC, SnowWTRC,
-  FirefliesWTRC, LeavesWTRC, RainWTRC, BubblesWTRC,
-  GraphWTRC, Animation, Chart, animate, Blob, Fire, Wave, NetworkLoop, ParticleFlowfield, OrbitAnim, Snow,
+  ParticleFlowfieldCanvas, OrbitAnimCanvas, BlobCanvas, FireCanvas, NetworkLoopCanvas, WaveCanvas, SnowCanvas,
+  FirefliesCanvas, LeavesCanvas, RainCanvas, BubblesCanvas,
+  GraphCanvas, Animation, Chart, animate, Blob, Fire, Wave, NetworkLoop, ParticleFlowfield, OrbitAnim, Snow,
   Fireflies, Leaves, Rain, Bubbles
 }

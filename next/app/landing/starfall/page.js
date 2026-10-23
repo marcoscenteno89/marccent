@@ -6,7 +6,7 @@ import { Scenery } from '@/components/visuals/scenery';
 import { SolarSystem } from '@/components/visuals/effects';
 import { TabBar } from '@/components/widgets/nav';
 import { Calendar } from '@/components/widgets/calendar';
-import MapWTR from '@/components/apps/map';
+import ThemedMap from '@/components/apps/map';
 import { Page, Full, Box } from '../blocks';
 import { SignupBar, ContactForm, CountUp } from '../parts';
 
@@ -202,7 +202,7 @@ export default function Starfall() {
           </div>
           <div className="grid cols-1 gap-sm content-start">
             <strong><Icon name="location-dot" className="text-primary" /> The turnoff</strong>
-            <MapWTR center={{ lat: 38.3725, lng: -110.7146 }} zoom={11} className="round" style={{ minHeight: '18rem' }} />
+            <ThemedMap center={{ lat: 38.3725, lng: -110.7146 }} zoom={11} className="round" style={{ minHeight: '18rem' }} />
             <small className="opacity-75">22 km of gravel south of Hanksville, Utah. Any car makes it; headlights off at the gate.</small>
           </div>
         </div>

@@ -19,7 +19,7 @@ const ModalPanel = ({ title, titleId, onClose, footer, variant, children }) => {
   const close = <Button icon="xmark" className={variant === 'ticket' ? 'gradient' : undefined} onClick={onClose}>Close</Button>;
   if (variant === 'ticket') return (
     <div className="grid cols-1 gap-0">
-      <div className="header bg-gradient text-center"><h4 id={titleId}>{title}</h4></div>
+      <div className="header pad bg-gradient text-center"><h4 id={titleId}>{title}</h4></div>
       <div className="modal-neck bg-gradient" />
       <div className="modal-flare bg" />
       <div className="bg pad-x grid cols-1">{children}</div>
@@ -28,7 +28,7 @@ const ModalPanel = ({ title, titleId, onClose, footer, variant, children }) => {
   );
   return (
     <div className="grid cols-1 gap-0 divide">
-      <div className="header">
+      <div className="header pad">
         <h5 id={titleId}>{title}</h5>
         <Button icon="xmark" aria-label="Close" onClick={onClose} />
       </div>

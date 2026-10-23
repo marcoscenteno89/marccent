@@ -118,7 +118,7 @@ const Calendar = ({ mode = 'single', onChange, events = [], min, max, weekStart 
 
   return (
     <div className={cx('bg border round shadow pad grid cols-1 gap-sm', className)} style={style}>
-      <div className="header" style={{ padding: 0 }}> {/* the card's own padding is enough */}
+      <div className="header"> {/* the card's own padding is enough */}
         <button type="button" className="text-start fw-bold fs-lg text-truncate" onClick={() => setView(view === 'month' ? 'year' : 'decade')}
           disabled={view === 'decade'} aria-label={`${view === 'month' ? cursor.format('MMMM YYYY') : title}${view !== 'decade' ? ', zoom out' : ''}`}
           style={{ border: 0, background: 'none', color: 'inherit', padding: 0, cursor: view === 'decade' ? 'default' : 'pointer' }}>

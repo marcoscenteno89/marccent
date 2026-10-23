@@ -1,25 +1,27 @@
 'use client';
-// Theme toggles: buttons that flip one setting of the saved theme (light / dark, glass, rainbow).
-// W = With, T = Theme (withT passes the theme and an update function).
+// Theme toggles: buttons that flip one setting of the saved theme (light / dark, glass, rainbow), and a reset. Each
+// takes a scope (props.scope: "site", the default, or an element's id); withTheme gives it the theme as that scope
+// sees it, and the scope's update and reset.
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { withT } from "./hoc";
+import { SITE } from '@/lib/singleton';
+import { withTheme } from "./hoc";
 
-const RainbowMode = (props) => {
+const RainbowButton = (props) => {
   const rainbow = props.theme.rainbow;
   return (
     <Button icon={['fa-solid', rainbow ? 'fa-wand-magic-sparkles' : 'fa-wand-magic', props.className].filter(Boolean).join(' ')} aria-label="Toggle rainbow mode" onClick={() => props.update({rainbow: !rainbow})} />
   )  
 }
 
-const ThemeMode = (props) => {
-  const is_dark = props.theme.value('is_dark'); // the target section's in section scope (lib/singleton.js)
+const ModeButton = (props) => {
+  const isDark = props.theme.value('isDark'); // the scope's own, else the site's (Theme.scoped)
   return (
     <Button
-      icon={is_dark ? 'sun' : 'moon'}
-      className={[is_dark ? 'light' : 'dark', props.className].filter(Boolean).join(' ')} /* filled in the mode it switches to (colors.css) */
-      onClick={() => props.update({is_dark: !is_dark})}>
-      {is_dark ? 'Light' : 'Dark'}
+      icon={isDark ? 'sun' : 'moon'}
+      className={[isDark ? 'light' : 'dark', props.className].filter(Boolean).join(' ')} /* filled in the mode it switches to (colors.css) */
+      onClick={() => props.update({isDark: !isDark})}>
+      {isDark ? 'Light' : 'Dark'}
     </Button>
   )  
 }
@@ -39,15 +41,18 @@ const GLASS = {
 };
 
 // Glass toggle. Off (disabled) when the design theme is glass already: it sets --theme-glass: 1 (styles/themes/).
-const GlassMode = (props) => {
+const GlassButton = (props) => {
   const glass = props.theme.value('glass');
   const [ builtIn, setBuiltIn ] = useState(false);
-  // Read again when the design style changes (core.js sets it on <html> in an effect, so after a frame).
+  const design = props.theme.value('design');
+  // Read on the scope's element when its design style changes (set in an effect, so after a frame).
   useEffect(() => {
-    const frame = requestAnimationFrame(() =>
-      setBuiltIn(getComputedStyle(document.documentElement).getPropertyValue('--theme-glass').trim() === '1'));
+    const frame = requestAnimationFrame(() => {
+      const el = document.getElementById(props.theme.scopeId) ?? document.documentElement;
+      setBuiltIn(getComputedStyle(el).getPropertyValue('--theme-glass').trim() === '1');
+    });
     return () => cancelAnimationFrame(frame);
-  }, [ props.theme.design ]);
+  }, [ design, props.theme.scopeId ]);
   return (
     <Button
       icon="fa-brands fa-hornbill"
@@ -62,8 +67,15 @@ const GlassMode = (props) => {
   )  
 }
 
-const RainbowModeWT = withT(RainbowMode);
-const ThemeModeWT = withT(ThemeMode);
-const GlassModeWT = withT(GlassMode);
+// ThemeReset: the scope back to where it started (the site: every default; a section: the site's theme).
+const ResetButton = (props) => (
+  <Button icon="rotate-left" className={props.className} onClick={props.reset}
+    title={props.theme.scopeId === SITE ? 'Put the whole site back to the default theme' : 'Put this section back to the site theme'}>Reset</Button>
+);
 
-export { RainbowModeWT, ThemeModeWT, GlassModeWT, ThemeMode, GlassMode }
+const RainbowToggle = withTheme(RainbowButton);
+const ModeToggle = withTheme(ModeButton);
+const GlassToggle = withTheme(GlassButton);
+const ThemeReset = withTheme(ResetButton);
+
+export { RainbowToggle, ModeToggle, GlassToggle, ThemeReset }

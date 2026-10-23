@@ -64,7 +64,7 @@ export default function About() {
       </Full>
 
       {/* SHORT: a mini theme editor for the section above (only it changes). */}
-      <Box><MiniThemeEditor title={about.mini.title} text={about.mini.text} /></Box>
+      <Box><MiniThemeEditor scope="now" title={about.mini.title} text={about.mini.text} /></Box>
 
       {/* EXPERIENCE: the job on a timeline, what it involves, then skills. */}
       <Full id="experience" className="bg">

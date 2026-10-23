@@ -3,8 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
-import { ThemeModeWT, GlassModeWT } from '@/components/theme/toggles';
-import { ScopeWT } from '@/components/theme/scope';
+import { ModeToggle, GlassToggle, ThemeReset } from '@/components/theme/toggles';
 import { Button } from '@/components/ui/button';
 import { Menu, main, social, externalProps } from './menus';
 import { ThemeLogo } from '@/components/brand/theme-logo';
@@ -73,10 +72,10 @@ export default function Header() {
             end (col-last), the buttons side by side with only the gap between them. hover-expand: icons at rest, the
             label shows on hover (so no .icon-only-* needed). */}
         <div className="grid auto-cols items-center gap-sm col-last">
-          {/* Site / Section: whether the tools after it change the whole site or one picked section. */}
-          <ScopeWT className="hover-expand"/>
-          <GlassModeWT className="hover-expand"/>
-          <ThemeModeWT className="hover-expand"/>
+          {/* The whole site's quick tools: reset, glass, mode; Theme jumps to the full editor in the footer. */}
+          <ThemeReset className="hover-expand"/>
+          <GlassToggle className="hover-expand"/>
+          <ModeToggle className="hover-expand"/>
           <Button icon="brush" href="#footer" className="hover-expand">Theme</Button>
         </div>
       </div>

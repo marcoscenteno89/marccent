@@ -91,9 +91,11 @@ const NumPuz = () => {
         <Counter getTime={(time) => game.showTime(time)} active={game.active} />
         <Button onClick={() => game.shuffle()}>Start Over</Button>
       </div>
-      <Board grid={grid} gap="4px">
+      <Board grid={grid} className="bg-gradient-run">
         {(cell, i) => (
-          <button type="button" key={i} className={cx('center round square', cell.value !== null && 'bg-primary')}
+          // A card per tile, each a window onto one gradient across the board (.bg-gradient-run); the gap is left empty.
+          <button type="button" key={i} className={cx('center round square', cell.value !== null && 'shadow hover-holographic')}
+            style={cell.value !== null ? undefined : { background: 'none' }}
             draggable={!game.won && game.besideGap(cell)}
             onClick={() => game.move(cell)}
             onDragStart={(e) => e.dataTransfer.setData('text/plain', String(i))}

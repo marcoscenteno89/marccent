@@ -2,6 +2,8 @@
 import { useContext } from 'react';
 import { ThemeContext } from '@/lib/context';
 import { cx } from '@/lib/cx';
+import { Color } from '@marccent/util/class';
+import { textVars } from '@/lib/theme-scope';
 
 /*
  * The structure every landing page shares, and its palette:
@@ -33,9 +35,10 @@ const MIX = {
  */
 const Page = ({ palette, mode, className, style, children }) => {
   const { theme } = useContext(ThemeContext) ?? {};
-  const vars = { '--primary': palette.primary, '--secondary': palette.secondary, '--dark': palette.dark, '--light': palette.light, ...MIX };
+  const vars = { '--primary': palette.primary, '--secondary': palette.secondary, '--dark': palette.dark, '--light': palette.light, ...MIX,
+    ...textVars(new Color(palette.primary), new Color(palette.secondary)) }; // text on its fills, by brightness
   return (
-    <div id="top" data-theme={mode ?? (theme?.is_dark ? 'dark' : 'light')} suppressHydrationWarning
+    <div id="top" data-theme={mode ?? (theme?.isDark ? 'dark' : 'light')} suppressHydrationWarning
       className={cx('grid cols-1 gap-0', className)} style={{ ...vars, color: 'var(--body-color)', ...style }}>
       {children}
     </div>

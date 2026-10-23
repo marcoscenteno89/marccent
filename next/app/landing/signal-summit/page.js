@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Scenery } from '@/components/visuals/scenery';
 import { HexWall } from '@/components/widgets/layout';
 import { FlipClock, Atom } from '@/components/widgets/fun';
-import MapWTR from '@/components/apps/map';
+import ThemedMap from '@/components/apps/map';
 import { Page, Full, Box } from '../blocks';
 import { Backdrop, EventCountdown, SignupBar, CountUp } from '../parts';
 
@@ -199,7 +199,7 @@ export default function SignalSummit() {
               ))}
             </div>
           </div>
-          <MapWTR center={{ lat: 38.7036, lng: -9.1789 }} zoom={14} className="round" style={{ minHeight: '22rem', ...glow(NEON.sys) }} />
+          <ThemedMap center={{ lat: 38.7036, lng: -9.1789 }} zoom={14} className="round" style={{ minHeight: '22rem', ...glow(NEON.sys) }} />
         </div>
       </Full>
       <section className="wrap wrap-fluid pad-0">

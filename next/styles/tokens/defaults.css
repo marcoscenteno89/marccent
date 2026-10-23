@@ -84,7 +84,7 @@
   --grid-min: 14rem;           /* narrowest a fluid grid column gets before wrapping */
   --wrap-max: 75rem;           /* max width of .wrap containers; .wrap-sm / .wrap-lg are multiples (SCALES) */
   --wrap-pad: var(--space);    /* side padding of .wrap containers */
-  --pad: var(--space);         /* inner padding of boxes (.pad, .header) */
+  --pad: var(--space);         /* inner padding of boxes (.pad) */
   --icon-size: calc(1.5em + var(--space) * 1.25); /* every icon's square (components/icons.css); em = the icon's font size */
 
   /* Components (components/) */
@@ -148,6 +148,12 @@
   --gradient: linear-gradient(to right, var(--primary), var(--secondary));
   --gradient-lighter: linear-gradient(to right, var(--primary-lighter), var(--secondary-lighter));
   --gradient-darker: linear-gradient(to right, var(--primary-darker), var(--secondary-darker));
+  /* Text on a fill of the brand colors (.bg-primary, .bg-secondary, .bg-gradient, .btn.gradient): --dark or --light,
+     whichever reads on it. The theme changer picks each by the color's perceived brightness (textVars,
+     lib/section-theme.js); light until then. */
+  --primary-text: var(--light);
+  --secondary-text: var(--light);
+  --gradient-text: var(--light);
 }
 
 /* PAGE COLORS: text, background, border, link and focus colors for light and dark mode

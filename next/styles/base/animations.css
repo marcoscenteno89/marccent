@@ -10,12 +10,12 @@
    Browsers without ::details-content or interpolate-size open and close instantly. */
 .accordion { interpolate-size: allow-keywords; }
 
-.accordion-item::details-content {
+.accordion > details::details-content {
   block-size: 0;
   overflow-y: clip;
   transition: block-size var(--duration-slow) ease, content-visibility var(--duration-slow) ease allow-discrete;
 }
-.accordion-item[open]::details-content { block-size: auto; }
+.accordion > details[open]::details-content { block-size: auto; }
 
 /* TOAST FADE-IN (Toast in components/ui/toast.js). */
 .toast { animation: toast-in var(--duration) linear; }
@@ -161,6 +161,6 @@
   .modal[open],
   .modal[open]::backdrop { animation: none; }
   .countdown > i { transition: none; }
-  .accordion-item::details-content,
-  .accordion-item > .accordion-header::after { transition: none; } /* beats the caret transition in components/accordion.css */
+  .accordion > details::details-content,
+  .accordion > details > summary::after { transition: none; } /* beats the caret transition in components/accordion.css */
 }

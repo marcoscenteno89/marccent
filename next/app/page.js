@@ -35,7 +35,7 @@ export const metadata = {
 // A feature: its icon in a gradient hexagon (the brand's shape), the title and a line.
 const Feature = ({ icon, title, text }) => (
   <article className="bg border round pad grid cols-1 gap-sm content-start hover-holographic">
-    <div className="shape-hexagon bg-gradient col-center" style={{ width: '3.25rem', color: 'var(--light)' }}>
+    <div className="shape-hexagon bg-gradient col-center" style={{ width: '3.25rem' }}>
       <Icon name={icon} />
     </div>
     <h3 className="h4">{title}</h3>
@@ -93,7 +93,7 @@ export default function Home() {
         <div className="grid gap-lg items-center" style={{ '--cols': 2, '--min': '18rem' }}>
           <div className="grid cols-1 gap-lg">
             <SectionHead kicker={home.live.kicker} title={home.live.title} text={<Markdown text={home.live.text} className="fs-lg" />} />
-            <MiniThemeEditor site />
+            <MiniThemeEditor scope="site" />
           </div>
           <ImageCard canvas="blob" ratio="4 / 3" overlay="glass" align="end" badge="Live"
             label={home.live.card.label} title={home.live.card.title} text={home.live.card.text} />
@@ -109,7 +109,7 @@ export default function Home() {
       </Full>
 
       {/* SHORT: a mini theme editor for the showcase right above it (only that section changes). */}
-      <Box><MiniThemeEditor title={home.mini.title} text={home.mini.text} /></Box>
+      <Box><MiniThemeEditor scope="demo" title={home.mini.title} text={home.mini.text} /></Box>
 
       {/* LANDING: rolling waves full width, then the made-up companies in a carousel. */}
       <CanvasBand canvas="wave" height="55vh" label="landing-title">
@@ -119,7 +119,7 @@ export default function Home() {
         <Carousel slideWidth="16rem" label={home.landing.title}>
           {home.landing.pages.map(p => (
             <article key={p.href} className="bg border round pad grid cols-1 gap-sm h-100 hover-holographic" style={{ gridTemplateRows: 'auto auto 1fr auto' }}>
-              <div className="shape-hexagon bg-gradient col-center" style={{ width: '3rem', color: 'var(--light)' }}><Icon name={p.icon} /></div>
+              <div className="shape-hexagon bg-gradient col-center" style={{ width: '3rem' }}><Icon name={p.icon} /></div>
               <small className="text-uppercase opacity-75" style={{ letterSpacing: '.12em' }}>{p.kind}</small>
               <h3 className="h4">{p.name}</h3>
               <Button icon="arrow-right" href={p.href} className="outline-primary w-100">Visit</Button>
@@ -140,7 +140,7 @@ export default function Home() {
       </Full>
 
       {/* SHORT: another mini theme editor, for the timeline above. */}
-      <Box><MiniThemeEditor title={home.mini.title} text={home.mini.text} /></Box>
+      <Box><MiniThemeEditor scope="now" title={home.mini.title} text={home.mini.text} /></Box>
 
       {/* A breather: dust on a current, full width, with one line over it. */}
       <CanvasBand canvas="particle-flowfield" height="45vh" label="band-title">
@@ -169,7 +169,7 @@ export default function Home() {
       </Full>
 
       {/* SHORT: the call to action, boxed in the gradient. */}
-      <Box className="bg-gradient" inner="grid cols-1 gap-sm text-center" style={{ color: 'var(--light)' }}>
+      <Box className="bg-gradient" inner="grid cols-1 gap-sm text-center">
         <h2>{home.cta.title}</h2>
         <p className="fs-lg">{home.cta.text}</p>
         <Button icon={home.cta.button.icon} href={home.cta.button.href} className="light" style={{ justifySelf: 'center' }}>{home.cta.button.label}</Button>

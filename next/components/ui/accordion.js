@@ -16,7 +16,7 @@ const Accordion = (props) => {
   const { children, defaultOpen = 0, multiple = false, className = '' } = props;
   const name = useId();
   return (
-    <div className={`accordion grid cols-1 gap-0 divide border round ${className}`.trim()}>
+    <div data-component="accordion" className={`accordion grid cols-1 gap-0 divide border round ${className}`.trim()}>
       {React.Children.toArray(children).map((child, i) => React.cloneElement(child, {
         name: multiple ? undefined : name,
         defaultOpen: i === defaultOpen,
@@ -29,9 +29,9 @@ const Accordion = (props) => {
 const AccordionItem = (props) => {
   const { header, children, className = '', name, defaultOpen = false } = props;
   return (
-    <details className="accordion-item" name={name} open={defaultOpen}>
-      <summary className="accordion-header header">{header}</summary>
-      <div className={cx('pad', className)}>{children}</div>
+    <details name={name} open={defaultOpen}>
+      <summary className="header pad-sm">{header}</summary>
+      <div className={cx('pad-sm', className)}>{children}</div>
     </details>
   );
 }

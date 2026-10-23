@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect, useContext, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useInView } from '@/lib/in-view';
 import { Button } from '@/components/ui/button';
 import { RadialMenu } from '@/components/widgets/nav';
@@ -7,7 +7,7 @@ import { Radar, Speedometer } from '@/components/widgets/data';
 import { Calendar, Scheduler } from '@/components/widgets/calendar';
 import dayjs from 'dayjs';
 import { reducedMotion } from '@/components/visuals/effects';
-import { ToastContext } from '@/lib/context';
+import { toastSI } from '@/lib/context';
 
 /*
  * The Widgets page's demos that need state or the toast: a radial menu that says what was picked, a radar with a
@@ -15,8 +15,7 @@ import { ToastContext } from '@/lib/context';
  */
 
 const RadialMenuDemo = () => {
-  const { toast, setToast } = useContext(ToastContext) ?? {};
-  const say = (msg) => toast && setToast(toast.add(msg, 'info'));
+  const say = (msg) => toastSI.add(msg, 'info');
   const items = [ [ 'house', 'Home' ], [ 'user', 'Profile' ], [ 'gear', 'Settings' ], [ 'bell', 'Alerts' ], [ 'envelope', 'Messages' ], [ 'heart', 'Likes' ] ]
     .map(([ icon, label ]) => ({ icon, label, onClick: () => say(label) }));
   return <RadialMenu items={items} />;
@@ -80,13 +79,12 @@ const RangeCalendarDemo = () => {
 
 // A few openings already taken: tomorrow at 8 and 1, and the whole of the day after (so it can't be picked).
 const SchedulerDemo = () => {
-  const { toast, setToast } = useContext(ToastContext) ?? {};
   const [ booked, setBooked ] = useState([]);
   useEffect(() => {
     const t = dayjs().add(1, 'day').startOf('day'), t2 = t.add(1, 'day');
     setBooked([ t.hour(8), t.hour(13), t2.hour(8), t2.hour(10), t2.hour(13), t2.hour(15) ].map(d => d.format()));
   }, []);
-  return <Scheduler booked={booked} onBook={(s) => toast && setToast(toast.add(`Booked ${s.start.format('ddd, MMM Do, h:mm A')}`, 'success'))} />;
+  return <Scheduler booked={booked} onBook={(s) => toastSI.add(`Booked ${s.start.format('ddd, MMM Do, h:mm A')}`, 'success')} />;
 }
 
 export { RadialMenuDemo, RadarDemo, SpeedometerDemo, CalendarDemo, RangeCalendarDemo, SchedulerDemo };

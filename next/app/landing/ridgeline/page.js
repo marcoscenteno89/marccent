@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Scenery } from '@/components/visuals/scenery';
 import { Timeline } from '@/components/widgets/layout';
 import { Carousel } from '@/components/widgets/carousel';
-import MapWTR from '@/components/apps/map';
+import ThemedMap from '@/components/apps/map';
 import { Page, Full, Box } from '../blocks';
 import { SignupBar, ContactForm, CountUp, TripPicker } from '../parts';
 
@@ -190,7 +190,7 @@ export default function Ridgeline() {
           </div>
           <div className="grid cols-1 gap-sm content-start">
             <strong><Icon name="location-dot" className="text-primary-lighter" /> Where Patagonia trips meet</strong>
-            <MapWTR center={{ lat: -51.7236, lng: -72.5064 }} zoom={13} className="round" style={{ minHeight: '18rem' }} />
+            <ThemedMap center={{ lat: -51.7236, lng: -72.5064 }} zoom={13} className="round" style={{ minHeight: '18rem' }} />
             <small style={{ opacity: .8 }}>Our basecamp lodge on the waterfront, Puerto Natales, 6 PM on day one.</small>
           </div>
         </div>

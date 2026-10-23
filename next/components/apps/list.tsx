@@ -15,7 +15,6 @@ export type App = {
   about: string;        // Markdown
   instructions: string; // Markdown
   component: ComponentType;
-  layout?: 'side' | 'full'; // side: app left, text right. full (default): app on top, text below.
 };
 
 // Add a new app here; the apps page, home page, header and /apps/[slug] route all read from this list.
@@ -28,7 +27,6 @@ export const apps: App[] = [
     about: text.minesweeper.about,
     instructions: text.minesweeper.instructions,
     component: MineSweeper,
-    layout: 'side',
   },
   {
     name: text.numpuz.name,
@@ -37,7 +35,6 @@ export const apps: App[] = [
     about: text.numpuz.about,
     instructions: text.numpuz.instructions,
     component: NumPuz,
-    layout: 'side',
   },
   {
     name: text.weather.name,

@@ -25,7 +25,7 @@ const Pagination = ({ total, pageSize, current, update, className, style }) => {
   const last = current === pages;
   const cell = { current, update };
   return (
-    <nav className={cx('grid fixed gap-0', className)} style={{ '--cols': pages + 4, ...style }}
+    <nav data-component="pagination" className={cx('grid fixed gap-0', className)} style={{ '--cols': pages + 4, ...style }}
       aria-label="Pages">
       <PageCell {...cell} page={1} label="First page" disabled={first}>&laquo;</PageCell>
       <PageCell {...cell} page={current - 1} label="Previous page" disabled={first}>&lsaquo;</PageCell>

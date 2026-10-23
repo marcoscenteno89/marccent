@@ -58,7 +58,7 @@ const SubmitButton = ({ busy, icon = 'paper-plane', children }) => (
 const Form = ({ onSubmit, submitLabel = 'Submit', submitIcon = 'paper-plane', className = 'grid gap-sm pairs', children, ...rest }) => {
   const [ busy, submit ] = useSubmit(onSubmit);
   return (
-    <form className={className} aria-busy={busy || undefined} {...rest} onSubmit={submit}>
+    <form data-component="form" className={className} aria-busy={busy || undefined} {...rest} onSubmit={submit}>
       {children}
       {submitLabel && <SubmitButton busy={busy} icon={submitIcon}>{submitLabel}</SubmitButton>}
     </form>
@@ -97,7 +97,7 @@ const StepForm = ({ onSubmit, onStep, className = 'grid cols-1 gap-sm', children
     onStep?.(to, formValues(form.current));
   };
   return (
-    <form ref={form} className={className} aria-busy={busy || undefined} {...rest} onSubmit={submit}>
+    <form data-component="step-form" ref={form} className={className} aria-busy={busy || undefined} {...rest} onSubmit={submit}>
       <div className="grid fixed gap-0 divide border round" style={{ '--cols': steps.length }}>
         {steps.map((step, i) => (
           <button key={step.props.name} type="button" aria-current={i === current ? 'step' : undefined}

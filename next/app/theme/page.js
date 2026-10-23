@@ -18,7 +18,7 @@ import { Countdown } from '@/components/visuals/effects';
 import { StatCard } from '@/components/widgets/layout';
 import { Grid } from '@/lib/grid_helper';
 import { cssBackground } from '@/lib/css-color';
-import { ThemeContext, ToastContext } from "@/lib/context";
+import { ThemeContext, toastSI } from "@/lib/context";
 
 /*
  * Theme gallery: the site's building blocks (colors, type, buttons, forms, overlays, navigation, data, layout) in the
@@ -80,7 +80,6 @@ const Cards = ({ children }) => <div className="grid gap-sm" style={{ '--cols': 
 
 export default function ThemePage() {
   const { theme } = useContext(ThemeContext) ?? {};
-  const { toast, setToast } = useContext(ToastContext) ?? {};
   const [ modal, setModal ] = useState(false);
   const [ ticket, setTicket ] = useState(false);
   const [ page, setPage ] = useState(1);
@@ -88,9 +87,9 @@ export default function ThemePage() {
   const [ countdown, setCountdown ] = useState(0); // a new key restarts the countdown
   const GRADIENTS = ['bg-gradient-lighter', 'bg-gradient', 'bg-gradient-darker'];
   const swatches = [...PALETTE.flatMap(c => [`bg-${c}-lighter`, `bg-${c}`, `bg-${c}-darker`]), ...GRADIENTS];
-  const bg = useBackgrounds(swatches, [theme?.is_dark, theme?.active]);
-  if (!theme || !toast) return <Loading require={[]} />;
-  const say = (msg, type) => setToast(toast.add(msg, type));
+  const bg = useBackgrounds(swatches, [theme?.isDark, theme?.palette]);
+  if (!theme) return <Loading require={[]} />;
+  const say = (msg, type) => toastSI.add(msg, type);
   // The form demos: say what was sent instead of sending it anywhere.
   const submitted = (values) => say(`Submitted: ${Object.entries(values).map(([ k, v ]) => `${k} = ${v || '(empty)'}`).join(', ')}`, 'success');
   const board = new Grid(6, 6, (row, col) => ({ row, col }));

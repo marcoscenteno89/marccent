@@ -1,9 +1,9 @@
 'use client';
-import { useState, useEffect, useContext, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import dynamic from 'next/dynamic';
 import dayjs from 'dayjs';
 import { useInView } from '@/lib/in-view';
-import { ToastContext } from '@/lib/context';
+import { toastSI } from '@/lib/context';
 import { reducedMotion } from '@/components/visuals/effects';
 import { Form, StepForm, Step } from '@/components/ui/form';
 import { Input, Field } from '@/components/ui/field';
@@ -16,11 +16,8 @@ import '@/styles/components/clock.css';
  * that move while on screen. Shared by every page in app/landing.
  */
 
-// The toast, or a no-op where there is no provider.
-const useSay = () => {
-  const { toast, setToast } = useContext(ToastContext) ?? {};
-  return (msg, tone = 'success') => toast && setToast(toast.add(msg, tone));
-};
+// Says msg in a toast.
+const useSay = () => (msg, tone = 'success') => toastSI.add(msg, tone);
 
 // A pretend request: resolves after ms, so the submit button shows its spinner.
 const wait = (ms = 900) => new Promise(r => setTimeout(r, ms));
@@ -222,7 +219,7 @@ const EventCountdown = ({ to, className }) => {
 };
 
 // Canvas animations (visuals/canvas.js) as backdrops, loaded only in the browser; they pause off screen (theme/hoc.js).
-const CANVASES = { network: 'NetworkLoopWTRC', particles: 'ParticleFlowfieldWTRC', blob: 'BlobWTRC', wave: 'WaveWTRC' };
+const CANVASES = { network: 'NetworkLoopCanvas', particles: 'ParticleFlowfieldCanvas', blob: 'BlobCanvas', wave: 'WaveCanvas' };
 const loaders = Object.fromEntries(Object.entries(CANVASES).map(([ k, name ]) =>
   [ k, dynamic(() => import('@/components/visuals/canvas').then(m => m[name]), { ssr: false }) ]));
 

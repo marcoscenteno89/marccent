@@ -18,6 +18,12 @@
   /* --secondary: #1ecbe1; */
   /* --secondary-lighter: color-mix(in srgb, var(--secondary) 60%, #fff); */
   /* --secondary-darker: color-mix(in srgb, var(--secondary) 60%, #000); */
+  /* Trying it out: no brand shades, every one the original color (with SHADES in lib/section-theme.js, which the
+     theme changer follows). Comment these four out to bring the shades back. */
+  --primary-lighter: var(--primary);
+  --primary-darker: var(--primary);
+  --secondary-lighter: var(--secondary);
+  --secondary-darker: var(--secondary);
 
   /* Status colors (the usual names, in bright neon-pastel shades): danger for destructive actions, success for confirmations,
      info for notes. Fixed; the theme changer doesn't touch them. Shades are mixed like the brand colors. */
@@ -77,7 +83,7 @@
   /* --grid-min: 14rem;  narrowest a fluid grid column gets before wrapping */
   /* --wrap-max: 75rem;  max width of .wrap containers; .wrap-sm / .wrap-lg are multiples (SCALES, defaults.css) *
   /* --wrap-pad: var(--space);  side padding of .wrap containers */
-  /* --pad: var(--space);  inner padding of boxes (.pad, .header) */
+  /* --pad: var(--space);  inner padding of boxes (.pad) */
   /* --icon-size: calc(1.5em + var(--space) * 1.25);  every icon's square (components/icons.css); em = the icon's font size */
 
   /* Components (components/) */

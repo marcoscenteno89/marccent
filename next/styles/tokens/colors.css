@@ -5,12 +5,13 @@
  */
 
 /* BACKGROUNDS. The base ones follow the mode (lighter in light mode, darker in dark mode: --*-mode, defaults.css),
-   so text on them stays readable; -lighter and -darker are fixed shades. */
+   so text on them stays readable; -lighter and -darker are fixed shades. Primary, secondary and the gradient also
+   set the text: dark or light, by the color's brightness (--*-text, defaults.css). */
 .bg-primary-lighter { background-color: var(--primary-lighter); }
-.bg-primary { background-color: var(--primary-mode); }
+.bg-primary { background-color: var(--primary-mode); color: var(--primary-text); }
 .bg-primary-darker { background-color: var(--primary-darker); }
 .bg-secondary-lighter { background-color: var(--secondary-lighter); }
-.bg-secondary { background-color: var(--secondary-mode); }
+.bg-secondary { background-color: var(--secondary-mode); color: var(--secondary-text); }
 .bg-secondary-darker { background-color: var(--secondary-darker); }
 .bg-danger-lighter { background-color: var(--danger-lighter); }
 .bg-danger { background-color: var(--danger-mode); }
@@ -22,7 +23,7 @@
 .bg-info { background-color: var(--info-mode); }
 .bg-info-darker { background-color: var(--info-darker); }
 .bg-gradient-lighter { background-image: var(--gradient-lighter); }
-.bg-gradient { background-image: var(--gradient-mode); }
+.bg-gradient { background-image: var(--gradient-mode); color: var(--gradient-text); }
 .bg-gradient-darker { background-image: var(--gradient-darker); }
 
 /* CONTINUOUS GRADIENT: put .bg-gradient-run on a group and its children (up to 24) show one gradient between them,
@@ -67,6 +68,7 @@
   --run-row: round(down, var(--run-i) / var(--run-cols));
   --run-rows: round(up, var(--run-n) / var(--run-cols));
   background-image: var(--run);
+  color: var(--gradient-text);
   background-size: calc(var(--run-cols) * 100% + (var(--run-cols) - 1) * var(--run-gap))
     calc(var(--run-rows) * 100% + (var(--run-rows) - 1) * var(--run-gap));
   background-position: calc(var(--run-col) / max(var(--run-cols) - 1, 1) * 100%)
@@ -147,19 +149,21 @@
 .btn.dark { background-color: var(--dark); color: var(--light); border-color: color-mix(in srgb, var(--light) 20%, var(--dark)); }
 .btn.light:is(:hover, [aria-pressed="true"]) { background-color: color-mix(in srgb, var(--dark) 10%, var(--light)); }
 .btn.dark:is(:hover, [aria-pressed="true"]) { background-color: color-mix(in srgb, var(--light) 15%, var(--dark)); }
-/* Gradient fill: the mode gradient (like .bg-gradient) with the page text color; hover darkens it slightly. */
-.btn.gradient { background-image: var(--gradient-mode); color: var(--body-color); border-color: transparent; }
+/* Gradient fill: the mode gradient (like .bg-gradient) with the text that reads on it; hover darkens it slightly. */
+.btn.gradient { background-image: var(--gradient-mode); color: var(--gradient-text); border-color: transparent; }
 .btn.gradient:is(:hover, [aria-pressed="true"]) { background-image: linear-gradient(rgb(0 0 0 / .12) 0 0), var(--gradient-mode); }
 
-/* OUTLINE BUTTONS: the default .btn look (no fill, a 1px border) in one color: the border in the color itself,
-   the text and icon in its readable shade for the mode (--*-mode-text), the icon tint and hover a wash of it.
-   Use on a .btn: <Button className="outline-primary" …>. Unlayered, so .btn.outline-* beats
-   .btn and .btn:hover (components layer, layers.css). */
+/* OUTLINES: a border in one color, on a card (.bg or .border: "bg border round outline-primary") or a .btn. The
+   card rule is weighted to beat .border (utilities.css, loaded later), [data-theme] .bg and the design styles'. Hover effects (hovers.css) glow
+   in the color too (below). A .btn also gets the text and icon in the color's readable shade for the mode
+   (--*-mode-text) and a wash of it on hover: <Button className="outline-primary" …>. Unlayered, so .btn.outline-*
+   beats .btn and .btn:hover (components layer, layers.css). */
 .outline-primary { --outline: var(--primary); --outline-text: var(--primary-mode-text); }
 .outline-secondary { --outline: var(--secondary); --outline-text: var(--secondary-mode-text); }
 .outline-danger { --outline: var(--danger); --outline-text: var(--danger-mode-text); }
 .outline-success { --outline: var(--success); --outline-text: var(--success-mode-text); }
 .outline-info { --outline: var(--info); --outline-text: var(--info-mode-text); }
+:is(.outline-primary, .outline-secondary, .outline-danger, .outline-success, .outline-info):is(.bg, .border):not(.btn) { border-color: var(--outline); }
 .btn:is(.outline-primary, .outline-secondary, .outline-danger, .outline-success, .outline-info) {
   color: var(--outline-text);
   border-color: var(--outline);
@@ -170,9 +174,10 @@
 
 /* Colored buttons hover in their own color: every hover effect (hovers.css) draws from --hover-from to --hover-to,
    the theme's primary → secondary by default; a colored button, filled or outline, takes its color for both, so a
-   delete button glows red and a success one green. Plain, light, dark and gradient buttons keep the theme's pair. */
+   delete button glows red and a success one green; an outlined card (hover-holographic) glows in its outline color.
+   Plain, light, dark and gradient buttons keep the theme's pair. */
 .btn:is(.primary, .secondary, .danger, .success, .info) { --hover-from: var(--tone); --hover-to: var(--tone); }
-.btn:is(.outline-primary, .outline-secondary, .outline-danger, .outline-success, .outline-info) {
+:is(.outline-primary, .outline-secondary, .outline-danger, .outline-success, .outline-info) {
   --hover-from: var(--outline);
   --hover-to: var(--outline);
 }

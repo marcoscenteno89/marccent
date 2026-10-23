@@ -1,4 +1,5 @@
 'use client'
+import { cx } from '@/lib/cx';
 import React, { useState } from "react";
 import { Counter } from '@/components/ui/counter';
 import { Icon } from '@/components/ui/icon';
@@ -114,10 +115,12 @@ const MineSweeper = () => {
         </select>
         <Button onClick={() => game.restart()}>Start Over</Button>
       </div>
-      <Board grid={game.grid} gap="2px">
-        {(cell) => (
-          <button type="button" key={cell.id} className="center bg-primary round square"
-            style={{ opacity: cell.revealed ? 0.7 : undefined }}
+      <Board grid={game.grid} className="bg-gradient-run">
+        {(cell, i) => (
+          // A card per square. Hidden: a window onto one gradient across the board (.bg-gradient-run; colors.css counts
+          // only 24 cells, so each gets its place and the total here), raised with a holographic hover. Revealed: flat.
+          <button type="button" key={cell.id} className={cx('center round square', cell.revealed ? 'bg border' : 'shadow hover-holographic')}
+            style={cell.revealed ? { opacity: 0.6, backgroundImage: 'none' } : { '--run-i': i, '--run-n': game.grid.cells.length }}
             onClick={() => (flagMode ? game.flag(cell) : game.reveal(cell))}
             onContextMenu={(e) => { e.preventDefault(); game.flag(cell); }}>
             {cell.revealed

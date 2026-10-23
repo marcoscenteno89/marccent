@@ -152,9 +152,10 @@ const TicketCard = ({ label, title, note, items = [], action, ribbon, className 
  * @param {React.ReactNode} [props.text] - A line or two under the label.
  * @param {React.ReactNode} [props.children] - Actions (buttons), in a row at the bottom.
  * @param {string} [props.className]
+ * @param {string} [props.name] - Which card this is (data-name), when there are several: "humidity".
  */
-const StatCard = ({ icon, value, label, accent, fill, text, children, className }) => (
-  <div className={cx('cq round shadow pad grid cols-1 gap-lg text-center hover-holographic', className)}
+const StatCard = ({ icon, value, label, accent, fill, text, children, className, name }) => (
+  <div data-component="stat-card" data-name={name} className={cx('cq round shadow pad grid cols-1 gap-lg text-center hover-holographic', className)}
     style={{ minHeight: '7rem', color: 'var(--body-color)', gridTemplateRows: '1fr auto' }}>
     {/* Two rows: the content, then the actions pinned to the bottom, so buttons line up across a row of cards. */}
     <div className="grid cols-1 gap-lg justify-center" style={{ alignContent: 'start' }}>

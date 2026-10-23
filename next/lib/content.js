@@ -130,15 +130,23 @@ export const home = {
     kicker: 'Right now',
     title: 'What I am working on',
     text: `
-      Marccent grows one step at a time, and this site moves with it. Here is where it has been, and where it is going.
+      Marccent has been growing one step at a time since 2020, and this site has moved with it. Here is where it has
+      been, and where it is going.
     `,
     // Dates from the repository history.
     events: [
-      { date: 'Oct 6, 2026', icon: 'table-cells', title: 'A CSS Grid layout system', text: 'The first piece: grid classes to replace the Bootstrap grid.' },
-      { date: 'Oct 13, 2026', icon: 'scissors', title: 'Bootstrap removed', text: 'The last Bootstrap and react-bootstrap code gone; colors cut down to a primary and secondary palette.' },
-      { date: 'Oct 20, 2026', icon: 'swatchbook', title: 'Design styles', text: '27 optional looks, from glass to terminal, with self-hosted fonts.' },
-      { date: 'Oct 21, 2026', icon: 'shapes', title: 'Design pages and a logo', text: 'Shapes, widgets, parallax scenery, canvas animations and the Marccent brand.' },
-      { date: 'Now', icon: 'code', title: 'Less React', text: 'Moving widget logic into plain JavaScript classes with thin React wrappers.' },
+      { date: 'Apr 2020', icon: 'flag', title: 'Marccent begins', text: 'A React front end with its own back end, and a theme switcher from the start.' },
+      { date: 'Jun 2020', icon: 'cubes', title: 'The theme becomes a class', text: 'Themes rewritten from functions into one object, the idea the site still runs on.' },
+      { date: 'Jan 2021', icon: 'bomb', title: 'Minesweeper', text: 'The first game, and the first app built on the theme.' },
+      { date: 'Mar 2021', icon: 'layer-group', title: 'Bootstrap added', text: 'Bootstrap 4 brought in for the layout grid and components.' },
+      { date: 'Apr 2021', icon: 'droplet', title: 'Glass mode', text: 'Frosted glass added beside light and dark.' },
+      { date: 'Nov 2021', icon: 'server', title: 'A back end in Docker', text: 'Contact messages and theme options stored by the server, now in containers.' },
+      { date: 'Apr 2023', icon: 'puzzle-piece', title: 'Numpuz and shared widgets', text: 'A sliding puzzle, and pieces like the counter pulled out to stand on their own.' },
+      { date: 'Dec 2023', icon: 'code', title: 'From React to JS classes', text: 'Canvas, colors, forms and limits moved into @marccent/util: plain JavaScript classes any project can import.' },
+      { date: 'May 2024', icon: 'arrow-right-arrow-left', title: 'Moved to Next.js', text: 'The site rebuilt on Next.js, with server rendering.' },
+      { date: 'Oct 2026', icon: 'table-cells', title: 'Bootstrap out, grid in', text: 'After five years, a CSS Grid layout system replaced Bootstrap; colors cut down to a primary and secondary palette.' },
+      { date: 'Oct 2026', icon: 'swatchbook', title: 'Design styles and pages', text: '27 optional looks, shapes, widgets, parallax scenery, canvas animations and the Marccent logo.' },
+      { date: 'Now', icon: 'gears', title: 'Less React', text: 'Still moving widget logic into plain JavaScript classes, with thin React wrappers.' },
       { date: 'Next', icon: 'box-open', title: 'A theme for other projects', text: 'Packaging Marccent so it can style sites beyond this one.' },
     ],
   },

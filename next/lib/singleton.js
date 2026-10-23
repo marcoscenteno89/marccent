@@ -1,213 +1,182 @@
 import { Color } from "@marccent/util/class";
-import { get } from "@marccent/util";
-import cd from 'lodash/cloneDeep'; // just this function, not all of lodash in the browser bundle
 import { Storage } from "@marccent/util/class";
-const marccent_server = process.env.NEXT_PUBLIC_SERVER;
+import { Store } from "@/lib/store";
+import defaults from "@/lib/theme.defaults.json";
 const storage = new Storage();
 
-// The settings a section can override in section scope (Theme.update / value).
-const SECTION_KEYS = [ 'active', 'is_dark', 'glass', 'design' ];
+// The settings an element's scope can override (Theme.scoped).
+const SCOPE_KEYS = [ 'palette', 'isDark', 'glass', 'design' ];
+// The id on <html> (app/layout.tsx): the whole site's scope. Any other scope is the id of an element on the page.
+const SITE = 'site';
 
-class Theme {
-  constructor() {
-    if (Theme.instance == null) {
-      this.active = 0;
-      this.animation = 0;
-      this.is_dark = true;
-      this.rainbow = false;
-      this.glass = false;
-      this.scope = 'global'; // 'global': the toggles and theme cards change the whole site; 'section': only the target section
-      this.target = null;    // the section being themed in section scope (a key from lib/section-theme.js), if any
-      this.sections = {};    // per-section overrides: { [key]: { active?, is_dark?, glass?, design? } }
-      this.design = null;    // the design style (lib/design.js); null: the site's default
-      this.dark;
-      this.light;
-      this.themeList = [];
-      Theme.instance = (async () => await this.init())();
-    }
-    return Theme.instance;
-  }
+// A theme saved before the renames (2026-10-23) read with the new names: themeList → palettes, active → palette,
+// is_dark → isDark, sections → scopes (and inside them too). Section keys by position ("/#section-3") are
+// dropped: scopes are by id now.
+const migrate = (t) => ({
+  palettes: [ ...(t.palettes ?? t.themeList ?? []) ],
+  palette: t.palette ?? t.active ?? 0,
+  isDark: t.isDark ?? t.is_dark ?? true,
+  scopes: Object.fromEntries(Object.entries(t.scopes ?? t.sections ?? {})
+    .filter(([ key ]) => !/#section-\d+$/.test(key))
+    .map(([ key, { active, is_dark, ...o } ]) => [ key, { ...o, ...(active != null && { palette: active }), ...(is_dark != null && { isDark: is_dark }) } ])),
+});
+
+// The theme: one object for the whole site, changed in place. Every change saves it and emits (lib/store.js), and
+// ThemeProvider (lib/context.js) re-renders on the new version: nothing is copied for React.
+class Theme extends Store {
+  palette = 0;      // the palette in use: an index in palettes
+  animation = 0;
+  isDark = true;
+  rainbow = false;
+  glass = false;
+  scopes = {};      // elements' own settings: { ["<path>#<id>"]: { palette?, isDark?, glass?, design? } }
+  design = null;    // the design style (lib/design.js); null: the site's default
+  dark = null;
+  light = null;
+  palettes = [];    // the saved color pairs: { primary, secondary } Colors
 
   async init() {
     const theme = storage.get('marccent_theme');
-    if (!theme) {
-      await this.getThemesFromServer();
-    } else {
-      this.active = theme.active;
-      this.animation = theme.animation;
-      this.rainbow = theme.rainbow;
-      this.is_dark = theme.is_dark;
-      this.glass = theme.glass;
-      this.scope = theme.scope ?? 'global';
-      this.target = null; // picked again on each visit
-      this.sections = theme.sections ?? {};
-      this.design = theme.design ?? null;
-      this.dark = theme.dark;
-      this.light = theme.light;
-      this.themeList.push(...theme.themeList);
+    if (!theme) this.loadDefaults();
+    else {
+      const { animation, rainbow, glass, design = null, dark, light } = theme;
+      Object.assign(this, { animation, rainbow, glass, design, dark, light, ...migrate(theme) });
     }
     return this.save();
   }
 
-  async getThemesFromServer() {
-    // Gives up after 5s (get() then returns { ok: false }), so an unreachable server falls back to the theme below
-    // instead of leaving first-time visitors on loading spinners.
-    let data = await get(`${marccent_server}option/?name=theme`, { signal: AbortSignal.timeout(5000) });
-    if (data.ok) {
-      this.dark = new Color(data.filter(i => i.name === 'theme_dark')[0].value);
-      this.light = new Color(data.filter(i => i.name === 'theme_light')[0].value);
-      let themelist = data.filter(i => i.name !== 'theme_dark' && i.name !== 'theme_light');
-      for (let i of themelist)  {
-        let item = {}
-        let data = JSON.parse(i.value);
-        item.primary = new Color(data.primary);
-        item.secondary = new Color(data.secondary);
-        this.themeList.push(item);
-      }
-    } else {
-      console.log('Error getting themes from server. Loading hardcoded theme');
-      this.dark = new Color('#1a1a1a');
-      this.light = new Color('#FFFFFF');
-      this.themeList.push({
-        primary: new Color('#1f64cf'),
-        secondary: new Color('#1ecbe1')
-      });
-    }
+  // First visit: the starter colors from lib/theme.defaults.json (the page colors and the palettes), bundled with the
+  // theme, so it needs no backend. Swap the file to ship other defaults.
+  loadDefaults() {
+    this.dark = new Color(defaults.dark);
+    this.light = new Color(defaults.light);
+    this.palettes = defaults.palettes.map(({ primary, secondary }) => ({ primary: new Color(primary), secondary: new Color(secondary) }));
   }
 
   add(theme) {
-    this.themeList.push({
+    this.palettes.push({
       primary: new Color(theme.primary),
       secondary: new Color(theme.secondary)
     });
-    this.active = this.themeList.length - 1;
+    this.palette = this.palettes.length - 1;
     return this.save();
   }
 
   remove(index) {
-    this.themeList.splice(index, 1);
-    if (index < this.active) this.active = this.active - 1;
-    // Sections that used the removed theme go back to the site's; later ones shift down with the list.
-    for (const o of Object.values(this.sections)) {
-      if (o.active === index) delete o.active;
-      else if (o.active > index) o.active--;
+    this.palettes.splice(index, 1);
+    if (index < this.palette) this.palette = this.palette - 1;
+    // Scopes that used the removed palette go back to the site's; later ones shift down with the list.
+    for (const o of Object.values(this.scopes)) {
+      if (o.palette === index) delete o.palette;
+      else if (o.palette > index) o.palette--;
     }
     return this.save();
   }
 
-  // In section scope the section settings (SECTION_KEYS) go to the target section only; everything else, and every
-  // setting in global scope, to the whole site. In section scope with no target, section settings are ignored.
+  // The whole site's settings.
   update(obj) {
-    const local = this.scope === 'section';
-    Object.entries(obj).forEach(([key, val]) => {
-      if (!local || !SECTION_KEYS.includes(key)) this[key] = val;
-      else if (this.target) this.sections[this.target] = { ...this.sections[this.target], [key]: val };
-    });
+    Object.assign(this, obj);
     return this.save();
   }
 
-  // Section settings straight into one section, whatever the scope (the mini theme editor: components/theme/mini-editor.js).
-  updateSection(key, obj) {
-    for (const [ k, v ] of Object.entries(obj)) if (SECTION_KEYS.includes(k)) this.sections[key] = { ...this.sections[key], [k]: v };
+  // Scope settings (SCOPE_KEYS) into one element's scope (key: "<path>#<id>").
+  updateScope(key, obj) {
+    for (const [ k, v ] of Object.entries(obj)) if (SCOPE_KEYS.includes(k)) this.scopes[key] = { ...this.scopes[key], [k]: v };
     return this.save();
   }
 
-  // A section setting as the controls should show it: the target section's own value in section scope, else the site's.
+  // A setting as the site's controls show it.
   value(key) {
-    const own = this.scope === 'section' && this.target ? this.sections[this.target]?.[key] : undefined;
-    return own ?? this[key];
+    return this[key];
+  }
+
+  /**
+   * The theme as the controls of one scope see it (the theme editors: components/theme/editor.js, mini-editor.js):
+   * the theme itself, with value / update / reset aimed at that scope. SITE: the whole site; any other id: that
+   * element on the page (path: the page's), its own setting or else the site's. The rest (palettes, add, remove…)
+   * is the theme's, so a palette added here is added for everyone.
+   * @param {string} id - SITE or an element's id. @param {string} path - The page's path (usePathname).
+   */
+  scoped(id, path) {
+    const view = Object.create(this);
+    for (const m of [ 'add', 'remove', 'save', 'updateScope', 'resetScope' ]) view[m] = this[m].bind(this);
+    const key = `${path}#${id}`;
+    const site = id === SITE;
+    return Object.assign(view, {
+      scopeId: id,
+      value: site ? (k) => this[k] : (k) => this.scopes[key]?.[k] ?? this[k],
+      update: site ? (obj) => this.update(obj) : (obj) => this.updateScope(key, obj),
+      reset: site ? () => this.reset() : () => this.resetScope(key),
+    });
   }
 
   // Everything back to how the site starts: the first palette, dark mode, no glass or rainbow, the default design
-  // style, no section overrides, site scope. Saved palettes stay.
+  // style, no element scopes. Saved palettes stay.
   reset() {
-    Object.assign(this, { active: 0, is_dark: true, glass: false, rainbow: false, design: null, sections: {}, scope: 'global', target: null });
+    Object.assign(this, { palette: 0, isDark: true, glass: false, rainbow: false, design: null, scopes: {} });
     return this.save();
   }
 
-  // Drops the overrides of one section (key), or of every section whose key starts with prefix (a page's path + '#').
-  resetSections({ key, prefix } = {}) {
-    for (const k of Object.keys(this.sections)) if (k === key || (prefix && k.startsWith(prefix))) delete this.sections[k];
+  // Drops one element's scope (key: "<path>#<id>"): it goes back to the site's theme.
+  resetScope(key) {
+    delete this.scopes[key];
     return this.save();
   }
 
   mode() {
-    return this.is_dark ? this.dark : this.light;
+    return this.isDark ? this.dark : this.light;
   }
 
   rev() {
-    return this.is_dark ? this.light : this.dark;
+    return this.isDark ? this.light : this.dark;
   }
 
   primary() {
-    return this.themeList[this.active].primary;
+    return this.palettes[this.palette].primary;
   }
 
   secondary() {
-    return this.themeList[this.active].secondary;
+    return this.palettes[this.palette].secondary;
   }
 
-  active() {
-    return this.themeList[this.active];
-  }
-
+  // A theme color as rgba(): 'primary', 'secondary', 'rev' (the opposite of the mode) or the mode's own.
   rgb(color, opacity) {
-    switch (color) {
-      case 'primary': {
-        let { r, g, b } = this.themeList[this.active].primary.rgb;
-        return `rgba(${r}, ${g}, ${b}, ${opacity})`;
-      }  
-      case 'secondary': {
-        let { r, g, b } = this.themeList[this.active].secondary.rgb;
-        return `rgba(${r}, ${g}, ${b}, ${opacity})`;
-      }
-      case 'rev': {
-        let { r, g, b } = this.rev().rgb;
-        return `rgba(${r}, ${g}, ${b}, ${opacity})`;
-      }
-      default: {
-        let { r, g, b } = this.mode().rgb;
-        return `rgba(${r}, ${g}, ${b}, ${opacity})`;
-      }
-    }
+    const { r, g, b } = ({ primary: this.primary(), secondary: this.secondary(), rev: this.rev() }[color] ?? this.mode()).rgb;
+    return `rgba(${r}, ${g}, ${b}, ${opacity})`;
   }
 
   save() {
     storage.set('marccent_theme', this);
-    return cd(this);
+    this.emit();
+    return this;
   }
 
 }
 
 
-class Toast {
-  constructor() {
-    if (Toast.instance == null) {
-      this.list = [];
-      Toast.instance = this;
-    }
-    return Toast.instance;
-  }
+// The toasts: the newest MAX_TOASTS messages. Anyone can add one (toastSI.add); only the Toast list re-renders.
+const MAX_TOASTS = 5;
 
-  add(msg, type="") {
-    this.list.push({
-      time: new Date(),
-      type: type,
-      msg: msg
-    });
-    return cd(this);
+class Toast extends Store {
+  list = [];
+
+  add(msg, type = '') {
+    this.list.push({ time: new Date(), type, msg });
+    if (this.list.length > MAX_TOASTS) this.list.shift();
+    this.emit();
+    return this;
   }
 
   remove(index) {
     this.list.splice(index, 1);
-    return cd(this);
+    this.emit();
+    return this;
   }
 }
 
-// SI => Single Instance, There is only one instance of this class
-const themeSI = async () => await new Theme();
-
-
+// SI => Single Instance, There is only one instance of this class. The theme loads once (storage, else the server).
+let loading = null;
+const themeSI = () => loading ??= new Theme().init();
 const toastSI = new Toast();
 
-export { themeSI, toastSI, SECTION_KEYS }
+export { themeSI, toastSI, SCOPE_KEYS, SITE }

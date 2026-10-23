@@ -91,7 +91,7 @@ export default function WidgetsPage() {
         <Carousel label="Cards">
           {/* 1. Profile: a gradient avatar, icon links that rise, stats split by .divide; holographic on hover. */}
           <div className="bg border round shadow pad grid cols-1 gap-sm justify-center text-center h-100 hover-holographic" style={{ alignContent: 'center' }}>
-            <div className="circle bg-gradient col-center fw-bold" style={{ width: '5rem', aspectRatio: 1, fontSize: '1.75rem', color: 'var(--light)' }}>AL</div>
+            <div className="circle bg-gradient col-center fw-bold" style={{ width: '5rem', aspectRatio: 1, fontSize: '1.75rem' }}>AL</div>
             <div><strong className="fs-lg">Ada Lovelace</strong><br /><small className="opacity-75">Analyst · First programmer</small></div>
             <div className="row-wrap gap-sm cols-center">
               {[ 'github', 'linkedin', 'codepen' ].map(n => <Button key={n} icon={`fa-brands fa-${n}`} aria-label={n} className="outline-primary" />)}
@@ -115,7 +115,7 @@ export default function WidgetsPage() {
 
           {/* 4. Feature: a gradient hexagon that flips like a coin on hover. */}
           <div className="bg border round shadow pad grid cols-1 gap-sm justify-center text-center h-100" style={{ alignContent: 'center' }}>
-            <div className="shape-hexagon bg-gradient col-center" style={{ width: '6rem', color: 'var(--light)' }}><Icon name="bolt" className="fs-lg" /></div>
+            <div className="shape-hexagon bg-gradient col-center" style={{ width: '6rem' }}><Icon name="bolt" className="fs-lg" /></div>
             <strong className="fs-lg">Lightning fast</strong>
             <p className="opacity-75">Static pages, self-hosted fonts and nothing loaded that a page doesn&apos;t use.</p>
             <Button href="#layouts">Learn more</Button>
@@ -203,7 +203,7 @@ export default function WidgetsPage() {
           {/* 11. Boarding pass: a ticket with airport codes, flight details and a barcode drawn with a repeating gradient. */}
           <div className="shape-ticket grid cols-1 gap-0 h-100" style={{ aspectRatio: 'auto', '--notch': '.9rem', background: 'color-mix(in srgb, var(--primary) 14%, var(--surface))' }}>
             <div className="pad grid cols-1 gap-sm" style={{ borderBottom: '2px dashed var(--border-color)' }}>
-              <div className="header" style={{ padding: 0 }}><small className="fw-bold text-uppercase text-primary">Marccent Air</small><small className="opacity-75">Boarding pass</small></div>
+              <div className="header"><small className="fw-bold text-uppercase text-primary">Marccent Air</small><small className="opacity-75">Boarding pass</small></div>
               <div className="grid gap-0 items-center text-center" style={{ gridTemplateColumns: '1fr auto 1fr' }}>
                 <div><span className="display-sm fw-bold">BOI</span><br /><small className="opacity-75">Boise</small></div>
                 <Icon name="plane" className="text-secondary fs-lg" />
@@ -224,12 +224,12 @@ export default function WidgetsPage() {
           {/* 12. Bank card: a card face with a chip, contactless mark and brand circles; holographic on hover. */}
           <div className="bg border round shadow pad grid cols-1 h-100" style={{ alignContent: 'center' }}>
             <div className="bg-gradient-darker round shadow pad grid cols-1 gap-sm hover-holographic" style={{ aspectRatio: 1.586, color: 'var(--light)', alignContent: 'space-between' }}>
-              <div className="header" style={{ padding: 0 }}>
+              <div className="header">
                 <span className="round" style={{ width: '2.4rem', height: '1.8rem', background: 'linear-gradient(135deg, #f6e27a, #cb9b51 50%, #f6f2c0)' }} />
                 <Icon name="wifi" style={{ rotate: '90deg', opacity: .8 }} />
               </div>
               <span style={{ fontFamily: 'ui-monospace, monospace', fontSize: '.95rem', letterSpacing: '.06em', whiteSpace: 'nowrap' }}>4242 •••• •••• 4242</span>
-              <div className="header" style={{ padding: 0 }}>
+              <div className="header">
                 <div><small style={{ opacity: .7 }}>Card holder</small><br /><strong className="fs-sm">ADA LOVELACE</strong></div>
                 <span className="stack" style={{ width: '3rem' }}>
                   <span className="circle bg-danger" style={{ width: '1.8rem', aspectRatio: 1, opacity: .9 }} />
@@ -294,7 +294,7 @@ export default function WidgetsPage() {
           {/* 18. Chat: two people, bubbles with tucked corners, and the other one typing. */}
           <div className="bg border round shadow grid cols-1 gap-0 h-100" style={{ gridTemplateRows: 'auto 1fr' }}>
             <div className="grid auto-cols gap-sm items-center pad-sm border-bottom">
-              <span className="stack"><span className="circle bg-gradient col-center fw-bold" style={{ width: '2.4rem', aspectRatio: 1, color: 'var(--light)' }}>KJ</span>
+              <span className="stack"><span className="circle bg-gradient col-center fw-bold" style={{ width: '2.4rem', aspectRatio: 1 }}>KJ</span>
                 <span className="circle bg-success" style={{ width: '.7rem', aspectRatio: 1, placeSelf: 'end end', border: '2px solid var(--surface)' }} /></span>
               <div><strong>Katherine</strong><br /><small className="text-success">online</small></div>
             </div>

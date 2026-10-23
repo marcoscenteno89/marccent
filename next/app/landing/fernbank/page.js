@@ -4,7 +4,7 @@ import { Icon } from '@/components/ui/icon';
 import { Button } from '@/components/ui/button';
 import { StatCard } from '@/components/widgets/layout';
 import { CardFan } from '@/components/widgets/fun';
-import MapWTR from '@/components/apps/map';
+import ThemedMap from '@/components/apps/map';
 import { Page, Full, Box } from '../blocks';
 import { AccountForm, CountUp, LiveSpeedometer, LiveRadar } from '../parts';
 
@@ -21,7 +21,7 @@ const PALETTE = { primary: '#1d8a57', secondary: '#7ce0b0', dark: '#0a1411', lig
 // A card face: chip, contactless mark, number, holder and brand circles, in any background.
 const CardFace = ({ bg = 'linear-gradient(135deg, var(--primary-darker), var(--dark))', tier = 'Everyday', holder = 'ALEX MORGAN', className = '', style }) => (
   <div className={`round shadow-lg pad grid cols-1 gap-sm hover-holographic ${className}`} style={{ aspectRatio: 1.586, background: bg, color: 'var(--light)', alignContent: 'space-between', ...style }}>
-    <div className="header" style={{ padding: 0 }}>
+    <div className="header">
       <strong style={{ fontFamily: 'var(--font-heading)' }}><Icon name="seedling" /> fernbank</strong>
       <small className="text-uppercase" style={{ letterSpacing: '.15em', opacity: .8 }}>{tier}</small>
     </div>
@@ -30,7 +30,7 @@ const CardFace = ({ bg = 'linear-gradient(135deg, var(--primary-darker), var(--d
       <Icon name="wifi" style={{ rotate: '90deg', opacity: .8 }} />
     </div>
     <span style={{ fontFamily: 'ui-monospace, monospace', letterSpacing: '.08em', whiteSpace: 'nowrap' }}>5412 •••• •••• 0427</span>
-    <div className="header" style={{ padding: 0 }}>
+    <div className="header">
       <strong className="fs-sm">{holder}</strong>
       <span className="stack" style={{ width: '2.6rem' }}>
         <span className="circle" style={{ width: '1.6rem', aspectRatio: 1, background: 'var(--secondary)', opacity: .9 }} />
@@ -44,7 +44,7 @@ const CardFace = ({ bg = 'linear-gradient(135deg, var(--primary-darker), var(--d
 const Phone = () => (
   <div data-theme="dark" className="shadow-lg pad-sm border" style={{ width: '16rem', maxWidth: '100%', borderRadius: '2.5rem', background: 'var(--body-bg)' }}>
     <div data-theme="light" className="grid cols-1 gap-sm pad" style={{ borderRadius: '2rem', background: 'var(--body-bg)', color: 'var(--body-color)' }}>
-      <div className="header" style={{ padding: 0 }}><small className="fw-bold">9:41</small><small><Icon name="signal" /> <Icon name="battery-three-quarters" /></small></div>
+      <div className="header"><small className="fw-bold">9:41</small><small><Icon name="signal" /> <Icon name="battery-three-quarters" /></small></div>
       <small style={{ opacity: .6 }}>Good morning, Alex</small>
       <div><small style={{ opacity: .6 }}>Total balance</small><br /><span className="display-sm fw-bold">$<CountUp to={12480.52} decimals={2} /></span></div>
       <div className="grid fixed cols-4 gap-sm text-center">
@@ -139,7 +139,7 @@ export default function Fernbank() {
               <div key={n} className="grid gap-sm items-center" style={{ gridTemplateColumns: 'auto minmax(0, 1fr)' }}>
                 <span className="circle col-center" style={{ width: '2.8rem', aspectRatio: 1, background: 'var(--primary-darker)', color: 'var(--secondary)' }}><Icon name={i} /></span>
                 <div className="grid cols-1 gap-sm">
-                  <div className="header" style={{ padding: 0 }}><strong>{n}</strong><small style={{ opacity: .7 }}>${have.toLocaleString()} of ${goal.toLocaleString()}</small></div>
+                  <div className="header"><strong>{n}</strong><small style={{ opacity: .7 }}>${have.toLocaleString()} of ${goal.toLocaleString()}</small></div>
                   <div className="round" style={{ height: '.6rem', background: 'var(--muted-bg)' }}><div className="h-100" style={{ width: `${have / goal * 100}%`, background: 'var(--secondary)', borderRadius: '4px' }} /></div>
                 </div>
               </div>
@@ -160,7 +160,7 @@ export default function Fernbank() {
              [ 'Metal', '$12', 'linear-gradient(135deg, var(--secondary-darker), var(--dark) 55%, var(--secondary-darker))', [ '5.10% APY', '3% back on travel', 'Airport lounges', 'Travel insurance' ] ] ].map(([ t, p, bg, items ]) => (
             <div key={t} className="grid cols-1 content-start">
               <CardFace tier={t} bg={bg} />
-              <div className="header" style={{ padding: 0 }}><h3 style={{ fontWeight: 700 }}>{t}</h3><span><strong className="fs-lg">{p}</strong><small className="opacity-75"> / month</small></span></div>
+              <div className="header"><h3 style={{ fontWeight: 700 }}>{t}</h3><span><strong className="fs-lg">{p}</strong><small className="opacity-75"> / month</small></span></div>
               <ul className="grid cols-1 gap-sm">{items.map(x => <li key={x} className="grid auto-cols gap-sm items-center justify-start"><Icon name="check" className="text-primary" />{x}</li>)}</ul>
             </div>
           ))}
@@ -235,7 +235,7 @@ export default function Fernbank() {
           <div className="grid cols-1 gap-sm content-start">
             <h2 style={{ fontWeight: 700 }}>55,000 free ATMs</h2>
             <p className="fs-lg" style={{ opacity: .75 }}>There&apos;s probably one on your block. Here&apos;s downtown San Francisco.</p>
-            <MapWTR center={{ lat: 37.7897, lng: -122.4014 }} zoom={15} className="round shadow" style={{ minHeight: '22rem' }} />
+            <ThemedMap center={{ lat: 37.7897, lng: -122.4014 }} zoom={15} className="round shadow" style={{ minHeight: '22rem' }} />
           </div>
           <div id="open" className="grid cols-1 gap-sm content-start">
             <h2 style={{ fontWeight: 700 }}>Open an account</h2>

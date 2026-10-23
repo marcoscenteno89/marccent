@@ -1,11 +1,10 @@
 import type { Metadata, Viewport } from 'next';
 import '@/styles/main.css'; // all styles, in cascade order (styles/main.css); the optional theme is picked there
-import { UpdateThemeVariables } from "@/components/theme/core";
-import { SectionThemes } from "@/components/theme/scope";
+import { SiteTheme, ScopeThemes } from "@/components/theme/core";
 import Header from '@/components/layout/header';
 import Footer from '@/components/layout/footer';
 import { Body } from '@/components/theme/core';
-import { ThemeProvider, ToastProvider } from "@/lib/context";
+import { ThemeProvider } from "@/lib/context";
 import { Toast } from '@/components/ui/toast';
 import { Goo } from '@/components/ui/goo';
 import { Analytics } from '@/components/analytics';
@@ -41,25 +40,24 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   const debug = process.env.DEBUG === 'true'; // read on the server; local work isn't tracked
 
   return (
-    <html lang="en" className="" data-design={DEFAULT_DESIGN} suppressHydrationWarning>
+    // id="site": the whole site's theme scope (lib/singleton.js SITE); SiteTheme writes its theme here.
+    <html id="site" lang="en" className="" data-design={DEFAULT_DESIGN} suppressHydrationWarning>
       <ThemeProvider>
-        <ToastProvider>
-          {/* Body is a 1-col grid: header, main and footer are spaced by its gap. It is also the container (.cq)
-              the header's layout-ends measures, since an element can't measure itself. */}
-          <Body className="cq grid cols-1 gap-0">
-            <Header />
-            <main className="grid cols-1 gap-lg">{children}</main>
-            <Footer />
-            <Toast />
-            <Goo /> {/* the #goo SVG filter hover-goo uses (styles/hovers.css) */}
-            <UpdateThemeVariables />
-            <SectionThemes /> {/* per-section theme overrides (section scope: components/theme/scope.js) */}
-            <Analytics enabled={!debug} />
-            <PauseOffscreen />
-            <CanvasScanner /> {/* canvas backgrounds from [data-canvas] (components/visuals/canvas-scanner.js) */}
-            <JsonLd data={siteGraph()} /> {/* who runs the site and what it is, for search and answer engines (lib/schema.js) */}
-          </Body>
-        </ToastProvider>
+        {/* Body is a 1-col grid: header, main and footer are spaced by its gap. It is also the container (.cq)
+            the header's layout-ends measures, since an element can't measure itself. */}
+        <Body className="cq grid cols-1 gap-0">
+          <Header />
+          <main className="grid cols-1 gap-lg">{children}</main>
+          <Footer />
+          <Toast />
+          <Goo /> {/* the #goo SVG filter hover-goo uses (styles/hovers.css) */}
+          <SiteTheme />
+          <ScopeThemes /> {/* elements' own themes, by id (a theme editor's scope: components/theme/editor.js) */}
+          <Analytics enabled={!debug} />
+          <PauseOffscreen />
+          <CanvasScanner /> {/* canvas backgrounds from [data-canvas] (components/visuals/canvas-scanner.js) */}
+          <JsonLd data={siteGraph()} /> {/* who runs the site and what it is, for search and answer engines (lib/schema.js) */}
+        </Body>
       </ThemeProvider>
     </html>
   )

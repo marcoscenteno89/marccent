@@ -112,7 +112,7 @@ const CanvasScanner = () => {
   // A new theme recolors every background.
   useEffect(() => {
     if (theme) running.current.forEach((bg) => bg.theme(theme));
-  }, [ theme ]);
+  }, [ theme, theme?.version ]);
 
   // All of them go on unmount.
   useEffect(() => () => {

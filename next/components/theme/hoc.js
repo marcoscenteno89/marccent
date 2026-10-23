@@ -1,8 +1,9 @@
 'use client';
 import { useState, useEffect, useContext, useRef } from 'react';
+import { usePathname } from 'next/navigation';
 import { Scene, canvasObserver } from "@marccent/util/canvas";
-import { ThemeContext, ToastContext } from "@/lib/context";
-import { SECTION_KEYS } from "@/lib/singleton";
+import { ThemeContext, toastSI } from "@/lib/context";
+import { SITE } from "@/lib/singleton";
 import { cx } from '@/lib/cx';
 import { Loading } from '@/components/ui/loading';
 import '@/styles/components/canvas.css';
@@ -30,22 +31,20 @@ const withThemeRead = (Component) => {
   return WithThemeReadComponent;
 }
 
+// Gives Component the theme as one scope sees it (Theme.scoped: props.scope, an element's id; the whole site by
+// default) and update / reset for that scope, each with a toast.
 const withTheme = (Component) => {
   const WiththemeComponent = (props) => {
-    const { theme, setTheme } = useContext(ThemeContext);
-    const { toast, setToast } = useContext(ToastContext);
-    // In section scope the controls need a section first (components/theme/scope.js picks one).
-    const update = (obj) => {
-      if (theme.scope === 'section' && !theme.target && Object.keys(obj).some(k => SECTION_KEYS.includes(k))) {
-        setToast(toast.add('Pick a section first (the crosshairs button), or switch the scope to Site', 'info'));
-        return;
-      }
-      setTheme(theme.update(obj));
-      setToast(toast.add(theme.scope === 'section' ? 'Section updated' : 'Theme Updated'));
-    };
+    const { theme } = useContext(ThemeContext);
+    const path = usePathname();
+    const scope = props.scope ?? SITE;
+    const view = theme && theme.scoped(scope, path);
+    const what = scope === SITE ? 'Theme' : 'Section';
+    const update = (obj) => { view.update(obj); toastSI.add(`${what} updated`); };
+    const reset = () => { view.reset(); toastSI.add(scope === SITE ? 'Theme reset to the defaults' : 'Section reset to the site theme', 'success'); };
     return (
-      <Loading require={[theme, toast]}>
-        <Component {...props} theme={theme} update={update} setTheme={setTheme} />
+      <Loading require={[theme]}>
+        <Component {...props} theme={view} update={update} reset={reset} />
       </Loading>
     );
   }
@@ -126,8 +125,7 @@ const withCanvas = (Component, { decorative = true } = {}) => {
   return WithCanvasComponent;
 }
 
-const withT= (Component) => withTheme(Component);
-const withTRC = (Component, opts) => withThemeRead(withCanvas(Component, opts));
-const withTR = (Component) => withThemeRead(Component);
+// The theme (read only) and a p5 canvas: the canvas animations (components/visuals/canvas.js).
+const withThemeCanvas = (Component, opts) => withThemeRead(withCanvas(Component, opts));
 
-export { withTheme, withCanvas, withTRC, withT, withTR, decorativeObserver, DECORATIVE_FPS }
+export { withTheme, withThemeRead, withCanvas, withThemeCanvas, decorativeObserver, DECORATIVE_FPS }

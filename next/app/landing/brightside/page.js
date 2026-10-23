@@ -3,7 +3,7 @@ import { Icon } from '@/components/ui/icon';
 import { Button } from '@/components/ui/button';
 import { AnalogClock } from '@/components/widgets/fun';
 import { Accordion, AccordionItem } from '@/components/ui/accordion';
-import MapWTR from '@/components/apps/map';
+import ThemedMap from '@/components/apps/map';
 import { Page, Full, Box } from '../blocks';
 import { VisitScheduler, NewPatientForm, CountUp } from '../parts';
 import '@/styles/components/loading.css';
@@ -204,7 +204,7 @@ export default function Brightside() {
       <Full id="visit" className="bg">
         <div className="grid gap-lg" style={{ '--cols': 2, '--min': '18rem' }}>
           <div className="grid cols-1 gap-sm content-start">
-            <MapWTR center={{ lat: 39.7817, lng: -89.6501 }} zoom={14} className="round shadow" style={{ minHeight: '22rem', borderRadius: '1.5rem' }} />
+            <ThemedMap center={{ lat: 39.7817, lng: -89.6501 }} zoom={14} className="round shadow" style={{ minHeight: '22rem', borderRadius: '1.5rem' }} />
             <p><strong>1420 Maple Avenue, Suite 200, Springfield</strong><br /><small className="opacity-75">Free parking behind the building · Bus 12 stops out front</small></p>
           </div>
           <div className="grid cols-1 gap-lg content-start">

@@ -18,7 +18,7 @@ export default function PrivacyPolicy() {
             <Markdown text={section.body}/>
             {section.cards?.map(card => (
               <div key={card.title} className="bg border round grid gap-0 divide">
-                <div className="header">{card.title}</div>
+                <div className="header pad">{card.title}</div>
                 <div className="pad grid cols-1">
                   <p>{card.text}</p>
                 </div>

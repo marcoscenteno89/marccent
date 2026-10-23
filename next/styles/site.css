@@ -63,8 +63,4 @@
    otherwise widen the page. */
 .swiper { overflow: clip; }
 
-/* THEME CARDS (footer theme slider, components/theme/slider.js): the cards are built from layout.css / utils classes on the
-   markup; the one thing CSS has to say is each slide's width, since the slider sizes slides itself (slidesPerView="auto"). */
-.theme-slider .swiper-slide { width: 9.5rem; }
-
 /* Your styles below. */

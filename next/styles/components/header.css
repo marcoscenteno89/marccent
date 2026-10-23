@@ -1,8 +1,8 @@
 @import "../layers.css";
 /* HEADER: the title row of any box (modal, toast, accordion item, card): the first child (the title) takes the row;
-   anything after it (close button, time, caret) gets an end column sized to its content. A box's body and footer
-   need no class: .pad (plus grid classes) on plain divs. Padding is --pad, so a box resizes its parts by setting
-   --pad once (the toast is tighter). Lines between parts: .divide on the box. */
+   anything after it (close button, time, caret) gets an end column sized to its content. Layout only: padding is a
+   class beside it, like the box's body and footer (.pad, which reads --pad, so a box resizes its parts by setting
+   --pad once: the toast is tighter; or .pad-sm). Lines between parts: .divide on the box. */
 @layer components {
 .header {
   display: grid;
@@ -11,7 +11,6 @@
   grid-auto-columns: auto;
   align-items: center;
   gap: var(--space-sm);
-  padding: var(--pad);
 }
 .header > :is(h1, h2, h3, h4, h5, h6, p) { margin: 0; }
 }

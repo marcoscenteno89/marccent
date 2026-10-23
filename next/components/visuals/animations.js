@@ -48,13 +48,13 @@ const AnimPlayer = () => {
           const picked = active === i;
           return (
             <SwiperSlide key={anim.key}>
-              {/* A card like the theme cards (theme/slider.js): the animation edge to edge, a line, then a .header bar
+              {/* A card like the theme cards (theme/palette-cards.js): the animation edge to edge, a line, then a .header bar
                   with its name, what it does and the button. The picked card is outlined in the primary color, with a
                   gradient button. */}
               <div className={cx('bg border round grid cols-1 gap-0 overflow-hidden hover-holographic', picked ? 'shadow-lg' : 'shadow')}
                 style={picked ? { borderColor: 'var(--primary)' } : undefined}>
                 <div data-canvas={anim.key} data-canvas-fps="20" className="border-bottom" style={{ height: '160px' }} />
-                <div className="header">
+                <div className="header pad">
                   <div className="grid cols-1 gap-0">
                     <span className="fw-bold">{anim.name}</span>
                     <span className="fs-sm opacity-75 text-truncate">{anim.about}</span>

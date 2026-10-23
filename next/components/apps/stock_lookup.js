@@ -8,7 +8,7 @@ import { Accordion, AccordionItem } from '@/components/ui/accordion';
 import { Loading } from '@/components/ui/loading';
 import { Button } from '@/components/ui/button';
 import { Alert } from '@/components/ui/alert';
-import { GraphWTRC } from '@/components/visuals/canvas';
+import { GraphCanvas } from '@/components/visuals/canvas';
 
 // Price steps on the chart's hover grid (rows); the price column labels every 10th.
 const BASE = 100;
@@ -69,7 +69,7 @@ const StockLookup = () => {
             <div className="graph-container round bg pad border">
               {/* order-first on the readout (canvas.js) puts it above the canvas. */}
               <div className="grid cols-1 gap-0">
-                <GraphWTRC obj={data} pts={pts} base={BASE} />
+                <GraphCanvas obj={data} pts={pts} base={BASE} />
               </div>
               {data && <PriceTable min={data.min} step={pts * 10} />}
               {data && <DateTable dates={data.data.map(i => i.Date)} />}

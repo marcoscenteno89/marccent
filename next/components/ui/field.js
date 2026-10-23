@@ -1,11 +1,12 @@
 // Shared: no 'use client' (no state or effects), so it renders on the server or in the browser, wherever it's used.
 import { useId } from 'react';
-import capitalize from 'lodash/capitalize';
 import { cx } from '@/lib/cx';
 import '@/styles/components/form.css';
 
-// Readable text from a field name: "first_name" → "First name".
-const nameToLabel = (name) => capitalize(name.replace(/_/g, ' '));
+// Readable text from a field name: "first_name" → "first name". A label's first letter is capitalized in CSS
+// (.field-label::first-letter); a placeholder can't be (::placeholder has no ::first-letter), so Input does it here.
+const nameToLabel = (name) => name.replace(/_/g, ' ');
+const sentence = (text) => text.charAt(0).toUpperCase() + text.slice(1);
 
 /**
  * Input: just the input, its label text shown as the placeholder (and used as aria-label, since a placeholder
@@ -18,7 +19,7 @@ const nameToLabel = (name) => capitalize(name.replace(/_/g, ' '));
  * @example <Input name="email" type="email" required />  // placeholder "Email"
  */
 const Input = ({ name, label, as: Tag = 'input', className, children, ...rest }) => {
-  const text = label ?? nameToLabel(name);
+  const text = label ?? sentence(nameToLabel(name));
   return (
     <Tag name={name} className={cx('input', className)} aria-label={text}
       placeholder={Tag === 'select' ? undefined : text} {...rest}>{children}</Tag>

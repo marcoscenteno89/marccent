@@ -14,8 +14,8 @@ const isBrand = (set) => [ set?.primary?.hex, set?.secondary?.hex ].every((hex, 
  */
 const ThemeLogo = (props) => {
   const theme = useContext(ThemeContext)?.theme;
-  if (!theme || isBrand(theme.themeList[theme.active])) return <Logo currentText {...props} />;
-  return <Logo variant={theme.is_dark ? 'white' : 'dark'} {...props} />;
+  if (!theme || isBrand(theme.palettes[theme.palette])) return <Logo currentText {...props} />;
+  return <Logo variant={theme.isDark ? 'white' : 'dark'} {...props} />;
 }
 
 export { ThemeLogo };
