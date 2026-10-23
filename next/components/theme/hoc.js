@@ -1,8 +1,7 @@
 'use client';
 import { useState, useEffect, useContext, useRef } from 'react';
-import { usePathname } from 'next/navigation';
 import { Scene, canvasObserver } from "@marccent/util/canvas";
-import { ThemeContext, toastSI } from "@/lib/context";
+import { ThemeContext } from "@/lib/context";
 import { SITE } from "@/lib/singleton";
 import { cx } from '@/lib/cx';
 import { Loading } from '@/components/ui/loading';
@@ -32,19 +31,19 @@ const withThemeRead = (Component) => {
 }
 
 // Gives Component the theme as one scope sees it (Theme.scoped: props.scope, an element's id; the whole site by
-// default) and update / reset for that scope, each with a toast.
+// default) and update / reset for that scope, each with a message (ThemeProvider's notify: the site's toasts);
+// notify itself too, for a component's own messages.
 const withTheme = (Component) => {
   const WiththemeComponent = (props) => {
-    const { theme } = useContext(ThemeContext);
-    const path = usePathname();
+    const { theme, path, notify } = useContext(ThemeContext);
     const scope = props.scope ?? SITE;
     const view = theme && theme.scoped(scope, path);
     const what = scope === SITE ? 'Theme' : 'Section';
-    const update = (obj) => { view.update(obj); toastSI.add(`${what} updated`); };
-    const reset = () => { view.reset(); toastSI.add(scope === SITE ? 'Theme reset to the defaults' : 'Section reset to the site theme', 'success'); };
+    const update = (obj) => { view.update(obj); notify(`${what} updated`); };
+    const reset = () => { view.reset(); notify(scope === SITE ? 'Theme reset to the defaults' : 'Section reset to the site theme', 'success'); };
     return (
       <Loading require={[theme]}>
-        <Component {...props} theme={view} update={update} reset={reset} />
+        <Component {...props} theme={view} update={update} reset={reset} notify={notify} />
       </Loading>
     );
   }

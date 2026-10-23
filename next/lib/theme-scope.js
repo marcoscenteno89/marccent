@@ -86,7 +86,7 @@ const unTheme = (el) => {
 
 /**
  * applyScopes: puts the overrides of this page's elements on them (by id), and takes away those that were reset.
- * @param {Object} theme - The Theme (lib/singleton.js). @param {string} path - The page's path (usePathname).
+ * @param {Object} theme - The Theme (lib/singleton.js). @param {string} path - The page's path (ThemeContext's path).
  */
 const applyScopes = (theme, path) => {
   if (!theme) return;

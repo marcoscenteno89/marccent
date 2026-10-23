@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from 'react';
 import dynamic from 'next/dynamic';
 import dayjs from 'dayjs';
 import { useInView } from '@/lib/in-view';
-import { toastSI } from '@/lib/context';
+import { toastSI } from '@/lib/toasts';
 import { reducedMotion } from '@/components/visuals/effects';
 import { Form, StepForm, Step } from '@/components/ui/form';
 import { Input, Field } from '@/components/ui/field';

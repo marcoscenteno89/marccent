@@ -7,7 +7,7 @@ import { Radar, Speedometer } from '@/components/widgets/data';
 import { Calendar, Scheduler } from '@/components/widgets/calendar';
 import dayjs from 'dayjs';
 import { reducedMotion } from '@/components/visuals/effects';
-import { toastSI } from '@/lib/context';
+import { toastSI } from '@/lib/toasts';
 
 /*
  * The Widgets page's demos that need state or the toast: a radial menu that says what was picked, a radar with a

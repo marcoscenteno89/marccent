@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import { useToasts } from '@/lib/context';
+import { useToasts } from '@/lib/toasts';
 import { Icon } from './icon';
 import '@/styles/components/toast.css';
 import '@/styles/components/close.css';

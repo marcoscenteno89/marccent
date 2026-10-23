@@ -5,7 +5,6 @@
 // cards), editor.js and mini-editor.js (the editors); the canvas animations and their picker are in
 // components/visuals/animations.js.
 import { useContext, useEffect } from "react";
-import { usePathname } from 'next/navigation';
 import { ThemeContext } from "@/lib/context";
 import { DEFAULT_DESIGN } from '@/lib/design';
 import { applyScopes, paletteVars } from '@/lib/theme-scope';
@@ -39,8 +38,7 @@ const SiteTheme = () => {
  * content does (a client navigation that streams in). Renders nothing; mount once (layout.tsx).
  */
 const ScopeThemes = () => {
-  const { theme } = useContext(ThemeContext) ?? {};
-  const path = usePathname();
+  const { theme, path } = useContext(ThemeContext) ?? {};
   useEffect(() => {
     if (!theme) return;
     applyScopes(theme, path);

@@ -4,7 +4,7 @@ import { SiteTheme, ScopeThemes } from "@/components/theme/core";
 import Header from '@/components/layout/header';
 import Footer from '@/components/layout/footer';
 import { Body } from '@/components/theme/core';
-import { ThemeProvider } from "@/lib/context";
+import { SiteThemeProvider } from '@/components/layout/theme-provider';
 import { Toast } from '@/components/ui/toast';
 import { Goo } from '@/components/ui/goo';
 import { Analytics } from '@/components/analytics';
@@ -42,7 +42,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     // id="site": the whole site's theme scope (lib/singleton.js SITE); SiteTheme writes its theme here.
     <html id="site" lang="en" className="" data-design={DEFAULT_DESIGN} suppressHydrationWarning>
-      <ThemeProvider>
+      <SiteThemeProvider>
         {/* Body is a 1-col grid: header, main and footer are spaced by its gap. It is also the container (.cq)
             the header's layout-ends measures, since an element can't measure itself. */}
         <Body className="cq grid cols-1 gap-0">
@@ -58,7 +58,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <CanvasScanner /> {/* canvas backgrounds from [data-canvas] (components/visuals/canvas-scanner.js) */}
           <JsonLd data={siteGraph()} /> {/* who runs the site and what it is, for search and answer engines (lib/schema.js) */}
         </Body>
-      </ThemeProvider>
+      </SiteThemeProvider>
     </html>
   )
 }

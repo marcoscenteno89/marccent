@@ -18,7 +18,8 @@ import { Countdown } from '@/components/visuals/effects';
 import { StatCard } from '@/components/widgets/layout';
 import { Grid } from '@/lib/grid_helper';
 import { cssBackground } from '@/lib/css-color';
-import { ThemeContext, toastSI } from "@/lib/context";
+import { ThemeContext } from "@/lib/context";
+import { toastSI } from "@/lib/toasts";
 
 /*
  * Theme gallery: the site's building blocks (colors, type, buttons, forms, overlays, navigation, data, layout) in the

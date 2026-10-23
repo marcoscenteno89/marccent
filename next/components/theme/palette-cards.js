@@ -2,7 +2,6 @@
 // Palette cards (the full theme editor): a card per saved palette to use or delete it, and an Add card that opens a form
 // for a new one. In a Carousel, like the design-style cards beside them.
 import { useState } from "react";
-import { toastSI } from '@/lib/context';
 import { Form } from '@/components/ui/form';
 import { Modal } from '@/components/ui/modal';
 import { Field } from '@/components/ui/field';
@@ -18,18 +17,18 @@ const Palettes = (props) => {
   const add = (data) => {
     setModal(false);
     props.theme.add(data); // data: { primary, secondary } from the form
-    toastSI.add('Theme created successfully', 'success');
+    props.notify('Palette created', 'success');
   }
 
   const remove = (index, event) => {
     event.stopPropagation();
     if (index === props.theme.palette) {
-      toastSI.add('Currently selected theme cannot be deleted', 'danger');
+      props.notify('The palette in use can\'t be deleted', 'danger');
       return;
     }
 
     props.theme.remove(index);
-    toastSI.add('Theme deleted successfully', 'success');
+    props.notify('Palette deleted', 'success');
   }
 
   return (

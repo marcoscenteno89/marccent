@@ -95,7 +95,7 @@ class Theme extends Store {
    * the theme itself, with value / update / reset aimed at that scope. SITE: the whole site; any other id: that
    * element on the page (path: the page's), its own setting or else the site's. The rest (palettes, add, remove…)
    * is the theme's, so a palette added here is added for everyone.
-   * @param {string} id - SITE or an element's id. @param {string} path - The page's path (usePathname).
+   * @param {string} id - SITE or an element's id. @param {string} path - The page's path (ThemeContext's path).
    */
   scoped(id, path) {
     const view = Object.create(this);
@@ -154,29 +154,8 @@ class Theme extends Store {
 }
 
 
-// The toasts: the newest MAX_TOASTS messages. Anyone can add one (toastSI.add); only the Toast list re-renders.
-const MAX_TOASTS = 5;
-
-class Toast extends Store {
-  list = [];
-
-  add(msg, type = '') {
-    this.list.push({ time: new Date(), type, msg });
-    if (this.list.length > MAX_TOASTS) this.list.shift();
-    this.emit();
-    return this;
-  }
-
-  remove(index) {
-    this.list.splice(index, 1);
-    this.emit();
-    return this;
-  }
-}
-
-// SI => Single Instance, There is only one instance of this class. The theme loads once (storage, else the server).
+// SI => Single Instance, There is only one instance of this class. The theme loads once (storage, else lib/theme.defaults.json).
 let loading = null;
 const themeSI = () => loading ??= new Theme().init();
-const toastSI = new Toast();
 
-export { themeSI, toastSI, SCOPE_KEYS, SITE }
+export { themeSI, SCOPE_KEYS, SITE }
