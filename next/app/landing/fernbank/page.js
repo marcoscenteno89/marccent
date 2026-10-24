@@ -2,7 +2,7 @@ import '@fontsource-variable/sora';
 import '@fontsource-variable/manrope';
 import { Icon } from 'marccent-theme/components/ui/icon';
 import { Button } from 'marccent-theme/components/ui/button';
-import { StatCard } from 'marccent-theme/components/widgets/layout';
+import { StatCard, ImageCard } from 'marccent-theme/components/widgets/layout';
 import { CardFan } from '@/components/widgets/fun';
 import ThemedMap from '@/components/apps/map';
 import { Page, Full, Box } from '../blocks';
@@ -10,7 +10,7 @@ import { AccountForm, CountUp, LiveSpeedometer, LiveRadar } from '../parts';
 
 /*
  * Landing page: Fernbank, a (fictional) mobile bank. Premium and calm: Sora headings over Manrope, forest and mint,
- * night sections against light ones, numbered feature rows, card faces for the plans, a fee comparison, an app-store
+ * night sections against light ones, numbered feature rows (the last on a tinted forest photo), card faces for the plans, a fee comparison, an app-store
  * rating summary and an ATM map. Hover: hover-holographic (card faces; buttons have it by default).
  */
 
@@ -145,6 +145,12 @@ export default function Fernbank() {
               </div>
             ))}
           </div>
+        </Row>
+      </Full>
+
+      <Full className="bg">
+        <Row flip n="04" title="Your money plants forests" text="We never lend to fossil fuels, and we plant a tree for every account opened. 1.2 million so far, most of them in Oregon.">
+          <ImageCard src="/img/green2.webp" canvas="leaves" overlay="tint" ratio="4 / 3" badge="1.2M trees" label="Fernbank Forest · Oregon" title="Planted by our members" />
         </Row>
       </Full>
 

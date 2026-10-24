@@ -3,7 +3,8 @@ import '@fontsource-variable/caveat';
 import { Icon } from 'marccent-theme/components/ui/icon';
 import { Button } from 'marccent-theme/components/ui/button';
 import { Scenery } from 'marccent-theme/components/visuals/scenery';
-import { Timeline } from 'marccent-theme/components/widgets/layout';
+import { Timeline, ImageCard } from 'marccent-theme/components/widgets/layout';
+import { RingGauge } from '@/components/widgets/data';
 import { Carousel } from 'marccent-theme/components/widgets/carousel';
 import ThemedMap from '@/components/apps/map';
 import { Page, Full, Box } from '../blocks';
@@ -11,8 +12,8 @@ import { SignupBar, ContactForm, CountUp, TripPicker } from '../parts';
 
 /*
  * Landing page: Ridgeline Expeditions, a (fictional) small-group trekking company. Editorial and outdoorsy: Fraunces
- * headings, handwritten notes (Caveat), rust and moss on sand, full-bleed landscapes, postcard trip cards, a
- * topographic guide wall, an elevation profile and the meeting point on a map. Hover: hover-holographic (cards; buttons have it by default).
+ * headings, handwritten notes (Caveat), rust and moss on sand, full-bleed landscapes, postcard trip cards, a photo
+ * collage from the trail, a topographic guide wall, an elevation profile and the meeting point on a map. Hover: hover-holographic (cards; buttons have it by default).
  */
 
 export const metadata = { title: 'Ridgeline Expeditions: guided treks' };
@@ -111,6 +112,22 @@ export default function Ridgeline() {
       <Full id="trips" className="bg-secondary-darker" style={{ color: 'var(--light)' }}>
         <Head light note="the 2027 season" title="Treks we lead" text="Every departure is capped at ten people and led by a certified local guide. Swipe through, or use the arrow keys." />
         <Carousel label="Treks" slideWidth="18rem">{TRIPS.map((t, i) => <Postcard key={t.name} t={t} i={i} />)}</Carousel>
+      </Full>
+
+      {/* PHOTOS: the trail in a dense collage, one big photo, snow on the Khumbu, the summit rate on a ring. */}
+      <Full mode="light">
+        <Head note="from last season's group chats" title="Photos our trekkers sent home" />
+        <div className="grid" style={{ '--cols': 4, '--min': '13rem', gridAutoRows: 'minmax(13rem, auto)', gridAutoFlow: 'dense' }}>
+          <ImageCard src="/img/teal3.webp" ratio={null} big className="span-2" style={{ gridRow: 'span 2' }} badge="Day 4"
+            label="Torres del Paine · Chile" title="Glacier water, the color of a postcard" />
+          <ImageCard src="/img/white2.webp" canvas="snow" colors="#fff" ratio={null} overlay="blur" badge="-9°C" label="Khumbu · Nepal" title="Snow on the way to Namche" />
+          <ImageCard src="/img/blue4.webp" ratio={null} overlay="focus" align="center" label="Dolomites · Italy" title="Last light at the rifugio" />
+          <article className="bg-secondary round shadow pad grid cols-1 gap-sm justify-center text-center hover-holographic" style={{ alignContent: 'center', color: 'var(--light)' }}>
+            <div className="col-center"><RingGauge value={94} label="reached the top" size="7rem" /></div>
+            <span style={{ ...HAND, fontSize: '1.35rem' }}>of trekkers made every pass in 2026</span>
+          </article>
+          <ImageCard src="/img/yellow3.webp" ratio={null} overlay="glass" label="Tour du Mont Blanc" title="Meadows between three countries" />
+        </div>
       </Full>
 
       {/* ITINERARY: the day-by-day and an elevation profile. */}

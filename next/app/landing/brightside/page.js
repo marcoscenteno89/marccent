@@ -4,6 +4,8 @@ import { Button } from 'marccent-theme/components/ui/button';
 import { AnalogClock } from '@/components/widgets/fun';
 import { Accordion, AccordionItem } from 'marccent-theme/components/ui/accordion';
 import ThemedMap from '@/components/apps/map';
+import { Alert } from 'marccent-theme/components/ui/alert';
+import { ImageCard } from 'marccent-theme/components/widgets/layout';
 import { Page, Full, Box } from '../blocks';
 import { VisitScheduler, NewPatientForm, CountUp } from '../parts';
 import 'marccent-theme/styles/components/loading.css';
@@ -11,7 +13,7 @@ import 'marccent-theme/styles/components/loading.css';
 /*
  * Landing page: Brightside Dental, a (fictional) family dental clinic. Soft and friendly: Nunito, aqua and sunshine on
  * cream, pastel sections (the -lighter shades, navy text) joined by wavy edges, white rounded tiles, a chat-style review thread,
- * domed membership cards, live booking and the clinic on a map. Hover: hover-holographic (the service tiles; buttons have it by default).
+ * domed membership cards, the waiting room in round photos, live booking and the clinic on a map. Hover: hover-holographic (the service tiles; buttons have it by default).
  */
 
 export const metadata = { title: 'Brightside Dental: family dentistry' };
@@ -102,6 +104,26 @@ export default function Brightside() {
         <Button icon="phone" href="tel:+15555550142" className="dark col-last" style={{ borderRadius: '99px' }}>Call now</Button>
       </Box>
 
+      {/* CALM: the garden waiting room, two round photos overlapping, beside what makes it calm. */}
+      <Full className="bg">
+        <div className="grid gap-lg items-center" style={{ '--cols': 2, '--min': '18rem' }}>
+          <div className="stack w-100" style={{ maxWidth: '26rem', justifySelf: 'center' }}>
+            <ImageCard src="/img/pink4.webp" shape="circle" ratio="1 / 1" className="w-100" label="Our garden room" title="Breathe in" />
+            <ImageCard src="/img/pink1.webp" shape="circle" ratio="1 / 1" overlay="none" style={{ width: '42%', placeSelf: 'end start', border: '6px solid var(--light)' }} />
+          </div>
+          <div className="grid cols-1 gap-sm content-center">
+            <h2 className="display-sm" style={{ fontWeight: 800 }}>A waiting room that doesn&apos;t feel like one</h2>
+            <p className="fs-lg opacity-75">Big windows onto the garden, quiet music, warm blankets and no drill sounds: the treatment rooms are soundproofed.</p>
+            <ul className="grid cols-1 gap-sm">
+              {[ 'Herbal tea and a kids\' reading nook', 'Weighted blankets in every chair', 'Average wait: 4 minutes' ].map(t => (
+                <li key={t} className="grid auto-cols gap-sm items-center justify-start"><Icon name="seedling" className="text-primary" />{t}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </Full>
+      <Wave from="bg" to="bg-secondary-lighter" />
+
       {/* SERVICES: white rounded tiles with a price; they pop on hover. */}
       <Full id="services" className="bg-secondary-lighter" style={DARK}>
         <Head icon="tooth" tone="bg-primary-lighter" title="Everything under one roof" text="From a toddler's first check-up to a full smile makeover, no referral runaround." />
@@ -130,7 +152,7 @@ export default function Brightside() {
           ))}
         </ol>
         <div className="grid gap-lg" style={{ '--cols': 2, '--min': '19rem' }}>
-          <div className="grid cols-1 gap-sm content-start"><h3 className="h4" style={{ fontWeight: 800 }}>1. Openings</h3><VisitScheduler /></div>
+          <div className="grid cols-1 gap-sm content-start"><h3 className="h4" style={{ fontWeight: 800 }}>1. Openings</h3><Alert tone="success"><Icon name="bolt" /> 3 openings left this week</Alert><VisitScheduler /></div>
           <div className="grid cols-1 gap-sm content-start"><h3 className="h4" style={{ fontWeight: 800 }}>2. New patient forms</h3><p className="opacity-75">Save 15 minutes in the waiting room.</p><NewPatientForm /></div>
         </div>
       </Full>

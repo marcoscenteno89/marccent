@@ -383,7 +383,7 @@ export default function ThemePage() {
 
       <Section name="Navigation">
         <Demo name="Menu">The header uses the same component</Demo>
-        <Menu label="Example" className="divide border round" items={[
+        <Menu label="Example" gap="gap-0" className="divide border round" items={[
           { name: 'Home', href: '#example-home' },
           { name: 'Products', href: '#example-products', children: [
             { name: 'All products', href: '#example-products' },

@@ -6,6 +6,7 @@ import { Scenery } from 'marccent-theme/components/visuals/scenery';
 import { SolarSystem } from 'marccent-theme/components/visuals/effects';
 import { TabBar } from 'marccent-theme/components/widgets/nav';
 import { Calendar } from '@/components/widgets/calendar';
+import { ImageCard } from 'marccent-theme/components/widgets/layout';
 import ThemedMap from '@/components/apps/map';
 import { Page, Full, Box } from '../blocks';
 import { SignupBar, ContactForm, CountUp } from '../parts';
@@ -14,7 +15,7 @@ import { SignupBar, ContactForm, CountUp } from '../parts';
  * Landing page: Starfall Mesa, a (fictional) dark-sky lodge and observatory in the Utah desert. Quiet and wide open:
  * Josefin Sans headings in spaced capitals over Lora, campfire amber and twilight blue on the visitor's mode, three
  * full-screen landscapes (night, canyon at dusk, the dunes) with the sections between them, the sky tonight, stays in
- * tabs, passes on deep-space cards (the widgets page's card 15), a dark-sky calendar and the turnoff on a map. Hover: hover-holographic
+ * tabs with a photo each, passes on deep-space cards (the widgets page's card 15), a dark-sky calendar and the turnoff on a map. Hover: hover-holographic
  * (the passes; buttons have it by default).
  */
 
@@ -56,11 +57,11 @@ const TONIGHT = [
 
 // Stays, each a tab: what it is, what's in it, the price a night.
 const STAYS = [
-  { label: 'Glass domes', icon: 'circle', price: 340, sleeps: 2, text: 'A geodesic dome with a clear roof over the bed: you fall asleep under the stars without stepping outside.',
+  { label: 'Glass domes', icon: 'circle', src: 'blue5', overlay: 'glass', price: 340, sleeps: 2, text: 'A geodesic dome with a clear roof over the bed: you fall asleep under the stars without stepping outside.',
     has: [ 'King bed under the clear roof', 'Wood stove and blackout blinds', 'Private deck with a fire pit' ] },
-  { label: 'Canyon cabins', icon: 'house', price: 260, sleeps: 4, text: 'Juniper-clad cabins on the rim, two rooms and a porch facing the canyon at sunrise.',
+  { label: 'Canyon cabins', icon: 'house', src: 'orange5', overlay: 'fade', price: 260, sleeps: 4, text: 'Juniper-clad cabins on the rim, two rooms and a porch facing the canyon at sunrise.',
     has: [ 'Two queen beds', 'Kitchenette, coffee on the porch', 'Red-light reading lamps' ] },
-  { label: 'Airstreams', icon: 'caravan', price: 185, sleeps: 2, text: 'Restored 1970s trailers on the dunes, the quietest corner of the mesa.',
+  { label: 'Airstreams', icon: 'caravan', src: 'gray1', overlay: 'blur', price: 185, sleeps: 2, text: 'Restored 1970s trailers on the dunes, the quietest corner of the mesa.',
     has: [ 'Double bed, cedar outdoor shower', 'Telescope on the steps', 'A ten-minute walk to the lodge' ] },
 ];
 
@@ -167,11 +168,9 @@ export default function Starfall() {
               <p className="fs-lg">{s.text}</p>
               <ul className="grid cols-1 gap-sm">{s.has.map(h => <li key={h} className="grid auto-cols gap-sm items-center justify-start"><Icon name="check" className="text-primary" />{h}</li>)}</ul>
             </div>
-            <div className="grid cols-1 gap-0 text-center pad round border">
-              <small className="opacity-75" style={CAPS}>from</small>
-              <span className="display-sm">${s.price}</span>
-              <small className="opacity-75">a night · sleeps {s.sleeps}</small>
-            </div>
+            <ImageCard src={`/img/${s.src}.webp`} overlay={s.overlay} ratio="4 / 3" badge={`from $${s.price} a night`} label={`Sleeps ${s.sleeps}`} title={s.label}>
+              <Button icon="moon" href="#visit" className="light">Book it</Button>
+            </ImageCard>
           </div>
         ) }))} />
       </Full>

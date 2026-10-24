@@ -4,7 +4,7 @@ import '@fontsource-variable/caveat';
 import { Icon } from 'marccent-theme/components/ui/icon';
 import { Button } from 'marccent-theme/components/ui/button';
 import { Scenery } from 'marccent-theme/components/visuals/scenery';
-import { HexWall } from 'marccent-theme/components/widgets/layout';
+import { HexWall, ImageCard } from 'marccent-theme/components/widgets/layout';
 import { FlipClock, Atom } from '@/components/widgets/fun';
 import ThemedMap from '@/components/apps/map';
 import { Page, Full, Box } from '../blocks';
@@ -13,7 +13,7 @@ import { Backdrop, EventCountdown, SignupBar, CountUp } from '../parts';
 /*
  * Landing page: Signal Summit 2027, a (fictional) developer conference. Neon violet and cyan on near-black, always dark:
  * Orbitron headings over Space Grotesk, one neon mix per track, a live network canvas behind the hero, an agenda board,
- * lanyard badges for passes, the venue on a map. Hover: hover-holographic (cards; buttons have it by default).
+ * lanyard badges for passes, the venue on a map and after-hours photos framed in neon. Hover: hover-holographic (cards; buttons have it by default).
  */
 
 export const metadata = { title: 'Signal Summit 2027: the developer conference' };
@@ -200,6 +200,12 @@ export default function SignalSummit() {
             </div>
           </div>
           <ThemedMap center={{ lat: 38.7036, lng: -9.1789 }} zoom={14} className="round" style={{ minHeight: '22rem', ...glow(NEON.sys) }} />
+        </div>
+        <Head tag="after hours" title="When the talks end" c={NEON.ai} />
+        <div className="grid" style={{ '--cols': 3, '--min': '15rem' }}>
+          <ImageCard src="/img/red3.webp" ratio="4 / 3" overlay="fade" badge="Day 1" label="Rooftop · Alcântara" title="Welcome party at sunset" style={glow(NEON.ai)} />
+          <ImageCard src="/img/blue2.webp" ratio="4 / 3" overlay="blur" badge="Day 4" label="Cascais coast" title="The speakers' Sunday walk" style={glow(NEON.web)} />
+          <ImageCard src="/img/orange5.webp" ratio="4 / 3" overlay="focus" align="center" label="Monsanto park" title="Hackathon demos, outdoors" style={glow(NEON.lead)} />
         </div>
       </Full>
       <section className="wrap wrap-fluid pad-0">

@@ -5,12 +5,11 @@ import { SectionHead } from '@/components/layout/section-head';
 import ContactForm from '@/components/layout/contact-form';
 import MapWTCL from '@/components/apps/map';
 import { CanvasBand } from '@/components/layout/canvas-band';
-import { MiniThemeEditor } from 'marccent-theme/components/theme/mini-editor';
 import { StatCard, Timeline } from 'marccent-theme/components/widgets/layout';
 import Markdown from '@/components/markdown';
 import JsonLd from '@/components/json-ld';
 import { profilePage } from '@/lib/schema';
-import { Full, Box } from '../landing/blocks';
+import { Full } from '../landing/blocks';
 import { about } from '@/lib/content';
 
 /*
@@ -63,9 +62,6 @@ export default function About() {
         </div>
       </Full>
 
-      {/* SHORT: a mini theme editor for the section above (only it changes). */}
-      <Box><MiniThemeEditor scope="now" title={about.mini.title} text={about.mini.text} /></Box>
-
       {/* EXPERIENCE: the job on a timeline, what it involves, then skills. */}
       <Full id="experience" className="bg">
         <div className="grid gap-lg layout-1-2">
@@ -110,7 +106,7 @@ export default function About() {
             <SectionHead kicker={about.contact.kicker} title={about.contact.title} />
             <p>{about.contact.intro}</p>
             <ContactForm />
-            <Menu items={contact} label="Contact links" iconOnly layout="auto-cols cols-center" className="divide border round" />
+            <Menu items={contact} label="Contact links" iconOnly layout="auto-cols cols-center" gap="gap-0" className="divide border round" />
             <small className="opacity-75 text-center"><Icon name="location-dot" /> {about.contact.mapCaption}</small>
           </div>
         </div>

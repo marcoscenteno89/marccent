@@ -1,14 +1,12 @@
 import { Icon } from 'marccent-theme/components/ui/icon';
-import { Orbit, OrbitClock, SolarSystem, Countdown } from 'marccent-theme/components/visuals/effects';
-import { Button } from 'marccent-theme/components/ui/button';
-import { HexGrid, HexWall, Timeline, TicketCard, StatCard } from 'marccent-theme/components/widgets/layout';
-import { CARD_BUTTON } from 'marccent-theme/components/widgets/card-button';
+import { Orbit, OrbitClock, SolarSystem } from 'marccent-theme/components/visuals/effects';
+import { HexWall, Timeline } from 'marccent-theme/components/widgets/layout';
 import { StepBar, TabBar } from 'marccent-theme/components/widgets/nav';
 import { RingGauge } from '@/components/widgets/data';
 import { Atom, AnalogClock, FlipClock, ShapeLoader, CardFan } from '@/components/widgets/fun';
 import { RadialMenuDemo, RadarDemo, SpeedometerDemo, CalendarDemo, RangeCalendarDemo, SchedulerDemo } from './demos';
-import { GalleryHeader, Section, Demo } from '@/components/gallery';
-import { Carousel } from 'marccent-theme/components/widgets/carousel';
+import { GalleryHeader, Section, Collage, Tile } from '@/components/gallery';
+import { CardCarousel } from '@/components/widgets/card-carousel';
 import 'marccent-theme/styles/components/loading.css';
 
 /*
@@ -24,13 +22,12 @@ export default function WidgetsPage() {
   return (
     <div className="wrap grid cols-1 gap-lg">
       <GalleryHeader title="Widgets" sections={SECTIONS}>
-        <p>Bigger pieces built from the theme&apos;s building blocks: orbits, honeycombs, a timeline, menus, gauges, clocks and loaders. The parallax scenes have their own page.</p>
+        <p>Bigger pieces built from the theme&apos;s building blocks: orbits, honeycombs, a timeline, menus, gauges, clocks and loaders, each section a collage. The parallax scenes have their own page.</p>
       </GalleryHeader>
 
       <Section name="Orbits" intro="Everything that turns on a ring: Orbit, OrbitClock and SolarSystem (visuals/effects.js) and Atom (widgets/fun.js).">
-        <div className="grid gap-lg items-start" style={{ '--cols': 2, '--min': '18rem' }}>
-          <div className="grid cols-1 gap-sm">
-            <Demo name="Orbit">Click an icon, or wait: autoPlay moves on every 3s (it waits while you hover it)</Demo>
+        <Collage>
+          <Tile name="Orbit" text="Click an icon, or wait: autoPlay moves on every 3s (it waits while you hover it)" size="big">
             <Orbit items={[
               { icon: <Icon name="palette" />, title: 'Design', text: 'Colors, type and shape from one set of settings.' },
               { icon: <Icon name="code" />, title: 'Build', text: 'Components composed from grid and utility classes.' },
@@ -39,377 +36,118 @@ export default function WidgetsPage() {
               { icon: <Icon name="seedling" />, title: 'Grow', text: 'Small parts that swap easily as the site grows.' },
               { icon: <Icon name="heart" />, title: 'Care', text: 'Accessible names, focus rings and reduced motion.' },
             ]} />
-          </div>
-          <div className="grid cols-1 gap-sm">
-            <Demo name="Many items">16 items size themselves to fit the ring</Demo>
+          </Tile>
+          <Tile name="OrbitClock" text="Three synced Orbits, each pointer a hand: hours, minutes and seconds" size="big">
+            <OrbitClock />
+          </Tile>
+          <Tile name="Many items" text="16 items size themselves to fit the ring" size="big">
             <Orbit autoPlay interval={1500} items={['sun', 'moon', 'star', 'cloud', 'bolt', 'snowflake', 'leaf', 'fire',
               'water', 'wind', 'mountain', 'tree', 'seedling', 'feather', 'gem', 'heart'].map(n => ({ icon: <Icon name={n} />, title: n, text: `The ${n} icon.` }))} />
-          </div>
-          <div className="grid cols-1 gap-sm">
-            <Demo name="OrbitClock">Three synced Orbits, each pointer a hand: hours (numbered, ticks hourly), minutes and seconds (bare rings)</Demo>
-            <OrbitClock />
-          </div>
-          <div className="grid cols-1 gap-sm">
-            <Demo name="SolarSystem">The planets circle the Sun, Mercury once every 5s and the rest slower (not to scale)</Demo>
-            <SolarSystem className="w-100" />
-          </div>
-          <div className="grid cols-1 gap-sm">
-            <Demo name="Atom">Three tilted orbits; hover to pause</Demo>
-            <Atom className="w-100" style={{ maxWidth: '16rem', justifySelf: 'center' }} />
-          </div>
-        </div>
+          </Tile>
+          <Tile name="SolarSystem" text="Mercury circles the Sun once every 5s, the rest slower (not to scale)" size="wide">
+            <SolarSystem className="w-100" style={{ maxWidth: '16rem', justifySelf: 'center' }} />
+          </Tile>
+          <Tile name="Atom" text="Three tilted orbits; hover to pause" size="wide">
+            <Atom className="w-100" style={{ maxWidth: '10rem', justifySelf: 'center' }} />
+          </Tile>
+        </Collage>
       </Section>
 
-      <Section name="Layouts" intro="components/widgets/layout.js: honeycombs, a timeline and pricing tickets.">
-        <Demo name="HexWall">A team wall: hover or focus a hexagon to turn it over</Demo>
-        <HexWall perRow={4} className="w-100" style={{ maxWidth: '30rem', justifySelf: 'center' }} people={[
-          { name: 'Ada', role: 'Engineer', icon: 'code' }, { name: 'Grace', role: 'Admiral', icon: 'anchor' },
-          { name: 'Alan', role: 'Mathematician', icon: 'square-root-variable' }, { name: 'Hedy', role: 'Inventor', icon: 'wifi' },
-          { name: 'Linus', role: 'Kernel', icon: 'terminal' }, { name: 'Margaret', role: 'Apollo', icon: 'rocket' },
-          { name: 'Tim', role: 'The web', icon: 'globe' }, { name: 'Katherine', role: 'Orbits', icon: 'satellite' },
-          { name: 'Dennis', role: 'C and Unix', icon: 'microchip' }, { name: 'Barbara', role: 'Languages', icon: 'language' },
-        ]} />
-        <Demo name="Timeline">Hexagon markers on a gradient line, each card pointing at its marker</Demo>
-        <Timeline className="w-100" style={{ maxWidth: '36rem', justifySelf: 'center' }} events={[
-          { date: '2019', title: 'First site', text: 'A plain page with a contact form.', icon: 'seedling' },
-          { date: '2021', title: 'Apps', text: 'Games, weather and a stock lookup joined in.', icon: 'gamepad' },
-          { date: '2024', title: 'Themes', text: 'Colors, light and dark, and design themes.', icon: 'palette' },
-          { date: '2026', title: 'Design system', text: 'Shapes, widgets and one set of building blocks.', icon: 'shapes' },
-        ]} />
-        <Demo name="Bento">Tiles of mixed sizes on one grid (span-2 and a two-row span), each holding a small widget</Demo>
-        <div className="grid gap-sm" style={{ '--cols': 4, '--min': '10rem', gridAutoRows: 'minmax(8rem, auto)' }}>
-          <div className="bg border round pad span-2 col-center" style={{ gridRow: 'span 2' }}><AnalogClock className="w-100" style={{ maxWidth: '14rem' }} /></div>
-          <div className="bg-gradient round pad col-center text-center"><span className="display fw-bold">42</span><small>Projects</small></div>
-          <div className="bg border round pad col-center"><RingGauge value={72} label="Done" size="7rem" /></div>
-          <div className="bg border round pad col-center"><ShapeLoader kind="hive" size="4rem" /></div>
-          <div className="bg-primary round pad col-center text-center"><Icon name="cloud-sun" className="display-sm" /><small>21° and sunny</small></div>
-          <div className="bg border round pad span-2 col-center"><FlipClock size="2rem" /></div>
-          <div className="bg border round pad col-center"><Atom className="w-100" style={{ maxWidth: '8rem' }} /></div>
-          <div className="bg-secondary round pad col-center text-center"><ShapeLoader kind="morph" size="3rem" /><small>Loading…</small></div>
-        </div>
-        <Demo name="Cards">Twenty-one cards in a Carousel (swipe, the arrows or the keyboard), each a different mix of the theme&apos;s classes: surfaces, gradients, shapes, rings, loaders and hovers</Demo>
-        <Carousel label="Cards">
-          {/* 1. Profile: a gradient avatar, icon links that rise, stats split by .divide; holographic on hover. */}
-          <div className="bg border round shadow pad grid cols-1 gap-sm justify-center text-center h-100 hover-holographic" style={{ alignContent: 'center' }}>
-            <div className="circle bg-gradient col-center fw-bold" style={{ width: '5rem', aspectRatio: 1, fontSize: '1.75rem' }}>AL</div>
-            <div><strong className="fs-lg">Ada Lovelace</strong><br /><small className="opacity-75">Analyst · First programmer</small></div>
-            <div className="row-wrap gap-sm cols-center">
-              {[ 'github', 'linkedin', 'codepen' ].map(n => <Button key={n} icon={`fa-brands fa-${n}`} aria-label={n} className="outline-primary" />)}
-            </div>
-            <div className="grid fixed cols-3 gap-0 divide border round w-100">
-              {[ [ '128', 'Posts' ], [ '4.2k', 'Followers' ], [ '310', 'Following' ] ].map(([ v, l ]) => (
-                <div key={l} className="pad-y-sm"><strong>{v}</strong><br /><small className="opacity-75">{l}</small></div>
-              ))}
-            </div>
-          </div>
-
-          {/* 2. Goal: a StatCard with the gradient as its accent and a progress ring. */}
-          <StatCard className="bg border h-100" accent fill={71} icon="fire" value="5 / 7" label="Workouts this week" text="Two more to hit your weekly goal.">
-            <Button icon="plus" className="gradient w-100">Log one</Button>
-          </StatCard>
-
-          {/* 3. Event pass: a TicketCard with a ribbon. */}
-          <TicketCard className="h-100" label="Oct 30 · 9 PM" title="Synthwave" note="live" ribbon="Sold out"
-            items={[ { icon: 'location-dot', text: 'The Warehouse' }, { icon: 'headphones', text: 'Three DJs, one night' }, { icon: 'champagne-glasses', text: '21+' } ]}
-            action={<Button icon="ticket" className="outline-secondary w-100" disabled>Sold out</Button>} />
-
-          {/* 4. Feature: a gradient hexagon that flips like a coin on hover. */}
-          <div className="bg border round shadow pad grid cols-1 gap-sm justify-center text-center h-100" style={{ alignContent: 'center' }}>
-            <div className="shape-hexagon bg-gradient col-center" style={{ width: '6rem' }}><Icon name="bolt" className="fs-lg" /></div>
-            <strong className="fs-lg">Lightning fast</strong>
-            <p className="opacity-75">Static pages, self-hosted fonts and nothing loaded that a page doesn&apos;t use.</p>
-            <Button href="#layouts">Learn more</Button>
-          </div>
-
-          {/* 5. Testimonial: the quote in a speech bubble, the person under its tail. */}
-          <div className="grid cols-1 gap-sm h-100" style={{ alignContent: 'start' }}>
-            <div className="shape-bubble bg-secondary pad col-center text-center" style={{ aspectRatio: 'auto', paddingBottom: '3.5rem' }}>
-              <Icon name="quote-left" className="opacity-50" />
-              <p>&ldquo;The site feels like one product, from the menus to the tiniest loader.&rdquo;</p>
-            </div>
-            <div className="grid auto-cols gap-sm items-center" style={{ paddingLeft: '1rem' }}>
-              <div className="circle bg-primary col-center fw-bold" style={{ width: '2.75rem', aspectRatio: 1 }}>GH</div>
-              <div><strong>Grace Hopper</strong><br /><span className="text-secondary">{[ 1, 2, 3, 4, 5 ].map(n => <Icon key={n} name="star" style={{ '--icon-size': '1em' }} />)}</span></div>
-            </div>
-          </div>
-
-          {/* 6. Status: a ring gauge over a small table of numbers. */}
-          <div className="bg border round shadow pad grid cols-1 justify-center text-center h-100 hover-holographic" style={{ alignContent: 'center' }}>
-            <RingGauge value={86} label="Uptime" size="8rem" />
-            <div className="grid fixed cols-2 gap-sm w-100 text-start">
-              {[ [ 'Requests', '1.4M' ], [ 'Errors', '0.02%' ], [ 'Latency', '84 ms' ], [ 'Regions', '6' ] ].map(([ k, v ]) => (
-                <div key={k} className="bg-primary-lighter round pad-x-sm pad-y-sm" style={{ color: 'var(--dark)' }}><small>{k}</small><br /><strong>{v}</strong></div>
-              ))}
-            </div>
-          </div>
-
-          {/* 7. Music player: a spinning record, the indeterminate bar as the playhead, icon controls. */}
-          <div className="bg-gradient-darker round shadow pad grid cols-1 gap-sm h-100" style={{ color: 'var(--light)' }}>
-            <div className="stack square round" style={{ background: 'rgb(0 0 0 / .25)', placeItems: 'center' }}>
-              <div className="circle loader-spin" style={{ width: '80%', aspectRatio: 1, animationDuration: '4s', background: 'repeating-radial-gradient(circle, #111 0 3px, #1d1d1d 3px 6px)' }} />
-              <div className="circle bg-gradient" style={{ width: '28%', aspectRatio: 1 }} />
-            </div>
-            <div><strong className="fs-lg">Midnight Drive</strong><br /><small style={{ opacity: .8 }}>The Neon Grid</small></div>
-            <div className="loader-bar" role="progressbar" aria-label="Playing" />
-            <div className="grid fixed cols-3 gap-sm justify-center">
-              <Button icon="backward" aria-label="Previous" style={{ color: 'inherit', borderColor: 'transparent' }} />
-              <Button icon="pause" aria-label="Pause" className="light" />
-              <Button icon="forward" aria-label="Next" style={{ color: 'inherit', borderColor: 'transparent' }} />
-            </div>
-          </div>
-
-          {/* 8. Weather: a sky gradient, a big temperature, a row of days. */}
-          <div className="round shadow pad grid cols-1 gap-sm text-center h-100" style={{ background: 'linear-gradient(170deg, var(--info-mode), var(--primary-mode))', color: 'var(--body-color)', alignContent: 'space-between' }}>
-            <small className="text-uppercase fw-bold" style={{ opacity: .8 }}>Idaho Falls</small>
-            <Icon name="cloud-sun" className="display-lg" style={{ '--icon-size': '1.3em', justifySelf: 'center' }} />
-            <span className="display-lg fw-bold">21°</span>
-            <small style={{ opacity: .8 }}>Partly cloudy · H 24° L 9°</small>
-            <div className="grid fixed cols-4 gap-0 divide round" style={{ background: 'rgb(255 255 255 / .12)' }}>
-              {[ [ 'Thu', 'sun', '24°' ], [ 'Fri', 'cloud', '19°' ], [ 'Sat', 'cloud-rain', '14°' ], [ 'Sun', 'snowflake', '6°' ] ].map(([ d, i, t ]) => (
-                <div key={d} className="pad-y-sm"><small>{d}</small><br /><Icon name={i} style={{ '--icon-size': '1.5em' }} /><br /><small>{t}</small></div>
-              ))}
-            </div>
-          </div>
-
-          {/* 9. Terminal: a window with title-bar dots, a build log and a breathing cursor. */}
-          <div className="round shadow grid cols-1 gap-0 h-100 hover-holographic" style={{ background: '#0d1117', color: '#e6edf3', alignContent: 'start', fontFamily: 'ui-monospace, "JetBrains Mono", Consolas, monospace' }}>
-            <div className="grid auto-cols gap-sm items-center pad-x-sm pad-y-sm" style={{ borderBottom: '1px solid rgb(255 255 255 / .1)' }}>
-              {[ 'danger', 'secondary', 'success' ].map(c => <span key={c} className={`circle bg-${c}`} style={{ width: '.75rem', aspectRatio: 1 }} />)}
-              <small style={{ opacity: .6 }}>~/marccent</small>
-            </div>
-            <div className="pad grid cols-1 gap-0" style={{ fontSize: '.85rem', lineHeight: 1.7 }}>
-              <span><span className="text-secondary">$</span> npm run build</span>
-              <span className="text-success">✓ Compiled successfully</span>
-              <span style={{ opacity: .6 }}>  18 pages · 88 kB shared</span>
-              <span><span className="text-secondary">$</span> git push</span>
-              <span className="text-success">✓ Deployed to production</span>
-              <span><span className="text-secondary">$</span> <span className="loader-breathe" style={{ display: 'inline-block', width: '.55em', height: '1em', background: 'currentColor', verticalAlign: 'middle' }} /></span>
-            </div>
-          </div>
-
-          {/* 10. Cover: layered shapes over the gradient (stack), a tag, a title and a button; grows on hover. */}
-          <div className="stack round shadow h-100 hover-holographic" style={{ minHeight: '22rem', color: 'var(--light)' }}>
-            <div className="bg-gradient" />
-            <div className="shape-ring" style={{ width: '14rem', placeSelf: 'start end', translate: '30% -30%', '--ring-hole': '70%', background: 'rgb(255 255 255 / .18)' }} />
-            <div className="shape-hexagon" style={{ width: '6rem', placeSelf: 'center start', translate: '-35% -40%', background: 'rgb(255 255 255 / .15)' }} />
-            <div className="shape-star loader-spin" style={{ width: '2.5rem', placeSelf: 'start start', margin: '1.25rem', background: 'rgb(255 255 255 / .6)', animationDuration: '8s' }} />
-            <div className="grid cols-1 gap-sm pad self-end">
-              <span className="shape-tag bg-light fw-bold fs-sm" style={{ aspectRatio: 'auto', width: 'fit-content', padding: '.2rem 1.4rem .2rem .7rem', color: 'var(--dark)' }}>Featured</span>
-              <strong className="display-sm">Shapes &amp; widgets</strong>
-              <small style={{ opacity: .9 }}>Forty shapes and a box of widgets, all from one theme.</small>
-              <Button icon="arrow-right" href="/shapes" className="light">Explore</Button>
-            </div>
-          </div>
-          {/* 11. Boarding pass: a ticket with airport codes, flight details and a barcode drawn with a repeating gradient. */}
-          <div className="shape-ticket grid cols-1 gap-0 h-100" style={{ aspectRatio: 'auto', '--notch': '.9rem', background: 'color-mix(in srgb, var(--primary) 14%, var(--surface))' }}>
-            <div className="pad grid cols-1 gap-sm" style={{ borderBottom: '2px dashed var(--border-color)' }}>
-              <div className="header"><small className="fw-bold text-uppercase text-primary">Marccent Air</small><small className="opacity-75">Boarding pass</small></div>
-              <div className="grid gap-0 items-center text-center" style={{ gridTemplateColumns: '1fr auto 1fr' }}>
-                <div><span className="display-sm fw-bold">BOI</span><br /><small className="opacity-75">Boise</small></div>
-                <Icon name="plane" className="text-secondary fs-lg" />
-                <div><span className="display-sm fw-bold">SFO</span><br /><small className="opacity-75">San Francisco</small></div>
-              </div>
-              <div className="grid fixed cols-3 gap-sm">
-                {[ [ 'Flight', 'MC 042' ], [ 'Gate', 'B7' ], [ 'Seat', '14A' ], [ 'Board', '07:35' ], [ 'Class', 'Comfort' ], [ 'Zone', '2' ] ].map(([ k, v ]) => (
-                  <div key={k}><small className="opacity-75">{k}</small><br /><strong>{v}</strong></div>
-                ))}
-              </div>
-            </div>
-            <div className="pad grid cols-1 gap-sm">
-              <div style={{ height: '3.5rem', background: 'repeating-linear-gradient(90deg, currentColor 0 2px, transparent 2px 4px, currentColor 4px 7px, transparent 7px 9px, currentColor 9px 10px, transparent 10px 14px)' }} aria-label="Barcode" role="img" />
-              <small className="text-center opacity-75" style={{ fontFamily: 'ui-monospace, monospace', letterSpacing: '.3em' }}>0420 1435 7781</small>
-            </div>
-          </div>
-
-          {/* 12. Bank card: a card face with a chip, contactless mark and brand circles; holographic on hover. */}
-          <div className="bg border round shadow pad grid cols-1 h-100" style={{ alignContent: 'center' }}>
-            <div className="bg-gradient-darker round shadow pad grid cols-1 gap-sm hover-holographic" style={{ aspectRatio: 1.586, color: 'var(--light)', alignContent: 'space-between' }}>
-              <div className="header">
-                <span className="round" style={{ width: '2.4rem', height: '1.8rem', background: 'linear-gradient(135deg, #f6e27a, #cb9b51 50%, #f6f2c0)' }} />
-                <Icon name="wifi" style={{ rotate: '90deg', opacity: .8 }} />
-              </div>
-              <span style={{ fontFamily: 'ui-monospace, monospace', fontSize: '.95rem', letterSpacing: '.06em', whiteSpace: 'nowrap' }}>4242 •••• •••• 4242</span>
-              <div className="header">
-                <div><small style={{ opacity: .7 }}>Card holder</small><br /><strong className="fs-sm">ADA LOVELACE</strong></div>
-                <span className="stack" style={{ width: '3rem' }}>
-                  <span className="circle bg-danger" style={{ width: '1.8rem', aspectRatio: 1, opacity: .9 }} />
-                  <span className="circle bg-secondary" style={{ width: '1.8rem', aspectRatio: 1, opacity: .9, justifySelf: 'end' }} />
-                </span>
-              </div>
-            </div>
-            <div><small className="opacity-75">Balance</small><br /><span className="display-sm fw-bold">$2,480<span className="opacity-50">.12</span></span></div>
-            <div className="grid fixed cols-2 gap-sm">
-              <Button icon="paper-plane" className="gradient">Send</Button>
-              <Button icon="hand-holding-dollar" className="outline-primary">Ask</Button>
-            </div>
-          </div>
-
-          {/* 13. Particle lab: the Atom widget in a card. */}
-          <div className="bg border round shadow pad grid cols-1 gap-sm justify-center text-center h-100" style={{ alignContent: 'center' }}>
-            <Atom className="w-100" style={{ maxWidth: '12rem', justifySelf: 'center' }} />
-            <strong className="fs-lg">Particle lab</strong>
-            <p className="opacity-75">Three electrons, three speeds, one nucleus. Hover to freeze time.</p>
-          </div>
-
-          {/* 14. Toolbox: a honeycomb flower of tool icons around a gradient center. */}
-          <div className="bg border round shadow pad grid cols-1 gap-sm text-center h-100" style={{ alignContent: 'center' }}>
-            <HexGrid at={[ [ 0, 1 ], [ 0, 3 ], [ 1, 0 ], [ 1, 2 ], [ 1, 4 ], [ 2, 1 ], [ 2, 3 ] ]} className="w-100">
-              {[ 'fa-brands fa-html5', 'fa-brands fa-css3-alt', 'fa-brands fa-js', 'fa-solid fa-code', 'fa-brands fa-react', 'fa-brands fa-node-js', 'fa-brands fa-git-alt' ].map((ic, i) => (
-                <div key={ic} className={`shape-hexagon col-center fs-lg ${i === 3 ? 'bg-gradient' : i % 2 ? 'bg-primary' : 'bg-secondary'}`}><i className={ic} aria-hidden="true" /></div>
-              ))}
-            </HexGrid>
-            <strong className="fs-lg">Toolbox</strong>
-            <small className="opacity-75">What this site is built with, in a honeycomb.</small>
-          </div>
-
-          {/* 15. Launch: a gooey countdown in deep space (dots of stars over a radial glow). */}
-          <div className="round shadow pad grid cols-1 gap-sm justify-center text-center h-100" style={{ alignContent: 'center', color: '#f2ecff',
-            background: 'radial-gradient(1px 1px at 20% 30%, #fff, transparent), radial-gradient(1px 1px at 70% 15%, #fff, transparent), radial-gradient(1.5px 1.5px at 85% 60%, #fff, transparent), radial-gradient(1px 1px at 35% 80%, #fff, transparent), radial-gradient(1px 1px at 55% 50%, #fff, transparent), radial-gradient(circle at 30% 20%, #3b1a72, #0b0218 70%)' }}>
-            <Icon name="rocket" className="display-sm loader-breathe" style={{ justifySelf: 'center', '--icon-size': '1.4em' }} />
-            <small className="text-uppercase fw-bold" style={{ letterSpacing: '.2em', opacity: .8 }}>Launch in</small>
-            <div className="col-center"><Countdown from={9} style={{ '--countdown-size': '6rem', color: 'var(--secondary)' }} /></div>
-            <small style={{ opacity: .7 }}>T-minus, all systems go.</small>
-          </div>
-
-          {/* 16. Polaroid: a tilted photo of a sunset built from shapes, a handwritten caption. */}
-          <div className="grid cols-1 gap-sm h-100 col-center">
-            <div className="shadow-lg hover-holographic" style={{ background: '#fafafa', color: '#222', padding: '.75rem .75rem 0', rotate: '-4deg', width: '92%' }}>
-              <div className="stack square overflow-hidden" style={{ background: 'linear-gradient(#ff9a5a, #e8546b 55%, #6b3a8c)', placeItems: 'center' }}>
-                <div className="circle" style={{ width: '38%', aspectRatio: 1, background: '#ffe49a', translate: '0 10%' }} />
-                <div className="shape-triangle" style={{ width: '90%', placeSelf: 'end start', translate: '-20% 0', background: '#3a2150' }} />
-                <div className="shape-triangle" style={{ width: '75%', placeSelf: 'end end', translate: '15% 0', background: '#2a1638' }} />
-              </div>
-              <p className="text-center" style={{ fontFamily: '"Caveat", "Segoe Print", "Comic Sans MS", cursive', fontSize: '1.4rem', padding: '.6rem 0 .8rem' }}>sunset at the lake ☀</p>
-            </div>
-          </div>
-
-          {/* 17. Neon: a dark sign that glows in the secondary color. */}
-          <div className="round grid cols-1 gap-sm justify-center text-center pad h-100 hover-holographic" style={{ alignContent: 'center', background: '#07040f',
-            border: '2px solid var(--secondary)', boxShadow: '0 0 .6rem var(--secondary), inset 0 0 .8rem color-mix(in srgb, var(--secondary) 40%, transparent)' }}>
-            <span className="display fw-bold text-uppercase" style={{ color: '#fff', letterSpacing: '.08em', textShadow: '0 0 .3rem var(--secondary), 0 0 1rem var(--secondary), 0 0 2rem var(--primary)' }}>Open</span>
-            <span style={{ color: 'var(--secondary)', fontFamily: '"Caveat", "Segoe Print", cursive', fontSize: '1.6rem', textShadow: '0 0 .6rem var(--secondary)' }}>late nights, good code</span>
-            <span className="loader-breathe" style={{ color: '#ff5fa2', textShadow: '0 0 .8rem #ff5fa2' }}><Icon name="heart" className="fs-lg" /></span>
-          </div>
-
-          {/* 18. Chat: two people, bubbles with tucked corners, and the other one typing. */}
-          <div className="bg border round shadow grid cols-1 gap-0 h-100" style={{ gridTemplateRows: 'auto 1fr' }}>
-            <div className="grid auto-cols gap-sm items-center pad-sm border-bottom">
-              <span className="stack"><span className="circle bg-gradient col-center fw-bold" style={{ width: '2.4rem', aspectRatio: 1 }}>KJ</span>
-                <span className="circle bg-success" style={{ width: '.7rem', aspectRatio: 1, placeSelf: 'end end', border: '2px solid var(--surface)' }} /></span>
-              <div><strong>Katherine</strong><br /><small className="text-success">online</small></div>
-            </div>
-            <div className="pad-sm grid cols-1 gap-sm" style={{ alignContent: 'end' }}>
-              {[ [ 0, 'Did the orbit math check out?' ], [ 1, 'Every number. Launch is a go 🚀' ], [ 0, 'Then light the candle.' ], [ 1, 'Counting down now.' ] ].map(([ me, t ], i) => (
-                <div key={i} className={`pad-x-sm pad-y-sm fs-sm ${me ? 'bg-primary' : ''}`}
-                  style={{ maxWidth: '80%', justifySelf: me ? 'end' : 'start', borderRadius: me ? '1rem 1rem .25rem 1rem' : '1rem 1rem 1rem .25rem', background: me ? undefined : 'var(--muted-bg)' }}>{t}</div>
-              ))}
-              <div className="pad-x-sm pad-y-sm" style={{ width: '4rem', borderRadius: '1rem 1rem 1rem .25rem', background: 'var(--muted-bg)' }}>
-                <div className="loader-dots text-secondary" style={{ width: '100%' }} aria-label="Typing" role="status" />
-              </div>
-            </div>
-          </div>
-
-          {/* 19. Skills orbit: an Orbit that turns by itself, five skills round the ring. */}
-          <div className="bg border round shadow pad grid cols-1 gap-sm text-center h-100" style={{ alignContent: 'center' }}>
-            <Orbit hub={false} autoPlay interval={1800} items={[ [ 'palette', 'Design' ], [ 'code', 'Code' ], [ 'gauge-high', 'Speed' ], [ 'universal-access', 'Access' ], [ 'wand-magic-sparkles', 'Motion' ] ]
-              .map(([ icon, title ]) => ({ icon: <Icon name={icon} />, title }))} />
-            <strong className="fs-lg">Skills in orbit</strong>
-            <small className="opacity-75">The pointer turns to each one in turn; hover to pause.</small>
-          </div>
-
-          {/* 20. Spotlight: a border of light that spins round the card (a conic gradient turning behind it). */}
-          <div className="stack round shadow h-100 hover-holographic" style={{ overflow: 'hidden', placeItems: 'center' }}>
-            <div className="loader-spin" style={{ width: '200%', aspectRatio: 1, animationDuration: '4s',
-              background: 'conic-gradient(transparent 0 60%, var(--secondary) 75%, var(--primary) 85%, transparent 100%)' }} />
-            <div className="round pad grid cols-1 gap-sm text-center" style={{ margin: '3px', placeSelf: 'stretch', alignContent: 'center', background: 'var(--surface)', position: 'relative' }}>
-              {/* A solid surface (not .bg, which a glass theme makes see-through), lifted above the turning layer (a
-                  transform paints over plain siblings): the light only shows round the edge. */}
-              <small className="text-uppercase fw-bold text-secondary" style={{ letterSpacing: '.2em' }}>Spotlight</small>
-              <span className="display fw-bold">$9</span>
-              <small className="opacity-75">a month · everything included</small>
-              <ul className="grid cols-1 gap-sm text-start">
-                {[ 'Every theme', 'All the widgets', 'Shapes & hovers' ].map(f => <li key={f} className="grid auto-cols gap-sm items-center"><Icon name="check" className="text-secondary" />{f}</li>)}
-              </ul>
-              <Button icon="bolt" className="gradient w-100">Go pro</Button>
-            </div>
-          </div>
-          {/* 21. Stat: the gradient StatCard, its content and buttons in the mode's text color. */}
-          <StatCard className="bg-gradient h-100" fill={84} icon="rocket" value="42" label="Projects shipped" text="Sites and apps live, from small pages to full tools.">
-            <Button icon="eye" className="w-100" style={CARD_BUTTON.filled}>View</Button>
-            <Button icon="circle-info" className="w-100" style={CARD_BUTTON.outline}>Details</Button>
-          </StatCard>
-        </Carousel>
+      <Section name="Layouts" intro="components/widgets/layout.js: honeycombs, a timeline and a carousel of cards.">
+        <Collage>
+          <Tile name="HexWall" text="A team wall: hover or focus a hexagon to turn it over" size="big">
+            <HexWall perRow={4} className="w-100" style={{ maxWidth: '26rem', justifySelf: 'center' }} people={[
+              { name: 'Ada', role: 'Engineer', icon: 'code' }, { name: 'Grace', role: 'Admiral', icon: 'anchor' },
+              { name: 'Alan', role: 'Mathematician', icon: 'square-root-variable' }, { name: 'Hedy', role: 'Inventor', icon: 'wifi' },
+              { name: 'Linus', role: 'Kernel', icon: 'terminal' }, { name: 'Margaret', role: 'Apollo', icon: 'rocket' },
+              { name: 'Tim', role: 'The web', icon: 'globe' }, { name: 'Katherine', role: 'Orbits', icon: 'satellite' },
+              { name: 'Dennis', role: 'C and Unix', icon: 'microchip' }, { name: 'Barbara', role: 'Languages', icon: 'language' },
+            ]} />
+          </Tile>
+          <Tile name="Timeline" text="Hexagon markers on a gradient line, each card pointing at its marker" size="big">
+            <Timeline events={[
+              { date: '2019', title: 'First site', text: 'A plain page with a contact form.', icon: 'seedling' },
+              { date: '2021', title: 'Apps', text: 'Games, weather and a stock lookup joined in.', icon: 'gamepad' },
+              { date: '2024', title: 'Themes', text: 'Colors, light and dark, and design themes.', icon: 'palette' },
+              { date: '2026', title: 'Design system', text: 'Shapes, widgets and one set of building blocks.', icon: 'shapes' },
+            ]} />
+          </Tile>
+          <Tile name="Cards" text="Twenty-one cards in a Carousel (swipe, the arrows or the keyboard), each a different mix of the theme&apos;s classes" size="full">
+            <CardCarousel />
+          </Tile>
+        </Collage>
       </Section>
 
       <Section name="Navigation" intro="components/widgets/nav.js: a radial menu, a step bar and tabs.">
-        <Demo name="RadialMenu">A speed dial: the button fans its items out round itself (Esc closes it)</Demo>
-        <div className="col-center"><RadialMenuDemo /></div>
-        <Demo name="StepBar">Chevrons nested into one bar: done, current and to come; click a step</Demo>
-        <StepBar steps={['Cart', 'Shipping', 'Payment', 'Review', 'Done']} start={2} />
-        <Demo name="TabBar">The gradient bar slides under the picked tab; arrow keys move between tabs</Demo>
-        <TabBar tabs={[
-          { label: 'Overview', icon: 'eye', content: <p>One set of building blocks, every page in the same theme.</p> },
-          { label: 'Shapes', icon: 'shapes', content: <p>Forty shapes, each one class, with hovers made for them.</p> },
-          { label: 'Widgets', icon: 'puzzle-piece', content: <p>Bigger pieces composed from the small ones.</p> },
-        ]} />
+        <Collage>
+          <Tile name="RadialMenu" text="A speed dial: the button fans its items out round itself (Esc closes it)" size="tall">
+            <div className="col-center"><RadialMenuDemo /></div>
+          </Tile>
+          <Tile name="StepBar" text="Chevrons nested into one bar: done, current and to come; click a step" size="wider">
+            <StepBar steps={['Cart', 'Shipping', 'Payment', 'Review', 'Done']} start={2} />
+          </Tile>
+          <Tile name="TabBar" text="The gradient bar slides under the picked tab; arrow keys move between tabs" size="wider">
+            <TabBar tabs={[
+              { label: 'Overview', icon: 'eye', content: <p>One set of building blocks, every page in the same theme.</p> },
+              { label: 'Shapes', icon: 'shapes', content: <p>Forty shapes, each one class, with hovers made for them.</p> },
+              { label: 'Widgets', icon: 'puzzle-piece', content: <p>Bigger pieces composed from the small ones.</p> },
+            ]} />
+          </Tile>
+        </Collage>
       </Section>
 
       <Section name="Data" intro="components/widgets/data.js: gauges and a radar chart, drawn with gradients and clip-paths.">
-        <Demo name="RingGauge">Fills clockwise in the theme gradient and counts up</Demo>
-        <div className="grid gap-sm justify-center" style={{ '--cols': 4, '--min': '8rem' }}>
-          <RingGauge value={92} label="Design" /><RingGauge value={78} label="Code" /><RingGauge value={64} label="Tests" /><RingGauge value={45} label="Docs" />
-        </div>
-        <div className="grid gap-lg items-center" style={{ '--cols': 2, '--min': '16rem' }}>
-          <div className="grid cols-1 gap-sm">
-            <Demo name="Radar">Values on six axes; shuffle and the shape morphs</Demo>
+        <Collage>
+          {[ [ 92, 'Design' ], [ 78, 'Code' ], [ 64, 'Tests' ], [ 45, 'Docs' ] ].map(([ value, label ]) => (
+            <Tile key={label} name={`RingGauge · ${label}`} text="Fills clockwise in the theme gradient and counts up">
+              <div className="col-center"><RingGauge value={value} label={label} /></div>
+            </Tile>
+          ))}
+          <Tile name="Radar" text="Values on six axes; shuffle and the shape morphs" size="big">
             <RadarDemo />
-          </div>
-          <div className="grid cols-1 gap-sm">
-            <Demo name="Speedometer">A half dial with ticks; the needle swings to the value</Demo>
+          </Tile>
+          <Tile name="Speedometer" text="A half dial with ticks; the needle swings to the value" size="big">
             <div className="col-center"><SpeedometerDemo /></div>
-          </div>
-        </div>
+          </Tile>
+        </Collage>
       </Section>
 
       <Section name="Calendar" intro="components/widgets/calendar.js: every date worked out by dayjs and its plugins (locale names, week numbers, ranges, limits, relative dates, day of the year, leap years).">
-        <div className="row-wrap gap-lg items-start">
-          <div className="grid cols-1 gap-sm content-start" style={{ width: '22rem', maxWidth: '100%' }}>
-            <Demo name="Calendar">Pick a day: its details and events show below. Click the title for the year, then the decade; arrows, Page Up / Down, Home / End and Enter work too</Demo>
+        <Collage cols={3} min="20rem">
+          <Tile name="Calendar" text="Pick a day: its details and events show below. Click the title for the year, then the decade; arrows, Page Up / Down, Home / End and Enter work too">
             <CalendarDemo />
-          </div>
-          <div className="grid cols-1 gap-sm content-start" style={{ width: '22rem', maxWidth: '100%' }}>
-            <Demo name="Range">mode=&quot;range&quot;: a start and an end (hover previews), weeks from Monday with ISO week numbers, nothing before today</Demo>
+          </Tile>
+          <Tile name="Range" text="mode=&quot;range&quot;: a start and an end (hover previews), weeks from Monday with ISO week numbers, nothing before today">
             <RangeCalendarDemo />
-          </div>
-          <div className="grid cols-1 gap-sm content-start" style={{ width: '22rem', maxWidth: '100%' }}>
-            <Demo name="Scheduler">Four openings a day from 8 to 5, lunch (12 to 1) blocked out; booked and past ones are disabled, and a day with none left can&apos;t be picked</Demo>
+          </Tile>
+          <Tile name="Scheduler" text="Four openings a day from 8 to 5, lunch (12 to 1) blocked out; booked and past ones are disabled, and a day with none left can&apos;t be picked">
             <SchedulerDemo />
-          </div>
-        </div>
+          </Tile>
+        </Collage>
       </Section>
 
       <Section name="Showcase" intro="components/widgets/fun.js: two clocks, loaders and a fan of cards.">
-        <div className="grid gap-lg items-center" style={{ '--cols': 2, '--min': '14rem' }}>
-          <div className="grid cols-1 gap-sm">
-            <Demo name="AnalogClock">A squircle face; the hands tick to your time</Demo>
-            <AnalogClock className="w-100" style={{ maxWidth: '16rem', justifySelf: 'center' }} />
-          </div>
-          <div className="grid cols-1 gap-sm">
-            <Demo name="CardFan">Hover or focus to fan the cards out</Demo>
+        <Collage>
+          <Tile name="AnalogClock" text="A squircle face; the hands tick to your time" size="tall">
+            <AnalogClock className="w-100" style={{ maxWidth: '12rem', justifySelf: 'center' }} />
+          </Tile>
+          <Tile name="CardFan" text="Hover or focus to fan the cards out" size="wide">
             <CardFan cards={[
               { title: 'Shapes', icon: <Icon name="shapes" className="fs-lg" />, className: 'bg-primary' },
               { title: 'Theme', icon: <Icon name="palette" className="fs-lg" />, className: 'bg-secondary' },
               { title: 'Widgets', icon: <Icon name="puzzle-piece" className="fs-lg" />, className: 'bg-gradient' },
               { title: 'Apps', icon: <Icon name="rocket" className="fs-lg" />, className: 'bg-gradient-darker' },
             ]} />
-          </div>
-        </div>
-        <Demo name="FlipClock">Your time in gooey digits, each folding into the next</Demo>
-        <FlipClock size="3.5rem" />
-        <Demo name="ShapeLoader">Loading signs from shapes: spin, morph and hive</Demo>
-        <div className="grid fixed cols-3 justify-center">
-          <ShapeLoader kind="spin" /><ShapeLoader kind="morph" /><ShapeLoader kind="hive" />
-        </div>
+          </Tile>
+          <Tile name="ShapeLoader" text="Loading signs from shapes: spin, morph and hive" size="tall">
+            <div className="grid cols-1 gap-lg justify-center">
+              <ShapeLoader kind="spin" size="3rem" /><ShapeLoader kind="morph" size="3rem" /><ShapeLoader kind="hive" size="3rem" />
+            </div>
+          </Tile>
+          <Tile name="FlipClock" text="Your time in gooey digits, each folding into the next" size="wide">
+            <FlipClock size="2.75rem" />
+          </Tile>
+        </Collage>
       </Section>
     </div>
   );

@@ -66,7 +66,7 @@ export const externalProps = (link) => link.external ? { target: '_blank', rel: 
  * No hooks, so it works in server and client components. An item with children becomes a
  * <details> dropdown; it stays open after navigating unless the parent closes it (see header.tsx).
  *
- * Classes: the nav only gets "menu grid fixed gap-0" (.menu is the hook for styles/components/menu.css);
+ * Classes: the nav only gets "menu grid fixed gap-sm" (.menu is the hook for styles/components/menu.css);
  * everything else (dividers, border, alignment) is passed in. layout replaces "fixed", e.g.
  * "auto-cols cols-center" for icon-only menus (adding it through className would conflict with fixed).
  * Every part takes extra classes; a menu item can also carry its own className.
@@ -79,20 +79,22 @@ export const externalProps = (link) => link.external ? { target: '_blank', rel: 
  * @param {Object} [props.style] - Inline styles for the <nav> (may override --cols).
  * @param {string} [props.layout="fixed"] - Replaces "fixed": e.g. "auto-cols cols-center" (icons sized to fit,
  *   centered) or "cols-1" (stacked).
+ * @param {string} [props.gap="gap-sm"] - The gap class between items. "gap-0" for a menu with .divide, so the line
+ *   sits evenly between items.
  * @param {string} [props.linkClassName] - Extra classes for every link (dropdown links included).
  * @param {string} [props.dropdownClassName] - Extra classes for each dropdown <details>.
  * @param {string} [props.panelClassName] - Extra classes for each dropdown panel.
  *
  * @example <Menu items={main} label="Main" />
  * @example <Menu items={social} label="Social" iconOnly layout="auto-cols cols-center" />
- * @example <Menu items={contact} label="Contact" iconOnly layout="auto-cols cols-center" className="divide border round" />
+ * @example <Menu items={contact} label="Contact" iconOnly layout="auto-cols cols-center" gap="gap-0" className="divide border round" />
  * @example <Menu items={main} label="Footer" layout="cols-1" />
  */
 // fixed (default) splits the width into equal columns, one per item (--cols).
-export const Menu = ({ items, label, iconOnly = false, className, style, layout = 'fixed', linkClassName, dropdownClassName, panelClassName }) => {
+export const Menu = ({ items, label, iconOnly = false, className, style, layout = 'fixed', gap = 'gap-sm', linkClassName, dropdownClassName, panelClassName }) => {
   return (
     <nav
-      className={cx('menu grid gap-0', layout, className)}
+      className={cx('menu grid', gap, layout, className)}
       style={{ '--cols': items.length, ...style }}
       aria-label={label}
     >

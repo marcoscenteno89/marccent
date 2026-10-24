@@ -15,7 +15,7 @@ const GalleryHeader = ({ title, sections, children }) => (
     <h1>{title}</h1>
     {children}
     <Menu items={sections.map(name => ({ name, href: `#${slug(name)}` }))} label="Sections"
-      layout="auto-cols" className="divide border round" />
+      layout="auto-cols" gap="gap-0" className="divide border round" />
   </header>
 );
 
@@ -51,4 +51,33 @@ const Row = ({ label, note, gap = 'sm', className = 'pad-y-sm', children }) => (
   </div>
 );
 
-export { GalleryHeader, Section, Demo, Row };
+// A section's demos as a collage (the Widgets and Shapes pages): tiles on a dense grid, a column no narrower than
+// min, a row no shorter than row (taller when a tile needs it).
+const Collage = ({ cols = 4, min = '13rem', row = '12rem', children }) => (
+  <div className="grid gap-sm" style={{ '--cols': cols, '--min': min, gridAutoRows: `minmax(${row}, auto)`, gridAutoFlow: 'dense' }}>
+    {children}
+  </div>
+);
+
+// Tile sizes: wide = two columns, wider = three, tall = two rows, big = two of each, full = the whole row (the column
+// spans wait for a wide enough grid).
+const SIZE = {
+  wide: { className: 'span-2' },
+  wider: { className: 'span-3' },
+  tall: { style: { gridRow: 'span 2' } },
+  big: { className: 'span-2', style: { gridRow: 'span 2' } },
+  full: { className: 'span-full' },
+};
+
+// One tile: the demo's name and what it shows, then the widget centered in the space left.
+const Tile = ({ name, text, size, children }) => {
+  const { className, style } = SIZE[size] ?? {};
+  return (
+    <article className={cx('bg border round pad grid cols-1 gap-sm', className)} style={{ gridTemplateRows: 'auto 1fr', ...style }}>
+      <Demo name={name}>{text}</Demo>
+      <div className="grid cols-1 items-center">{children}</div>
+    </article>
+  );
+};
+
+export { GalleryHeader, Section, Demo, Row, Collage, Tile };

@@ -4,12 +4,14 @@ import { Button } from 'marccent-theme/components/ui/button';
 import { RingGauge, Radar } from '@/components/widgets/data';
 import { StepBar } from 'marccent-theme/components/widgets/nav';
 import { Orbit } from 'marccent-theme/components/visuals/effects';
+import { Alert } from 'marccent-theme/components/ui/alert';
+import { ImageCard } from 'marccent-theme/components/widgets/layout';
 import { Page, Full, Box } from '../blocks';
 import { SignupBar, ContactForm, CountUp, LiveSpeedometer } from '../parts';
 
 /*
  * Landing page: Pulsegrid, a (fictional) product analytics SaaS. Dark and technical: Inter Tight, indigo and
- * coral on ink, a code-editor band, bento tiles of live widgets, a quote wall and a pricing comparison table.
+ * coral on ink, a code-editor band, bento tiles of live widgets, a quote wall with a photo case study and a pricing comparison table.
  * Hover: hover-holographic (tiles; buttons have it by default).
  */
 
@@ -140,6 +142,7 @@ export default function Pulsegrid() {
           </Tile>
           <Tile span={2} title="Anomaly alerts" text="Pulsegrid learns your normal and pings Slack when checkout drifts out of it.">
             <LiveSpeedometer value={62} spread={12} unit="ms p95" label="Checkout latency" style={{ maxWidth: '14rem' }} />
+            <Alert tone="danger"><Icon name="bell" /> Checkout p95 up 38% in Brazil since 02:14</Alert>
           </Tile>
         </div>
       </Full>
@@ -190,7 +193,7 @@ export default function Pulsegrid() {
         <Button icon="arrow-right" href="#contact" className="outline-primary col-last">Book a migration</Button>
       </Box>
 
-      {/* CUSTOMERS: a quote wall, the first one big. */}
+      {/* CUSTOMERS: a quote wall, the first one big, the last a case study on a photo. */}
       <Full id="customers" className="bg">
         <Head label="customers" title="Teams that switched don't go back" center />
         <div className="grid" style={{ '--cols': 3, '--min': '15rem' }}>
@@ -207,6 +210,10 @@ export default function Pulsegrid() {
               <figcaption><strong>{t.n}</strong> <small className="opacity-75">· {t.r}</small></figcaption>
             </figure>
           ))}
+          <ImageCard src="/img/blue4.webp" overlay="glass" ratio={null} className="h-100" style={{ minHeight: '16rem' }} badge="+38% retention"
+            label="Case study · Northpeak" title="How a trail app found its aha moment">
+            <Button icon="arrow-right" href="#customers" className="light">Read the story</Button>
+          </ImageCard>
         </div>
       </Full>
 

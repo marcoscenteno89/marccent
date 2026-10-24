@@ -66,6 +66,9 @@ export const home = {
   what: {
     kicker: 'The product',
     title: 'What is Marccent?',
+    // photo: ImageCard props beside the answer; tint lays the theme gradient over it, so it takes the visitor's colors.
+    photo: { src: 'orange4', overlay: 'tint', badge: 'Your colors', label: 'Two in, every shade out',
+      title: 'Even the photos follow the theme', text: 'This one is tinted with the gradient from your two colors.' },
     // The direct answer first: answer engines quote the opening sentences.
     answer: `
       **Marccent is a CSS theme built around CSS Grid.** It gives a site its layout, colors, type, buttons, forms,
@@ -85,15 +88,41 @@ export const home = {
     kicker: 'Try it now',
     title: 'Re-theme the whole site from here',
     text: `
-      Pick a design style, dark mode, glass or a color card and every section on this page follows, because none of
-      it has colors of its own. To theme just one section, use the mini editor under it.
+      Nothing below has colors of its own: it all takes the theme's. Change the design style, the mode,
+      glass or the colors below and the whole site follows, this section included.
     `,
-    card: { label: 'Live canvas', title: 'Drawn in your theme colors', text: 'Change the colors and the blobs follow.' },
-  },
-  // The mini theme editors (components/theme/mini-editor.js): each changes only the section right above it.
-  mini: {
-    title: 'Theme the section above',
-    text: 'A design style, the mode, glass and a color card, for this one section: the rest of the site stays as it is.',
+    // Three collages, each a live piece per tile with what the theme does to it, and a link to its page.
+    components: {
+      title: 'Theme components',
+      text: 'Buttons, forms, alerts and loaders, styled by the design style you pick.',
+      cta: { label: 'See the components', href: '/theme', icon: 'palette' },
+      tiles: {
+        canvas: { title: 'Live canvases', text: 'Animations draw in your colors, and stop when off screen.' },
+        buttons: { icon: 'shapes', title: 'Design styles', text: 'One click reshapes every button, card and border: flat, glass, neumorphic, brutal…' },
+        alert: { icon: 'bell', title: 'Alerts', text: 'Toasts and alerts in your tones.' },
+        form: { icon: 'pen-to-square', title: 'Forms', text: 'Fields pick up the borders and focus ring.' },
+        loading: { icon: 'spinner', title: 'Loaders', text: 'Spinners, dots and bars in your primary.' },
+        accordion: { icon: 'list', title: 'Accordions', text: 'Lines and carets follow the mode.' },
+      },
+    },
+    cards: {
+      title: 'Cards',
+      text: 'Twenty-one cards from the same classes: surfaces, gradients, shapes, rings and loaders.',
+      cta: { label: 'See all the cards', href: '/widgets#layouts', icon: 'id-card' },
+    },
+    widgets: {
+      title: 'Widgets',
+      text: 'Maps, charts and clocks with no colors of their own.',
+      cta: { label: 'See the widgets', href: '/widgets', icon: 'puzzle-piece' },
+      tiles: {
+        map: { icon: 'map-location-dot', title: 'Maps', text: 'Roads, water and parks recolor to your palette and mode.' },
+        gauge: { icon: 'chart-pie', title: 'Charts', text: 'Rings and bars fill with your gradient.' },
+        clock: { icon: 'clock', title: 'Clocks', text: 'Clocks, calendars and counters switch with dark mode.' },
+        speed: { icon: 'gauge-high', title: 'Dashboards', text: 'Gauges stay readable in light, dark and glass.' },
+        radar: { icon: 'chart-area', title: 'Data', text: 'Radars and graphs pick up your primary.' },
+      },
+    },
+    editor: { title: 'Make it yours', text: 'Pick a design style, the mode, glass and a color card.' },
   },
   band: {
     title: 'Every color on this site comes from two you pick.',
@@ -118,17 +147,18 @@ export const home = {
     title: 'Six made-up companies, one theme',
     text: 'Each landing page sets its own palette and font and nothing else: the layout, cards and widgets all come from Marccent.',
     pages: [
-      { name: 'Pulsegrid', href: '/landing/pulsegrid', icon: 'wave-square', kind: 'Product analytics' },
-      { name: 'Ridgeline', href: '/landing/ridgeline', icon: 'mountain', kind: 'Guided treks' },
-      { name: 'Brightside Dental', href: '/landing/brightside', icon: 'tooth', kind: 'Family dentistry' },
-      { name: 'Fernbank', href: '/landing/fernbank', icon: 'seedling', kind: 'Online banking' },
-      { name: 'Signal Summit', href: '/landing/signal-summit', icon: 'tower-broadcast', kind: 'Developer conference' },
-      { name: 'Starfall Mesa', href: '/landing/starfall', icon: 'moon', kind: 'Dark-sky lodge' },
+      { name: 'Pulsegrid', href: '/landing/pulsegrid', icon: 'wave-square', kind: 'Product analytics', src: 'blue1', overlay: 'glass' },
+      { name: 'Ridgeline', href: '/landing/ridgeline', icon: 'mountain', kind: 'Guided treks', src: 'blue4', overlay: 'fade' },
+      { name: 'Brightside Dental', href: '/landing/brightside', icon: 'tooth', kind: 'Family dentistry', src: 'teal1', overlay: 'focus' },
+      { name: 'Fernbank', href: '/landing/fernbank', icon: 'seedling', kind: 'Online banking', src: 'green1', overlay: 'tint' },
+      { name: 'Signal Summit', href: '/landing/signal-summit', icon: 'tower-broadcast', kind: 'Developer conference', src: 'orange5', overlay: 'fade' },
+      { name: 'Starfall Mesa', href: '/landing/starfall', icon: 'moon', kind: 'Dark-sky lodge', src: 'blue5', overlay: 'blur' },
     ],
   },
   now: {
     kicker: 'Right now',
     title: 'What I am working on',
+    photo: { src: 'yellow3', overlay: 'focus', label: 'Idaho Falls · Idaho', title: 'Built one step at a time' },
     text: `
       Marccent has been growing one step at a time since 2020, and this site has moved with it. Here is where it has
       been, and where it is going.
@@ -156,6 +186,8 @@ export const home = {
     text: 'Small apps that put the theme to work: games, live weather and stock charts.',
   },
   faqTitle: 'Questions about Marccent',
+  faqPhoto: { src: 'white3', overlay: 'blur', label: 'Still wondering?', title: 'Ask me anything about the theme',
+    button: { label: 'Get in touch', href: '/about#contact', icon: 'envelope' } },
   cta: {
     title: 'Have a project, or a question about the theme?',
     text: 'I am always happy to talk about web work, collaborations or what Marccent can do.',
@@ -190,9 +222,10 @@ export const about = {
   title: 'Marcos Centeno',
   role: 'Full-stack web developer · Idaho Falls, Idaho',
   intro: `
-    I design, build and troubleshoot responsive interfaces and web applications, and have done so since 2016. I work
-    in vanilla JavaScript, CSS, Python and PHP, with React, Next.js, Django and WordPress. Lately most of my evenings go
-    into **Marccent**, the CSS theme this site is built on.
+    I have built and run websites and web applications since 2016: responsive front ends, Django and WordPress back
+    ends, the Linux servers under them and the HubSpot CRM next to them. I like the work that keeps a business running
+    smoothly, from clean data to fast, accessible pages. Most of my evenings now go into **Marccent**, the CSS theme
+    this site is built on.
   `,
   photo: { src: '/marcos-cartoon.svg', alt: 'Cartoon portrait of Marcos Centeno' }, // drawn from public/mcr.webp
   facts: [
@@ -216,38 +249,34 @@ export const about = {
       date: 'Feb 2016 – present',
       icon: 'briefcase',
       title: 'Web Developer, Anthem Broadband',
-      text: 'Idaho Falls, ID. Front end, WordPress and Django, from page animations to build tooling and servers.',
+      text: 'Idaho Falls, ID. Front and back end, HubSpot CRM, data quality and the servers the sites run on.',
     },
   ],
   dutiesTitle: 'What the job involves',
   skillsTitle: 'Skills',
   skills: [
-    'Javascript', 'CSS', 'HTML 5', 'React', 'Bootstrap', 'PHP', 'Wordpress', 'Python', 'Django', 'Linux',
-    'GIT', 'Docker', 'MYSQL', 'Hubspot', 'Data Analysis', 'Problem Solving', 'Adaptability',
-    'Ability to conduct research', 'Willingness to Learn',
+    'JavaScript', 'React', 'HTML', 'CSS', 'PHP', 'Python', 'Django', 'WordPress', 'MySQL', 'REST APIs', 'Git', 'Linux',
+    'Docker', 'HubSpot CRM', 'SugarCRM', 'Keap CRM', 'Systems administration', 'Data analysis', 'Data quality',
+    'Problem solving', 'Adaptability', 'Fast learner', 'Process improvement', 'English and Spanish',
   ],
   job: {
     duties: [
-      'Writing reusable, modular JavaScript code following best practices.',
-      'Consuming RESTful APIs and working with JSON using async/await and promises.',
-      'Implemented custom smooth scrolling, parallax, and DOM manipulation effects with vanilla JS.',
-      'Implemented responsive design and optimized web pages for maximum speed and scalability.',
-      'Configured and optimized Webpack build process for production deployments.',
-      'Implemented complex page animations and effects.',
-      'Built and customized WordPress themes.',
-      'Developed custom WordPress plugins to add specialized functionality.',
-      'Developed new features and applications using Django framework.',
-      'Implemented class-based views, custom model fields, querysets.',
-      'Work with graphic designers to implement animations and effects that aligned with brand style guide.',
-      'Git version control and pull request workflows.',
-      'Experience with Linux administration and bash scripting.',
-      'Knowledge of Docker containerization and Docker Compose.',
-      'Familiarity with Nginx web server configuration.',
+      'Develop responsive websites and web applications in modern JavaScript, React, HTML and CSS.',
+      'Optimize UI performance and accessibility for faster load times and a better user experience.',
+      'Turn business requirements into intuitive front ends, working with stakeholders.',
+      'Troubleshoot browser compatibility and front-end performance issues.',
+      'Build and maintain server-side features in PHP and Python (Django).',
+      'Design and integrate APIs, including third-party APIs and business systems.',
+      'Manage MySQL databases for data integrity, performance and scalability.',
+      'Build custom themes, plugins and features for WordPress sites.',
+      'Maintain Linux environments for development and deployment, with Docker and Git workflows.',
+      'Manage and customize HubSpot CRM: forms, workflows, pipelines, automation, users and permissions.',
+      'Work with sales and marketing to align the CRM with business goals, and troubleshoot its integrations.',
+      'Import, validate, clean up and maintain customer data so reports stay accurate.',
+      'Analyze data across systems, fix inconsistencies and generate reports for business decisions.',
+      'Maintain company websites, hosting, domains, updates and security, and monitor uptime and performance.',
+      'Diagnose and fix website, CRM, hosting and application issues to keep service running.',
     ],
-  },
-  mini: {
-    title: 'Theme the section above',
-    text: 'Only that section changes. The header and footer controls theme the whole site.',
   },
   band: {
     title: 'Based in Idaho Falls, Idaho',
