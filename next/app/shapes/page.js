@@ -34,10 +34,11 @@ const SHAPE_WIDTH = { big: '9rem', wide: '9rem', tall: '5rem' };
 
 export default function ShapesPage() {
   return (
-    <div className="wrap grid cols-1 gap-lg">
-      <GalleryHeader title="Shapes" sections={SECTIONS}>
-        <p>Cut any element to a shape with one class, or tile hexagons into a honeycomb, each section a collage.</p>
-      </GalleryHeader>
+    <>
+    <GalleryHeader title="Shapes" sections={SECTIONS}>
+      <p>Cut any element to a shape with one class, or tile hexagons into a honeycomb, each section a collage.</p>
+    </GalleryHeader>
+    <div className="wrap grid cols-1 gap-lg pad-y-lg">
 
       <Section name="Shapes" intro="utilities.css: a .shape-* class cuts any element to that shape; a width sizes it, the shape sets its proportions.">
         <Collage cols={8} min="7rem" row="8rem">
@@ -103,5 +104,6 @@ export default function ShapesPage() {
         </Collage>
       </Section>
     </div>
+    </>
   );
 }

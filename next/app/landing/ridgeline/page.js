@@ -9,6 +9,7 @@ import { Carousel } from 'marccent-theme/components/widgets/carousel';
 import ThemedMap from '@/components/apps/map';
 import { Page, Full, Box } from '../blocks';
 import { SignupBar, ContactForm, CountUp, TripPicker } from '../parts';
+import { img } from '@/lib/img';
 
 /*
  * Landing page: Ridgeline Expeditions, a (fictional) small-group trekking company. Editorial and outdoorsy: Fraunces
@@ -21,10 +22,11 @@ export const metadata = { title: 'Ridgeline Expeditions: guided treks' };
 const PALETTE = { primary: '#c2643a', secondary: '#2f5244', dark: '#1d1a16', light: '#f4ecdf' }; // rust, moss, ink, sand
 const HAND = { fontFamily: '"Caveat Variable", "Segoe Print", cursive' };
 
-// Section heading: a handwritten note above a serif title.
+// Section heading: a handwritten note above a serif title. The note is rust on sand; light (a colored band): the
+// band's own text color, faded, so nothing colored sits on the color.
 const Head = ({ note, title, text, light }) => (
   <header className="grid cols-1 gap-sm" style={{ maxWidth: '44rem' }}>
-    <span className="fs-lg" style={{ ...HAND, fontSize: '1.6rem', color: light ? 'var(--primary-lighter)' : 'var(--primary)' }}>{note}</span>
+    <span className="fs-lg" style={{ ...HAND, fontSize: '1.6rem', color: light ? undefined : 'var(--primary)', opacity: light ? .8 : undefined }}>{note}</span>
     <h2 className="display-sm" style={{ fontWeight: 600 }}>{title}</h2>
     {text && <p className="fs-lg" style={{ opacity: .8 }}>{text}</p>}
   </header>
@@ -68,7 +70,7 @@ export default function Ridgeline() {
       {/* NAV: a forest strip. */}
       <Full space="1rem" className="bg-secondary-darker" style={{ color: 'var(--light)' }} inner="grid layout-ends items-center gap-sm">
         <a href="#top" className="grid auto-cols gap-sm items-center fs-lg" style={{ color: 'inherit', textDecoration: 'none', fontFamily: 'var(--font-heading)', fontWeight: 600 }}>
-          <span className="shape-triangle bg-gradient" style={{ width: '1.8rem' }} />Ridgeline
+          <span className="shape-triangle" style={{ width: '1.8rem', background: 'var(--light)' }} />Ridgeline
         </a>
         <div className="grid auto-cols gap-lg">{[ 'Trips', 'Guides', 'Book' ].map(n => <a key={n} href={`#${n.toLowerCase()}`} style={{ color: 'inherit', textDecoration: 'none', opacity: .85 }}>{n}</a>)}</div>
         <Button icon="compass" href="#book" className="col-last light icon-only-sm">Plan a trip</Button>
@@ -78,7 +80,7 @@ export default function Ridgeline() {
       <section data-theme="light" className="wrap wrap-fluid pad-0">
         <Scenery layers={[ 'sun', 'birds', 'mountains', 'mountains', 'hills', 'forest' ]} parallax={false} height="min(42rem, 90vh)"
           style={{ background: 'linear-gradient(var(--light), var(--primary-lighter))', color: 'var(--dark)' }}>
-          <span style={{ ...HAND, fontSize: '2rem', color: 'var(--primary)' }}>small groups · since 2009</span>
+          <span style={{ ...HAND, fontSize: '2rem' }}>small groups · since 2009</span>
           <h1 style={{ fontSize: 'clamp(2.6rem, 8vw, 6rem)', fontWeight: 600, lineHeight: 1, maxWidth: '14ch' }}>Walk the world&apos;s great ridgelines</h1>
           <p className="fs-lg" style={{ maxWidth: '32rem' }}>Fully guided treks for 4 to 10 people. We carry the logistics; you carry a day pack.</p>
           <Button icon="compass" href="#trips" className="dark">Find your trek</Button>
@@ -102,7 +104,7 @@ export default function Ridgeline() {
           </p>
           <div className="grid cols-1 content-center" style={{ borderLeft: '2px solid var(--primary)', paddingLeft: '1.5rem' }}>
             {[ [ 14200, '+', 'trekkers guided' ], [ 32, '', 'countries' ], [ 4.9, ' / 5', 'from 3,100 reviews', 1 ] ].map(([ v, s, l, d ]) => (
-              <div key={l}><CountUp to={v} suffix={s} decimals={d ?? 0} className="display-sm" /><br /><span style={{ ...HAND, fontSize: '1.3rem' }}>{l}</span></div>
+              <div key={l} className="grid cols-1 gap-0"><CountUp to={v} suffix={s} decimals={d ?? 0} className="display-sm" /><span style={{ ...HAND, fontSize: '1.3rem' }}>{l}</span></div>
             ))}
           </div>
         </div>
@@ -118,15 +120,15 @@ export default function Ridgeline() {
       <Full mode="light">
         <Head note="from last season's group chats" title="Photos our trekkers sent home" />
         <div className="grid" style={{ '--cols': 4, '--min': '13rem', gridAutoRows: 'minmax(13rem, auto)', gridAutoFlow: 'dense' }}>
-          <ImageCard src="/img/teal3.webp" ratio={null} big className="span-2" style={{ gridRow: 'span 2' }} badge="Day 4"
+          <ImageCard src={img('teal3')} ratio={null} big className="span-2" style={{ gridRow: 'span 2' }} badge="Day 4"
             label="Torres del Paine · Chile" title="Glacier water, the color of a postcard" />
-          <ImageCard src="/img/white2.webp" canvas="snow" colors="#fff" ratio={null} overlay="blur" badge="-9°C" label="Khumbu · Nepal" title="Snow on the way to Namche" />
-          <ImageCard src="/img/blue4.webp" ratio={null} overlay="focus" align="center" label="Dolomites · Italy" title="Last light at the rifugio" />
+          <ImageCard src={img('white2')} canvas="snow" colors="#fff" ratio={null} overlay="blur" badge="-9°C" label="Khumbu · Nepal" title="Snow on the way to Namche" />
+          <ImageCard src={img('blue4')} ratio={null} overlay="focus" align="center" label="Dolomites · Italy" title="Last light at the rifugio" />
           <article className="bg-secondary round shadow pad grid cols-1 gap-sm justify-center text-center hover-holographic" style={{ alignContent: 'center', color: 'var(--light)' }}>
             <div className="col-center"><RingGauge value={94} label="reached the top" size="7rem" /></div>
             <span style={{ ...HAND, fontSize: '1.35rem' }}>of trekkers made every pass in 2026</span>
           </article>
-          <ImageCard src="/img/yellow3.webp" ratio={null} overlay="glass" label="Tour du Mont Blanc" title="Meadows between three countries" />
+          <ImageCard src={img('yellow3')} ratio={null} overlay="glass" label="Tour du Mont Blanc" title="Meadows between three countries" />
         </div>
       </Full>
 
@@ -184,7 +186,7 @@ export default function Ridgeline() {
           <blockquote style={{ margin: 0, fontFamily: 'var(--font-heading)', fontStyle: 'italic', fontSize: 'clamp(1.6rem, 4vw, 3rem)', lineHeight: 1.2, maxWidth: '24ch' }}>
               &ldquo;I booked solo and came home with nine friends.&rdquo;
             </blockquote>
-          <p style={{ ...HAND, fontSize: '1.5rem', color: 'var(--primary)' }}>Ingrid, Iceland 2026</p>
+          <p style={{ ...HAND, fontSize: '1.5rem' }}>Ingrid, Iceland 2026</p>
         </Scenery>
       </section>
 
@@ -192,7 +194,7 @@ export default function Ridgeline() {
       <Box className="bg-secondary" style={{ color: 'var(--light)' }} inner="grid gap-sm items-center text-center" >
         <div className="grid gap-sm" style={{ '--cols': 3, '--min': '11rem' }}>
           {[ [ 'leaf', '100% carbon offset' ], [ 'hand-holding-heart', '$40 per trekker to trail crews' ], [ 'recycle', 'Zero single-use plastic' ] ].map(([ i, t ]) => (
-            <span key={t} className="center gap-sm"><Icon name={i} className="text-primary-lighter" />{t}</span>
+            <span key={t} className="center gap-sm"><Icon name={i} />{t}</span>
           ))}
         </div>
       </Box>
@@ -206,7 +208,7 @@ export default function Ridgeline() {
             <ContactForm topics={TRIPS.map(t => t.name).concat('Not sure yet')} submitLabel="Hold my dates" done="Dates held for 48 hours. Your planner will email you soon." />
           </div>
           <div className="grid cols-1 gap-sm content-start">
-            <strong><Icon name="location-dot" className="text-primary-lighter" /> Where Patagonia trips meet</strong>
+            <strong><Icon name="location-dot" /> Where Patagonia trips meet</strong>
             <ThemedMap center={{ lat: -51.7236, lng: -72.5064 }} zoom={13} className="round" style={{ minHeight: '18rem' }} />
             <small style={{ opacity: .8 }}>Our basecamp lodge on the waterfront, Puerto Natales, 6 PM on day one.</small>
           </div>

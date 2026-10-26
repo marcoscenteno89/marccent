@@ -86,9 +86,9 @@ const Radar = ({ axes, className, style }) => {
         {axes.map((a, i) => {
           const deg = i * 360 / n - 90;
           return (
-            <small key={a.label} className="text-center fw-bold" style={{ gridArea: '1 / 1', placeSelf: 'center', lineHeight: 1.1,
+            <small key={a.label} className="grid cols-1 gap-0 text-center fw-bold" style={{ gridArea: '1 / 1', placeSelf: 'center', lineHeight: 1.1,
               transform: `rotate(${deg}deg) translate(${R + 6}cqi) rotate(${-deg}deg)`, fontSize: 'max(.7rem, 3.2cqi)' }}>
-              {a.label}<br /><span className="opacity-75 fw-normal">{a.value}</span>
+              {a.label}<span className="opacity-75 fw-normal">{a.value}</span>
             </small>
           );
         })}

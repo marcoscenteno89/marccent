@@ -23,6 +23,8 @@ import JsonLd from '@/components/json-ld';
 import { faqPage } from '@/lib/schema';
 import { Full, Box } from './landing/blocks';
 import { home, theme, faq } from '@/lib/content';
+import { img } from '@/lib/img';
+import { Strengths } from './strengths';
 
 /*
  * Home: what Marccent (the theme) is, that this site is its demo, who builds it and what he's working on now. Full
@@ -80,7 +82,7 @@ const Group = ({ title, text, cta, children }) => (
 
 // A photo from public/img as an ImageCard (props from lib/content.js), with its button if it has one.
 const Photo = ({ src, button, ...card }) => (
-  <ImageCard src={`/img/${src}.webp`} {...card}>
+  <ImageCard src={img(src)} {...card}>
     {button && <Light icon={button.icon} href={button.href}>{button.label}</Light>}
   </ImageCard>
 );
@@ -90,7 +92,7 @@ const RADAR = [ 'Color', 'Mode', 'Glass', 'Style', 'Type' ].map((label, i) => ({
 export default function Home() {
   const { components: { tiles: c }, widgets: { tiles: w } } = home.live;
   return (
-    <div className="grid cols-1 gap-0">
+    <>
 
       {/* HERO: a full-screen network of points linking up, in the theme colors. */}
       <CanvasBand canvas="network-loop" height="calc(100vh - 4rem)" label="hero-title">
@@ -136,11 +138,14 @@ export default function Home() {
         </div>
       </Full>
 
+      {/* STRENGTHS: what sets the theme apart, each shown live (app/strengths.js). */}
+      <Strengths />
+
       {/* LIVE: three groups (components, the cards carousel, widgets), each a live piece per tile saying what the theme
           does to it and a link to its page, then the site's mini theme editor. The tiles
           take the page colors (.bg panels on the gradient). */}
       <Full id="try" className="bg-gradient-darker" style={{ color: 'var(--light)' }}>
-        <SectionHead center kicker={home.live.kicker} title={home.live.title} text={<Markdown text={home.live.text} className="fs-lg" />} />
+        <SectionHead center onColor kicker={home.live.kicker} title={home.live.title} text={<Markdown text={home.live.text} className="fs-lg" />} />
 
         <Group {...home.live.components}>
           <ImageCard canvas="blob" ratio={null} overlay="glass" align="end" badge="Live" className="span-2"
@@ -254,6 +259,6 @@ export default function Home() {
       </Box>
 
       <JsonLd data={faqPage()} />
-    </div>
+    </>
   );
 }

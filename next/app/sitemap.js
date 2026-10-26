@@ -1,4 +1,4 @@
-import { main } from '@/components/layout/menus';
+import { main, menuLinks } from '@/components/layout/menus';
 import { site } from '@/lib/content';
 import { url } from '@/lib/schema';
 
@@ -10,7 +10,7 @@ import { url } from '@/lib/schema';
 const PRIORITY = { '/': 1, '/about': .9, '/theme': .9 };
 
 export default function sitemap() {
-  const paths = [ '/', ...main.flatMap(item => [ item.href, ...(item.children ?? []).map(c => c.href) ]), '/privacy-policy' ]
+  const paths = [ '/', ...menuLinks(main).filter(l => !l.external).map(l => l.href), '/privacy-policy' ]
     .map(href => href.split('#')[0]);
   return [ ...new Set(paths) ].map(path => ({
     url: url(path),

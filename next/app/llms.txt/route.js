@@ -1,5 +1,5 @@
 import { site, theme, home, faq, about } from '@/lib/content';
-import { main } from '@/components/layout/menus';
+import { main, menuLinks } from '@/components/layout/menus';
 import { url } from '@/lib/schema';
 
 /*
@@ -12,7 +12,7 @@ export const dynamic = 'force-static';
 const links = (items) => items.map(i => `- [${i.name}](${url(i.href)})`).join('\n');
 
 export function GET() {
-  const pages = main.flatMap(item => item.children ? [ { ...item, children: undefined }, ...item.children ] : [ item ])
+  const pages = menuLinks(main).filter(l => !l.external)
     .filter((p, i, all) => all.findIndex(o => o.href === p.href) === i);
   const body = `# ${site.title}
 

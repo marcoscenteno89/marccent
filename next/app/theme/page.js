@@ -96,14 +96,15 @@ export default function ThemePage() {
   const board = new Grid(6, 6, (row, col) => ({ row, col }));
 
   return (
-    <div className="wrap grid cols-1 gap-lg">
-      <GalleryHeader title="Theme" sections={SECTIONS}>
-        <p>
-          Every building block this site is made of, in the active theme. Switch light / dark or glass in the header,
-          pick theme colors in the footer, or choose a design theme in <code>styles/main.css</code>, and everything
-          below changes with it.
-        </p>
-      </GalleryHeader>
+    <>
+    <GalleryHeader title="Theme" sections={SECTIONS}>
+      <p>
+        Every building block this site is made of, in the active theme. Switch light / dark or glass in the header,
+        pick theme colors in the footer, or choose a design theme in <code>styles/main.css</code>, and everything
+        below changes with it.
+      </p>
+    </GalleryHeader>
+    <div className="wrap grid cols-1 gap-lg pad-y-lg">
 
       <Section name="Colors" intro="Palette classes: the plain one follows the mode (lighter in light mode, darker in dark mode); -lighter and -darker are fixed.">
         <Cards>
@@ -484,5 +485,6 @@ export default function ThemePage() {
       </Section>
 
     </div>
+    </>
   );
 }

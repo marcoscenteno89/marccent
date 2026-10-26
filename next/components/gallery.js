@@ -1,6 +1,7 @@
 // Shared: no 'use client' (no state or effects), so the gallery pages can render on the server or in the browser.
 import { Menu } from '@/components/layout/menus';
 import { cx } from 'marccent-theme/lib/cx';
+import { Icon } from 'marccent-theme/components/ui/icon';
 
 /*
  * The design gallery's building blocks, shared by its pages (Theme, Shapes, Widgets: the Design menu): a page header
@@ -9,13 +10,34 @@ import { cx } from 'marccent-theme/lib/cx';
 
 const slug = (name) => name.toLowerCase().replace(/ /g, '-');
 
-// The page's title, intro and a menu of its sections (links to their ids).
-const GalleryHeader = ({ title, sections, children }) => (
-  <header className="bg border round pad grid cols-1 gap-sm">
-    <h1>{title}</h1>
-    {children}
-    <Menu items={sections.map(name => ({ name, href: `#${slug(name)}` }))} label="Sections"
-      layout="auto-cols" gap="gap-0" className="divide border round" />
+// Each Design page's hero: the canvas behind it and its icon (the Design menu's), so every page has its own look.
+const HERO = {
+  Theme: { canvas: 'blob', icon: 'palette' },
+  Shapes: { canvas: 'orbit', icon: 'shapes' },
+  Widgets: { canvas: 'network-loop', icon: 'puzzle-piece' },
+  Parallax: { canvas: 'fireflies', icon: 'mountain-sun' },
+  Images: { canvas: 'bubbles', icon: 'images' },
+  Animations: { canvas: 'particle-flowfield', icon: 'wand-magic-sparkles' },
+  Docs: { canvas: 'wave', icon: 'book' },
+};
+
+// The page's hero, full width (outside the page's .wrap): a live canvas behind a card with the title, intro and a menu of its sections (links to their ids). Built on
+// .stack (the canvas and the content in one cell); canvas and icon default to HERO[title]. Only the height, the
+// title's size, the card's and intro's widths and the content's column are inline (minmax(0, 1fr), as in CanvasBand, so it shrinks on a phone).
+const GalleryHeader = ({ title, sections, canvas = HERO[title]?.canvas ?? 'blob', icon = HERO[title]?.icon ?? 'palette', children }) => (
+  <header data-component="gallery-header" data-name={slug(title)} className="wrap wrap-fluid pad-0 stack overflow-hidden" style={{ minHeight: '26rem' }}>
+    <div data-canvas={canvas} className="bg w-100 h-100" aria-hidden="true" />
+    <div className="col-center pad-lg text-center" style={{ position: 'relative', gridTemplateColumns: 'minmax(0, 1fr)' }}>
+      <div className="bg border round shadow pad-lg grid cols-1 justify-center w-100" style={{ maxWidth: '62rem' }}>
+        <small className="fw-bold text-uppercase text-primary" style={{ letterSpacing: '.25em' }}>
+          <Icon name={icon} /> Design
+        </small>
+        <h1 className="text-gradient" style={{ fontSize: 'clamp(2.4rem, 7vw, 4.5rem)', lineHeight: 1.05 }}>{title}</h1>
+        <div className="fs-lg" style={{ maxWidth: '42rem', textWrap: 'balance' }}>{children}</div>
+        <Menu items={sections.map(name => ({ name, href: `#${slug(name)}` }))} label="Sections"
+          layout="auto-cols" gap="gap-0" className="divide border round" />
+      </div>
+    </div>
   </header>
 );
 

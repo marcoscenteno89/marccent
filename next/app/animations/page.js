@@ -5,6 +5,7 @@ import { Clock } from 'marccent-theme/components/ui/clock';
 import { FlipClock } from '@/components/widgets/fun';
 import { ImageCard } from 'marccent-theme/components/widgets/layout';
 import { Button } from 'marccent-theme/components/ui/button';
+import { img } from '@/lib/img';
 
 /*
  * Animations gallery: the canvas animations (components/visuals/canvas.js). A player (one large animation and a
@@ -81,14 +82,15 @@ const CARDS = [
     children: <Light icon="fish">Dive in</Light> },
   { src: 'black1', canvas: 'bubbles', colors: '#fff', overlay: 'none', label: 'The deep', title: 'Rising up',
     children: <Progress value={40} label="Depth" /> },
-].map((card) => ({ ...card, src: `/img/${card.src}.webp` }));
+].map((card) => ({ ...card, src: img(card.src) }));
 
 export default function AnimationsPage() {
   return (
-    <div className="wrap grid cols-1 gap-lg">
-      <GalleryHeader title="Animations" sections={['Player', 'Card', 'Collage']}>
-        <p>The canvas animations: pick one to play it large, or see them all at once in a collage. Any element can run one with a data-canvas attribute (&quot;blob&quot;, &quot;snow&quot;…).</p>
-      </GalleryHeader>
+    <>
+    <GalleryHeader title="Animations" sections={['Player', 'Card', 'Collage']}>
+      <p>The canvas animations: pick one to play it large, or see them all at once in a collage. Any element can run one with a data-canvas attribute (&quot;blob&quot;, &quot;snow&quot;…).</p>
+    </GalleryHeader>
+    <div className="wrap grid cols-1 gap-lg pad-y-lg">
 
       <Section name="Player" intro="The large animation plays the card picked in the slider below; every card runs its own preview.">
         <AnimPlayer />
@@ -96,16 +98,16 @@ export default function AnimationsPage() {
 
       <Section name="Card" intro='An animation over a photo: ImageCards with both src and canvas, so it plays behind the text. Snow on winter photos first, then each animation on photos that suit it, every card with its own overlay, layout and content.'>
         <div className="grid gap-lg" style={{ '--cols': 3, '--min': '18rem' }}>
-          <ImageCard src="/img/white2.webp" canvas="snow" colors="#fff" badge="-4°C" label="Lapland · Finland" title="First snow in the pines"
+          <ImageCard src={img('white2')} canvas="snow" colors="#fff" badge="-4°C" label="Lapland · Finland" title="First snow in the pines"
             text="Three nights in a timber cabin at the edge of the forest, with a sauna and a sky full of stars.">
             <Button icon="snowflake" className="light">Book a stay</Button>
             <Button icon="heart" className="light" aria-label="Save" />
           </ImageCard>
-          <ImageCard src="/img/white3.webp" canvas="snow" colors="#fff" overlay="focus" position="30% center" badge="New" label="Hokkaido · Japan" title="The lone tree"
+          <ImageCard src={img('white3')} canvas="snow" colors="#fff" overlay="focus" position="30% center" badge="New" label="Hokkaido · Japan" title="The lone tree"
             text="A winter photo walk across the open fields at dawn, before the wind picks up.">
             <Button icon="camera" className="light">Join the walk</Button>
           </ImageCard>
-          <ImageCard src="/img/white1.webp" canvas="snow" colors="#fff" badge="2 days" label="Dolomites · Italy" title="Frost on the ridge"
+          <ImageCard src={img('white1')} canvas="snow" colors="#fff" badge="2 days" label="Dolomites · Italy" title="Frost on the ridge"
             text="A guided hike through the frozen beech woods, with hot chocolate at the hut on top.">
             <Button icon="person-hiking" className="light">See the route</Button>
             <Button icon="share-nodes" className="light" aria-label="Share" />
@@ -118,5 +120,6 @@ export default function AnimationsPage() {
         <Collage tiles={TILES} cols={3} min="18rem" row="22rem" />
       </Section>
     </div>
+    </>
   );
 }

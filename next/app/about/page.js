@@ -28,7 +28,7 @@ export const metadata = {
 
 export default function About() {
   return (
-    <div className="grid cols-1 gap-0">
+    <>
 
       {/* HERO: the photo in the brand's hexagon, who I am and where. */}
       <Full className="bg-gradient-darker" style={{ color: 'var(--light)' }}>
@@ -37,17 +37,17 @@ export default function About() {
             <img src={about.photo.src} alt={about.photo.alt} className="w-100 h-100" style={{ objectFit: 'cover' }} />
           </div>
           <div className="grid cols-1 gap-sm">
-            <small className="fw-bold text-uppercase text-secondary-lighter" style={{ letterSpacing: '.2em' }}>{about.greeting}</small>
+            <small className="fw-bold text-uppercase opacity-75" style={{ letterSpacing: '.2em' }}>{about.greeting}</small>
             <h1 className="display">{about.title}</h1>
             <p className="fs-lg fw-bold">{about.role}</p>
             <Markdown text={about.intro} className="fs-lg" />
             <ul className="grid gap-sm pad-y-sm" style={{ '--cols': 3, '--min': '12rem' }}>
-              {about.facts.map(f => <li key={f.text}><Icon name={f.icon} className="text-secondary-lighter" /> {f.text}</li>)}
+              {about.facts.map(f => <li key={f.text}><Icon name={f.icon} /> {f.text}</li>)}
             </ul>
             <div className="row-wrap gap-sm">
               <Button icon="paper-plane" href="#contact" className="light">Contact me</Button>
               {social.filter(s => s.external).map(s => (
-                <Button key={s.href} icon={s.icon} href={s.href} aria-label={s.label} title={s.name} {...externalProps(s)} />
+                <Button key={s.href} icon={s.icon} href={s.href} aria-label={s.label} title={s.name} className="light" {...externalProps(s)} />
               ))}
             </div>
           </div>
@@ -113,6 +113,6 @@ export default function About() {
       </Full>
 
       <JsonLd data={profilePage()} />
-    </div>
+    </>
   );
 }

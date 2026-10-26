@@ -16,13 +16,13 @@ export const CardCarousel = ({ label = 'Cards' }) => (
       {/* 1. Profile: a gradient avatar, icon links that rise, stats split by .divide; holographic on hover. */}
       <div className="bg border round shadow pad grid cols-1 gap-sm justify-center text-center h-100 hover-holographic" style={{ alignContent: 'center' }}>
         <div className="circle bg-gradient col-center fw-bold" style={{ width: '5rem', aspectRatio: 1, fontSize: '1.75rem' }}>AL</div>
-        <div><strong className="fs-lg">Ada Lovelace</strong><br /><small className="opacity-75">Analyst · First programmer</small></div>
+        <div className="grid cols-1 gap-0"><strong className="fs-lg">Ada Lovelace</strong><small className="opacity-75">Analyst · First programmer</small></div>
         <div className="row-wrap gap-sm cols-center">
           {[ 'github', 'linkedin', 'codepen' ].map(n => <Button key={n} icon={`fa-brands fa-${n}`} aria-label={n} className="outline-primary" />)}
         </div>
         <div className="grid fixed cols-3 gap-0 divide border round w-100">
           {[ [ '128', 'Posts' ], [ '4.2k', 'Followers' ], [ '310', 'Following' ] ].map(([ v, l ]) => (
-            <div key={l} className="pad-y-sm"><strong>{v}</strong><br /><small className="opacity-75">{l}</small></div>
+            <div key={l} className="grid cols-1 gap-0 pad-y-sm"><strong>{v}</strong><small className="opacity-75">{l}</small></div>
           ))}
         </div>
       </div>
@@ -53,7 +53,7 @@ export const CardCarousel = ({ label = 'Cards' }) => (
         </div>
         <div className="grid auto-cols gap-sm items-center" style={{ paddingLeft: '1rem' }}>
           <div className="circle bg-primary col-center fw-bold" style={{ width: '2.75rem', aspectRatio: 1 }}>GH</div>
-          <div><strong>Grace Hopper</strong><br /><span className="text-secondary">{[ 1, 2, 3, 4, 5 ].map(n => <Icon key={n} name="star" style={{ '--icon-size': '1em' }} />)}</span></div>
+          <div className="grid cols-1 gap-0"><strong>Grace Hopper</strong><span className="text-secondary">{[ 1, 2, 3, 4, 5 ].map(n => <Icon key={n} name="star" style={{ '--icon-size': '1em' }} />)}</span></div>
         </div>
       </div>
 
@@ -62,7 +62,7 @@ export const CardCarousel = ({ label = 'Cards' }) => (
         <RingGauge value={86} label="Uptime" size="8rem" />
         <div className="grid fixed cols-2 gap-sm w-100 text-start">
           {[ [ 'Requests', '1.4M' ], [ 'Errors', '0.02%' ], [ 'Latency', '84 ms' ], [ 'Regions', '6' ] ].map(([ k, v ]) => (
-            <div key={k} className="bg-primary-lighter round pad-x-sm pad-y-sm" style={{ color: 'var(--dark)' }}><small>{k}</small><br /><strong>{v}</strong></div>
+            <div key={k} className="grid cols-1 gap-0 bg-primary-lighter round pad-x-sm pad-y-sm" style={{ color: 'var(--dark)' }}><small>{k}</small><strong>{v}</strong></div>
           ))}
         </div>
       </div>
@@ -73,7 +73,7 @@ export const CardCarousel = ({ label = 'Cards' }) => (
           <div className="circle loader-spin" style={{ width: '80%', aspectRatio: 1, animationDuration: '4s', background: 'repeating-radial-gradient(circle, #111 0 3px, #1d1d1d 3px 6px)' }} />
           <div className="circle bg-gradient" style={{ width: '28%', aspectRatio: 1 }} />
         </div>
-        <div><strong className="fs-lg">Midnight Drive</strong><br /><small style={{ opacity: .8 }}>The Neon Grid</small></div>
+        <div className="grid cols-1 gap-0"><strong className="fs-lg">Midnight Drive</strong><small style={{ opacity: .8 }}>The Neon Grid</small></div>
         <div className="loader-bar" role="progressbar" aria-label="Playing" />
         <div className="grid fixed cols-3 gap-sm justify-center">
           <Button icon="backward" aria-label="Previous" style={{ color: 'inherit', borderColor: 'transparent' }} />
@@ -90,7 +90,7 @@ export const CardCarousel = ({ label = 'Cards' }) => (
         <small style={{ opacity: .8 }}>Partly cloudy · H 24° L 9°</small>
         <div className="grid fixed cols-4 gap-0 divide round" style={{ background: 'rgb(255 255 255 / .12)' }}>
           {[ [ 'Thu', 'sun', '24°' ], [ 'Fri', 'cloud', '19°' ], [ 'Sat', 'cloud-rain', '14°' ], [ 'Sun', 'snowflake', '6°' ] ].map(([ d, i, t ]) => (
-            <div key={d} className="pad-y-sm"><small>{d}</small><br /><Icon name={i} style={{ '--icon-size': '1.5em' }} /><br /><small>{t}</small></div>
+            <div key={d} className="grid cols-1 gap-0 justify-center pad-y-sm"><small>{d}</small><Icon name={i} style={{ '--icon-size': '1.5em' }} /><small>{t}</small></div>
           ))}
         </div>
       </div>
@@ -129,13 +129,13 @@ export const CardCarousel = ({ label = 'Cards' }) => (
         <div className="pad grid cols-1 gap-sm" style={{ borderBottom: '2px dashed var(--border-color)' }}>
           <div className="header"><small className="fw-bold text-uppercase text-primary">Marccent Air</small><small className="opacity-75">Boarding pass</small></div>
           <div className="grid gap-0 items-center text-center" style={{ gridTemplateColumns: '1fr auto 1fr' }}>
-            <div><span className="display-sm fw-bold">BOI</span><br /><small className="opacity-75">Boise</small></div>
+            <div className="grid cols-1 gap-0"><span className="display-sm fw-bold">BOI</span><small className="opacity-75">Boise</small></div>
             <Icon name="plane" className="text-secondary fs-lg" />
-            <div><span className="display-sm fw-bold">SFO</span><br /><small className="opacity-75">San Francisco</small></div>
+            <div className="grid cols-1 gap-0"><span className="display-sm fw-bold">SFO</span><small className="opacity-75">San Francisco</small></div>
           </div>
           <div className="grid fixed cols-3 gap-sm">
             {[ [ 'Flight', 'MC 042' ], [ 'Gate', 'B7' ], [ 'Seat', '14A' ], [ 'Board', '07:35' ], [ 'Class', 'Comfort' ], [ 'Zone', '2' ] ].map(([ k, v ]) => (
-              <div key={k}><small className="opacity-75">{k}</small><br /><strong>{v}</strong></div>
+              <div key={k} className="grid cols-1 gap-0"><small className="opacity-75">{k}</small><strong>{v}</strong></div>
             ))}
           </div>
         </div>
@@ -154,14 +154,14 @@ export const CardCarousel = ({ label = 'Cards' }) => (
           </div>
           <span style={{ fontFamily: 'ui-monospace, monospace', fontSize: '.95rem', letterSpacing: '.06em', whiteSpace: 'nowrap' }}>4242 •••• •••• 4242</span>
           <div className="header">
-            <div><small style={{ opacity: .7 }}>Card holder</small><br /><strong className="fs-sm">ADA LOVELACE</strong></div>
+            <div className="grid cols-1 gap-0"><small style={{ opacity: .7 }}>Card holder</small><strong className="fs-sm">ADA LOVELACE</strong></div>
             <span className="stack" style={{ width: '3rem' }}>
               <span className="circle bg-danger" style={{ width: '1.8rem', aspectRatio: 1, opacity: .9 }} />
               <span className="circle bg-secondary" style={{ width: '1.8rem', aspectRatio: 1, opacity: .9, justifySelf: 'end' }} />
             </span>
           </div>
         </div>
-        <div><small className="opacity-75">Balance</small><br /><span className="display-sm fw-bold">$2,480<span className="opacity-50">.12</span></span></div>
+        <div className="grid cols-1 gap-0"><small className="opacity-75">Balance</small><span className="display-sm fw-bold">$2,480<span className="opacity-50">.12</span></span></div>
         <div className="grid fixed cols-2 gap-sm">
           <Button icon="paper-plane" className="gradient">Send</Button>
           <Button icon="hand-holding-dollar" className="outline-primary">Ask</Button>
@@ -220,7 +220,7 @@ export const CardCarousel = ({ label = 'Cards' }) => (
         <div className="grid auto-cols gap-sm items-center pad-sm border-bottom">
           <span className="stack"><span className="circle bg-gradient col-center fw-bold" style={{ width: '2.4rem', aspectRatio: 1 }}>KJ</span>
             <span className="circle bg-success" style={{ width: '.7rem', aspectRatio: 1, placeSelf: 'end end', border: '2px solid var(--surface)' }} /></span>
-          <div><strong>Katherine</strong><br /><small className="text-success">online</small></div>
+          <div className="grid cols-1 gap-0"><strong>Katherine</strong><small className="text-success">online</small></div>
         </div>
         <div className="pad-sm grid cols-1 gap-sm" style={{ alignContent: 'end' }}>
           {[ [ 0, 'Did the orbit math check out?' ], [ 1, 'Every number. Launch is a go 🚀' ], [ 0, 'Then light the candle.' ], [ 1, 'Counting down now.' ] ].map(([ me, t ], i) => (

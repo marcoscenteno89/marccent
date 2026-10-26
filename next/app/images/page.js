@@ -72,14 +72,16 @@ const TILES = [
 
 export default function ImagesPage() {
   return (
-    <div className="wrap grid cols-1 gap-lg">
-      <GalleryHeader title="Images" sections={['Collage']}>
-        <p>Every photo in one collage: ImageCard in all its shapes (square, circle, portrait, landscape, feature, panorama) and overlays (fade, glass, blur, focus, tint).</p>
-      </GalleryHeader>
+    <>
+    <GalleryHeader title="Images" sections={['Collage']}>
+      <p>Every photo in one collage: ImageCard in all its shapes (square, circle, portrait, landscape, feature, panorama) and overlays (fade, glass, blur, focus, tint).</p>
+    </GalleryHeader>
+    <div className="wrap grid cols-1 gap-lg pad-y-lg">
 
       <Section name="Collage" intro='Each tile is an ImageCard with ratio={null}: it fills its grid cell; the span-* classes and row spans make the sizes, and the grid packs them densely. Hover any of them.'>
         <Collage tiles={TILES} />
       </Section>
     </div>
+    </>
   );
 }

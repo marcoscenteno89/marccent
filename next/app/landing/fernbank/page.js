@@ -7,6 +7,7 @@ import { CardFan } from '@/components/widgets/fun';
 import ThemedMap from '@/components/apps/map';
 import { Page, Full, Box } from '../blocks';
 import { AccountForm, CountUp, LiveSpeedometer, LiveRadar } from '../parts';
+import { img } from '@/lib/img';
 
 /*
  * Landing page: Fernbank, a (fictional) mobile bank. Premium and calm: Sora headings over Manrope, forest and mint,
@@ -46,7 +47,7 @@ const Phone = () => (
     <div data-theme="light" className="grid cols-1 gap-sm pad" style={{ borderRadius: '2rem', background: 'var(--body-bg)', color: 'var(--body-color)' }}>
       <div className="header"><small className="fw-bold">9:41</small><small><Icon name="signal" /> <Icon name="battery-three-quarters" /></small></div>
       <small style={{ opacity: .6 }}>Good morning, Alex</small>
-      <div><small style={{ opacity: .6 }}>Total balance</small><br /><span className="display-sm fw-bold">$<CountUp to={12480.52} decimals={2} /></span></div>
+      <div className="grid cols-1 gap-0"><small style={{ opacity: .6 }}>Total balance</small><span className="display-sm fw-bold">$<CountUp to={12480.52} decimals={2} /></span></div>
       <div className="grid fixed cols-4 gap-sm text-center">
         {[ [ 'paper-plane', 'Send' ], [ 'arrow-down', 'Request' ], [ 'piggy-bank', 'Save' ], [ 'ellipsis', 'More' ] ].map(([ i, l ]) => (
           <div key={l} className="grid cols-1 gap-0 justify-center"><span className="circle col-center" style={{ width: '2.3rem', aspectRatio: 1, background: 'var(--primary-darker)', color: 'var(--secondary)' }}><Icon name={i} /></span><small style={{ fontSize: '.7rem' }}>{l}</small></div>
@@ -63,11 +64,12 @@ const Phone = () => (
   </div>
 );
 
-// A numbered feature row: a big outlined number, the words, the widget.
-const Row = ({ n, title, text, children, flip }) => (
+// A numbered feature row: a big outlined number (in the secondary; onColor: the text color, for a colored band),
+// the words, the widget.
+const Row = ({ n, title, text, children, flip, onColor }) => (
   <div className="grid gap-lg items-center" style={{ '--cols': 2, '--min': '18rem' }}>
     <div className={`grid cols-1 gap-sm ${flip ? 'order-last' : ''}`}>
-      <span style={{ fontFamily: 'var(--font-heading)', fontSize: '5rem', fontWeight: 800, lineHeight: 1, color: 'transparent', WebkitTextStroke: '2px var(--secondary)' }}>{n}</span>
+      <span style={{ fontFamily: 'var(--font-heading)', fontSize: '5rem', fontWeight: 800, lineHeight: 1, color: 'transparent', WebkitTextStroke: `2px ${onColor ? 'currentColor' : 'var(--secondary)'}` }}>{n}</span>
       <h2 style={{ fontWeight: 700 }}>{title}</h2>
       <p className="fs-lg" style={{ opacity: .75 }}>{text}</p>
     </div>
@@ -128,7 +130,7 @@ export default function Fernbank() {
         </Row>
       </Full>
       <Full className="bg-primary-lighter" style={{ color: 'var(--dark)' }}>
-        <Row flip n="02" title="See where it goes" text="Every purchase sorted on its own. Set limits by category and get a nudge before you go over, not a fee after.">
+        <Row flip onColor n="02" title="See where it goes" text="Every purchase sorted on its own. Set limits by category and get a nudge before you go over, not a fee after.">
           <LiveRadar style={{ width: 'min(80%, 20rem)', justifySelf: 'center' }} axes={[ { label: 'Food', value: 72 }, { label: 'Rent', value: 95 }, { label: 'Travel', value: 40 }, { label: 'Fun', value: 55 }, { label: 'Bills', value: 66 }, { label: 'Health', value: 30 } ]} />
         </Row>
       </Full>
@@ -150,7 +152,7 @@ export default function Fernbank() {
 
       <Full className="bg">
         <Row flip n="04" title="Your money plants forests" text="We never lend to fossil fuels, and we plant a tree for every account opened. 1.2 million so far, most of them in Oregon.">
-          <ImageCard src="/img/green2.webp" canvas="leaves" overlay="tint" ratio="4 / 3" badge="1.2M trees" label="Fernbank Forest · Oregon" title="Planted by our members" />
+          <ImageCard src={img('green2')} canvas="leaves" overlay="tint" ratio="4 / 3" badge="1.2M trees" label="Fernbank Forest · Oregon" title="Planted by our members" />
         </Row>
       </Full>
 

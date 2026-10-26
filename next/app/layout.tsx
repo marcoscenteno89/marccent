@@ -47,7 +47,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             the header's layout-ends measures, since an element can't measure itself. */}
         <Body className="cq grid cols-1 gap-0">
           <Header />
-          <main className="grid cols-1 gap-lg">{children}</main>
+          <main className="grid cols-1 gap-0">{children}</main>
           <Footer />
           <Toast />
           <Goo /> {/* the #goo SVG filter hover-goo uses (styles/hovers.css) */}

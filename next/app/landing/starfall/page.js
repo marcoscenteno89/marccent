@@ -10,6 +10,7 @@ import { ImageCard } from 'marccent-theme/components/widgets/layout';
 import ThemedMap from '@/components/apps/map';
 import { Page, Full, Box } from '../blocks';
 import { SignupBar, ContactForm, CountUp } from '../parts';
+import { img } from '@/lib/img';
 
 /*
  * Landing page: Starfall Mesa, a (fictional) dark-sky lodge and observatory in the Utah desert. Quiet and wide open:
@@ -87,14 +88,15 @@ const PASSES = [
   { icon: 'meteor', label: 'Meteor vigil', price: 90, per: 'a person', has: [ 'Peak nights only', 'Loungers and blankets', 'Breakfast at sunrise' ] },
 ];
 
-// A pass: a breathing icon, the name in spaced capitals, the price glowing in the twilight color, what's in it.
+// A pass: a breathing icon, the name in spaced capitals, the price, what's in it. All in the card's light text: no
+// colored content on the twilight.
 const PassCard = ({ icon, label, price, per, has }) => (
   <article className="round shadow pad grid cols-1 gap-sm justify-center text-center h-100 hover-holographic" style={{ alignContent: 'center', color: 'var(--light)', background: SPACE }}>
-    <Icon name={icon} className="display-sm loader-breathe text-primary" style={{ justifySelf: 'center', '--icon-size': '1.4em' }} />
+    <Icon name={icon} className="display-sm loader-breathe" style={{ justifySelf: 'center', '--icon-size': '1.4em' }} />
     <small className="fw-bold" style={{ ...CAPS, opacity: .8 }}>{label}</small>
-    <div><span className="display fw-bold" style={{ color: 'var(--secondary-lighter)' }}>${price}</span> <small style={{ opacity: .7 }}>{per}</small></div>
+    <div><span className="display fw-bold">${price}</span> <small style={{ opacity: .7 }}>{per}</small></div>
     <ul className="grid cols-1 gap-sm pad-y-sm" style={{ opacity: .85 }}>{has.map(h => <li key={h}>{h}</li>)}</ul>
-    <Button icon="ticket" href="#visit" className="gradient" style={{ justifySelf: 'center' }}>Choose</Button>
+    <Button icon="ticket" href="#visit" className="light" style={{ justifySelf: 'center' }}>Choose</Button>
   </article>
 );
 
@@ -113,10 +115,10 @@ export default function Starfall() {
 
       {/* HERO: Monument Valley at night; the stars drift, the cacti hold. */}
       <Landscape layers={[ 'stars', 'moon', 'mesas', 'buttes', 'dunes', 'cactus' ]} sky={SKY.night}>
-        <small className="fw-bold text-primary" style={CAPS}>Bortle class 1 · elevation 1,650 m</small>
+        <small className="fw-bold opacity-75" style={CAPS}>Bortle class 1 · elevation 1,650 m</small>
         <h1 style={{ fontSize: 'clamp(2.6rem, 8vw, 6.5rem)', fontWeight: 300, lineHeight: 1, maxWidth: '12ch' }}>The darkest sky you&apos;ll ever sleep under</h1>
         <p className="fs-lg opacity-75" style={{ maxWidth: '34rem' }}>A small lodge and observatory three hours from the nearest city light. Bring a jacket; we bring the telescopes.</p>
-        <Button icon="arrow-down" href="#sky" className="gradient">See tonight&apos;s sky</Button>
+        <Button icon="arrow-down" href="#sky" className="light">See tonight&apos;s sky</Button>
       </Landscape>
 
       {/* SHORT: tonight's conditions, boxed. */}
@@ -150,7 +152,7 @@ export default function Starfall() {
 
       {/* CANYON: the rim at dusk, the numbers over it. */}
       <Landscape id="rim" layers={[ 'sun', 'wisps', 'birds', 'mesas', 'canyon', 'canyon', 'rim' ]} sky={SKY.dusk}>
-        <small className="fw-bold text-primary" style={CAPS}>by day</small>
+        <small className="fw-bold opacity-75" style={CAPS}>by day</small>
         <h2 className="display-lg" style={{ fontWeight: 300 }}>Sleep late. The canyon waits.</h2>
         <div className="grid gap-lg" style={{ '--cols': 3, '--min': '9rem', maxWidth: '40rem', width: '100%' }}>
           {[ [ 48, '', 'km of rim trails' ], [ 9, '', 'telescopes' ], [ 360, '', 'clear nights a year', ] ].map(([ v, s, l ]) => (
@@ -168,7 +170,7 @@ export default function Starfall() {
               <p className="fs-lg">{s.text}</p>
               <ul className="grid cols-1 gap-sm">{s.has.map(h => <li key={h} className="grid auto-cols gap-sm items-center justify-start"><Icon name="check" className="text-primary" />{h}</li>)}</ul>
             </div>
-            <ImageCard src={`/img/${s.src}.webp`} overlay={s.overlay} ratio="4 / 3" badge={`from $${s.price} a night`} label={`Sleeps ${s.sleeps}`} title={s.label}>
+            <ImageCard src={img(s.src)} overlay={s.overlay} ratio="4 / 3" badge={`from $${s.price} a night`} label={`Sleeps ${s.sleeps}`} title={s.label}>
               <Button icon="moon" href="#visit" className="light">Book it</Button>
             </ImageCard>
           </div>
@@ -188,7 +190,7 @@ export default function Starfall() {
         <blockquote style={{ margin: 0, fontFamily: 'var(--font-body)', fontStyle: 'italic', fontSize: 'clamp(1.6rem, 4vw, 3rem)', lineHeight: 1.25, maxWidth: '24ch' }}>
           &ldquo;My kids counted 41 shooting stars and then fell asleep mid-sentence.&rdquo;
         </blockquote>
-        <small className="fw-bold text-primary" style={CAPS}>The Okafors, Geminids 2025</small>
+        <small className="fw-bold opacity-75" style={CAPS}>The Okafors, Geminids 2025</small>
       </Landscape>
 
       {/* VISIT: the calendar, a booking form and the turnoff. */}
@@ -211,7 +213,7 @@ export default function Starfall() {
       <Box className="bg-gradient-darker" style={{ color: 'var(--light)' }} inner="grid gap-sm items-center text-center">
         <div className="grid gap-sm" style={{ '--cols': 3, '--min': '11rem' }}>
           {[ [ 'lightbulb', 'Only red, shielded lights' ], [ 'solar-panel', 'Run on the sun' ], [ 'shield-heart', 'A certified dark-sky place' ] ].map(([ i, t ]) => (
-            <span key={t} className="center gap-sm"><Icon name={i} className="text-primary-lighter" />{t}</span>
+            <span key={t} className="center gap-sm"><Icon name={i} />{t}</span>
           ))}
         </div>
       </Box>

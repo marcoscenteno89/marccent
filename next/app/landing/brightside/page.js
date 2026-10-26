@@ -9,6 +9,7 @@ import { ImageCard } from 'marccent-theme/components/widgets/layout';
 import { Page, Full, Box } from '../blocks';
 import { VisitScheduler, NewPatientForm, CountUp } from '../parts';
 import 'marccent-theme/styles/components/loading.css';
+import { img } from '@/lib/img';
 
 /*
  * Landing page: Brightside Dental, a (fictional) family dental clinic. Soft and friendly: Nunito, aqua and sunshine on
@@ -28,10 +29,11 @@ const Wave = ({ from, to }) => (
   <div className={to} aria-hidden="true"><div className={`shape-wave ${from}`} style={{ aspectRatio: 'auto', height: '3.5rem' }} /></div>
 );
 
-// Section heading: an emoji-sized icon in a soft circle, a rounded bold title.
+// Section heading: an emoji-sized icon in a soft circle, a rounded bold title. On a colored section pass tone={null}:
+// the circle is then the page's light, so nothing colored sits on the color.
 const Head = ({ icon, title, text, tone = 'bg-primary-lighter' }) => (
   <header className="grid cols-1 gap-sm text-center justify-center">
-    <span className={`circle col-center ${tone}`} style={{ width: '3.5rem', aspectRatio: 1, justifySelf: 'center', color: 'var(--dark)' }}><Icon name={icon} className="fs-lg" /></span>
+    <span className={`circle col-center ${tone ?? 'shadow'}`} style={{ width: '3.5rem', aspectRatio: 1, justifySelf: 'center', color: 'var(--dark)', background: tone ? undefined : 'var(--light)' }}><Icon name={icon} className="fs-lg" /></span>
     <h2 className="display-sm" style={{ fontWeight: 800 }}>{title}</h2>
     {text && <p className="fs-lg" style={{ maxWidth: '36rem', justifySelf: 'center', opacity: .8 }}>{text}</p>}
   </header>
@@ -52,17 +54,17 @@ export default function Brightside() {
         </nav>
         <div className="grid gap-lg items-center" style={{ '--cols': 2, '--min': '19rem', paddingBlock: '2rem' }}>
           <div className="grid cols-1 gap-sm content-center">
-            <span className="shape-pill bg-gradient-lighter fw-bold fs-sm center gap-sm" style={{ aspectRatio: 'auto', width: 'fit-content', padding: '.35rem 1rem', border: '2px solid var(--light)' }}>
+            <span className="shape-pill fw-bold fs-sm center gap-sm" style={{ ...TILE, aspectRatio: 'auto', width: 'fit-content', padding: '.35rem 1rem' }}>
               <Icon name="circle-check" /> Accepting new patients
             </span>
             <h1 style={{ fontSize: 'clamp(2.4rem, 6vw, 4.2rem)', fontWeight: 900, lineHeight: 1.05 }}>Dentistry that feels like a good day.</h1>
             <p className="fs-lg">Gentle care for the whole family, same-week appointments and honest prices. Headphones and Netflix in every chair.</p>
             <div className="grid gap-sm" style={{ '--cols': 2, '--min': '11rem' }}>
-              <Button icon="calendar-check" href="#book" className="gradient w-100" style={{ borderRadius: '99px' }}>Book online</Button>
+              <Button icon="calendar-check" href="#book" className="dark w-100" style={{ borderRadius: '99px' }}>Book online</Button>
               <Button icon="phone" href="tel:+15555550142" className="light w-100" style={{ borderRadius: '99px' }}>(555) 555-0142</Button>
             </div>
             <small className="grid auto-cols gap-sm items-center justify-start">
-              <span className="text-secondary-darker">{[ 1, 2, 3, 4, 5 ].map(n => <Icon key={n} name="star" style={{ '--icon-size': '1em' }} />)}</span>
+              <span>{[ 1, 2, 3, 4, 5 ].map(n => <Icon key={n} name="star" style={{ '--icon-size': '1em' }} />)}</span>
               <span><strong>4.9</strong> from 1,280 reviews</span>
             </small>
           </div>
@@ -75,7 +77,7 @@ export default function Brightside() {
             <div className="shape-star bg-primary loader-spin" style={{ width: '10%', placeSelf: 'end start', margin: '10%', animationDuration: '9s' }} />
             <div className="shadow pad-sm grid auto-cols gap-sm items-center" style={{ ...TILE, placeSelf: 'end end', margin: '2%' }}>
               <span className="circle bg-gradient-lighter col-center" style={{ width: '2.4rem', aspectRatio: 1 }}><Icon name="face-smile" /></span>
-              <span><strong><CountUp to={9400} suffix="+" /></strong><br /><small>happy patients</small></span>
+              <span className="grid cols-1 gap-0"><strong><CountUp to={9400} suffix="+" /></strong><small>happy patients</small></span>
             </div>
           </div>
         </div>
@@ -108,8 +110,8 @@ export default function Brightside() {
       <Full className="bg">
         <div className="grid gap-lg items-center" style={{ '--cols': 2, '--min': '18rem' }}>
           <div className="stack w-100" style={{ maxWidth: '26rem', justifySelf: 'center' }}>
-            <ImageCard src="/img/pink4.webp" shape="circle" ratio="1 / 1" className="w-100" label="Our garden room" title="Breathe in" />
-            <ImageCard src="/img/pink1.webp" shape="circle" ratio="1 / 1" overlay="none" style={{ width: '42%', placeSelf: 'end start', border: '6px solid var(--light)' }} />
+            <ImageCard src={img('pink4')} shape="circle" ratio="1 / 1" className="w-100" label="Our garden room" title="Breathe in" />
+            <ImageCard src={img('pink1')} shape="circle" ratio="1 / 1" overlay="none" style={{ width: '42%', placeSelf: 'end start', border: '6px solid var(--light)' }} />
           </div>
           <div className="grid cols-1 gap-sm content-center">
             <h2 className="display-sm" style={{ fontWeight: 800 }}>A waiting room that doesn&apos;t feel like one</h2>
@@ -126,14 +128,14 @@ export default function Brightside() {
 
       {/* SERVICES: white rounded tiles with a price; they pop on hover. */}
       <Full id="services" className="bg-secondary-lighter" style={DARK}>
-        <Head icon="tooth" tone="bg-primary-lighter" title="Everything under one roof" text="From a toddler's first check-up to a full smile makeover, no referral runaround." />
+        <Head icon="tooth" tone={null} title="Everything under one roof" text="From a toddler's first check-up to a full smile makeover, no referral runaround." />
         <div className="grid" style={{ '--cols': 3, '--min': '15rem' }}>
           {[ [ 'tooth', 'Cleaning and check-up', 'Exam, X-rays and a polish.', '$0 with most insurance', 'bg-primary-lighter' ], [ 'teeth', 'Clear aligners', 'Straighter in as little as six months.', 'from $2,990', 'bg-gradient-lighter' ],
              [ 'wand-magic-sparkles', 'Whitening', 'Up to eight shades in one visit.', 'from $299', 'bg-secondary-lighter' ], [ 'crown', 'Same-day crowns', 'Designed and milled while you wait.', 'from $1,050', 'bg-secondary-lighter' ],
              [ 'child', 'Kids\' dentistry', 'Sealants, fluoride and a lot of patience.', 'from $0', 'bg-primary-lighter' ], [ 'truck-medical', 'Emergencies', 'Call before 10 AM, seen today.', 'from $89', 'bg-primary-lighter' ] ].map(([ i, t, d, p, tone ]) => (
             <article key={t} className="pad grid gap-sm items-center shadow-sm hover-holographic" style={{ ...TILE, gridTemplateColumns: 'auto minmax(0, 1fr)' }}>
               <span className={`shape-squircle col-center ${tone}`} style={{ width: '3.5rem' }}><Icon name={i} /></span>
-              <div><strong className="fs-lg">{t}</strong><br /><small className="opacity-75">{d}</small><br /><small className="fw-bold text-primary-darker">{p}</small></div>
+              <div className="grid cols-1 gap-0"><strong className="fs-lg">{t}</strong><small className="opacity-75">{d}</small><small className="fw-bold text-primary-darker">{p}</small></div>
             </article>
           ))}
         </div>
@@ -158,14 +160,14 @@ export default function Brightside() {
       </Full>
       <Wave from="bg" to="bg-gradient-lighter" />
 
-      {/* TEAM: round portraits with a gradient halo and a fun fact. */}
+      {/* TEAM: round portraits with a light halo and a fun fact. */}
       <Full id="team" className="bg-gradient-lighter" style={DARK}>
-        <Head icon="user-doctor" tone="bg-secondary-lighter" title="Meet the smiles behind the masks" />
+        <Head icon="user-doctor" tone={null} title="Meet the smiles behind the masks" />
         <div className="grid gap-lg text-center" style={{ '--cols': 4, '--min': '11rem' }}>
           {[ [ 'Dr. Nia Brooks', 'Founder, DDS', 'Runs half-marathons, badly' ], [ 'Dr. Sam Okoye', 'Orthodontics', 'Has 3,000 aligner smiles' ], [ 'Linh Tran', 'Hygienist', 'Speaks Vietnamese and Spanish' ], [ 'Rosa Diaz', 'Patient care', 'Remembers every kid\'s name' ] ].map(([ n, r, f ]) => (
             <div key={n} className="grid cols-1 gap-sm justify-center">
               <div className="stack" style={{ width: '8.5rem', aspectRatio: 1, justifySelf: 'center', placeItems: 'center' }}>
-                <div className="shape-ring bg-gradient w-100" style={{ '--ring-hole': '88%' }} />
+                <div className="shape-ring w-100" style={{ '--ring-hole': '88%', background: 'var(--light)' }} />
                 <span className="circle col-center fw-bold" style={{ width: '84%', aspectRatio: 1, background: 'var(--light)', fontSize: '2rem' }}>{n.replace('Dr. ', '').split(' ').map(w => w[0]).join('')}</span>
               </div>
               <strong className="fs-lg">{n}</strong>
@@ -187,8 +189,8 @@ export default function Brightside() {
             return (
               <div key={n} className="grid gap-sm items-end" style={{ gridTemplateColumns: me ? 'minmax(0, 1fr) auto' : 'auto minmax(0, 1fr)' }}>
                 <span className={`circle col-center fw-bold ${me ? 'bg-secondary-lighter order-last' : 'bg-primary-lighter'}`} style={{ width: '2.5rem', aspectRatio: 1, color: 'var(--dark)' }}>{ini}</span>
-                <div className={`pad-sm ${me ? 'bg-secondary' : ''}`} style={{ justifySelf: me ? 'end' : 'start', maxWidth: '30rem', borderRadius: me ? '1.25rem 1.25rem .25rem 1.25rem' : '1.25rem 1.25rem 1.25rem .25rem', background: me ? undefined : 'var(--muted-bg)' }}>
-                  <small className="fw-bold">{n} <span className="text-secondary">★★★★★</span></small><br />{m}
+                <div className={`grid cols-1 gap-0 pad-sm ${me ? 'bg-secondary' : ''}`} style={{ justifySelf: me ? 'end' : 'start', maxWidth: '30rem', borderRadius: me ? '1.25rem 1.25rem .25rem 1.25rem' : '1.25rem 1.25rem 1.25rem .25rem', background: me ? undefined : 'var(--muted-bg)' }}>
+                  <small className="fw-bold">{n} <span className="text-secondary">★★★★★</span></small>{m}
                 </div>
               </div>
             );
@@ -202,7 +204,7 @@ export default function Brightside() {
 
       {/* PLANS: white cards with a domed top. */}
       <Full className="bg-primary-lighter" style={DARK}>
-        <Head icon="piggy-bank" tone="bg-gradient-lighter" title="No insurance? Join the club." text="One yearly price covers cleanings, exams and X-rays, plus 20% off everything else." />
+        <Head icon="piggy-bank" tone={null} title="No insurance? Join the club." text="One yearly price covers cleanings, exams and X-rays, plus 20% off everything else." />
         <div className="grid gap-lg items-end" style={{ '--cols': 3, '--min': '15rem' }}>
           {[ [ 'child', 'Kids', '$199', [ '2 cleanings and exams', 'Fluoride and sealants', 'Treasure chest prize' ], 'bg-gradient-lighter' ],
              [ 'heart', 'Adult', '$329', [ '2 cleanings and exams', 'All X-rays', '1 emergency visit', '20% off treatment' ], 'bg-gradient' ],

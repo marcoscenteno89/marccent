@@ -20,10 +20,11 @@ const SECTIONS = ['Orbits', 'Layouts', 'Navigation', 'Data', 'Calendar', 'Showca
 
 export default function WidgetsPage() {
   return (
-    <div className="wrap grid cols-1 gap-lg">
-      <GalleryHeader title="Widgets" sections={SECTIONS}>
-        <p>Bigger pieces built from the theme&apos;s building blocks: orbits, honeycombs, a timeline, menus, gauges, clocks and loaders, each section a collage. The parallax scenes have their own page.</p>
-      </GalleryHeader>
+    <>
+    <GalleryHeader title="Widgets" sections={SECTIONS}>
+      <p>Bigger pieces built from the theme&apos;s building blocks: orbits, honeycombs, a timeline, menus, gauges, clocks and loaders, each section a collage. The parallax scenes have their own page.</p>
+    </GalleryHeader>
+    <div className="wrap grid cols-1 gap-lg pad-y-lg">
 
       <Section name="Orbits" intro="Everything that turns on a ring: Orbit, OrbitClock and SolarSystem (visuals/effects.js) and Atom (widgets/fun.js).">
         <Collage>
@@ -150,5 +151,6 @@ export default function WidgetsPage() {
         </Collage>
       </Section>
     </div>
+    </>
   );
 }

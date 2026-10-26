@@ -8,6 +8,7 @@ import { Alert } from 'marccent-theme/components/ui/alert';
 import { ImageCard } from 'marccent-theme/components/widgets/layout';
 import { Page, Full, Box } from '../blocks';
 import { SignupBar, ContactForm, CountUp, LiveSpeedometer } from '../parts';
+import { img } from '@/lib/img';
 
 /*
  * Landing page: Pulsegrid, a (fictional) product analytics SaaS. Dark and technical: Inter Tight, indigo and
@@ -87,9 +88,9 @@ export default function Pulsegrid() {
             <div className="pad grid cols-1">
               <div className="grid gap-sm" style={{ '--cols': 4, '--min': '8rem' }}>
                 {[ [ 'Active users', 47.2, 'k', 1, '+12%' ], [ 'Conversion', 6.8, '%', 1, '+0.9' ], [ 'MRR', 128, 'k', 0, '+8%' ], [ 'Churn', 1.9, '%', 1, '−0.4' ] ].map(([ l, v, s, d, delta ]) => (
-                  <div key={l} className="border round pad-sm">
-                    <small className="opacity-75">{l}</small><br />
-                    <strong className="fs-lg">{l === 'MRR' && '$'}<CountUp to={v} decimals={d} suffix={s} /></strong> <small className="text-primary">{delta}</small>
+                  <div key={l} className="grid cols-1 gap-0 border round pad-sm">
+                    <small className="opacity-75">{l}</small>
+                    <span><strong className="fs-lg">{l === 'MRR' && '$'}<CountUp to={v} decimals={d} suffix={s} /></strong> <small className="text-primary">{delta}</small></span>
                   </div>
                 ))}
               </div>
@@ -181,7 +182,7 @@ export default function Pulsegrid() {
       <Full className="bg-gradient" space="3rem">
         <div className="grid gap-lg" style={{ '--cols': 4, '--min': '9rem' }}>
           {[ [ 2.4, 'B', 'events a day', 1 ], [ 99.99, '%', 'uptime', 2 ], [ 0.8, 's', 'median query', 1 ], [ 38, '%', 'more retention', 0 ] ].map(([ v, s, l, d ]) => (
-            <div key={l}><CountUp to={v} decimals={d} suffix={s} className="display fw-bold" /><br /><small>{l}</small></div>
+            <div key={l} className="grid cols-1 gap-0"><CountUp to={v} decimals={d} suffix={s} className="display fw-bold" /><small>{l}</small></div>
           ))}
         </div>
       </Full>
@@ -210,7 +211,7 @@ export default function Pulsegrid() {
               <figcaption><strong>{t.n}</strong> <small className="opacity-75">· {t.r}</small></figcaption>
             </figure>
           ))}
-          <ImageCard src="/img/blue4.webp" overlay="glass" ratio={null} className="h-100" style={{ minHeight: '16rem' }} badge="+38% retention"
+          <ImageCard src={img('blue4')} overlay="glass" ratio={null} className="h-100" style={{ minHeight: '16rem' }} badge="+38% retention"
             label="Case study · Northpeak" title="How a trail app found its aha moment">
             <Button icon="arrow-right" href="#customers" className="light">Read the story</Button>
           </ImageCard>
@@ -220,7 +221,7 @@ export default function Pulsegrid() {
       {/* SHORT: ratings, boxed on the gradient. */}
       <Box className="bg-gradient" inner="grid gap-sm items-center text-center" style={{ '--cols': 3, '--min': '12rem' }}>
         {[ [ 'star', '4.9 / 5', '1,200 reviews' ], [ 'trophy', 'Best analytics', 'Product Awards 2026' ], [ 'headset', '< 2 h', 'median support reply' ] ].map(([ i, v, l ]) => (
-          <div key={l} className="center gap-sm"><Icon name={i} className="fs-lg" /><span><strong className="fs-lg">{v}</strong><br /><small>{l}</small></span></div>
+          <div key={l} className="center gap-sm"><Icon name={i} className="fs-lg" /><span className="grid cols-1 gap-0"><strong className="fs-lg">{v}</strong><small>{l}</small></span></div>
         ))}
       </Box>
 
@@ -234,13 +235,12 @@ export default function Pulsegrid() {
               <div key={`${r}-${c}`} role={r === 0 ? 'columnheader' : 'cell'}
                 className={`pad-sm ${c ? 'text-center' : ''} ${r === 0 ? 'fw-bold fs-lg' : ''} ${c === 2 ? 'bg-primary' : ''} ${r ? 'border-bottom' : ''}`}
                 style={r === 1 ? { fontSize: '1.4rem', fontWeight: 700 } : undefined}>
-                {cell === true ? <Icon name="check" className="text-primary" /> : cell === false ? <span className="opacity-25">—</span> : cell}
-                {r === 0 && c === 2 && <><br /><small className="fw-normal">Most popular</small></>}
+                {r === 0 && c === 2 ? <span className="grid cols-1 gap-0">{cell}<small className="fw-normal">Most popular</small></span> : cell === true ? <Icon name="check" className={c === 2 ? undefined : 'text-primary'} /> : cell === false ? <span className="opacity-25">—</span> : cell}
               </div>
             )))}
             <div className="pad-sm" />
             <div className="pad-sm col-center"><Button icon="rocket" href="#contact" className="outline-primary">Start free</Button></div>
-            <div className="pad-sm col-center bg-primary"><Button icon="bolt" href="#contact" className="gradient">Start trial</Button></div>
+            <div className="pad-sm col-center bg-primary"><Button icon="bolt" href="#contact" className="light">Start trial</Button></div>
             <div className="pad-sm col-center"><Button icon="handshake" href="#contact" className="outline-secondary">Talk to sales</Button></div>
           </div>
         </div>

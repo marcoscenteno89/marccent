@@ -1,7 +1,7 @@
-import Link from 'next/link';
-import { cx } from 'marccent-theme/lib/cx';
 import { apps } from '@/components/apps/list';
-import 'marccent-theme/styles/components/menu.css';
+
+// The Menu itself (and externalProps, menuLinks) is the theme's (components/ui/menu.js); this file is the site's data.
+export { Menu, externalProps, menuLinks } from 'marccent-theme/components/ui/menu';
 
 // Shared menus: edit a link here and the header, hero and contact page all pick it up.
 // name: visible text. label: aria-label for icon-only links. icon: full Font Awesome classes.
@@ -20,7 +20,8 @@ export const contact = [
   ...social.filter(s => s.external),
 ];
 
-// Main navigation. An item with children is a dropdown; its href is the "browse all" page.
+// Main navigation. An item with children is a dropdown; its href is the "browse all" page. A child with children of
+// its own is a submenu (the Theme menu).
 // Apps come from components/apps/list, so adding an app there adds it here too.
 export const main = [
   { name: 'About', href: '/about' },
@@ -33,100 +34,35 @@ export const main = [
     ],
   },
   {
-    name: 'Design',
-    href: '/theme',
+    // The theme: its docs, then submenus for the design pages and the landing pages.
+    name: 'Theme',
+    href: '/docs',
     children: [
-      { name: 'Theme', href: '/theme', icon: 'fa-solid fa-palette' },
-      { name: 'Shapes', href: '/shapes', icon: 'fa-solid fa-shapes' },
-      { name: 'Widgets', href: '/widgets', icon: 'fa-solid fa-puzzle-piece' },
-      { name: 'Parallax', href: '/parallax', icon: 'fa-solid fa-mountain-sun' },
-      { name: 'Images', href: '/images', icon: 'fa-solid fa-images' },
-      { name: 'Animations', href: '/animations', icon: 'fa-solid fa-wand-magic-sparkles' },
-    ],
-  },
-  {
-    name: 'Landing Pages',
-    href: '/landing/pulsegrid',
-    children: [
-      { name: 'Pulsegrid', href: '/landing/pulsegrid', icon: 'fa-solid fa-wave-square' },
-      { name: 'Ridgeline', href: '/landing/ridgeline', icon: 'fa-solid fa-mountain' },
-      { name: 'Brightside Dental', href: '/landing/brightside', icon: 'fa-solid fa-tooth' },
-      { name: 'Fernbank', href: '/landing/fernbank', icon: 'fa-solid fa-seedling' },
-      { name: 'Signal Summit', href: '/landing/signal-summit', icon: 'fa-solid fa-tower-broadcast' },
-      { name: 'Starfall Mesa', href: '/landing/starfall', icon: 'fa-solid fa-moon' },
+      { name: 'Docs', href: '/docs', icon: 'fa-solid fa-book' },
+      {
+        name: 'Design',
+        icon: 'fa-solid fa-palette',
+        children: [
+          { name: 'Theme', href: '/theme', icon: 'fa-solid fa-palette' },
+          { name: 'Shapes', href: '/shapes', icon: 'fa-solid fa-shapes' },
+          { name: 'Widgets', href: '/widgets', icon: 'fa-solid fa-puzzle-piece' },
+          { name: 'Parallax', href: '/parallax', icon: 'fa-solid fa-mountain-sun' },
+          { name: 'Images', href: '/images', icon: 'fa-solid fa-images' },
+          { name: 'Animations', href: '/animations', icon: 'fa-solid fa-wand-magic-sparkles' },
+        ],
+      },
+      {
+        name: 'Landing Pages',
+        icon: 'fa-solid fa-window-maximize',
+        children: [
+          { name: 'Pulsegrid', href: '/landing/pulsegrid', icon: 'fa-solid fa-wave-square' },
+          { name: 'Ridgeline', href: '/landing/ridgeline', icon: 'fa-solid fa-mountain' },
+          { name: 'Brightside Dental', href: '/landing/brightside', icon: 'fa-solid fa-tooth' },
+          { name: 'Fernbank', href: '/landing/fernbank', icon: 'fa-solid fa-seedling' },
+          { name: 'Signal Summit', href: '/landing/signal-summit', icon: 'fa-solid fa-tower-broadcast' },
+          { name: 'Starfall Mesa', href: '/landing/starfall', icon: 'fa-solid fa-moon' },
+        ],
+      },
     ],
   },
 ];
-
-// Usage: <a href={s.href} {...externalProps(s)}>
-export const externalProps = (link) => link.external ? { target: '_blank', rel: 'noopener noreferrer' } : {};
-
-/**
- * Menu: renders any menu above (styles: .menu-* in styles/components/menu.css).
- * No hooks, so it works in server and client components. An item with children becomes a
- * <details> dropdown; it stays open after navigating unless the parent closes it (see header.tsx).
- *
- * Classes: the nav only gets "menu grid fixed gap-sm" (.menu is the hook for styles/components/menu.css);
- * everything else (dividers, border, alignment) is passed in. layout replaces "fixed", e.g.
- * "auto-cols cols-center" for icon-only menus (adding it through className would conflict with fixed).
- * Every part takes extra classes; a menu item can also carry its own className.
- *
- * @param {Object} props
- * @param {Array} props.items - A menu, e.g. main or social. Item: { name, href, icon?, label?, external?, className?, children? }.
- * @param {string} props.label - aria-label for the <nav>, e.g. "Main".
- * @param {boolean} [props.iconOnly] - Show icons only; the item's label becomes the aria-label.
- * @param {string} [props.className] - Extra classes for the <nav>.
- * @param {Object} [props.style] - Inline styles for the <nav> (may override --cols).
- * @param {string} [props.layout="fixed"] - Replaces "fixed": e.g. "auto-cols cols-center" (icons sized to fit,
- *   centered) or "cols-1" (stacked).
- * @param {string} [props.gap="gap-sm"] - The gap class between items. "gap-0" for a menu with .divide, so the line
- *   sits evenly between items.
- * @param {string} [props.linkClassName] - Extra classes for every link (dropdown links included).
- * @param {string} [props.dropdownClassName] - Extra classes for each dropdown <details>.
- * @param {string} [props.panelClassName] - Extra classes for each dropdown panel.
- *
- * @example <Menu items={main} label="Main" />
- * @example <Menu items={social} label="Social" iconOnly layout="auto-cols cols-center" />
- * @example <Menu items={contact} label="Contact" iconOnly layout="auto-cols cols-center" gap="gap-0" className="divide border round" />
- * @example <Menu items={main} label="Footer" layout="cols-1" />
- */
-// fixed (default) splits the width into equal columns, one per item (--cols).
-export const Menu = ({ items, label, iconOnly = false, className, style, layout = 'fixed', gap = 'gap-sm', linkClassName, dropdownClassName, panelClassName }) => {
-  return (
-    <nav
-      className={cx('menu grid', gap, layout, className)}
-      style={{ '--cols': items.length, ...style }}
-      aria-label={label}
-    >
-      {items.map(item => item.children
-        ? <MenuDropdown key={item.name} item={item} className={dropdownClassName} panelClassName={panelClassName} linkClassName={linkClassName} />
-        : <MenuLink key={item.href} item={item} iconOnly={iconOnly} className={linkClassName} />
-      )}
-    </nav>
-  );
-};
-
-const MenuLink = ({ item, iconOnly, className }) => (
-  <Link
-    href={item.href}
-    className={cx('menu-link', className, item.className)}
-    aria-label={iconOnly ? item.label ?? item.name : undefined}
-    title={iconOnly ? item.name : undefined}
-    {...externalProps(item)}
-  >
-    {item.icon && <i className={item.icon} aria-hidden="true"></i>}
-    {!iconOnly && <span className="text-truncate">{item.name}</span>}
-  </Link>
-);
-
-const MenuDropdown = ({ item, className, panelClassName, linkClassName }) => (
-  <details className={cx('menu-dropdown', className, item.className)}>
-    <summary className={cx('menu-link', linkClassName)}>
-      {item.icon && <i className={item.icon} aria-hidden="true"></i>}
-      <span className="text-truncate">{item.name}</span>
-    </summary>
-    <div className={cx('menu-panel bg border round shadow pad grid cols-1 gap-sm', panelClassName)}>
-      {item.children.map(child => <MenuLink key={child.href + child.name} item={child} className={linkClassName} />)}
-    </div>
-  </details>
-);

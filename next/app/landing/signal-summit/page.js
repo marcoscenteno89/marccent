@@ -9,6 +9,7 @@ import { FlipClock, Atom } from '@/components/widgets/fun';
 import ThemedMap from '@/components/apps/map';
 import { Page, Full, Box } from '../blocks';
 import { Backdrop, EventCountdown, SignupBar, CountUp } from '../parts';
+import { img } from '@/lib/img';
 
 /*
  * Landing page: Signal Summit 2027, a (fictional) developer conference. Neon violet and cyan on near-black, always dark:
@@ -102,7 +103,7 @@ export default function SignalSummit() {
       <Full space="2.5rem" style={{ background: DEEP, borderBlock: '1px solid color-mix(in srgb, var(--secondary) 20%, transparent)' }}>
         <div className="grid gap-lg text-center" style={{ '--cols': 4, '--min': '8rem' }}>
           {[ [ 3000, '+', 'builders', NEON.web ], [ 90, '', 'talks', NEON.ai ], [ 24, '', 'workshops', NEON.sys ], [ 41, '', 'countries', NEON.lead ] ].map(([ v, s, l, c ]) => (
-            <div key={l}><CountUp to={v} suffix={s} className="display fw-bold" /><br /><small className="text-uppercase" style={{ color: c, letterSpacing: '.2em' }}>{l}</small></div>
+            <div key={l} className="grid cols-1 gap-0"><CountUp to={v} suffix={s} className="display fw-bold" /><small className="text-uppercase" style={{ color: c, letterSpacing: '.2em' }}>{l}</small></div>
           ))}
         </div>
       </Full>
@@ -143,7 +144,7 @@ export default function SignalSummit() {
               {slots.map(([ time, title, track ]) => (
                 <div key={time + title} className="round pad-sm grid gap-sm" style={{ gridTemplateColumns: '3.2rem minmax(0, 1fr)', background: VOID, borderLeft: `4px solid ${track ? NEON[track] : 'var(--border-color)'}` }}>
                   <small style={{ fontFamily: 'ui-monospace, monospace', opacity: .7 }}>{time}</small>
-                  <span>{title}{track && <><br /><small style={{ color: NEON[track] }}>{TRACKS.find(t => t[0] === track)[2]}</small></>}</span>
+                  <span className="grid cols-1 gap-0">{title}{track && <small style={{ color: NEON[track] }}>{TRACKS.find(t => t[0] === track)[2]}</small>}</span>
                 </div>
               ))}
             </div>
@@ -182,9 +183,9 @@ export default function SignalSummit() {
       </Full>
 
       {/* SHORT: scholarships, boxed. */}
-      <Box className="bg-gradient-darker" inner="grid gap-sm items-center text-center" style={{ '--cols': 3, '--min': '12rem' }}>
+      <Box className="bg-gradient-darker" inner="grid gap-sm items-center text-center" style={{ '--cols': 3, '--min': '12rem', color: 'var(--light)' }}>
         {[ [ 'graduation-cap', '200 student passes' ], [ 'hand-holding-heart', '120 diversity scholarships' ], [ 'plane', 'Travel grants up to €800' ] ].map(([ i, t ]) => (
-          <span key={t} className="center gap-sm fw-bold"><Icon name={i} className="text-secondary" />{t}</span>
+          <span key={t} className="center gap-sm fw-bold"><Icon name={i} />{t}</span>
         ))}
       </Box>
 
@@ -195,7 +196,7 @@ export default function SignalSummit() {
             <Head tag="venue" title="On the river, in the old docks" c={NEON.sys} text="A converted 1920s warehouse on the Tagus, ten minutes from the airport by metro. Hotel blocks at partner rates within walking distance." />
             <div className="grid fixed cols-3 gap-sm text-center">
               {[ [ 'train-subway', '10 min', 'metro' ], [ 'hotel', '8', 'hotels' ], [ 'sun', '24°', 'in May' ] ].map(([ i, v, l ]) => (
-                <div key={l} className="round pad-sm" style={glow(NEON.sys)}><Icon name={i} style={{ color: NEON.sys }} /><br /><strong>{v}</strong><br /><small style={{ opacity: .7 }}>{l}</small></div>
+                <div key={l} className="grid cols-1 gap-0 justify-center round pad-sm" style={glow(NEON.sys)}><Icon name={i} style={{ color: NEON.sys }} /><strong>{v}</strong><small style={{ opacity: .7 }}>{l}</small></div>
               ))}
             </div>
           </div>
@@ -203,9 +204,9 @@ export default function SignalSummit() {
         </div>
         <Head tag="after hours" title="When the talks end" c={NEON.ai} />
         <div className="grid" style={{ '--cols': 3, '--min': '15rem' }}>
-          <ImageCard src="/img/red3.webp" ratio="4 / 3" overlay="fade" badge="Day 1" label="Rooftop · Alcântara" title="Welcome party at sunset" style={glow(NEON.ai)} />
-          <ImageCard src="/img/blue2.webp" ratio="4 / 3" overlay="blur" badge="Day 4" label="Cascais coast" title="The speakers' Sunday walk" style={glow(NEON.web)} />
-          <ImageCard src="/img/orange5.webp" ratio="4 / 3" overlay="focus" align="center" label="Monsanto park" title="Hackathon demos, outdoors" style={glow(NEON.lead)} />
+          <ImageCard src={img('red3')} ratio="4 / 3" overlay="fade" badge="Day 1" label="Rooftop · Alcântara" title="Welcome party at sunset" style={glow(NEON.ai)} />
+          <ImageCard src={img('blue2')} ratio="4 / 3" overlay="blur" badge="Day 4" label="Cascais coast" title="The speakers' Sunday walk" style={glow(NEON.web)} />
+          <ImageCard src={img('orange5')} ratio="4 / 3" overlay="focus" align="center" label="Monsanto park" title="Hackathon demos, outdoors" style={glow(NEON.lead)} />
         </div>
       </Full>
       <section className="wrap wrap-fluid pad-0">

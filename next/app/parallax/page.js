@@ -21,7 +21,7 @@ const SKY = {
 const SCENES = [
   { name: 'Night in the mountains', note: 'stars, moon, far ranges, peaks, hills, pines and a stag', sky: SKY.night,
     layers: [ 'stars', 'moon', 'ranges', 'mountains', 'hills', 'forest' ],
-    children: <Button icon="arrow-down" href="#city" className="gradient">Start climbing</Button> },
+    children: <Button icon="arrow-down" href="#city" className="bg border">Start climbing</Button> },
   { name: 'City', note: 'clouds, a far skyline and bridge, two skylines, the street', sky: SKY.day, layers: [ 'clouds', 'birds', 'farcity', 'city', 'city', 'street' ] },
   { name: 'Grand Canyon', note: 'sun, wisps, far mesas, the canyon, the rim', sky: SKY.dusk, layers: [ 'sun', 'wisps', 'birds', 'mesas', 'canyon', 'canyon', 'rim' ] },
   { name: 'Monument Valley', note: 'stars, moon, mesas, buttes, dunes, cacti', sky: SKY.night, layers: [ 'stars', 'moon', 'mesas', 'buttes', 'dunes', 'cactus' ] },
@@ -39,10 +39,10 @@ const SECTIONS = ['Scenery'];
 export default function ParallaxPage() {
   return (
     <>
-    <div className="wrap grid cols-1 gap-lg">
-      <GalleryHeader title="Parallax" sections={SECTIONS}>
-        <p>Silhouette layers that stack into landscapes, scrolled through full screen: far layers drift, near ones hold.</p>
-      </GalleryHeader>
+    <GalleryHeader title="Parallax" sections={SECTIONS}>
+      <p>Silhouette layers that stack into landscapes, scrolled through full screen: far layers drift, near ones hold.</p>
+    </GalleryHeader>
+    <div className="wrap grid cols-1 gap-lg pad-y-lg">
 
       <Section name="Scenery" intro="components/visuals/scenery.js: neutral silhouette layers (the text color mixed into the page color: the front layer nearly the text color, the back one nearly the page color, the ones between spread evenly) to stack into parallax landscapes; they work in light and dark mode and with any theme. The full-screen scenes below combine them: scroll through, far layers drift, near ones hold.">
         <Demo name="Layers">Each one alone</Demo>
@@ -63,7 +63,7 @@ export default function ParallaxPage() {
     {SCENES.map(({ name, note, layers, sky, children }) => (
       <section key={name} id={name.toLowerCase().replace(/ /g, '-')} className="wrap wrap-fluid pad-0">
         <Scenery layers={layers} height="100vh" min="40vh" style={{ background: sky }}>
-          <small className="text-uppercase fw-bold text-primary" style={{ letterSpacing: '.25em' }}>{note}</small>
+          <small className="text-uppercase fw-bold opacity-75" style={{ letterSpacing: '.25em' }}>{note}</small>
           <h2 className="display-lg">{name}</h2>
           {children}
         </Scenery>

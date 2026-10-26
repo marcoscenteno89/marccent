@@ -20,10 +20,6 @@
   /* --secondary-darker: color-mix(in srgb, var(--secondary) 60%, #000); */
   /* Trying it out: no brand shades, every one the original color (with SHADES in lib/section-theme.js, which the
      theme changer follows). Comment these four out to bring the shades back. */
-  --primary-lighter: var(--primary);
-  --primary-darker: var(--primary);
-  --secondary-lighter: var(--secondary);
-  --secondary-darker: var(--secondary);
 
   /* Status colors (the usual names, in bright neon-pastel shades): danger for destructive actions, success for confirmations,
      info for notes. Fixed; the theme changer doesn't touch them. Shades are mixed like the brand colors. */

@@ -21,7 +21,7 @@ export default function AppPage({ params }: { params: { slug: string } }) {
   const others = apps.filter(a => a !== app);
 
   return (
-    <div className="grid cols-1 gap-0">
+    <>
 
       {/* APP: the head, the app in a card across the row, then how to play (closed until asked for). */}
       <Full className="bg">
@@ -43,6 +43,6 @@ export default function AppPage({ params }: { params: { slug: string } }) {
           {others.map(a => <AppCard key={a.url} app={a} />)}
         </div>
       </Full>
-    </div>
+    </>
   )
 }
