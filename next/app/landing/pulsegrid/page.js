@@ -167,12 +167,12 @@ export default function Pulsegrid() {
           </div>
           <div className="w-100" style={{ maxWidth: '26rem', justifySelf: 'center' }}>
             <Orbit autoPlay interval={2500} startAngle={-90} items={[
-              { icon: <i className="fa-brands fa-slack" />, title: 'Slack', text: 'Alerts and digests in any channel.' },
-              { icon: <i className="fa-brands fa-stripe" />, title: 'Stripe', text: 'Revenue joined to behavior.' },
-              { icon: <i className="fa-brands fa-shopify" />, title: 'Shopify', text: 'Every order and cart, no code.' },
-              { icon: <i className="fa-brands fa-hubspot" />, title: 'HubSpot', text: 'Health scores on each deal.' },
-              { icon: <i className="fa-brands fa-aws" />, title: 'S3 export', text: 'Raw events to your bucket.' },
-              { icon: <i className="fa-brands fa-js" />, title: 'JS SDK', text: 'One snippet, under 9 kB.' },
+              { icon: <Icon name="slack" family="fa-brands" />, title: 'Slack', text: 'Alerts and digests in any channel.' },
+              { icon: <Icon name="stripe" family="fa-brands" />, title: 'Stripe', text: 'Revenue joined to behavior.' },
+              { icon: <Icon name="shopify" family="fa-brands" />, title: 'Shopify', text: 'Every order and cart, no code.' },
+              { icon: <Icon name="hubspot" family="fa-brands" />, title: 'HubSpot', text: 'Health scores on each deal.' },
+              { icon: <Icon name="aws" family="fa-brands" />, title: 'S3 export', text: 'Raw events to your bucket.' },
+              { icon: <Icon name="js" family="fa-brands" />, title: 'JS SDK', text: 'One snippet, under 9 kB.' },
             ]} />
           </div>
         </div>

@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { MiniThemeEditor } from 'marccent-theme/components/theme/mini-editor';
 import { Button } from 'marccent-theme/components/ui/button';
+import { ToggleButton } from 'marccent-theme/components/ui/toggle-button';
 import { NavBar } from 'marccent-theme/components/widgets/navbar';
 import { main, social, externalProps } from './menus';
 import { ThemeLogo } from '@/components/brand/theme-logo';
@@ -39,15 +40,12 @@ export default function Header() {
         </nav>
       }
       last={
-        // hover-expand: the icon at rest, the label on hover.
-        <Button
-          icon={themeOpen ? 'xmark' : 'brush'}
-          className="hover-expand col-last"
-          aria-expanded={themeOpen}
-          aria-controls="theme-panel"
-          onClick={() => setThemeOpen(!themeOpen)}>
+        // The theme's ToggleButton (brush → x), opening the panel above (aria-expanded, Esc). hover-expand: the icon
+        // at rest, the label on hover.
+        <ToggleButton data-name="theme" icon="brush" activeIcon="xmark" className="hover-expand col-last"
+          open={themeOpen} onToggle={setThemeOpen} controls="theme-panel">
           Theme
-        </Button>
+        </ToggleButton>
       }
       top={
         // Always rendered so it can slide shut too (.collapse, the theme's animations.css); inert while closed, so

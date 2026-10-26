@@ -1,6 +1,7 @@
 'use client';
 import { useContext, useState, useEffect } from "react";
 import { Button } from 'marccent-theme/components/ui/button';
+import { ToggleButton } from 'marccent-theme/components/ui/toggle-button';
 import { Icon } from 'marccent-theme/components/ui/icon';
 import { Loading } from 'marccent-theme/components/ui/loading';
 import { Alert } from 'marccent-theme/components/ui/alert';
@@ -429,9 +430,10 @@ export default function ThemePage() {
           <div className="sub rows-3 bg border round shadow pad justify-center text-center">
             <h5>Stopwatch</h5>
             <Counter className="display-sm self-center" active={timing} getTime={(t) => say(`Stopped at ${t.minute}:${t.second}.${t.tos}`, 'info')} />
-            <Button icon={timing ? 'stop' : 'play'} className={timing ? 'danger' : 'success'} onClick={() => setTiming(!timing)}>
-              {timing ? 'Stop' : 'Start'}
-            </Button>
+            <ToggleButton data-name="stopwatch" icon="play" activeIcon="stop" activeLabel="Stop" className={timing ? 'danger' : 'success'}
+              open={timing} onToggle={setTiming}>
+              Start
+            </ToggleButton>
           </div>
           <div className="sub rows-3 bg border round shadow pad justify-center text-center">
             <h5>Countdown</h5>

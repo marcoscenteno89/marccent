@@ -6,6 +6,7 @@ import { Icon } from 'marccent-theme/components/ui/icon';
 import { Button } from 'marccent-theme/components/ui/button';
 import { Alert } from 'marccent-theme/components/ui/alert';
 import { Board } from 'marccent-theme/components/ui/board';
+import { Input } from 'marccent-theme/components/ui/field';
 import { Grid } from "marccent-theme/lib/grid_helper";
 import { Store, useStore } from "marccent-theme/lib/store";
 import 'marccent-theme/styles/components/form.css';
@@ -109,10 +110,10 @@ const MineSweeper = () => {
           {String(game.flags)}
         </Button>
         <Counter getTime={(time) => game.showTime(time)} active={game.active} />
-        <select className="input" aria-label="Difficulty" value={game.level}
+        <Input as="select" name="level" label="Difficulty" value={game.level}
           onChange={(e) => game.restart(Number(e.target.value))}>
           {LEVELS.map((name, i) => <option key={name} value={i + 1}>{name}</option>)}
-        </select>
+        </Input>
         <Button onClick={() => game.restart()}>Start Over</Button>
       </div>
       <Board grid={game.grid} className="bg-gradient-run">

@@ -2,6 +2,7 @@
 import { Menu } from '@/components/layout/menus';
 import { cx } from 'marccent-theme/lib/cx';
 import { Icon } from 'marccent-theme/components/ui/icon';
+import { Collage as ThemeCollage } from 'marccent-theme/components/widgets/collage';
 
 /*
  * The design gallery's building blocks, shared by its pages (Theme, Shapes, Widgets: the Design menu): a page header
@@ -73,13 +74,9 @@ const Row = ({ label, note, gap = 'sm', className = 'pad-y-sm', children }) => (
   </div>
 );
 
-// A section's demos as a collage (the Widgets and Shapes pages): tiles on a dense grid, a column no narrower than
-// min, a row no shorter than row (taller when a tile needs it).
-const Collage = ({ cols = 4, min = '13rem', row = '12rem', children }) => (
-  <div className="grid gap-sm" style={{ '--cols': cols, '--min': min, gridAutoRows: `minmax(${row}, auto)`, gridAutoFlow: 'dense' }}>
-    {children}
-  </div>
-);
+// A section's demos as a collage (the Widgets and Shapes pages): the theme's Collage with these pages' cell sizes and
+// a tighter gap; its Tiles below as children.
+const Collage = (props) => <ThemeCollage cols={4} min="13rem" row="12rem" className="gap-sm" {...props} />;
 
 // Tile sizes: wide = two columns, wider = three, tall = two rows, big = two of each, full = the whole row (the column
 // spans wait for a wide enough grid).
