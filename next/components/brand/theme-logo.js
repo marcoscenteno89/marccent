@@ -14,7 +14,7 @@ const isBrand = (set) => [ set?.primary?.hex, set?.secondary?.hex ].every((hex, 
  */
 const ThemeLogo = (props) => {
   const theme = useContext(ThemeContext)?.theme;
-  if (!theme || isBrand(theme.palettes[theme.palette])) return <Logo currentText {...props} />;
+  if (!theme || isBrand(theme.getPalette())) return <Logo currentText {...props} />;
   return <Logo variant={theme.isDark ? 'white' : 'dark'} {...props} />;
 }
 
