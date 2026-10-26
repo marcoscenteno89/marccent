@@ -41,9 +41,9 @@ const S = {
   },
   motion: {
     kicker: 'Motion in one attribute',
-    title: 'data-canvas="snow" and it snows',
+    title: 'data-name="snow" and it snows',
     text: 'Eleven canvas animations drawn in the theme colors, mounted from an attribute on any element. They pause off screen and stay still for visitors who ask for reduced motion.',
-    code: '<div data-canvas="snow">…</div>\n<section data-canvas="blob">…</section>',
+    code: '<div data-component="animation" data-name="snow">…</div>\n<section data-component="animation" data-name="blob">…</section>',
     canvases: [ 'snow', 'bubbles', 'fireflies' ],
   },
   hood: {
@@ -147,7 +147,7 @@ const Strengths = () => {
           <div className="grid gap-sm" style={{ '--cols': 3, '--min': '10rem' }}>
             {S.motion.canvases.map(c => (
               <figure key={c} data-component="canvas-sample" data-name={c} className="stack round border overflow-hidden" style={{ minHeight: '14rem' }}>
-                <div data-canvas={c} className="bg-gradient-darker w-100 h-100" aria-hidden="true" />
+                <div data-component="animation" data-name={c} className="bg-gradient-darker w-100 h-100" aria-hidden="true" />
                 <figcaption className="self-end pad-sm" style={{ position: 'relative' }}>
                   <code className="fs-sm" style={{ color: 'var(--light)' }}>{c}</code>
                 </figcaption>

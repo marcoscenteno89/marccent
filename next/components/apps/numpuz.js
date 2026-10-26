@@ -94,7 +94,7 @@ const NumPuz = () => {
       <Board grid={grid} className="bg-gradient-run">
         {(cell, i) => (
           // A card per tile, each a window onto one gradient across the board (.bg-gradient-run); the gap is left empty.
-          <button type="button" key={i} className={cx('center round square', cell.value !== null && 'shadow hover-holographic')}
+          <button data-component="button" data-name={i} type="button" key={i} className={cx('center round square', cell.value !== null && 'shadow hover-holographic')}
             style={cell.value !== null ? undefined : { background: 'none' }}
             draggable={!game.won && game.besideGap(cell)}
             onClick={() => game.move(cell)}

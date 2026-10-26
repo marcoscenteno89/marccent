@@ -26,7 +26,7 @@ const HERO = {
 // title's size, the card's and intro's widths and the content's column are inline (minmax(0, 1fr), as in CanvasBand, so it shrinks on a phone).
 const GalleryHeader = ({ title, sections, canvas = HERO[title]?.canvas ?? 'blob', icon = HERO[title]?.icon ?? 'palette', children }) => (
   <header data-component="gallery-header" data-name={slug(title)} className="wrap wrap-fluid pad-0 stack overflow-hidden" style={{ minHeight: '26rem' }}>
-    <div data-canvas={canvas} className="bg w-100 h-100" aria-hidden="true" />
+    <div data-component="animation" data-name={canvas} className="bg w-100 h-100" aria-hidden="true" />
     <div className="col-center pad-lg text-center" style={{ position: 'relative', gridTemplateColumns: 'minmax(0, 1fr)' }}>
       <div className="bg border round shadow pad-lg grid cols-1 justify-center w-100" style={{ maxWidth: '62rem' }}>
         <small className="fw-bold text-uppercase text-primary" style={{ letterSpacing: '.25em' }}>

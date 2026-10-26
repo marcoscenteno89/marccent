@@ -119,7 +119,7 @@ const MineSweeper = () => {
         {(cell, i) => (
           // A card per square. Hidden: a window onto one gradient across the board (.bg-gradient-run; colors.css counts
           // only 24 cells, so each gets its place and the total here), raised with a holographic hover. Revealed: flat.
-          <button type="button" key={cell.id} className={cx('center round square', cell.revealed ? 'bg border' : 'shadow hover-holographic')}
+          <button data-component="button" data-name={cell.id} type="button" key={cell.id} className={cx('center round square', cell.revealed ? 'bg border' : 'shadow hover-holographic')}
             style={cell.revealed ? { opacity: 0.6, backgroundImage: 'none' } : { '--run-i': i, '--run-n': game.grid.cells.length }}
             onClick={() => (flagMode ? game.flag(cell) : game.reveal(cell))}
             onContextMenu={(e) => { e.preventDefault(); game.flag(cell); }}>

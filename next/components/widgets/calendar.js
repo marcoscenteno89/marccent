@@ -119,7 +119,7 @@ const Calendar = ({ mode = 'single', onChange, events = [], min, max, weekStart 
   return (
     <div className={cx('bg border round shadow pad grid cols-1 gap-sm', className)} style={style}>
       <div className="header"> {/* the card's own padding is enough */}
-        <button type="button" className="text-start fw-bold fs-lg text-truncate" onClick={() => setView(view === 'month' ? 'year' : 'decade')}
+        <button data-component="button" data-name="view" type="button" className="text-start fw-bold fs-lg text-truncate" onClick={() => setView(view === 'month' ? 'year' : 'decade')}
           disabled={view === 'decade'} aria-label={`${view === 'month' ? cursor.format('MMMM YYYY') : title}${view !== 'decade' ? ', zoom out' : ''}`}
           style={{ border: 0, background: 'none', color: 'inherit', padding: 0, cursor: view === 'decade' ? 'default' : 'pointer' }}>
           <span className="text-gradient">{title}</span>
@@ -138,7 +138,7 @@ const Calendar = ({ mode = 'single', onChange, events = [], min, max, weekStart 
             return (
               <Fragment key={k}>
                 {weekNumbers && i % 7 === 0 && <small className="col-center opacity-50" title={`Week ${weekNo(d)}`}>{weekNo(d)}</small>}
-                <button type="button" data-date={k} role="gridcell" tabIndex={d.isSame(cursor, 'day') ? 0 : -1}
+                <button data-component="button" data-name="day" type="button" data-date={k} role="gridcell" tabIndex={d.isSame(cursor, 'day') ? 0 : -1}
                   aria-selected={!!end || !!inRange(d)} aria-current={d.isToday() ? 'date' : undefined} disabled={!allowed(d)}
                   aria-label={`${d.format('dddd, MMMM Do, YYYY')}${list.length ? `, ${list.length} event${list.length > 1 ? 's' : ''}` : ''}`}
                   onClick={() => pick(d)} onMouseEnter={() => mode === 'range' && setHover(d)} onFocus={() => setCursor(d)}
@@ -164,7 +164,7 @@ const Calendar = ({ mode = 'single', onChange, events = [], min, max, weekStart 
             const count = Object.keys(byDay).filter(k => dayjs(k).isSame(m, 'month')).reduce((n, k) => n + byDay[k].length, 0);
             const now = m.isSame(today, 'month');
             return (
-              <button key={m.month()} type="button" onClick={() => { setCursor(clamp(m.date(Math.min(cursor.date(), m.daysInMonth())))); setView('month'); }}
+              <button data-component="button" data-name={m.format('MMM')} key={m.month()} type="button" onClick={() => { setCursor(clamp(m.date(Math.min(cursor.date(), m.daysInMonth())))); setView('month'); }}
                 className={cx('round col-center pad-sm', m.isSame(cursor, 'month') ? 'bg-gradient' : now && 'text-primary fw-bold')}
                 style={{ border: `var(--border-width) solid ${now ? 'var(--primary)' : 'var(--border-color)'}`, background: m.isSame(cursor, 'month') ? undefined : 'none',
                   color: m.isSame(cursor, 'month') ? 'var(--light)' : 'inherit', cursor: 'pointer' }}>
@@ -181,7 +181,7 @@ const Calendar = ({ mode = 'single', onChange, events = [], min, max, weekStart 
           {Array.from({ length: 12 }, (_, i) => decadeStart - 1 + i).map(y => {
             const d = cursor.year(y);
             return (
-              <button key={y} type="button" onClick={() => { setCursor(clamp(d)); setView('year'); }}
+              <button data-component="button" data-name={y} key={y} type="button" onClick={() => { setCursor(clamp(d)); setView('year'); }}
                 className={cx('round col-center pad-sm', y === cursor.year() ? 'bg-gradient' : y === today.year() && 'text-primary fw-bold',
                   (y < decadeStart || y > decadeStart + 9) && 'opacity-50')}
                 style={{ border: `var(--border-width) solid ${y === today.year() ? 'var(--primary)' : 'var(--border-color)'}`,

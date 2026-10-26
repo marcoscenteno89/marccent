@@ -10,7 +10,7 @@ import { img } from '@/lib/img';
 /*
  * Animations gallery: the canvas animations (components/visuals/canvas.js). A player (one large animation and a
  * slider to pick it), then a collage like the Images page's with live animations in place of the photos. Every canvas
- * is a data-canvas element (visuals/canvas-scanner.js): each runs only while on screen, the collage's at 30 fps.
+ * is an animation element (data-component="animation", visuals/canvas-scanner.js): each runs only while on screen, the collage's at 30 fps.
  */
 
 export const metadata = { title: 'Animations' };
@@ -88,7 +88,7 @@ export default function AnimationsPage() {
   return (
     <>
     <GalleryHeader title="Animations" sections={['Player', 'Card', 'Collage']}>
-      <p>The canvas animations: pick one to play it large, or see them all at once in a collage. Any element can run one with a data-canvas attribute (&quot;blob&quot;, &quot;snow&quot;…).</p>
+      <p>The canvas animations: pick one to play it large, or see them all at once in a collage. Any element can run one with data-component=&quot;animation&quot; and a data-name (&quot;blob&quot;, &quot;snow&quot;…).</p>
     </GalleryHeader>
     <div className="wrap grid cols-1 gap-lg pad-y-lg">
 

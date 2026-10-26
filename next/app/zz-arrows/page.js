@@ -98,8 +98,8 @@ export default function ArrowsPreview() {
           {Cards()}
         </Swiper>
         <div className="grid auto-cols cols-center gap-sm">
-          <button ref={c.prev} type="button" className="btn circle" aria-label="Previous"><i className="fa-solid fa-chevron-left" aria-hidden="true" /></button>
-          <button ref={c.next} type="button" className="btn circle" aria-label="Next"><i className="fa-solid fa-chevron-right" aria-hidden="true" /></button>
+          <button data-component="button" data-name="prev" ref={c.prev} type="button" className="btn circle" aria-label="Previous"><i className="fa-solid fa-chevron-left" aria-hidden="true" /></button>
+          <button data-component="button" data-name="next" ref={c.next} type="button" className="btn circle" aria-label="Next"><i className="fa-solid fa-chevron-right" aria-hidden="true" /></button>
         </div>
       </Example>
 
@@ -107,8 +107,8 @@ export default function ArrowsPreview() {
         <div className="header">
           <strong className="h5">Animations</strong>
           <div className="grid auto-cols gap-sm">
-            <button ref={d.prev} type="button" className="btn outline-primary" aria-label="Previous"><i className="fa-solid fa-chevron-left" aria-hidden="true" /></button>
-            <button ref={d.next} type="button" className="btn outline-primary" aria-label="Next"><i className="fa-solid fa-chevron-right" aria-hidden="true" /></button>
+            <button data-component="button" data-name="prev" ref={d.prev} type="button" className="btn outline-primary" aria-label="Previous"><i className="fa-solid fa-chevron-left" aria-hidden="true" /></button>
+            <button data-component="button" data-name="next" ref={d.next} type="button" className="btn outline-primary" aria-label="Next"><i className="fa-solid fa-chevron-right" aria-hidden="true" /></button>
           </div>
         </div>
         <Swiper modules={[Navigation, A11y]} slidesPerView="auto" spaceBetween={32} onSwiper={d.wire} navigation={{}} className="w-100 ex-custom">
@@ -122,20 +122,20 @@ export default function ArrowsPreview() {
           {Cards()}
         </Swiper>
         <div className="center gap-0 bg border shadow-sm" style={{ justifySelf: 'center', borderRadius: '99px', overflow: 'hidden' }}>
-          <button ref={e.prev} type="button" className="btn" style={{ border: 0, borderRadius: 0 }} aria-label="Previous"><i className="fa-solid fa-arrow-left" aria-hidden="true" /></button>
+          <button data-component="button" data-name="prev" ref={e.prev} type="button" className="btn" style={{ border: 0, borderRadius: 0 }} aria-label="Previous"><i className="fa-solid fa-arrow-left" aria-hidden="true" /></button>
           <div ref={e.dots} className="fs-sm fw-bold" style={{ position: 'static', width: 'auto', paddingInline: 'var(--space-sm)' }} />
-          <button ref={e.next} type="button" className="btn" style={{ border: 0, borderRadius: 0 }} aria-label="Next"><i className="fa-solid fa-arrow-right" aria-hidden="true" /></button>
+          <button data-component="button" data-name="next" ref={e.next} type="button" className="btn" style={{ border: 0, borderRadius: 0 }} aria-label="Next"><i className="fa-solid fa-arrow-right" aria-hidden="true" /></button>
         </div>
       </Example>
 
       <Example n={6} title="Gradient arrows on the sides" note="Filled theme-gradient circles sitting just outside the slider, vertically centered.">
         <div className="grid items-center gap-sm" style={{ gridTemplateColumns: 'auto minmax(0, 1fr) auto' }}>
-          <button ref={f.prev} type="button" className="btn gradient circle" aria-label="Previous"><i className="fa-solid fa-angle-left" aria-hidden="true" /></button>
+          <button data-component="button" data-name="prev" ref={f.prev} type="button" className="btn gradient circle" aria-label="Previous"><i className="fa-solid fa-angle-left" aria-hidden="true" /></button>
           <Swiper modules={[Navigation, A11y]} slidesPerView="auto" spaceBetween={32} onSwiper={f.wire}
             navigation={{}} className="w-100 ex-custom">
             {Cards()}
           </Swiper>
-          <button ref={f.next} type="button" className="btn gradient circle" aria-label="Next"><i className="fa-solid fa-angle-right" aria-hidden="true" /></button>
+          <button data-component="button" data-name="next" ref={f.next} type="button" className="btn gradient circle" aria-label="Next"><i className="fa-solid fa-angle-right" aria-hidden="true" /></button>
         </div>
       </Example>
     </div>

@@ -162,7 +162,7 @@ export default function ThemePage() {
           <Button icon="toggle-on" aria-pressed="true">Pressed</Button>
           <Button icon="ban" disabled>Disabled</Button>
           <Button icon="link-slash" href="/" disabled>Disabled link</Button>
-          <button type="button" className="btn-close col-center" aria-label="Close"><Icon name="xmark" /></button>
+          <button data-component="button" data-name="close" type="button" className="btn-close col-center" aria-label="Close"><Icon name="xmark" /></button>
         </Row>
         <Row label="Filled" note=".btn + a color">
           {FILLS.map((c, i) => <Button key={c} icon={icon(i)} className={c}>{c}</Button>)}
@@ -186,12 +186,12 @@ export default function ThemePage() {
             <Button icon="brush" className="outline-gradient">Theme</Button>
           </div>
         </div>
-        <Demo name="Animated">data-canvas on a button: a canvas animation behind its icon and label (on dark, so the label reads over the theme colors)</Demo>
+        <Demo name="Animated">data-component="button animation" on a button: a canvas animation (data-name) behind its icon and label (on dark, so the label reads over the theme colors)</Demo>
         <Row>
           {[['blob', 'droplet'], ['fire', 'fire'], ['wave', 'water'], ['network-loop', 'diagram-project'],
             ['particle-flowfield', 'wind'], ['orbit', 'circle-notch'], ['snow', 'snowflake'],
             ['fireflies', 'star'], ['leaves', 'leaf'], ['rain', 'cloud-rain'], ['bubbles', 'water']].map(([anim, ic]) => (
-            <Button key={anim} icon={ic} className="dark" data-canvas={anim}>{anim}</Button>
+            <Button key={anim} icon={ic} className="dark" data-component="button animation" data-name={anim}>{anim}</Button>
           ))}
         </Row>
       </Section>

@@ -340,12 +340,12 @@ export default function DocsPage() {
         ]} />
       </Section>
 
-      <Section name="Animations" intro="Canvas backgrounds on any element with data-canvas. They draw in the theme's colors, only run while on screen and hold still for reduced motion.">
-        <Example name="data-canvas" text="blob, network-loop, wave, snow… (see the Animations page). data-canvas-fps caps the frame rate."
+      <Section name="Animations" intro="Canvas backgrounds on any element with data-component='animation'. They draw in the theme's colors, only run while on screen and hold still for reduced motion.">
+        <Example name="animation" text="data-name: blob, network-loop, wave, snow… (see the Animations page). data-fps caps the frame rate."
           code={`
-            <div data-canvas="blob" data-canvas-fps="20" style={{ height: '10rem' }} />
+            <div data-component="animation" data-name="blob" data-fps="20" style={{ height: '10rem' }} />
           `}>
-          <div data-canvas="blob" data-canvas-fps="20" className="round overflow-hidden" style={{ height: '8rem' }} />
+          <div data-component="animation" data-name="blob" data-fps="20" className="round overflow-hidden" style={{ height: '8rem' }} />
         </Example>
       </Section>
 

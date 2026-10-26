@@ -1,4 +1,4 @@
-// Shared: no 'use client' (no state or effects): the canvas mounts from data-canvas (visuals/canvas-scanner.js).
+// Shared: no 'use client' (no state or effects): the canvas mounts from data-component="animation" (visuals/canvas-scanner.js).
 
 /**
  * CanvasBand: a full-width section with a live canvas animation behind its content, drawn in the theme colors (or
@@ -13,7 +13,7 @@
  */
 const CanvasBand = ({ canvas, height = '60vh', id, label, children }) => (
   <section id={id} className="wrap wrap-fluid pad-0 stack" style={{ minHeight: height }} aria-labelledby={label}>
-    <div data-canvas={canvas} className="bg w-100 h-100" aria-hidden="true" />
+    <div data-component="animation" data-name={canvas} className="bg w-100 h-100" aria-hidden="true" />
     {children && <div className="col-center pad text-center" style={{ position: 'relative', gridTemplateColumns: 'minmax(0, 1fr)' }}>{children}</div>}
   </section>
 );

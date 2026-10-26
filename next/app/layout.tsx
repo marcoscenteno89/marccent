@@ -55,7 +55,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <ScopeThemes /> {/* elements' own themes, by id (a theme editor's scope: components/theme/editor.js) */}
           <Analytics enabled={!debug} />
           <PauseOffscreen />
-          <CanvasScanner /> {/* canvas backgrounds from [data-canvas] (components/visuals/canvas-scanner.js) */}
+          <CanvasScanner /> {/* canvas backgrounds on data-component="animation" (components/visuals/canvas-scanner.js) */}
           <JsonLd data={siteGraph()} /> {/* who runs the site and what it is, for search and answer engines (lib/schema.js) */}
         </Body>
       </SiteThemeProvider>
