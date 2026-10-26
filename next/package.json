@@ -4,6 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "dev:link": "rm -rf node_modules/marccent-theme .next && ln -s ../../../marccent-theme node_modules/marccent-theme",
+    "dev:unlink": "rm -rf node_modules/marccent-theme .next && npm install",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
