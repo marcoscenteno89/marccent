@@ -29,3 +29,5 @@ server/static
 server/log
 server/.idea
 server/*/migrations
+.vscode/
+*.tsbuildinfo
