@@ -345,6 +345,19 @@ export const apps = {
       Pick an index from the list, or type its FRED series ID (for example \`SP500\`) in the search box and submit. Hover over the chart to read values.
     `,
   },
+  zones: {
+    name: 'Zones',
+    about: `
+      Draw service zones on a map, then let anyone check whether an address is inside one and sign up for it. Each zone has a color, an optional parent zone, a sign-up goal and a deadline, with a progress ring and a countdown. Built from a WordPress plugin for planning fiber zones; no login, and everything stays in your browser.
+    `,
+    instructions: `
+      **Check an address:** type a street address and submit, use your location, or click "Drop a pin" and then the map. If the point is inside a zone (the smallest one it's in, when zones are nested), sign up to count toward that zone's goal.
+
+      **Edit zones:** click "New zone", click the map at each corner, then "Finish". Pick a zone to rename it, recolor it, put it inside a parent zone, or set its goal and deadline; drag its corners on the map to reshape it.
+
+      - **Tip:** Zones and sign-ups are saved in this browser. Use Export to keep a copy as JSON, and Import to load it on another device.
+    `,
+  },
 };
 
 // Privacy policy: one box per section. cards (optional) render as a card each, after the body.

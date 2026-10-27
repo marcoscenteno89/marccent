@@ -7,6 +7,7 @@ const MineSweeper = dynamic(() => import('@/components/apps/minesweeper'));
 const NumPuz = dynamic(() => import('@/components/apps/numpuz'));
 const Weather = dynamic(() => import('@/components/apps/weather'));
 const StockLookup = dynamic(() => import('@/components/apps/stock_lookup'));
+const Zones = dynamic(() => import('@/components/apps/zones'));
 
 export type App = {
   name: string;
@@ -51,6 +52,14 @@ export const apps: App[] = [
     about: text.stock_lookup.about,
     instructions: text.stock_lookup.instructions,
     component: StockLookup,
+  },
+  {
+    name: text.zones.name,
+    url: '/apps/zones',
+    icon: 'fa-draw-polygon',
+    about: text.zones.about,
+    instructions: text.zones.instructions,
+    component: Zones,
   },
 ];
 
