@@ -3,7 +3,7 @@ import { Icon } from 'marccent-theme/components/ui/icon';
 import { Alert } from 'marccent-theme/components/ui/alert';
 import { Accordion, AccordionItem } from 'marccent-theme/components/ui/accordion';
 import { GalleryHeader, Section, Demo } from '@/components/gallery';
-import { Code } from '@/components/ui/code';
+import { Code } from 'marccent-theme/components/ui/code';
 
 /*
  * Docs: how to use marccent-theme. Install and set up, then the classes (layout, utilities, colors), the design styles,
