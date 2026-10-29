@@ -1,0 +1,20 @@
+# The Next site (next/): lint and types, against the marccent-theme release package.json pins. (The build needs the
+# site's keys from .env.local, so it isn't run here.)
+name: CI
+on:
+  push:
+  pull_request:
+jobs:
+  next:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: next
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install  # no lockfile in the repo (.gitignore)
+      - run: npx next lint
+      - run: npx tsc --noEmit

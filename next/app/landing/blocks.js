@@ -48,11 +48,15 @@ const Page = ({ palette, mode, className, style, children }) => {
 /**
  * Full: one full-width section (watched by PauseOffscreen, so its animations stop off screen); the background runs
  * edge to edge, the content sits in a .wrap.
- * @param {'light'|'dark'} [mode] - The section in that mode, whatever the page's: its background is the mode's page
- *   color (light or dark) and everything inside follows.
- * @param {string} [className] - Background classes (bg, bg-primary, bg-gradient-darker…) when not a mode.
- * @param {string} [inner='grid cols-1 gap-lg'] - Classes on the content box. @param {string} [wrap='wrap'] - Its width.
- * @param {string} [space='clamp(3rem, 7vw, 6rem)'] - Padding above and below (inline: --pad would reach every .pad inside).
+ * @param {Object} props
+ * @param {string} [props.id] @param {Object} [props.style] @param {React.ReactNode} [props.children]
+ * @param {'light'|'dark'} [props.mode] - The section in that mode, whatever the page's: its background is the mode's
+ *   page color (light or dark) and everything inside follows.
+ * @param {string} [props.className] - Background classes (bg, bg-primary, bg-gradient-darker…) when not a mode.
+ * @param {string} [props.inner='grid cols-1 gap-lg'] - Classes on the content box.
+ * @param {string} [props.wrap='wrap'] - Its width.
+ * @param {string} [props.space='clamp(3rem, 7vw, 6rem)'] - Padding above and below (inline: --pad would reach every
+ *   .pad inside).
  */
 const Full = ({ id, mode, className, style, inner = 'grid cols-1 gap-lg', wrap = 'wrap', space = 'clamp(3rem, 7vw, 6rem)', children }) => (
   <section id={id} data-theme={mode} className={cx('wrap wrap-fluid', className)}

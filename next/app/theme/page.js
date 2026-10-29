@@ -188,7 +188,7 @@ export default function ThemePage() {
             <Button icon="brush" className="outline-gradient">Theme</Button>
           </div>
         </div>
-        <Demo name="Animated">data-component="button animation" on a button: a canvas animation (data-name) behind its icon and label (on dark, so the label reads over the theme colors)</Demo>
+        <Demo name="Animated">{'data-component="button animation"'} on a button: a canvas animation (data-name) behind its icon and label (on dark, so the label reads over the theme colors)</Demo>
         <Row>
           {[['blob', 'droplet'], ['fire', 'fire'], ['wave', 'water'], ['network-loop', 'diagram-project'],
             ['particle-flowfield', 'wind'], ['orbit', 'circle-notch'], ['snow', 'snowflake'],

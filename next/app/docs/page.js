@@ -62,10 +62,11 @@ export default function DocsPage() {
         <Code>{`
           // app/theme-provider.js
           'use client';
+          import Link from 'next/link';
           import { usePathname } from 'next/navigation';
           import { ThemeProvider } from 'marccent-theme/lib/context';
 
-          export const SiteThemeProvider = ({ children }) => <ThemeProvider path={usePathname()}>{children}</ThemeProvider>;
+          export const SiteThemeProvider = ({ children }) => <ThemeProvider path={usePathname()} link={Link}>{children}</ThemeProvider>;
         `}</Code>
         <Code>{`
           // app/layout.js
@@ -261,6 +262,7 @@ export default function DocsPage() {
         <Terms items={[
           ['scope', '"site", or the id of the element it themes. The element gets data-scope and its own palette, saved per page.'],
           ['ThemeProvider notify(msg, tone)', 'Where the theme\'s messages go; its toasts by default.'],
+          ['ThemeProvider link', 'The router\'s link component (next/link) for the links Button, Menu and the Dock render; plain <a>s without it.'],
           ['ModeToggle, GlassToggle, RainbowToggle, ThemeReset', 'Single controls (components/theme/toggles.js).'],
           ['DesignSelect, DesignCards, PaletteCards, PaletteSwatches', 'Pickers for the design style and palette.'],
           ['withTheme, withThemeRead', 'Read the theme in a component (components/theme/hoc.js).'],

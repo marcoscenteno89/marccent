@@ -17,18 +17,21 @@ const DEFAULT_CENTER = { lat: 43.49, lng: -112.034 }; // Idaho Falls
 // One loader per page: the Maps script loads once however many maps there are (the loader also refuses a
 // second instance with different options).
 let loader = null;
-const loadMaps = () => {
+// Any Maps library by name ('maps', 'geocoding'…) from the one loader.
+const loadMapsLibrary = (name) => {
   loader ??= new Loader({ apiKey: process.env.NEXT_PUBLIC_GOOGLE_API, version: "weekly" });
-  return loader.importLibrary('maps');
+  return loader.importLibrary(name);
 }
+const loadMaps = () => loadMapsLibrary('maps');
 
 /**
  * @param {number} [recenter] - Change it to put the map back on center and zoom (a Reset button), after the
  *   visitor has panned or zoomed.
  * @param {string} [overlay] - A tile layer over the map: a URL with {z}, {x} and {y} (the weather app's layers,
  *   app/api/weather/tile). Changing it swaps the layer; none: just the map.
+ * @param {(map: google.maps.Map) => void} [onLoad] - Called once with the map when it's made, to draw on it (Zones).
  */
-const Map = ({ center = DEFAULT_CENTER, zoom = 10, recenter, overlay, theme, className, style }) => {
+const Map = ({ center = DEFAULT_CENTER, zoom = 10, recenter, overlay, onLoad, theme, className, style }) => {
   const ref = useRef(null);
   const map = useRef(null);
   const [ ready, setReady ] = useState(false);
@@ -40,6 +43,7 @@ const Map = ({ center = DEFAULT_CENTER, zoom = 10, recenter, overlay, theme, cla
       if (cancelled) return;
       map.current = new Map(ref.current, { center: position, zoom, styles: mapStyles(ref.current) });
       setReady(true);
+      onLoad?.(map.current);
     });
     return () => { cancelled = true; };
   }, []);
@@ -99,3 +103,4 @@ const mapStyles = (el) => {
 const ThemedMap = withThemeRead(Map);
 
 export default ThemedMap;
+export { loadMapsLibrary };

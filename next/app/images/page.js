@@ -58,7 +58,7 @@ const TILES = [
   { src: 'yellow3', size: 'landscape', overlay: 'glass', align: 'start', label: 'Valley', title: 'Sunflower fields', text: 'Counting the harvest…',
     children: <Spinner kind="dots" width="3rem" /> },
   { src: 'white2', size: 'square', overlay: 'blur', title: 'Snow pines' },
-  { src: 'red3', size: 'portrait', overlay: 'tint', align: 'start', label: 'Dusk', title: 'Red sky at night', children: <q className="fs-sm">Sailors' delight.</q> },
+  { src: 'red3', size: 'portrait', overlay: 'tint', align: 'start', label: 'Dusk', title: 'Red sky at night', children: <q className="fs-sm">Sailors&apos; delight.</q> },
   { src: 'teal1', size: 'circle', overlay: 'focus', border: 'accent', title: 'Forecast', children: <Spinner kind="ring" width="2.5rem" /> },
   { src: 'orange3', size: 'landscape', badge: 'Golden hour', label: 'Fields', title: 'First light', children: <Ghost icon="sun" label="Sunrise times" /> },
   { src: 'brown3', size: 'portrait', border: 'line', overlay: 'glass', align: 'center', title: 'Frosted reeds' },

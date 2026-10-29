@@ -25,7 +25,7 @@
     "@marccent/util": "github:marcoscenteno89/util",
     "@sentry/react": "^7.109.0",
     "dayjs": "^1.11.10",
-    "marccent-theme": "github:marcoscenteno89/marccent-theme#v0.2.4",
+    "marccent-theme": "github:marcoscenteno89/marccent-theme#v0.3.0",
     "marked": "^18.1.0",
     "next": "14.2.35",
     "react": "^18",
