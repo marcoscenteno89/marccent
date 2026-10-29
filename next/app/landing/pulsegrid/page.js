@@ -5,6 +5,7 @@ import { RingGauge, Radar } from '@/components/widgets/data';
 import { StepBar } from 'marccent-theme/components/widgets/nav';
 import { Orbit } from 'marccent-theme/components/visuals/effects';
 import { Alert } from 'marccent-theme/components/ui/alert';
+import { Code } from 'marccent-theme/components/ui/code';
 import { ImageCard } from 'marccent-theme/components/widgets/layout';
 import { Page, Full, Box } from '../blocks';
 import { SignupBar, ContactForm, CountUp, LiveSpeedometer } from '../parts';
@@ -153,16 +154,17 @@ export default function Pulsegrid() {
         <div className="grid gap-lg items-center" style={{ '--cols': 2, '--min': '18rem' }}>
           <div className="grid cols-1">
             <Head label="integrations" title="Plugs into the stack you already run" text="60+ sources and destinations from a menu, and one snippet for everything else. Click a logo in the orbit." />
-            <div className="round grid cols-1 gap-0" style={{ background: 'var(--surface)', border: 'var(--border-width) solid var(--border-color)', fontFamily: 'ui-monospace, "JetBrains Mono", Consolas, monospace', fontSize: '.85rem' }}>
-              <div className="grid auto-cols gap-lg pad-sm border-bottom">
+            {/* The editor's file tabs, then the snippet in the theme's Code block. */}
+            <div className="grid cols-1 gap-sm">
+              <div className="grid auto-cols gap-lg">
                 <small>index.js</small><small style={{ opacity: .4 }}>server.py</small><small style={{ opacity: .4 }}>ios.swift</small>
               </div>
-              <pre className="pad" style={{ margin: 0, overflow: 'auto', lineHeight: 1.8 }}>
-                <span style={{ opacity: .4 }}>1  </span><span className="text-secondary">import</span> pulse <span className="text-secondary">from</span> <span className="text-secondary-lighter">&apos;@pulsegrid/js&apos;</span>;{'\n'}
-                <span style={{ opacity: .4 }}>2  </span>{'\n'}
-                <span style={{ opacity: .4 }}>3  </span>pulse.<span className="text-primary-lighter">init</span>(<span className="text-secondary-lighter">&apos;pk_live_42&apos;</span>);{'\n'}
-                <span style={{ opacity: .4 }}>4  </span>pulse.<span className="text-primary-lighter">track</span>(<span className="text-secondary-lighter">&apos;Checkout&apos;</span>, {'{'} plan: <span className="text-secondary-lighter">&apos;pro&apos;</span> {'}'});
-              </pre>
+              <Code lang="js">{`
+                import pulse from '@pulsegrid/js';
+
+                pulse.init('pk_live_42');
+                pulse.track('Checkout', { plan: 'pro' });
+              `}</Code>
             </div>
           </div>
           <div className="w-100" style={{ maxWidth: '26rem', justifySelf: 'center' }}>

@@ -7,6 +7,7 @@ import { MiniThemeEditor } from 'marccent-theme/components/theme/mini-editor';
 import { DesignSelect } from 'marccent-theme/components/theme/designs';
 import { ModeToggle, GlassToggle, ThemeReset } from 'marccent-theme/components/theme/toggles';
 import { designTitle } from 'marccent-theme/lib/design';
+import { Code } from 'marccent-theme/components/ui/code';
 import { SectionHead } from '@/components/layout/section-head';
 import { Full, Box } from './landing/blocks';
 
@@ -142,7 +143,7 @@ const Strengths = () => {
         <div className="grid gap-lg layout-1-2 items-center">
           <div className="grid cols-1 gap-lg">
             <SectionHead kicker={S.motion.kicker} title={S.motion.title} text={S.motion.text} />
-            <pre className="bg border round pad fs-sm overflow-auto text-start"><code>{S.motion.code}</code></pre>
+            <Code lang="html">{S.motion.code}</Code>
           </div>
           <div className="grid gap-sm" style={{ '--cols': 3, '--min': '10rem' }}>
             {S.motion.canvases.map(c => (
@@ -163,7 +164,7 @@ const Strengths = () => {
         <div className="grid gap-lg" style={{ '--cols': 3, '--min': '16rem' }}>
           {S.hood.features.map(f => <Feature key={f.title} {...f} />)}
         </div>
-        <pre className="bg border round pad fs-sm overflow-auto text-center"><code>{S.hood.install}</code></pre>
+        <Code lang="sh">{S.hood.install}</Code>
       </Full>
     </div>
   );
