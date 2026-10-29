@@ -15,6 +15,7 @@ import { Clock } from 'marccent-theme/components/ui/clock';
 import { Counter } from 'marccent-theme/components/ui/counter';
 import { Menu } from '@/components/layout/menus';
 import { GalleryHeader, Section, Demo, Row } from '@/components/gallery';
+import { ButtonDemos, FormDemos, OverlayDemos, DataDemos, LayoutDemos } from './more-demos';
 import { Countdown } from 'marccent-theme/components/visuals/effects';
 import { StatCard } from 'marccent-theme/components/widgets/layout';
 import { Grid } from 'marccent-theme/lib/grid_helper';
@@ -195,6 +196,7 @@ export default function ThemePage() {
             <Button key={anim} icon={ic} className="dark" data-component="button animation" data-name={anim}>{anim}</Button>
           ))}
         </Row>
+        <ButtonDemos />
       </Section>
 
       <Section name="Hover effects" intro="Hover classes (styles/hovers.css) work on any element and draw in the theme's colors (--hover-from / --hover-to override them). A pressed toggle shows the same effect.">
@@ -328,6 +330,7 @@ export default function ThemePage() {
             <Field name="message" as="textarea" rows={4} required />
           </Step>
         </StepForm>
+        <FormDemos />
       </Section>
 
       <Section name="Feedback">
@@ -381,6 +384,7 @@ export default function ThemePage() {
           footer={<Button icon="check" className="primary" onClick={() => setTicket(false)}>Got it</Button>}>
           <p>The same dialog, the ticket look: Esc, Close or a click on the backdrop closes it.</p>
         </Modal>
+        <OverlayDemos />
       </Section>
 
       <Section name="Navigation">
@@ -447,6 +451,7 @@ export default function ThemePage() {
             {(cell, i) => <div key={i} className={`square ${(cell.row + cell.col) % 2 ? 'bg-primary' : 'bg-secondary-lighter'}`} />}
           </Board>
         </div>
+        <DataDemos />
       </Section>
 
       <Section name="Layout" intro="layout.css: grids that wrap by width, fixed column counts, ratio layouts and layering.">
@@ -484,6 +489,7 @@ export default function ThemePage() {
             <small className="opacity-75">A badge: a layer aligned to the top right, no absolute positioning</small>
           </div>
         </div>
+        <LayoutDemos />
       </Section>
 
     </div>
