@@ -25,7 +25,8 @@
 
 /* Components */
 @import "marccent-theme/styles/base/animations.css";   /* keyframes and open/close motion; unlayered, so it beats a component's transition */
-@import "marccent-theme/styles/components/icons.css";  /* used on every page (any <i>): Font Awesome + the icon square */
+@import "marccent-theme/styles/fontawesome.css";       /* Font Awesome (the theme moved it out of icons.css in 0.3.0) */
+@import "marccent-theme/styles/components/icons.css";  /* used on every page (any <i>): the icon square */
 @import "marccent-theme/styles/components/header.css"; /* used on every page (any box's title row: cards, modal, toast) */
 @import "marccent-theme/styles/hovers.css";            /* hover effects (.hover-*); unlayered, so they replace a component's own hover */
 
