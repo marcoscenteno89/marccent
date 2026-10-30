@@ -51,15 +51,15 @@ const Section = ({ name, intro, children }) => (
   </section>
 );
 
-// A demo's heading: a small hexagon in the secondary, the name in the primary (solid colors: the gradient is kept for
+// A demo's heading (an h3 under its Section's h2, sized as an h5): a small hexagon in the secondary, the name in the primary (solid colors: the gradient is kept for
 // the demos themselves) and, under it, what it shows.
 // pad-y-sm: room between the demo above and this one.
 const Demo = ({ name, children }) => (
   <div className="grid cols-1 gap-0 pad-y-sm">
-    <h5 className="grid auto-cols gap-sm items-center">
+    <h3 className="h5 grid auto-cols gap-sm items-center">
       <span className="shape-hexagon bg-secondary" style={{ width: '.75rem' }} aria-hidden="true" />
       <span className="text-primary">{name}</span>
-    </h5>
+    </h3>
     {children && <small className="opacity-75">{children}</small>}
   </div>
 );

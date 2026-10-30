@@ -224,7 +224,7 @@ export default function Starfall() {
           <div><small className="fw-bold text-primary" style={CAPS}>the night report</small><h3 style={{ fontWeight: 300 }}>One email a month: what to look up at</h3></div>
           <SignupBar label="Subscribe" icon="envelope" placeholder="Your email" done="Subscribed. Clear skies!" />
         </div>
-        <small className="opacity-50">&copy; 2026 Starfall Mesa Lodge, a fictional company: a demo landing page for this theme.</small>
+        <small>&copy; 2026 Starfall Mesa Lodge, a fictional company: a demo landing page for this theme.</small>
       </Full>
     </Page>
   );

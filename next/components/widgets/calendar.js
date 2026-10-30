@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect, useRef, useMemo, Fragment } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import dayjs from 'dayjs';
 import weekOfYear from 'dayjs/plugin/weekOfYear';
 import isoWeek from 'dayjs/plugin/isoWeek';
@@ -120,7 +120,7 @@ const Calendar = ({ mode = 'single', onChange, events = [], min, max, weekStart 
     <div className={cx('bg border round shadow pad grid cols-1 gap-sm', className)} style={style}>
       <div className="header"> {/* the card's own padding is enough */}
         <button data-component="button" data-name="view" type="button" className="text-start fw-bold fs-lg text-truncate" onClick={() => setView(view === 'month' ? 'year' : 'decade')}
-          disabled={view === 'decade'} aria-label={`${view === 'month' ? cursor.format('MMMM YYYY') : title}${view !== 'decade' ? ', zoom out' : ''}`}
+          disabled={view === 'decade'} aria-label={`${title}${view !== 'decade' ? ', zoom out' : ''}`}
           style={{ border: 0, background: 'none', color: 'inherit', padding: 0, cursor: view === 'decade' ? 'default' : 'pointer' }}>
           <span className="text-gradient">{title}</span>
         </button>
@@ -131,30 +131,35 @@ const Calendar = ({ mode = 'single', onChange, events = [], min, max, weekStart 
 
       {view === 'month' && (
         <div ref={grid} role="grid" aria-label={cursor.format('MMMM YYYY')} className="grid fixed gap-0" style={{ '--cols': cols }} onKeyDown={key}>
-          {weekNumbers && <small className="col-center opacity-50" aria-hidden="true">Wk</small>}
-          {header.map(n => <small key={n} className="col-center fw-bold opacity-75 pad-y-sm" role="columnheader">{n}</small>)}
-          {days.map((d, i) => {
-            const k = d.format(KEY), list = byDay[k] ?? [], end = isEnd(d), out = d.month() !== cursor.month();
-            return (
-              <Fragment key={k}>
-                {weekNumbers && i % 7 === 0 && <small className="col-center opacity-50" title={`Week ${weekNo(d)}`}>{weekNo(d)}</small>}
-                <button data-component="button" data-name="day" type="button" data-date={k} role="gridcell" tabIndex={d.isSame(cursor, 'day') ? 0 : -1}
-                  aria-selected={!!end || !!inRange(d)} aria-current={d.isToday() ? 'date' : undefined} disabled={!allowed(d)}
-                  aria-label={`${d.format('dddd, MMMM Do, YYYY')}${list.length ? `, ${list.length} event${list.length > 1 ? 's' : ''}` : ''}`}
-                  onClick={() => pick(d)} onMouseEnter={() => mode === 'range' && setHover(d)} onFocus={() => setCursor(d)}
-                  className={cx('round col-center', end && 'bg-gradient', d.isToday() && !end && 'text-primary fw-bold', out && !end && 'opacity-50')}
-                  style={{ aspectRatio: 1, padding: 0, color: end ? 'var(--light)' : 'inherit', cursor: allowed(d) ? 'pointer' : 'not-allowed',
-                    border: `var(--border-width) solid ${d.isToday() ? 'var(--primary)' : 'transparent'}`,
-                    background: end ? undefined : inRange(d) ? 'color-mix(in srgb, var(--primary) 22%, transparent)' : 'none',
-                    ...(!allowed(d) && { opacity: .25, textDecoration: 'line-through' }) }}>
-                  <span>{d.date()}</span>
-                  <span className="grid auto-cols gap-0" style={{ gap: '2px', minHeight: '5px' }} aria-hidden="true">
-                    {list.slice(0, 3).map((ev, j) => <span key={j} className={cx('circle', ev.color ?? 'bg-secondary')} style={{ width: '5px', aspectRatio: 1 }} />)}
-                  </span>
-                </button>
-              </Fragment>
-            );
-          })}
+          {/* Rows for the grid role (display: contents, so the cells still sit in the one CSS grid). */}
+          <div role="row" style={{ display: 'contents' }}>
+            {weekNumbers && <small className="col-center opacity-75" aria-hidden="true">Wk</small>}
+            {header.map(n => <small key={n} className="col-center fw-bold opacity-75 pad-y-sm" role="columnheader">{n}</small>)}
+          </div>
+          {Array.from({ length: 6 }, (_, w) => days.slice(w * 7, w * 7 + 7)).map((week) => (
+            <div key={week[0].format(KEY)} role="row" style={{ display: 'contents' }}>
+              {weekNumbers && <small className="col-center opacity-75" role="rowheader" aria-label={`Week ${weekNo(week[0])}`}>{weekNo(week[0])}</small>}
+              {week.map((d) => {
+                const k = d.format(KEY), list = byDay[k] ?? [], end = isEnd(d), out = d.month() !== cursor.month();
+                return (
+                  <button data-component="button" data-name="day" type="button" key={k} data-date={k} role="gridcell" tabIndex={d.isSame(cursor, 'day') ? 0 : -1}
+                    aria-selected={!!end || !!inRange(d)} aria-current={d.isToday() ? 'date' : undefined} disabled={!allowed(d)}
+                    aria-label={`${d.format('D MMMM YYYY, dddd')}${list.length ? `, ${list.length} event${list.length > 1 ? 's' : ''}` : ''}`}
+                    onClick={() => pick(d)} onMouseEnter={() => mode === 'range' && setHover(d)} onFocus={() => setCursor(d)}
+                    className={cx('round col-center', end && 'bg-gradient', d.isToday() && !end && 'text-primary fw-bold', out && !end && 'opacity-75')}
+                    style={{ aspectRatio: 1, padding: 0, color: end ? 'var(--light)' : 'inherit', cursor: allowed(d) ? 'pointer' : 'not-allowed',
+                      border: `var(--border-width) solid ${d.isToday() ? 'var(--primary)' : 'transparent'}`,
+                      background: end ? undefined : inRange(d) ? 'color-mix(in srgb, var(--primary) 22%, transparent)' : 'none',
+                      ...(!allowed(d) && { opacity: .25, textDecoration: 'line-through' }) }}>
+                    <span>{d.date()}</span>
+                    <span className="grid auto-cols gap-0" style={{ gap: '2px', minHeight: '5px' }} aria-hidden="true">
+                      {list.slice(0, 3).map((ev, j) => <span key={j} className={cx('circle', ev.color ?? 'bg-secondary')} style={{ width: '5px', aspectRatio: 1 }} />)}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          ))}
         </div>
       )}
 

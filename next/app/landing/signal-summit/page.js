@@ -225,7 +225,7 @@ export default function SignalSummit() {
           <div><h3 className="text-uppercase" style={neonText(NEON.lead)}>Speaker drops, first</h3><p style={{ opacity: .75 }}>One email when new speakers are announced. That&apos;s it.</p></div>
           <SignupBar label="Notify me" icon="bell" placeholder="Your email" done="You're on the list. First speaker drop lands next week." />
         </div>
-        <small style={{ opacity: .5 }}>&copy; 2026 Signal Summit, a fictional event: a demo landing page for this theme. Code of conduct · Privacy · Press kit</small>
+        <small>&copy; 2026 Signal Summit, a fictional event: a demo landing page for this theme. Code of conduct · Privacy · Press kit</small>
       </Full>
     </Page>
   );

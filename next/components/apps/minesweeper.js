@@ -98,6 +98,12 @@ class MinesweeperGame extends Store {
   }
 }
 
+// A square's name for screen readers: where it is and what's known about it.
+const cellLabel = (cell) => {
+  const state = cell.revealed ? (cell.mine ? 'mine' : cell.hint ? `${cell.hint} mines around` : 'empty') : cell.flagged ? 'flagged' : 'hidden';
+  return `Row ${cell.row + 1}, column ${cell.col + 1}: ${state}`;
+};
+
 const MineSweeper = () => {
   const game = useStore(() => new MinesweeperGame(3));
   const [ flagMode, setFlagMode ] = useState(false);
@@ -121,6 +127,7 @@ const MineSweeper = () => {
           // A card per square. Hidden: a window onto one gradient across the board (.bg-gradient-run; colors.css counts
           // only 24 cells, so each gets its place and the total here), raised with a holographic hover. Revealed: flat.
           <button data-component="button" data-name={cell.id} type="button" key={cell.id} className={cx('center round square', cell.revealed ? 'bg border' : 'shadow hover-holographic')}
+            aria-label={cellLabel(cell)}
             style={cell.revealed ? { opacity: 0.6, backgroundImage: 'none' } : { '--run-i': i, '--run-n': game.grid.cells.length }}
             onClick={() => (flagMode ? game.flag(cell) : game.reveal(cell))}
             onContextMenu={(e) => { e.preventDefault(); game.flag(cell); }}>

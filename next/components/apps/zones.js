@@ -234,7 +234,7 @@ const Zones = () => {
       <Card name="panel">
         {mode === 'check' ? (
           <>
-            <h3>Is your address in a zone?</h3>
+            <h2 className="h3">Is your address in a zone?</h2>
             <Form className="grid cols-1 gap-sm" onSubmit={checkAddress} submitLabel="Check address" submitIcon="magnifying-glass">
               <Input name="address" label="Street, city, state and zip" required />
             </Form>
@@ -257,7 +257,7 @@ const Zones = () => {
           </>
         ) : draft ? (
           <>
-            <h3>Draw a zone</h3>
+            <h2 className="h3">Draw a zone</h2>
             <p>Click the map to place each corner. When the shape is closed in, finish it; you can drag its corners afterward.</p>
             <div className="row-wrap" style={{ '--gap': 'var(--space-xs)' }}>
               <Button icon="check" className="primary" onClick={finishDraft}>Finish ({draft.length})</Button>
@@ -267,7 +267,7 @@ const Zones = () => {
           </>
         ) : (
           <>
-            <h3>Zones</h3>
+            <h2 className="h3">Zones</h2>
             <div className="grid cols-1 gap-sm">
               {zones.map(z => (
                 <Button key={z.id} icon="draw-polygon" aria-pressed={z.id === selected} onClick={() => setSelected(z.id)} style={{ justifyContent: 'start' }}>
@@ -323,7 +323,7 @@ const ZoneStats = ({ zone, now }) => {
         value={left ? `${left.days}d ${left.hours}h ${left.minutes}m` : zone.deadline ? 'Closed' : 'No deadline'}
         label={zone.deadline ? `Sign-ups close ${new Date(`${zone.deadline}T12:00`).toLocaleDateString()}` : 'Set a deadline under Edit zones'} />
       <Card name="signups">
-        <h3>Sign-ups in {zone.name}</h3>
+        <h2 className="h3">Sign-ups in {zone.name}</h2>
         {zone.signups.length ? (
           <ul className="grid cols-1 gap-sm fs-sm">
             {zone.signups.slice(-8).reverse().map(s => <li key={s.date}>{s.name}{s.address ? `, ${s.address}` : ''}</li>)}

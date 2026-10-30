@@ -52,7 +52,7 @@ const Postcard = ({ t, i }) => (
       </div>
     </div>
     <div className="grid cols-1 gap-0 pad-x-sm">
-      <span style={{ ...HAND, fontSize: '1.35rem', color: 'var(--primary)' }}>{t.note}</span>
+      <span style={{ ...HAND, fontSize: '1.35rem', color: 'var(--primary-ink)' }}>{t.note}</span>
       <h3 className="h4" style={{ fontWeight: 600 }}>{t.name}</h3>
       <small style={{ opacity: .7 }}>{t.where} · {t.days} days · from ${t.price}</small>
     </div>
@@ -89,7 +89,7 @@ export default function Ridgeline() {
 
       {/* SHORT: the season's news, boxed over the site. */}
       <Box mode="light" inner="grid layout-ends items-center gap-sm">
-        <span style={{ ...HAND, fontSize: '1.6rem', color: 'var(--primary)' }}>new!</span>
+        <span style={{ ...HAND, fontSize: '1.6rem', color: 'var(--primary-ink)' }}>new!</span>
         <span><strong>2027 departures are open.</strong> Book before December 1 and the early-bird 10% is yours.</span>
         <Button icon="calendar-plus" href="#book" className="gradient col-last">See dates</Button>
       </Box>
@@ -98,7 +98,7 @@ export default function Ridgeline() {
       <Full mode="light">
         <div className="grid gap-lg layout-2-1">
           <p style={{ fontFamily: 'var(--font-heading)', fontSize: 'clamp(1.3rem, 2.5vw, 1.9rem)', lineHeight: 1.45 }}>
-            <strong style={{ color: 'var(--primary)' }}>We started with one</strong>{' '}
+            <strong style={{ color: 'var(--primary-ink)' }}>We started with one</strong>{' '}
             trail and a borrowed van. Seventeen years later our guides still grow up on the mountains they lead, the groups are still
             small enough to share one table at dinner, and the van has been retired with honors.
           </p>
@@ -174,7 +174,7 @@ export default function Ridgeline() {
               </div>
               <h3 className="h4" style={{ fontWeight: 600 }}>{n}</h3>
               <small><Icon name="location-dot" style={{ color: 'var(--primary)' }} /> {r} · {y} years</small>
-              <span style={{ ...HAND, fontSize: '1.3rem', color: 'var(--primary)' }}>{fact}</span>
+              <span style={{ ...HAND, fontSize: '1.3rem', color: 'var(--primary-ink)' }}>{fact}</span>
             </article>
           ))}
         </div>
@@ -218,10 +218,10 @@ export default function Ridgeline() {
       {/* NEWSLETTER + FOOTER */}
       <Full space="3rem" mode="light">
         <div className="grid gap-lg items-center" style={{ '--cols': 2, '--min': '18rem' }}>
-          <div><span style={{ ...HAND, fontSize: '1.6rem', color: 'var(--primary)' }}>trail notes, monthly</span><h3 style={{ fontWeight: 600 }}>New departures and one great photo</h3></div>
+          <div><span style={{ ...HAND, fontSize: '1.6rem', color: 'var(--primary-ink)' }}>trail notes, monthly</span><h3 style={{ fontWeight: 600 }}>New departures and one great photo</h3></div>
           <SignupBar label="Subscribe" icon="envelope" placeholder="Your email" done="Subscribed. See you on the trail!" />
         </div>
-        <small style={{ opacity: .6 }}>&copy; 2026 Ridgeline Expeditions Ltd., a fictional company: a demo landing page for this theme.</small>
+        <small>&copy; 2026 Ridgeline Expeditions Ltd., a fictional company: a demo landing page for this theme.</small>
       </Full>
     </Page>
   );

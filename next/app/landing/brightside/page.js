@@ -91,7 +91,7 @@ export default function Brightside() {
              [ 'receipt', 'Prices up front', 'A written plan with costs before we start anything.', 'bg-gradient-lighter' ], [ 'child-reaching', 'Kids love it', 'A treasure chest, ceiling TVs and patient people.', 'bg-secondary-lighter' ] ].map(([ i, t, d, tone ]) => (
             <div key={t} className="grid cols-1 gap-sm justify-center">
               <span className={`circle col-center ${tone}`} style={{ width: '5rem', aspectRatio: 1, justifySelf: 'center', color: 'var(--dark)' }}><Icon name={i} className="fs-lg" /></span>
-              <h3 className="h5" style={{ fontWeight: 800 }}>{t}</h3>
+              <h2 className="h5" style={{ fontWeight: 800 }}>{t}</h2>
               <p className="opacity-75">{d}</p>
             </div>
           ))}
@@ -261,7 +261,7 @@ export default function Brightside() {
       {/* FOOTER */}
       <Full className="bg-primary-darker" space="2rem 3rem" style={{ color: 'var(--light)' }} inner="grid cols-1 gap-sm text-center">
         <strong className="fs-lg"><Icon name="tooth" /> Brightside Dental</strong>
-        <small style={{ opacity: .75 }}>&copy; 2026 Brightside Dental Group, a fictional clinic: a demo landing page for this theme.</small>
+        <small>&copy; 2026 Brightside Dental Group, a fictional clinic: a demo landing page for this theme.</small>
       </Full>
     </Page>
   );

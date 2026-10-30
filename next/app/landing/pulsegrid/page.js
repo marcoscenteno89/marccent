@@ -80,7 +80,7 @@ export default function Pulsegrid() {
         <div data-theme="light" className="round shadow-lg border grid cols-1 gap-0" style={{ background: 'var(--body-bg)', color: 'var(--body-color)' }}>
           <div className="grid auto-cols gap-sm items-center pad-sm border-bottom">
             {[ 'secondary', 'primary-lighter', 'primary' ].map(c => <span key={c} className={`circle bg-${c}`} style={{ width: '.7rem', aspectRatio: 1 }} />)}
-            <small className="opacity-50">app.pulsegrid.io / acme / overview</small>
+            <small className="opacity-75">app.pulsegrid.io / acme / overview</small>
           </div>
           <div className="grid gap-0" style={{ gridTemplateColumns: 'auto minmax(0, 1fr)' }}>
             <div className="grid cols-1 gap-sm pad-sm content-start border-bottom" style={{ borderRight: 'var(--border-width) solid var(--border-color)' }}>
@@ -115,7 +115,7 @@ export default function Pulsegrid() {
 
       {/* LOGOS */}
       <Full className="bg border-bottom" space="2.5rem" inner="grid cols-1 gap-sm text-center">
-        <small className="opacity-50 text-uppercase" style={{ letterSpacing: '.2em' }}>4,800 teams measure with Pulsegrid</small>
+        <small className="opacity-75 text-uppercase" style={{ letterSpacing: '.2em' }}>4,800 teams measure with Pulsegrid</small>
         <div className="grid opacity-50" style={{ '--cols': 6, '--min': '7rem' }}>
           {[ [ 'mountain-sun', 'Northpeak' ], [ 'feather', 'Quill' ], [ 'cube', 'Blockwise' ], [ 'leaf', 'Verdant' ], [ 'bolt', 'Voltline' ], [ 'anchor', 'Harborly' ] ].map(([ i, n ]) => (
             <span key={n} className="center gap-sm fw-bold fs-lg"><Icon name={i} />{n}</span>
@@ -157,7 +157,7 @@ export default function Pulsegrid() {
             {/* The editor's file tabs, then the snippet in the theme's Code block. */}
             <div className="grid cols-1 gap-sm">
               <div className="grid auto-cols gap-lg">
-                <small>index.js</small><small style={{ opacity: .4 }}>server.py</small><small style={{ opacity: .4 }}>ios.swift</small>
+                <small>index.js</small><small style={{ opacity: .75 }}>server.py</small><small style={{ opacity: .75 }}>ios.swift</small>
               </div>
               <Code lang="js">{`
                 import pulse from '@pulsegrid/js';
@@ -208,9 +208,9 @@ export default function Pulsegrid() {
             { q: 'Our analysts got 11 hours a week back. They spend them on questions now, not queries.', n: 'Mina Sato', r: 'Data Lead', c: 'Blockwise', i: 'cube' },
           ].map(t => (
             <figure key={t.n} className={`border round pad grid cols-1 content-start ${t.big ? 'span-2 bg-primary' : ''}`} style={{ margin: 0, gridRow: t.big ? 'span 2' : undefined }}>
-              <span className="fw-bold opacity-75"><Icon name={t.i} /> {t.c}</span>
+              <span className={t.big ? 'fw-bold' : 'fw-bold opacity-75'}><Icon name={t.i} /> {t.c}</span>
               <blockquote style={{ margin: 0 }} className={t.big ? 'display-sm' : 'fs-lg'}>&ldquo;{t.q}&rdquo;</blockquote>
-              <figcaption><strong>{t.n}</strong> <small className="opacity-75">· {t.r}</small></figcaption>
+              <figcaption><strong>{t.n}</strong> <small className={t.big ? undefined : 'opacity-75'}>· {t.r}</small></figcaption>
             </figure>
           ))}
           <ImageCard src={img('blue4')} overlay="glass" ratio={null} className="h-100" style={{ minHeight: '16rem' }} badge="+38% retention"
@@ -233,17 +233,25 @@ export default function Pulsegrid() {
         <div className="overflow-auto">
           <div className="grid gap-0 border round" role="table" aria-label="Plans" style={{ gridTemplateColumns: 'minmax(10rem, 1.4fr) repeat(3, minmax(8rem, 1fr))', minWidth: '36rem' }}>
             {[ [ '', 'Starter', 'Growth', 'Enterprise' ], [ 'Price', '$0', '$149 / mo', 'Custom' ], [ 'Events a month', '1M', '20M', 'Unlimited' ], [ 'History', '7 days', '2 years', 'Forever' ],
-              [ 'Dashboards', '3', true, true ], [ 'Anomaly alerts', false, true, true ], [ 'SSO and SCIM', false, false, true ], [ 'Data residency', false, false, true ], [ 'Support', 'Community', 'Email, 1 day', 'Named manager' ] ].map((row, r) => row.map((cell, c) => (
-              <div key={`${r}-${c}`} role={r === 0 ? 'columnheader' : 'cell'}
+              [ 'Dashboards', '3', true, true ], [ 'Anomaly alerts', false, true, true ], [ 'SSO and SCIM', false, false, true ], [ 'Data residency', false, false, true ], [ 'Support', 'Community', 'Email, 1 day', 'Named manager' ] ].map((row, r) => (
+              // A row for the table role (display: contents: its cells stay in the one CSS grid).
+              <div key={r} role="row" style={{ display: 'contents' }}>{row.map((cell, c) => (
+              <div key={`${r}-${c}`} role={r === 0 ? 'columnheader' : c === 0 ? 'rowheader' : 'cell'}
                 className={`pad-sm ${c ? 'text-center' : ''} ${r === 0 ? 'fw-bold fs-lg' : ''} ${c === 2 ? 'bg-primary' : ''} ${r ? 'border-bottom' : ''}`}
                 style={r === 1 ? { fontSize: '1.4rem', fontWeight: 700 } : undefined}>
-                {r === 0 && c === 2 ? <span className="grid cols-1 gap-0">{cell}<small className="fw-normal">Most popular</small></span> : cell === true ? <Icon name="check" className={c === 2 ? undefined : 'text-primary'} /> : cell === false ? <span className="opacity-25">—</span> : cell}
+                {r === 0 && c === 0 ? <span className="visually-hidden">Feature</span>
+                  : r === 0 && c === 2 ? <span className="grid cols-1 gap-0">{cell}<small className="fw-normal">Most popular</small></span>
+                  : cell === true ? <><Icon name="check" className={c === 2 ? undefined : 'text-primary'} /><span className="visually-hidden">Included</span></>
+                  : cell === false ? <><span className="opacity-25" aria-hidden="true">—</span><span className="visually-hidden">Not included</span></> : cell}
               </div>
-            )))}
-            <div className="pad-sm" />
-            <div className="pad-sm col-center"><Button icon="rocket" href="#contact" className="outline-primary">Start free</Button></div>
-            <div className="pad-sm col-center bg-primary"><Button icon="bolt" href="#contact" className="light">Start trial</Button></div>
-            <div className="pad-sm col-center"><Button icon="handshake" href="#contact" className="outline-secondary">Talk to sales</Button></div>
+            ))}</div>
+            ))}
+            <div role="row" style={{ display: 'contents' }}>
+              <div role="cell" className="pad-sm" />
+              <div role="cell" className="pad-sm col-center"><Button icon="rocket" href="#contact" className="outline-primary">Start free</Button></div>
+              <div role="cell" className="pad-sm col-center bg-primary"><Button icon="bolt" href="#contact" className="light">Start trial</Button></div>
+              <div role="cell" className="pad-sm col-center"><Button icon="handshake" href="#contact" className="outline-secondary">Talk to sales</Button></div>
+            </div>
           </div>
         </div>
       </Full>
@@ -284,7 +292,7 @@ export default function Pulsegrid() {
             </nav>
           ))}
         </div>
-        <small style={{ opacity: .5 }}>&copy; 2026 Pulsegrid Inc., a fictional company: a demo landing page for this theme.</small>
+        <small>&copy; 2026 Pulsegrid Inc., a fictional company: a demo landing page for this theme.</small>
       </Full>
     </Page>
   );

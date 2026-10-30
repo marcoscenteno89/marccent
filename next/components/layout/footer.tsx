@@ -23,11 +23,11 @@ export default function Footer() {
             <Markdown text={site.footerBlurb} className="opacity-75" />
           </div>
           <div className="grid cols-1 gap-sm content-start">
-            <h2 className="h6 text-uppercase opacity-75">{site.footerExplore}</h2>
+            <h2 className="h6 text-uppercase">{site.footerExplore}</h2>
             <Menu items={explore} label="Footer" layout="cols-1 justify-start" style={{ '--cols': 1 }} />
           </div>
           <div className="grid cols-1 gap-sm content-start">
-            <h2 className="h6 text-uppercase opacity-75">{site.footerConnect}</h2>
+            <h2 className="h6 text-uppercase">{site.footerConnect}</h2>
             <Menu items={contact} label="Connect" layout="cols-1 justify-start" style={{ '--cols': 1 }} />
           </div>
         </div>

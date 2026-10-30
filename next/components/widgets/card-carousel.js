@@ -42,7 +42,7 @@ export const CardCarousel = ({ label = 'Cards' }) => (
         <div className="shape-hexagon bg-gradient col-center" style={{ width: '6rem' }}><Icon name="bolt" className="fs-lg" /></div>
         <strong className="fs-lg">Lightning fast</strong>
         <p className="opacity-75">Static pages, self-hosted fonts and nothing loaded that a page doesn&apos;t use.</p>
-        <Button href="#layouts">Learn more</Button>
+        <Button href="#layouts">See the layouts</Button>
       </div>
 
       {/* 5. Testimonial: the quote in a speech bubble, the person under its tail. */}
@@ -53,7 +53,7 @@ export const CardCarousel = ({ label = 'Cards' }) => (
         </div>
         <div className="grid auto-cols gap-sm items-center" style={{ paddingLeft: '1rem' }}>
           <div className="circle bg-primary col-center fw-bold" style={{ width: '2.75rem', aspectRatio: 1 }}>GH</div>
-          <div className="grid cols-1 gap-0"><strong>Grace Hopper</strong><span className="text-secondary">{[ 1, 2, 3, 4, 5 ].map(n => <Icon key={n} name="star" style={{ '--icon-size': '1em' }} />)}</span></div>
+          <div className="grid cols-1 gap-0"><strong>Grace Hopper</strong><span className="text-secondary" role="img" aria-label="5 out of 5 stars">{[ 1, 2, 3, 4, 5 ].map(n => <Icon key={n} name="star" style={{ '--icon-size': '1em' }} />)}</span></div>
         </div>
       </div>
 
@@ -125,7 +125,7 @@ export const CardCarousel = ({ label = 'Cards' }) => (
         </div>
       </div>
       {/* 11. Boarding pass: a ticket with airport codes, flight details and a barcode drawn with a repeating gradient. */}
-      <div className="shape-ticket grid cols-1 gap-0 h-100" style={{ aspectRatio: 'auto', '--notch': '.9rem', background: 'color-mix(in srgb, var(--primary) 14%, var(--surface))' }}>
+      <div className="shape-ticket grid cols-1 gap-0 h-100" style={{ aspectRatio: 'auto', '--notch': '.9rem', background: 'color-mix(in srgb, var(--primary) 14%, var(--surface))', color: 'var(--body-color)' }}>
         <div className="pad grid cols-1 gap-sm" style={{ borderBottom: '2px dashed var(--border-color)' }}>
           <div className="header"><small className="fw-bold text-uppercase text-primary">Marccent Air</small><small className="opacity-75">Boarding pass</small></div>
           <div className="grid gap-0 items-center text-center" style={{ gridTemplateColumns: '1fr auto 1fr' }}>

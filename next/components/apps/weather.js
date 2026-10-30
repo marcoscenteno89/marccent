@@ -74,7 +74,7 @@ const Weather = () => {
   return (
     <div data-component="weather" className="grid" style={{ '--cols': 5, '--min': '13rem', gridAutoRows: 'minmax(11rem, auto)', gridAutoFlow: 'dense' }}>
       <Card name="search" className="span-full" style={{ alignContent: 'center' }}>
-        <h3>{city.city.name}&apos;s Population: {city.city.population}</h3>
+        <h2 className="h3">{city.city.name}&apos;s Population: {city.city.population}</h2>
         <Form className="grid inline-form" onSubmit={(v) => update(v.city)} submitLabel="Search" submitIcon="magnifying-glass">
           <Input name="city" required />
         </Form>

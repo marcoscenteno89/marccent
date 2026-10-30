@@ -146,9 +146,10 @@ export default function ThemePage() {
 
       <Section name="Typography">
         <div className="grid cols-1 gap-sm">
-          <h1>Heading 1</h1><h2>Heading 2</h2><h3>Heading 3</h3><h4>Heading 4</h4><h5>Heading 5</h5><h6>Heading 6</h6>
+          {/* The heading sizes as classes: real h1–h6 here would break the page's outline. */}
+          <p className="h1">Heading 1</p><p className="h2">Heading 2</p><p className="h3">Heading 3</p><p className="h4">Heading 4</p><p className="h5">Heading 5</p><p className="h6">Heading 6</p>
           <p className="display-sm">display-sm</p>
-          <p>Body text with a <a href="#typography">link</a>, <strong>bold</strong>, <em>italic</em>, <code>code</code> and <small>small</small> text.</p>
+          <p>Body text with <a href="#typography">a link to this section</a>, <strong>bold</strong>, <em>italic</em>, <code>code</code> and <small>small</small> text.</p>
           <p className="fs-lg">fs-lg: larger text</p>
           <p className="fs-sm opacity-75">fs-sm opacity-75: smaller, muted text</p>
           <p className="fw-light text-uppercase">fw-light text-uppercase</p>
@@ -416,7 +417,7 @@ export default function ThemePage() {
           <div className="bg border round shadow grid cols-1 gap-0">
             <div className="bg-primary pad text-center"><Icon name="layer-group" className="fs-lg" /></div>
             <div className="pad grid cols-1 gap-sm">
-              <h5>Card</h5>
+              <h3 className="h5">Card</h3>
               <p>A card is just classes: bg border round shadow, a colored header and a padded body.</p>
               <Button icon="arrow-right" className="outline-primary">Action</Button>
             </div>
@@ -427,12 +428,12 @@ export default function ThemePage() {
         </div>
         <div className="grid gap-sm" style={{ '--cols': 3 }}>
           <div className="sub rows-3 bg border round shadow pad justify-center text-center">
-            <h5>Clock</h5>
+            <h3 className="h5">Clock</h3>
             <Clock className="display-sm self-center" />
             <Clock className="opacity-75 self-center" format="dddd, MMMM D" />
           </div>
           <div className="sub rows-3 bg border round shadow pad justify-center text-center">
-            <h5>Stopwatch</h5>
+            <h3 className="h5">Stopwatch</h3>
             <Counter className="display-sm self-center" active={timing} getTime={(t) => say(`Stopped at ${t.minute}:${t.second}.${t.tos}`, 'info')} />
             <ToggleButton data-name="stopwatch" icon="play" activeIcon="stop" activeLabel="Stop" className={timing ? 'danger' : 'success'}
               open={timing} onToggle={setTiming}>
@@ -440,7 +441,7 @@ export default function ThemePage() {
             </ToggleButton>
           </div>
           <div className="sub rows-3 bg border round shadow pad justify-center text-center">
-            <h5>Countdown</h5>
+            <h3 className="h5">Countdown</h3>
             <Countdown key={countdown} from={9} onDone={() => say('Countdown done', 'success')} className="text-primary self-center" style={{ '--countdown-size': '5rem' }} />
             <Button icon="rotate-right" onClick={() => setCountdown(countdown + 1)}>Restart</Button>
           </div>

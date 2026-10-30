@@ -56,7 +56,7 @@ const Phone = () => (
       <div className="grid cols-1 gap-0">
         {[ [ 'mug-hot', 'Blue Door Café', '-$6.40' ], [ 'building-columns', 'Paycheck', '+$3,120.00' ], [ 'cart-shopping', 'Greenleaf Market', '-$84.17' ] ].map(([ i, n, a ]) => (
           <div key={n} className="grid gap-sm items-center pad-y-sm" style={{ gridTemplateColumns: 'auto 1fr auto', borderTop: 'var(--border-width) solid var(--border-color)' }}>
-            <Icon name={i} className="text-primary" /><small className="text-truncate">{n}</small><small className="fw-bold" style={{ color: a[0] === '+' ? 'var(--primary)' : undefined }}>{a}</small>
+            <Icon name={i} className="text-primary" /><small className="text-truncate">{n}</small><small className="fw-bold" style={{ color: a[0] === '+' ? 'var(--primary-ink)' : undefined }}>{a}</small>
           </div>
         ))}
       </div>
@@ -224,7 +224,7 @@ export default function Fernbank() {
               <span className="text-secondary">{[ 1, 2, 3, 4, 5 ].map(n => <Icon key={n} name="star" style={{ '--icon-size': '1em' }} />)}</span>
               <strong className="fs-lg">{t}</strong>
               <p className="opacity-75">{b}</p>
-              <small className="opacity-50">{u} · {d}</small>
+              <small className="opacity-75">{u} · {d}</small>
             </article>
           ))}
         </div>
@@ -256,7 +256,7 @@ export default function Fernbank() {
       {/* FOOTER */}
       <Full mode="dark" space="2.5rem" inner="grid cols-1 gap-sm">
         <strong style={{ fontFamily: 'var(--font-heading)' }}><Icon name="seedling" className="text-secondary" /> fernbank</strong>
-        <small style={{ opacity: .6 }}>Fernbank is a fictional company: a demo landing page for this theme. Banking services would be provided by FDIC-member partner banks.</small>
+        <small>Fernbank is a fictional company: a demo landing page for this theme. Banking services would be provided by FDIC-member partner banks.</small>
       </Full>
     </Page>
   );

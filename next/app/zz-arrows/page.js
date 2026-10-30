@@ -41,6 +41,7 @@ export default function ArrowsPreview() {
   const c = useNav(), d = useNav(), e = useNav(), f = useNav(), g = useNav();
   return (
     <div className="wrap grid cols-1 gap-lg pad-y-lg">
+      <h1 className="h2">Carousel arrows</h1>
       {/* Scoped to this preview: restyles Swiper's own arrows for examples 1 and 2. */}
       <style dangerouslySetInnerHTML={{ __html: `
         .ex-tinted { --swiper-navigation-color: var(--body-color); --swiper-navigation-size: 1rem; }
