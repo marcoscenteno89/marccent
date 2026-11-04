@@ -49,18 +49,6 @@
   padding-left: var(--chart-readout-pad, 10px);
 }
 
-/* SWIPER (footer sliders: components/theme/slider.js, components/visuals/animations.js; components/widgets/carousel.js). */
-/* Swiper sizes its slides from its own width, so as a grid item it must be allowed to shrink (min-width: 0); with
-   the default min-width: auto it grows to fit its slides, Swiper re-measures, and the page locks up in a resize loop. */
-.swiper { min-width: 0; max-width: 100%; }
-
-/* The slider is a grid with one pinned column (minmax(0, 1fr)): an auto column would size to the slides,
-   which Swiper sizes from the column, in a loop. */
-.swiper { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-sm); }
-/* Swiper's own CSS is unlayered, so its padding: 0 beats any pad-* class (layout layer); revert-layer drops back to them. */
-.swiper[class*="pad"] { padding: revert-layer; }
-/* Clip (not hidden: no scroll container) both ways: sideways it hides the slides off the edges, which would
-   otherwise widen the page. */
-.swiper { overflow: clip; }
+/* Swiper's layout fixes in grids ship with the theme (marccent-theme styles/components/carousel.css). */
 
 /* Your styles below. */
