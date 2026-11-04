@@ -14,7 +14,7 @@ import { Carousel } from 'marccent-theme/components/widgets/carousel';
 import { CountUp } from '@/components/widgets/count-up';
 import { CardCarousel } from '@/components/widgets/card-carousel';
 import { ImageCard, Timeline } from 'marccent-theme/components/widgets/layout';
-import ThemedMap from '@/components/apps/map';
+import { Map as ThemedMap } from 'marccent-theme/components/widgets/map';
 import { RingGauge, Radar } from '@/components/widgets/data';
 import { AnalogClock } from '@/components/widgets/fun';
 import { LiveSpeedometer } from './landing/parts';
@@ -171,7 +171,7 @@ export default function Home() {
 
         <Group {...home.live.widgets}>
           <Tile {...w.map} className="span-2" style={{ gridRow: 'span 2' }}>
-            <ThemedMap zoom={11} className="round" style={{ minHeight: '16rem', height: '100%' }} />
+            <ThemedMap apiKey={process.env.NEXT_PUBLIC_GOOGLE_API} zoom={11} className="round" style={{ minHeight: '16rem', height: '100%' }} />
           </Tile>
           <Tile {...w.gauge}><div className="col-center"><RingGauge value={72} label="Theme" size="7rem" /></div></Tile>
           <Tile {...w.clock}><div className="col-center"><AnalogClock style={{ width: '7rem' }} /></div></Tile>

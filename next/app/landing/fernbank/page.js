@@ -4,7 +4,7 @@ import { Icon } from 'marccent-theme/components/ui/icon';
 import { Button } from 'marccent-theme/components/ui/button';
 import { StatCard, ImageCard } from 'marccent-theme/components/widgets/layout';
 import { CardFan } from '@/components/widgets/fun';
-import ThemedMap from '@/components/apps/map';
+import { Map as ThemedMap } from 'marccent-theme/components/widgets/map';
 import { Page, Full, Box } from '../blocks';
 import { AccountForm, CountUp, LiveSpeedometer, LiveRadar } from '../parts';
 import { img } from '@/lib/img';
@@ -243,7 +243,7 @@ export default function Fernbank() {
           <div className="grid cols-1 gap-sm content-start">
             <h2 style={{ fontWeight: 700 }}>55,000 free ATMs</h2>
             <p className="fs-lg" style={{ opacity: .75 }}>There&apos;s probably one on your block. Here&apos;s downtown San Francisco.</p>
-            <ThemedMap center={{ lat: 37.7897, lng: -122.4014 }} zoom={15} className="round shadow" style={{ minHeight: '22rem' }} />
+            <ThemedMap apiKey={process.env.NEXT_PUBLIC_GOOGLE_API} center={{ lat: 37.7897, lng: -122.4014 }} zoom={15} className="round shadow" style={{ minHeight: '22rem' }} />
           </div>
           <div id="open" className="grid cols-1 gap-sm content-start">
             <h2 style={{ fontWeight: 700 }}>Open an account</h2>

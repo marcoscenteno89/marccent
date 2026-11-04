@@ -7,7 +7,7 @@ import { SolarSystem } from 'marccent-theme/components/visuals/effects';
 import { TabBar } from 'marccent-theme/components/widgets/nav';
 import { Calendar } from '@/components/widgets/calendar';
 import { ImageCard } from 'marccent-theme/components/widgets/layout';
-import ThemedMap from '@/components/apps/map';
+import { Map as ThemedMap } from 'marccent-theme/components/widgets/map';
 import { Page, Full, Box } from '../blocks';
 import { SignupBar, ContactForm, CountUp } from '../parts';
 import { img } from '@/lib/img';
@@ -203,7 +203,7 @@ export default function Starfall() {
           </div>
           <div className="grid cols-1 gap-sm content-start">
             <strong><Icon name="location-dot" className="text-primary" /> The turnoff</strong>
-            <ThemedMap center={{ lat: 38.3725, lng: -110.7146 }} zoom={11} className="round" style={{ minHeight: '18rem' }} />
+            <ThemedMap apiKey={process.env.NEXT_PUBLIC_GOOGLE_API} center={{ lat: 38.3725, lng: -110.7146 }} zoom={11} className="round" style={{ minHeight: '18rem' }} />
             <small className="opacity-75">22 km of gravel south of Hanksville, Utah. Any car makes it; headlights off at the gate.</small>
           </div>
         </div>

@@ -6,7 +6,7 @@ import { Button } from 'marccent-theme/components/ui/button';
 import { Scenery } from 'marccent-theme/components/visuals/scenery';
 import { HexWall, ImageCard } from 'marccent-theme/components/widgets/layout';
 import { FlipClock, Atom } from '@/components/widgets/fun';
-import ThemedMap from '@/components/apps/map';
+import { Map as ThemedMap } from 'marccent-theme/components/widgets/map';
 import { Page, Full, Box } from '../blocks';
 import { Backdrop, EventCountdown, SignupBar, CountUp } from '../parts';
 import { img } from '@/lib/img';
@@ -200,7 +200,7 @@ export default function SignalSummit() {
               ))}
             </div>
           </div>
-          <ThemedMap center={{ lat: 38.7036, lng: -9.1789 }} zoom={14} className="round" style={{ minHeight: '22rem', ...glow(NEON.sys) }} />
+          <ThemedMap apiKey={process.env.NEXT_PUBLIC_GOOGLE_API} center={{ lat: 38.7036, lng: -9.1789 }} zoom={14} className="round" style={{ minHeight: '22rem', ...glow(NEON.sys) }} />
         </div>
         <Head tag="after hours" title="When the talks end" c={NEON.ai} />
         <div className="grid" style={{ '--cols': 3, '--min': '15rem' }}>

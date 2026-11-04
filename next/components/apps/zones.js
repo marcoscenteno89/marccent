@@ -6,7 +6,7 @@ import { Button } from 'marccent-theme/components/ui/button';
 import { StatCard } from 'marccent-theme/components/widgets/layout';
 import { toastSI } from 'marccent-theme/lib/toasts';
 import { cx } from 'marccent-theme/lib/cx';
-import ThemedMap, { loadMapsLibrary } from './map';
+import { Map as ThemedMap, loadMapsLibrary } from 'marccent-theme/components/widgets/map';
 
 /*
  * Zones: the Google Polygons WordPress plugin (fiber zones) as a front-end app, no login. Draw zones on the map (a
@@ -75,7 +75,7 @@ const toLatLng = (ll) => ({ lat: ll.lat(), lng: ll.lng() });
 // An address as { point, label }: Google's geocoder (the Geocoding API has to be enabled on the key), else
 // OpenStreetMap's Nominatim (free, no key; light use only, one lookup a second).
 const geocodeGoogle = async (address) => {
-  const { Geocoder } = await loadMapsLibrary('geocoding');
+  const { Geocoder } = await loadMapsLibrary('geocoding', process.env.NEXT_PUBLIC_GOOGLE_API);
   const { results } = await new Geocoder().geocode({ address });
   return results?.length ? { point: toLatLng(results[0].geometry.location), label: results[0].formatted_address } : null;
 };
@@ -228,7 +228,7 @@ const Zones = () => {
           </div>
           <span className="fs-sm opacity-75">{draft ? `Drawing: ${draft.length} points` : pinning ? 'Click the map to drop your pin' : `${zones.length} zones`}</span>
         </div>
-        <ThemedMap zoom={12} onLoad={onLoad} className="w-100 h-100 round" style={{ minHeight: '26rem' }} />
+        <ThemedMap apiKey={process.env.NEXT_PUBLIC_GOOGLE_API} zoom={12} onLoad={onLoad} className="w-100 h-100 round" style={{ minHeight: '26rem' }} />
       </Card>
 
       <Card name="panel">

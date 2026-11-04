@@ -13,7 +13,7 @@ import { Accordion, AccordionItem } from 'marccent-theme/components/ui/accordion
 import { toastSI } from 'marccent-theme/lib/toasts';
 import { Button } from 'marccent-theme/components/ui/button';
 import { StatCard } from 'marccent-theme/components/widgets/layout';
-import ThemedMap from "./map";
+import { Map as ThemedMap } from 'marccent-theme/components/widgets/map';
 
 // Our own route (app/api/weather) fetches the forecast, so the OpenWeather key stays on the server.
 const forecastUrl = (city) => `/api/weather?q=${encodeURIComponent(city)}`;
@@ -92,7 +92,7 @@ const Weather = () => {
           </div>
           <Button icon="rotate-left" className="hover-expand" title="Back to the plain map, on the city" onClick={reset}>Reset</Button>
         </div>
-        <ThemedMap center={city.city.coord} zoom={layer ? 6 : 10} recenter={recenter} overlay={layer && tileUrl(layer)}
+        <ThemedMap apiKey={process.env.NEXT_PUBLIC_GOOGLE_API} center={city.city.coord} zoom={layer ? 6 : 10} recenter={recenter} overlay={layer && tileUrl(layer)}
           className="w-100 h-100 round" style={{ minHeight: '18rem' }} />
       </Card>
       {air && <AirRing air={air} />}

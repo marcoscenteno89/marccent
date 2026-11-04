@@ -3,7 +3,7 @@ import { Icon } from 'marccent-theme/components/ui/icon';
 import { Menu, social, contact, externalProps } from '@/components/layout/menus';
 import { SectionHead } from '@/components/layout/section-head';
 import ContactForm from '@/components/layout/contact-form';
-import MapWTCL from '@/components/apps/map';
+import { Map as MapWTCL } from 'marccent-theme/components/widgets/map';
 import { CanvasBand } from '@/components/layout/canvas-band';
 import { StatCard, Timeline } from 'marccent-theme/components/widgets/layout';
 import Markdown from '@/components/markdown';
@@ -100,7 +100,7 @@ export default function About() {
       <Full id="contact" className="bg-gradient" style={{ scrollMarginTop: '4rem' }}>
         <div className="bg border round shadow overflow-hidden grid gap-0 layout-2-1" style={{ color: 'var(--body-color)' }}>
           <div className="grid cols-1 gap-0" style={{ minHeight: '24rem' }}>
-            <MapWTCL className="h-100" zoom={10} />
+            <MapWTCL apiKey={process.env.NEXT_PUBLIC_GOOGLE_API} className="h-100" zoom={10} />
           </div>
           <div className="grid cols-1 pad-x pad-y-lg gap-sm">
             <SectionHead kicker={about.contact.kicker} title={about.contact.title} />

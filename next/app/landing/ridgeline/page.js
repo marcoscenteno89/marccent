@@ -6,7 +6,7 @@ import { Scenery } from 'marccent-theme/components/visuals/scenery';
 import { Timeline, ImageCard } from 'marccent-theme/components/widgets/layout';
 import { RingGauge } from '@/components/widgets/data';
 import { Carousel } from 'marccent-theme/components/widgets/carousel';
-import ThemedMap from '@/components/apps/map';
+import { Map as ThemedMap } from 'marccent-theme/components/widgets/map';
 import { Page, Full, Box } from '../blocks';
 import { SignupBar, ContactForm, CountUp, TripPicker } from '../parts';
 import { img } from '@/lib/img';
@@ -209,7 +209,7 @@ export default function Ridgeline() {
           </div>
           <div className="grid cols-1 gap-sm content-start">
             <strong><Icon name="location-dot" /> Where Patagonia trips meet</strong>
-            <ThemedMap center={{ lat: -51.7236, lng: -72.5064 }} zoom={13} className="round" style={{ minHeight: '18rem' }} />
+            <ThemedMap apiKey={process.env.NEXT_PUBLIC_GOOGLE_API} center={{ lat: -51.7236, lng: -72.5064 }} zoom={13} className="round" style={{ minHeight: '18rem' }} />
             <small style={{ opacity: .8 }}>Our basecamp lodge on the waterfront, Puerto Natales, 6 PM on day one.</small>
           </div>
         </div>

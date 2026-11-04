@@ -3,7 +3,7 @@ import { Icon } from 'marccent-theme/components/ui/icon';
 import { Button } from 'marccent-theme/components/ui/button';
 import { AnalogClock } from '@/components/widgets/fun';
 import { Accordion, AccordionItem } from 'marccent-theme/components/ui/accordion';
-import ThemedMap from '@/components/apps/map';
+import { Map as ThemedMap } from 'marccent-theme/components/widgets/map';
 import { Alert } from 'marccent-theme/components/ui/alert';
 import { ImageCard } from 'marccent-theme/components/widgets/layout';
 import { Page, Full, Box } from '../blocks';
@@ -228,7 +228,7 @@ export default function Brightside() {
       <Full id="visit" className="bg">
         <div className="grid gap-lg" style={{ '--cols': 2, '--min': '18rem' }}>
           <div className="grid cols-1 gap-sm content-start">
-            <ThemedMap center={{ lat: 39.7817, lng: -89.6501 }} zoom={14} className="round shadow" style={{ minHeight: '22rem', borderRadius: '1.5rem' }} />
+            <ThemedMap apiKey={process.env.NEXT_PUBLIC_GOOGLE_API} center={{ lat: 39.7817, lng: -89.6501 }} zoom={14} className="round shadow" style={{ minHeight: '22rem', borderRadius: '1.5rem' }} />
             <p><strong>1420 Maple Avenue, Suite 200, Springfield</strong><br /><small className="opacity-75">Free parking behind the building · Bus 12 stops out front</small></p>
           </div>
           <div className="grid cols-1 gap-lg content-start">
