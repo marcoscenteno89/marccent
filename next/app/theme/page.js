@@ -1,5 +1,5 @@
 'use client';
-import { useContext, useState, useEffect } from "react";
+import { Fragment, useContext, useState, useEffect } from "react";
 import { Button } from 'marccent-theme/components/ui/button';
 import { ToggleButton } from 'marccent-theme/components/ui/toggle-button';
 import { Icon } from 'marccent-theme/components/ui/icon';
@@ -13,6 +13,8 @@ import { Modal } from 'marccent-theme/components/ui/modal';
 import { Pagination } from 'marccent-theme/components/ui/pagination';
 import { Clock } from 'marccent-theme/components/ui/clock';
 import { Counter } from 'marccent-theme/components/ui/counter';
+import { Price } from 'marccent-theme/components/ui/price';
+import { Typeset } from 'marccent-theme/components/ui/typeset';
 import { Menu } from '@/components/layout/menus';
 import { GalleryHeader, Section, Demo, Row } from '@/components/gallery';
 import { ButtonDemos, FormDemos, OverlayDemos, DataDemos, LayoutDemos } from './more-demos';
@@ -29,6 +31,18 @@ import { toastSI } from "marccent-theme/lib/toasts";
  * everywhere at once. Shapes and Widgets (the other Design pages) have their own. Built only from the existing
  * components and classes; one-off values (sizes, sample colors) are inline.
  */
+
+// What authors type, for the Typeset demo: each shown as typed and as set.
+const TYPESET = [
+  'Wait for it...',
+  'Open Mon--Fri, 7--5',
+  'Fast -- and done right',
+  'Our 1st, 2nd, 3rd and 21st jobs',
+  'Marccent(tm), R&C(r), Brand(sm), (c) 2026',
+  'A 1,200 ft2 slab on a 200 m2 lot',
+  'A 6\'8" door under 9\' ceilings',
+  'Cured at 72 °F for 28 days: 4,000 psi',
+];
 
 const SECTIONS = ['Colors', 'Typography', 'Buttons', 'Hover effects', 'Forms', 'Feedback', 'Overlays', 'Navigation', 'Data display', 'Layout'];
 const PALETTE = ['primary', 'secondary', 'danger', 'success', 'info'];
@@ -154,6 +168,27 @@ export default function ThemePage() {
           <p className="fs-sm opacity-75">fs-sm opacity-75: smaller, muted text</p>
           <p className="fw-light text-uppercase">fw-light text-uppercase</p>
         </div>
+        <Demo name="Typeset">Authors type what&apos;s on their keyboard; Typeset (data-component=&quot;typeset&quot; on a server&apos;s page) sets it the way print does</Demo>
+        <div className="grid layout-1-2 gap-sm items-center">
+          {TYPESET.map((typed) => (
+            <Fragment key={typed}><code className="fs-sm">{typed}</code><Typeset as="p" className="fs-lg" style={{ margin: 0 }}>{typed}</Typeset></Fragment>
+          ))}
+        </div>
+        <Demo name="Price">The currency sign and cents raised, the period small, an old price struck through, in any currency and locale; screen readers hear the whole price</Demo>
+        <div className="row-wrap gap-lg items-end">
+          <Price amount={19.99} per="mo" was={29} className="display" />
+          <Price amount={1200} className="display" />
+          <Price amount={49.5} currency="EUR" locale="de-DE" per="Monat" className="display" />
+          <Price amount={4.99} currency="GBP" locale="en-GB" className="h2" />
+        </div>
+        <Demo name="Numbers and marks">The font&apos;s own features, where it has them; sup and sub keep their line where it is</Demo>
+        <div className="grid cols-4 gap-sm">
+          <div><small className="opacity-75">default</small><p className="fs-lg">111.11<br />808.08</p></div>
+          <div><small className="opacity-75">nums-tabular</small><p className="fs-lg nums-tabular">111.11<br />808.08</p></div>
+          <div><small className="opacity-75">nums-fractions</small><p className="fs-lg nums-fractions">1/2 3/4 7/8</p></div>
+          <div><small className="opacity-75">small-caps</small><p className="fs-lg small-caps">Open 7 AM to 5 PM, NASA, HTML</p></div>
+        </div>
+        <p>A footnote marker stays in its line<sup>1</sup>, as does a formula like H<sub>2</sub>O or an area like 30 m<sup>2</sup>, without pushing the lines around it apart, however long the paragraph runs and wraps across the width of the page.</p>
       </Section>
 
       <Section name="Buttons" intro="Button gives the layout (icon left, label right); a color class on it gives the look.">
