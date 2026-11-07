@@ -200,7 +200,7 @@ export default function ThemePage() {
           <Button icon="toggle-on" aria-pressed="true">Pressed</Button>
           <Button icon="ban" disabled>Disabled</Button>
           <Button icon="link-slash" href="/" disabled>Disabled link</Button>
-          <button data-component="button" data-name="close" type="button" className="btn-close col-center" aria-label="Close"><Icon name="xmark" /></button>
+          <button data-component="button" data-name="close" type="button" className="btn-plain col-center round icon-sm opacity-50 hover-opaque" aria-label="Close"><Icon name="xmark" /></button>
         </Row>
         <Row label="Filled" note=".btn + a color">
           {FILLS.map((c, i) => <Button key={c} icon={icon(i)} className={c}>{c}</Button>)}

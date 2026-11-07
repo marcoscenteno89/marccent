@@ -9,7 +9,6 @@ import { Form, StepForm, Step } from 'marccent-theme/components/ui/form';
 import { Input, Field } from 'marccent-theme/components/ui/field';
 import { Calendar, Scheduler } from '@/components/widgets/calendar';
 import { Speedometer, Radar } from '@/components/widgets/data';
-import 'marccent-theme/styles/components/clock.css';
 
 /*
  * The landing pages' pieces that need state, timers or the toast: signup and contact forms, bookings, and numbers
@@ -210,7 +209,7 @@ const EventCountdown = ({ to, className }) => {
     <div ref={box} className={className} role="timer" aria-label="Time until the event">
       {parts.map(([ label, n ]) => (
         <div key={label} className="col-center pad-sm">
-          <span className="display-sm fw-bold timer">{now ? String(n).padStart(2, '0') : '--'}</span>
+          <span className="display-sm fw-bold nums-tabular text-nowrap">{now ? String(n).padStart(2, '0') : '--'}</span>
           <small className="text-uppercase opacity-75">{label}</small>
         </div>
       ))}
