@@ -1,13 +1,13 @@
 'use client';
 import { useContext } from 'react';
-import { ThemeContext } from 'marccent-theme/lib/context';
-import { Button } from 'marccent-theme/components/ui/button';
-import { Icon } from 'marccent-theme/components/ui/icon';
-import { MiniThemeEditor } from 'marccent-theme/components/theme/mini-editor';
-import { DesignSelect } from 'marccent-theme/components/theme/designs';
-import { ModeToggle, GlassToggle, ThemeReset } from 'marccent-theme/components/theme/toggles';
-import { designTitle } from 'marccent-theme/lib/design';
-import { Code } from 'marccent-theme/components/ui/code';
+import { ThemeContext } from '@marccent/theme/lib/context';
+import { Button } from '@marccent/theme/components/ui/button';
+import { Icon } from '@marccent/theme/components/ui/icon';
+import { MiniThemeEditor } from '@marccent/theme/components/theme/mini-editor';
+import { DesignSelect } from '@marccent/theme/components/theme/designs';
+import { ModeToggle, GlassToggle, ThemeReset } from '@marccent/theme/components/theme/toggles';
+import { designTitle } from '@marccent/theme/lib/design';
+import { Code } from '@marccent/theme/components/ui/code';
 import { SectionHead } from '@/components/layout/section-head';
 import { Full, Box } from './landing/blocks';
 

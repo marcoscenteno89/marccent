@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "dev:link": "rm -rf node_modules/marccent-theme .next && ln -s ../../../marccent-theme node_modules/marccent-theme",
-    "dev:unlink": "rm -rf node_modules/marccent-theme .next && npm install",
+    "dev:link": "rm -rf node_modules/@marccent/theme .next && mkdir -p node_modules/@marccent && ln -s ../../../../marccent-theme node_modules/@marccent/theme",
+    "dev:unlink": "rm -rf node_modules/@marccent/theme .next && npm install",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -25,7 +25,7 @@
     "@marccent/util": "github:marcoscenteno89/util",
     "@sentry/react": "^7.109.0",
     "dayjs": "^1.11.10",
-    "marccent-theme": "github:marcoscenteno89/marccent-theme#v0.3.2",
+    "@marccent/theme": "github:marcoscenteno89/marccent-theme#9b2c778609d98f7454b60226689b3a0050a02036",
     "marked": "^18.1.0",
     "next": "14.2.35",
     "react": "^18",

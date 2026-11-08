@@ -1,9 +1,9 @@
-import { Icon } from 'marccent-theme/components/ui/icon';
-import { Orbit, Countdown } from 'marccent-theme/components/visuals/effects';
-import { Button } from 'marccent-theme/components/ui/button';
-import { HexGrid, TicketCard, StatCard } from 'marccent-theme/components/widgets/layout';
-import { CARD_BUTTON } from 'marccent-theme/components/widgets/card-button';
-import { Carousel } from 'marccent-theme/components/widgets/carousel';
+import { Icon } from '@marccent/theme/components/ui/icon';
+import { Orbit, Countdown } from '@marccent/theme/components/visuals/effects';
+import { Button } from '@marccent/theme/components/ui/button';
+import { HexGrid, TicketCard, StatCard } from '@marccent/theme/components/widgets/layout';
+import { CARD_BUTTON } from '@marccent/theme/components/widgets/card-button';
+import { Carousel } from '@marccent/theme/components/widgets/carousel';
 import { RingGauge } from '@/components/widgets/data';
 import { Atom } from '@/components/widgets/fun';
 

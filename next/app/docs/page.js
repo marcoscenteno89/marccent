@@ -1,9 +1,9 @@
-import { Button } from 'marccent-theme/components/ui/button';
-import { Icon } from 'marccent-theme/components/ui/icon';
-import { Alert } from 'marccent-theme/components/ui/alert';
-import { Accordion, AccordionItem } from 'marccent-theme/components/ui/accordion';
+import { Button } from '@marccent/theme/components/ui/button';
+import { Icon } from '@marccent/theme/components/ui/icon';
+import { Alert } from '@marccent/theme/components/ui/alert';
+import { Accordion, AccordionItem } from '@marccent/theme/components/ui/accordion';
 import { GalleryHeader, Section, Demo } from '@/components/gallery';
-import { Code } from 'marccent-theme/components/ui/code';
+import { Code } from '@marccent/theme/components/ui/code';
 
 /*
  * Docs: how to use marccent-theme. Install and set up, then the classes (layout, utilities, colors), the design styles,
@@ -54,7 +54,7 @@ export default function DocsPage() {
         `}</Code>
         <Code lang="js">{`
           // next.config.js
-          module.exports = { transpilePackages: ['marccent-theme'] };
+          module.exports = { transpilePackages: ['@marccent/theme'] };
         `}</Code>
       </Section>
 
@@ -64,16 +64,16 @@ export default function DocsPage() {
           'use client';
           import Link from 'next/link';
           import { usePathname } from 'next/navigation';
-          import { ThemeProvider } from 'marccent-theme/lib/context';
+          import { ThemeProvider } from '@marccent/theme/lib/context';
 
           export const SiteThemeProvider = ({ children }) => <ThemeProvider path={usePathname()} link={Link}>{children}</ThemeProvider>;
         `}</Code>
         <Code>{`
           // app/layout.js
-          import 'marccent-theme/styles/index.css';
-          import { Body, SiteTheme, ScopeThemes } from 'marccent-theme/components/theme/core';
-          import { Toast } from 'marccent-theme/components/ui/toast';
-          import { CanvasScanner } from 'marccent-theme/components/visuals/canvas-scanner';
+          import '@marccent/theme/styles/index.css';
+          import { Body, SiteTheme, ScopeThemes } from '@marccent/theme/components/theme/core';
+          import { Toast } from '@marccent/theme/components/ui/toast';
+          import { CanvasScanner } from '@marccent/theme/components/visuals/canvas-scanner';
           import { SiteThemeProvider } from './theme-provider';
 
           export default function RootLayout({ children }) {
@@ -251,8 +251,8 @@ export default function DocsPage() {
 
       <Section name="Theme engine" intro="Palettes, light / dark mode, glass and design style, saved in the browser, for the whole site or for one element.">
         <Code>{`
-          import { ThemeEditor } from 'marccent-theme/components/theme/editor';
-          import { MiniThemeEditor } from 'marccent-theme/components/theme/mini-editor';
+          import { ThemeEditor } from '@marccent/theme/components/theme/editor';
+          import { MiniThemeEditor } from '@marccent/theme/components/theme/mini-editor';
 
           <ThemeEditor scope="site" />              // the full editor, for the whole site
           <section id="pricing">
@@ -272,8 +272,8 @@ export default function DocsPage() {
       <Section name="UI kit" intro="Each component imports its own CSS. Roots carry data-component, so devtools show where each one starts.">
         <Example name="Button, Icon" text="Icon on the left, label on the right; a link when given href. Icon-only buttons need an aria-label."
           code={`
-            import { Button } from 'marccent-theme/components/ui/button';
-            import { Icon } from 'marccent-theme/components/ui/icon';
+            import { Button } from '@marccent/theme/components/ui/button';
+            import { Icon } from '@marccent/theme/components/ui/icon';
 
             <Button icon="rocket" href="/apps">Apps</Button>
             <Button icon="xmark" aria-label="Close" />
@@ -305,14 +305,14 @@ export default function DocsPage() {
         </Example>
         <Example name="Toasts" text="Add one from anywhere; the Toast in the layout shows them."
           code={`
-            import { toastSI } from 'marccent-theme/lib/toasts';
+            import { toastSI } from '@marccent/theme/lib/toasts';
 
             toastSI.add('Saved', 'success');
           `} />
         <Example name="Form, Field" text="A native form: the browser validates. onSubmit gets { name: value }."
           code={`
-            import { Form } from 'marccent-theme/components/ui/form';
-            import { Field } from 'marccent-theme/components/ui/field';
+            import { Form } from '@marccent/theme/components/ui/form';
+            import { Field } from '@marccent/theme/components/ui/field';
 
             <Form onSubmit={(values) => send(values)} submitLabel="Send">
               <Field name="email" type="email" required />
@@ -321,7 +321,7 @@ export default function DocsPage() {
           `} />
         <Example name="Modal" text="A native dialog: the browser draws the backdrop and keeps focus inside."
           code={`
-            import { Modal } from 'marccent-theme/components/ui/modal';
+            import { Modal } from '@marccent/theme/components/ui/modal';
 
             <Modal title="Hello" show={show} setShow={setShow}>…</Modal>
           `} />

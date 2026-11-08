@@ -1,13 +1,13 @@
 'use client';
-import { Button } from 'marccent-theme/components/ui/button';
-import { ExpandButton } from 'marccent-theme/components/ui/expand-button';
-import { FileDrop } from 'marccent-theme/components/ui/file-drop';
-import { TagInput } from 'marccent-theme/components/ui/tag-input';
-import { Rating, Stars } from 'marccent-theme/components/ui/rating';
-import { Tooltip, LinkPreview, Popover } from 'marccent-theme/components/ui/popover';
-import { DataTable } from 'marccent-theme/components/ui/data-table';
-import { Compare } from 'marccent-theme/components/ui/compare';
-import { Footer } from 'marccent-theme/components/widgets/footer';
+import { Button } from '@marccent/theme/components/ui/button';
+import { ExpandButton } from '@marccent/theme/components/ui/expand-button';
+import { FileDrop } from '@marccent/theme/components/ui/file-drop';
+import { TagInput } from '@marccent/theme/components/ui/tag-input';
+import { Rating, Stars } from '@marccent/theme/components/ui/rating';
+import { Tooltip, LinkPreview, Popover } from '@marccent/theme/components/ui/popover';
+import { DataTable } from '@marccent/theme/components/ui/data-table';
+import { Compare } from '@marccent/theme/components/ui/compare';
+import { Footer } from '@marccent/theme/components/widgets/footer';
 import { Demo, Row } from '@/components/gallery';
 import { img } from '@/lib/img';
 

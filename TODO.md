@@ -6,9 +6,11 @@ work fixed here only; anything the theme fixes is a ticket in marccent-theme's
 
 ## Bugs
 
+- [ ] **`next build` fails** — `Module not found: @marccent/theme/styles/components/clock.css` (`app/landing/parts.js:12`), since the move to 1.0.0-rc.16. (found 2026-11-08)
+
 ## Requests
 
-- [ ] **Move to the theme's current release** — `next/package.json` pins `marccent-theme#v0.3.2`; the theme is at 1.0.0-rc.16 and is now the package `@marccent/theme`. The move renames the dependency, every `marccent-theme/…` import and CSS `@import`, `transpilePackages`, `types/modules.d.ts` and the `dev:link` scripts, then takes every markup change since 0.3.2 (CHANGELOG.md). (found 2026-11-08)
+- [ ] **Finish the move to the theme's current release** — the package is renamed (`@marccent/theme`, pinned to theme 1.0.0-rc.16's commit, every import and CSS `@import`, `transpilePackages`, `types/modules.d.ts`, the `dev:link` scripts) but the site was built on 0.3.2. `next build` fails: `app/landing/parts.js` imports `styles/components/clock.css`, removed in 1.0.0-rc.15. Then every markup and prop change since 0.3.2 (CHANGELOG.md). `next lint` and `tsc` pass, so CI stays green while the build is broken. (found 2026-11-08)
 
 ## Waiting on
 

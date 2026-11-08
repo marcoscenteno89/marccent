@@ -1,8 +1,8 @@
 // Shared: no 'use client' (no state or effects), so the gallery pages can render on the server or in the browser.
 import { Menu } from '@/components/layout/menus';
-import { cx } from 'marccent-theme/lib/cx';
-import { Icon } from 'marccent-theme/components/ui/icon';
-import { Collage as ThemeCollage } from 'marccent-theme/components/widgets/collage';
+import { cx } from '@marccent/theme/lib/cx';
+import { Icon } from '@marccent/theme/components/ui/icon';
+import { Collage as ThemeCollage } from '@marccent/theme/components/widgets/collage';
 
 /*
  * The design gallery's building blocks, shared by its pages (Theme, Shapes, Widgets: the Design menu): a page header

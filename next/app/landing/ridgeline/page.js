@@ -1,11 +1,11 @@
 import '@fontsource-variable/fraunces';
 import '@fontsource-variable/caveat';
-import { Icon } from 'marccent-theme/components/ui/icon';
-import { Button } from 'marccent-theme/components/ui/button';
-import { Scenery } from 'marccent-theme/components/visuals/scenery';
-import { Timeline, ImageCard } from 'marccent-theme/components/widgets/layout';
+import { Icon } from '@marccent/theme/components/ui/icon';
+import { Button } from '@marccent/theme/components/ui/button';
+import { Scenery } from '@marccent/theme/components/visuals/scenery';
+import { Timeline, ImageCard } from '@marccent/theme/components/widgets/layout';
 import { RingGauge } from '@/components/widgets/data';
-import { Carousel } from 'marccent-theme/components/widgets/carousel';
+import { Carousel } from '@marccent/theme/components/widgets/carousel';
 import ThemedMap from '@/components/apps/map';
 import { Page, Full, Box } from '../blocks';
 import { SignupBar, ContactForm, CountUp, TripPicker } from '../parts';

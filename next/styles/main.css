@@ -7,32 +7,32 @@
  * Components load on their own: each theme component imports its file from the theme's styles/components/, ranked
  * by the cascade layers in its layers.css: base (reset) < components < everything else in this file, which is unlayered.
  */
-@import "marccent-theme/styles/layers.css";
+@import "@marccent/theme/styles/layers.css";
 
 /* Variables */
-@import "marccent-theme/styles/tokens/defaults.css";   /* every variable's default */
+@import "@marccent/theme/styles/tokens/defaults.css";   /* every variable's default */
 @import "./settings.css";                               /* this site's overrides: active lines beat the defaults and any design style */
 
 /* Elements and colors */
-@import "marccent-theme/styles/base/base.css";         /* reset, typography, form elements (layer base) */
-@import "marccent-theme/styles/tokens/colors.css";     /* color classes: bg-*, text-*, .btn color modifiers, .divide, surfaces */
+@import "@marccent/theme/styles/base/base.css";         /* reset, typography, form elements (layer base) */
+@import "@marccent/theme/styles/tokens/colors.css";     /* color classes: bg-*, text-*, .btn color modifiers, .divide, surfaces */
 
 /* Layout */
-@import "marccent-theme/styles/layout.css";            /* grid, wrap, stack, padding, gaps */
+@import "@marccent/theme/styles/layout.css";            /* grid, wrap, stack, padding, gaps */
 
 /* Site */
 @import "./site.css";                                   /* this site's custom styles: stock chart, sliders */
 
 /* Components */
-@import "marccent-theme/styles/base/animations.css";   /* keyframes and open/close motion; unlayered, so it beats a component's transition */
-@import "marccent-theme/styles/fontawesome.css";       /* Font Awesome (the theme moved it out of icons.css in 0.3.0) */
-@import "marccent-theme/styles/components/icons.css";  /* used on every page (any <i>): the icon square */
-@import "marccent-theme/styles/components/header.css"; /* used on every page (any box's title row: cards, modal, toast) */
-@import "marccent-theme/styles/hovers.css";            /* hover effects (.hover-*); unlayered, so they replace a component's own hover */
+@import "@marccent/theme/styles/base/animations.css";   /* keyframes and open/close motion; unlayered, so it beats a component's transition */
+@import "@marccent/theme/styles/fontawesome.css";       /* Font Awesome (the theme moved it out of icons.css in 0.3.0) */
+@import "@marccent/theme/styles/components/icons.css";  /* used on every page (any <i>): the icon square */
+@import "@marccent/theme/styles/components/header.css"; /* used on every page (any box's title row: cards, modal, toast) */
+@import "@marccent/theme/styles/hovers.css";            /* hover effects (.hover-*); unlayered, so they replace a component's own hover */
 
 /* Utilities: last, so a single-purpose class beats a component's own rule */
-@import "marccent-theme/styles/utilities.css";
+@import "@marccent/theme/styles/utilities.css";
 
 /* DESIGN STYLES: every style in the theme's themes/, scoped by its name; the one in use is data-design on <html>
    (DEFAULT_DESIGN in marccent-theme/lib/design). Last, so its effects beat the components. */
-@import "marccent-theme/styles/designs.css";
+@import "@marccent/theme/styles/designs.css";

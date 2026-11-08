@@ -1,9 +1,9 @@
 'use client';
 import { useContext } from 'react';
-import { ThemeContext } from 'marccent-theme/lib/context';
-import { cx } from 'marccent-theme/lib/cx';
+import { ThemeContext } from '@marccent/theme/lib/context';
+import { cx } from '@marccent/theme/lib/cx';
 import { Color } from '@marccent/util/class';
-import { textVars } from 'marccent-theme/lib/theme-scope';
+import { textVars } from '@marccent/theme/lib/theme-scope';
 
 /*
  * The structure every landing page shares, and its palette:

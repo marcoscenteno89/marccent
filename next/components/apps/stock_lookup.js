@@ -2,13 +2,13 @@
 import React, { useState, useEffect } from 'react';
 import dayjs from 'dayjs';
 import { get } from "@marccent/util";
-import { Form } from 'marccent-theme/components/ui/form';
-import { Input } from 'marccent-theme/components/ui/field';
-import { Accordion, AccordionItem } from 'marccent-theme/components/ui/accordion';
-import { Loading } from 'marccent-theme/components/ui/loading';
-import { Button } from 'marccent-theme/components/ui/button';
-import { Alert } from 'marccent-theme/components/ui/alert';
-import { GraphCanvas } from 'marccent-theme/components/visuals/canvas';
+import { Form } from '@marccent/theme/components/ui/form';
+import { Input } from '@marccent/theme/components/ui/field';
+import { Accordion, AccordionItem } from '@marccent/theme/components/ui/accordion';
+import { Loading } from '@marccent/theme/components/ui/loading';
+import { Button } from '@marccent/theme/components/ui/button';
+import { Alert } from '@marccent/theme/components/ui/alert';
+import { GraphCanvas } from '@marccent/theme/components/visuals/canvas';
 
 // Price steps on the chart's hover grid (rows); the price column labels every 10th.
 const BASE = 100;

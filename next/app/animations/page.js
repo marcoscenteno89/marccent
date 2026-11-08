@@ -1,10 +1,10 @@
 import { GalleryHeader, Section } from '@/components/gallery';
-import { Collage, Light, Ghost, Stars, Progress } from 'marccent-theme/components/widgets/collage';
-import { AnimPlayer } from 'marccent-theme/components/visuals/animations';
-import { Clock } from 'marccent-theme/components/ui/clock';
+import { Collage, Light, Ghost, Stars, Progress } from '@marccent/theme/components/widgets/collage';
+import { AnimPlayer } from '@marccent/theme/components/visuals/animations';
+import { Clock } from '@marccent/theme/components/ui/clock';
 import { FlipClock } from '@/components/widgets/fun';
-import { ImageCard } from 'marccent-theme/components/widgets/layout';
-import { Button } from 'marccent-theme/components/ui/button';
+import { ImageCard } from '@marccent/theme/components/widgets/layout';
+import { Button } from '@marccent/theme/components/ui/button';
 import { img } from '@/lib/img';
 
 /*

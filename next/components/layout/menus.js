@@ -1,7 +1,7 @@
 import { apps } from '@/components/apps/list';
 
 // The Menu itself (and externalProps, menuLinks) is the theme's (components/ui/menu.js); this file is the site's data.
-export { Menu, externalProps, menuLinks } from 'marccent-theme/components/ui/menu';
+export { Menu, externalProps, menuLinks } from '@marccent/theme/components/ui/menu';
 
 // Shared menus: edit a link here and the header, hero and contact page all pick it up.
 // name: visible text. label: aria-label for icon-only links. icon: full Font Awesome classes.
