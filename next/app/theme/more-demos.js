@@ -7,14 +7,14 @@ import { Rating, Stars } from 'marccent-theme/components/ui/rating';
 import { Tooltip, LinkPreview, Popover } from 'marccent-theme/components/ui/popover';
 import { DataTable } from 'marccent-theme/components/ui/data-table';
 import { Compare } from 'marccent-theme/components/ui/compare';
-import { Footer } from 'marccent-theme/components/widgets/footer';
+import { Menu } from 'marccent-theme/components/ui/menu';
 import { Demo, Row } from '@/components/gallery';
 import { img } from '@/lib/img';
 
 /*
  * The theme components the Theme page didn't show yet, one group per section it joins: form fields (FileDrop,
  * TagInput, Rating), floating boxes (Tooltip, LinkPreview, Popover), ExpandButton, data (DataTable, Stars, Compare)
- * and the Footer. Client side: DataTable's columns hold functions.
+ * and the Footer pattern. Client side: DataTable's columns hold functions.
  */
 
 const CITIES = [ 'Boise', 'Reno', 'Austin', 'Denver' ];
@@ -112,20 +112,36 @@ const DataDemos = () => (
   </>
 );
 
-// Layout: a site footer from the same items as its menus (its own id: the page already has the site's footer).
+// Layout: the Footer pattern (marccent-theme PATTERNS.md), built from Menu and the grid classes: no component, so a
+// site arranges it its own way (its own id: the page already has the site's footer).
+const columns = [
+  { name: 'Design', children: [ { name: 'Theme', href: '#colors' }, { name: 'Shapes', href: '/shapes' }, { name: 'Widgets', href: '/widgets' } ] },
+  { name: 'More', children: [ { name: 'About', href: '/about' }, { name: 'Docs', href: '/docs' } ] },
+];
 const LayoutDemos = () => (
   <>
-    <Demo name="Footer">Brand, link columns, a legal row and social icons, all from Menu items; one column on phones</Demo>
-    <Footer id="footer-demo" className="bg border round pad"
-      brand={<strong className="text-gradient fs-lg">Marccent</strong>}
-      about="Themes, animations and tools, made in Idaho."
-      columns={[
-        { name: 'Design', children: [ { name: 'Theme', href: '#colors' }, { name: 'Shapes', href: '/shapes' }, { name: 'Widgets', href: '/widgets' } ] },
-        { name: 'More', children: [ { name: 'About', href: '/about' }, { name: 'Docs', href: '/docs' } ] },
-      ]}
-      social={[ { name: 'GitHub', href: 'https://github.com/marcoscenteno89', icon: 'fa-brands fa-github' } ]}
-      legal={<small>© 2026 Marccent</small>}
-      legalLinks={[ { name: 'Privacy', href: '/privacy-policy' } ]} />
+    <Demo name="Footer pattern">Brand, link columns, a legal row and social icons, each part a Menu; one column on phones</Demo>
+    <footer id="footer-demo" data-component="footer" className="wrap wrap-fluid pad-y-lg grid cols-1 gap-lg bg border round pad">
+      <div className="wrap pad-0 grid layout-1-2 gap-lg">
+        <div className="grid cols-1 gap-sm content-start">
+          <strong className="text-gradient fs-lg">Marccent</strong>
+          <p className="opacity-75">Themes, animations and tools, made in Idaho.</p>
+        </div>
+        <div className="grid gap-lg" style={{ '--min': '10rem', '--cols': columns.length }}>
+          {columns.map((column) => (
+            <div key={column.name} className="grid cols-1 gap-sm content-start">
+              <h2 className="h6">{column.name}</h2>
+              <Menu items={column.children} label={column.name} layout="cols-1" gap="gap-0" style={{ '--cols': 1 }} />
+            </div>
+          ))}
+        </div>
+      </div>
+      <div className="wrap pad-0 border-top pad-y grid layout-ends items-center gap-sm" style={{ '--start': 2 }}>
+        <div className="fs-sm opacity-75"><small>© 2026 Marccent</small></div>
+        <Menu items={[ { name: 'Privacy', href: '/privacy-policy' } ]} label="Footer legal" layout="auto-cols" className="fs-sm" />
+        <Menu items={[ { name: 'GitHub', href: 'https://github.com/marcoscenteno89', icon: 'fa-brands fa-github' } ]} label="Footer social" iconOnly layout="auto-cols" className="col-last" />
+      </div>
+    </footer>
   </>
 );
 
