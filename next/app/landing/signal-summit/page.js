@@ -1,10 +1,10 @@
 import '@fontsource-variable/orbitron';
 import '@fontsource-variable/space-grotesk';
 import '@fontsource-variable/caveat';
-import { Icon } from '@marccent/theme/components/ui/icon';
-import { Button } from '@marccent/theme/components/ui/button';
-import { Scenery } from '@marccent/theme/components/visuals/scenery';
-import { HexWall, ImageCard } from '@marccent/theme/components/widgets/layout';
+import { Icon } from 'marccent/components/ui/icon';
+import { Button } from 'marccent/components/ui/button';
+import { Scenery } from 'marccent/components/visuals/scenery';
+import { HexWall, ImageCard } from 'marccent/components/widgets/layout';
 import { FlipClock, Atom } from '@/components/widgets/fun';
 import ThemedMap from '@/components/apps/map';
 import { Page, Full, Box } from '../blocks';

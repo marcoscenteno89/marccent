@@ -2,8 +2,8 @@
 // A mini theme editor with this site's heading beside it: a third for the title and text, two thirds for the controls
 // (layout-1-2: side by side from 40rem, stacked below), the controls at the end. The theme's MiniThemeEditor is only
 // the row of controls, so the words live here, with the site.
-import { MiniThemeEditor } from '@marccent/theme/components/theme/mini-editor';
-import { Icon } from '@marccent/theme/components/ui/icon';
+import { MiniThemeEditor } from 'marccent/components/theme/mini-editor';
+import { Icon } from 'marccent/components/ui/icon';
 
 /**
  * ThemeEditorRow: usually its own short section (a Box) right under the element it edits.

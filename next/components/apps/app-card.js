@@ -1,6 +1,6 @@
-import { Button } from '@marccent/theme/components/ui/button';
+import { Button } from 'marccent/components/ui/button';
 import Markdown from '@/components/markdown';
-import { StatCard } from '@marccent/theme/components/widgets/layout';
+import { StatCard } from 'marccent/components/widgets/layout';
 
 /**
  * Card for one entry of the apps list (list.tsx in this folder), used by the apps page and the home page: a StatCard

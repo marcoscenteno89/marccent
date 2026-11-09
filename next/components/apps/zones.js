@@ -1,11 +1,11 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
-import { Form } from '@marccent/theme/components/ui/form';
-import { Input, Field } from '@marccent/theme/components/ui/field';
-import { Button } from '@marccent/theme/components/ui/button';
-import { StatCard } from '@marccent/theme/components/widgets/layout';
-import { toastSI } from '@marccent/theme/lib/toasts';
-import { cx } from '@marccent/theme/lib/cx';
+import { Form } from 'marccent/components/ui/form';
+import { Input, Field } from 'marccent/components/ui/field';
+import { Button } from 'marccent/components/ui/button';
+import { StatCard } from 'marccent/components/widgets/layout';
+import { toastSI } from 'marccent/lib/toasts';
+import { cx } from 'marccent/lib/cx';
 import ThemedMap, { loadMapsLibrary } from './map';
 
 /*

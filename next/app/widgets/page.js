@@ -1,13 +1,13 @@
-import { Icon } from '@marccent/theme/components/ui/icon';
-import { Orbit, OrbitClock, SolarSystem } from '@marccent/theme/components/visuals/effects';
-import { HexWall, Timeline } from '@marccent/theme/components/widgets/layout';
-import { StepBar, TabBar } from '@marccent/theme/components/widgets/nav';
+import { Icon } from 'marccent/components/ui/icon';
+import { Orbit, OrbitClock, SolarSystem } from 'marccent/components/visuals/effects';
+import { HexWall, Timeline } from 'marccent/components/widgets/layout';
+import { StepBar, TabBar } from 'marccent/components/widgets/nav';
 import { RingGauge } from '@/components/widgets/data';
 import { Atom, AnalogClock, FlipClock, ShapeLoader, CardFan } from '@/components/widgets/fun';
 import { RadialMenuDemo, RadarDemo, SpeedometerDemo, CalendarDemo, RangeCalendarDemo, SchedulerDemo } from './demos';
 import { GalleryHeader, Section, Collage, Tile } from '@/components/gallery';
 import { CardCarousel } from '@/components/widgets/card-carousel';
-import '@marccent/theme/styles/components/loading.css';
+import 'marccent/styles/components/loading.css';
 
 /*
  * Widgets gallery: the bigger pieces composed from the building blocks (visuals/effects.js and friends), in the

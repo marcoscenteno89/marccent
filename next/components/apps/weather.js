@@ -3,16 +3,16 @@ import React, { useEffect, useState } from "react";
 import { get } from "@marccent/util";
 import dynamic from 'next/dynamic';
 import dayjs from "dayjs";
-import { Clock } from '@marccent/theme/components/ui/clock';
-import { Form } from '@marccent/theme/components/ui/form';
-import { Pagination } from '@marccent/theme/components/ui/pagination';
-import { cx } from '@marccent/theme/lib/cx';
-import { Loading } from '@marccent/theme/components/ui/loading';
-import { Input } from '@marccent/theme/components/ui/field';
-import { Accordion, AccordionItem } from '@marccent/theme/components/ui/accordion';
-import { toastSI } from '@marccent/theme/lib/toasts';
-import { Button } from '@marccent/theme/components/ui/button';
-import { StatCard } from '@marccent/theme/components/widgets/layout';
+import { Clock } from 'marccent/components/ui/clock';
+import { Form } from 'marccent/components/ui/form';
+import { Pagination } from 'marccent/components/ui/pagination';
+import { cx } from 'marccent/lib/cx';
+import { Loading } from 'marccent/components/ui/loading';
+import { Input } from 'marccent/components/ui/field';
+import { Accordion, AccordionItem } from 'marccent/components/ui/accordion';
+import { toastSI } from 'marccent/lib/toasts';
+import { Button } from 'marccent/components/ui/button';
+import { StatCard } from 'marccent/components/widgets/layout';
 import ThemedMap from "./map";
 
 // Our own route (app/api/weather) fetches the forecast, so the OpenWeather key stays on the server.
@@ -37,7 +37,7 @@ const LAYERS = [
 const AQI = [ null, 'Good', 'Fair', 'Moderate', 'Poor', 'Very poor' ];
 const POLLUTANTS = [ [ 'pm2_5', 'PM2.5' ], [ 'pm10', 'PM10' ], [ 'o3', 'Ozone' ], [ 'no2', 'NO\u2082' ] ];
 
-const WaveCanvas = dynamic(() => import("@marccent/theme/components/visuals/canvas").then(module => module.WaveCanvas), {
+const WaveCanvas = dynamic(() => import("marccent/components/visuals/canvas").then(module => module.WaveCanvas), {
   ssr: false,
   loading: () => <Loading require={[]} />,
 });

@@ -1,14 +1,14 @@
 import '@fontsource-variable/nunito';
-import { Icon } from '@marccent/theme/components/ui/icon';
-import { Button } from '@marccent/theme/components/ui/button';
+import { Icon } from 'marccent/components/ui/icon';
+import { Button } from 'marccent/components/ui/button';
 import { AnalogClock } from '@/components/widgets/fun';
-import { Accordion, AccordionItem } from '@marccent/theme/components/ui/accordion';
+import { Accordion, AccordionItem } from 'marccent/components/ui/accordion';
 import ThemedMap from '@/components/apps/map';
-import { Alert } from '@marccent/theme/components/ui/alert';
-import { ImageCard } from '@marccent/theme/components/widgets/layout';
+import { Alert } from 'marccent/components/ui/alert';
+import { ImageCard } from 'marccent/components/widgets/layout';
 import { Page, Full, Box } from '../blocks';
 import { VisitScheduler, NewPatientForm, CountUp } from '../parts';
-import '@marccent/theme/styles/components/loading.css';
+import 'marccent/styles/components/loading.css';
 import { img } from '@/lib/img';
 
 /*

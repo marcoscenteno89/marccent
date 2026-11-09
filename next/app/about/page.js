@@ -1,11 +1,11 @@
-import { Button } from '@marccent/theme/components/ui/button';
-import { Icon } from '@marccent/theme/components/ui/icon';
+import { Button } from 'marccent/components/ui/button';
+import { Icon } from 'marccent/components/ui/icon';
 import { Menu, social, contact, externalProps } from '@/components/layout/menus';
 import { SectionHead } from '@/components/layout/section-head';
 import ContactForm from '@/components/layout/contact-form';
 import MapWTCL from '@/components/apps/map';
 import { CanvasBand } from '@/components/layout/canvas-band';
-import { StatCard, Timeline } from '@marccent/theme/components/widgets/layout';
+import { StatCard, Timeline } from 'marccent/components/widgets/layout';
 import Markdown from '@/components/markdown';
 import JsonLd from '@/components/json-ld';
 import { profilePage } from '@/lib/schema';
