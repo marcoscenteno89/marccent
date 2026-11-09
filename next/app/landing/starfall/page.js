@@ -1,12 +1,12 @@
 import '@fontsource-variable/josefin-sans';
 import '@fontsource-variable/lora';
-import { Icon } from 'marccent-theme/components/ui/icon';
-import { Button } from 'marccent-theme/components/ui/button';
-import { Scenery } from 'marccent-theme/components/visuals/scenery';
-import { SolarSystem } from 'marccent-theme/components/visuals/effects';
-import { TabBar } from 'marccent-theme/components/widgets/nav';
+import { Icon } from 'marccent/components/ui/icon';
+import { Button } from 'marccent/components/ui/button';
+import { Scenery } from 'marccent/components/visuals/scenery';
+import { SolarSystem } from 'marccent/components/visuals/effects';
+import { TabBar } from 'marccent/components/widgets/nav';
 import { Calendar } from '@/components/widgets/calendar';
-import { ImageCard } from 'marccent-theme/components/widgets/layout';
+import { ImageCard } from 'marccent/components/widgets/layout';
 import ThemedMap from '@/components/apps/map';
 import { Page, Full, Box } from '../blocks';
 import { SignupBar, ContactForm, CountUp } from '../parts';

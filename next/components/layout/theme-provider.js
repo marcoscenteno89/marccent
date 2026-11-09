@@ -5,7 +5,7 @@
 // to its own toasts (the default notify).
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { ThemeProvider } from 'marccent-theme/lib/context';
+import { ThemeProvider } from 'marccent/lib/context';
 
 const SiteThemeProvider = ({ children }) => (
   <ThemeProvider path={usePathname()} link={Link}>{children}</ThemeProvider>

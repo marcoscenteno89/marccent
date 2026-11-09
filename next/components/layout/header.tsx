@@ -3,10 +3,10 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
-import { MiniThemeEditor } from 'marccent-theme/components/theme/mini-editor';
-import { Button } from 'marccent-theme/components/ui/button';
-import { ToggleButton } from 'marccent-theme/components/ui/toggle-button';
-import { NavBar } from 'marccent-theme/components/widgets/navbar';
+import { MiniThemeEditor } from 'marccent/components/theme/mini-editor';
+import { Button } from 'marccent/components/ui/button';
+import { ToggleButton } from 'marccent/components/ui/toggle-button';
+import { NavBar } from 'marccent/components/widgets/navbar';
 import { main, social, externalProps } from './menus';
 import { ThemeLogo } from '@/components/brand/theme-logo';
 

@@ -1,6 +1,6 @@
-import { Button } from 'marccent-theme/components/ui/button';
+import { Button } from 'marccent/components/ui/button';
 import { GalleryHeader, Section, Demo } from '@/components/gallery';
-import { Scenery, SCENERY_PATHS } from 'marccent-theme/components/visuals/scenery';
+import { Scenery, SCENERY_PATHS } from 'marccent/components/visuals/scenery';
 
 /*
  * Parallax gallery: the Scenery layers (visuals/scenery.js) one by one and the full-screen landscapes built from

@@ -1,9 +1,9 @@
 'use client';
 import { useEffect, useRef, useState } from "react";
 import { Loader } from '@googlemaps/js-api-loader';
-import { withThemeRead } from "marccent-theme/components/theme/hoc";
-import { cx } from 'marccent-theme/lib/cx';
-import { toHex } from 'marccent-theme/lib/css-color';
+import { withThemeRead } from "marccent/components/theme/hoc";
+import { cx } from 'marccent/lib/cx';
+import { toHex } from 'marccent/lib/css-color';
 
 /*
  * Google Map in the theme colors of the box it sits in (a section themed on its own, a landing page's palette, the
