@@ -22,3 +22,5 @@ work fixed here only; anything the theme fixes is a ticket in marccent-theme's
 ## After 1.0
 
 ## Notes
+
+- `server/` (Django) stays in its own folder and isn't deleted: Marcos has plans for it (2026-11-09). `next/` stays where it is too.
