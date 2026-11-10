@@ -8,13 +8,21 @@ import { Tooltip, LinkPreview, Popover } from 'marccent-theme/components/ui/popo
 import { DataTable } from 'marccent-theme/components/ui/data-table';
 import { Compare } from 'marccent-theme/components/ui/compare';
 import { Menu } from 'marccent-theme/components/ui/menu';
+import { useState } from 'react';
+import { Blur } from 'marccent-theme/components/ui/blur';
+import { CodeTabs } from 'marccent-theme/components/ui/code-tabs';
+import { Drawer } from 'marccent-theme/components/ui/modal';
+import { Dock } from 'marccent-theme/components/widgets/nav';
+import { Section, Grid } from 'marccent-theme/components/widgets/section';
+import { MapView } from 'marccent-theme/components/widgets/map';
 import { Demo, Row } from '@/components/gallery';
 import { img } from '@/lib/img';
 
 /*
  * The theme components the Theme page didn't show yet, one group per section it joins: form fields (FileDrop,
  * TagInput, Rating), floating boxes (Tooltip, LinkPreview, Popover), ExpandButton, data (DataTable, Stars, Compare)
- * and the Footer pattern. Client side: DataTable's columns hold functions.
+ * the Footer pattern, and the rest every component needs a demo of (PRODUCT-LINE.md 3.6: Blur, CodeTabs, Divider,
+ * Dock, Drawer, Grid, Map). Client side: DataTable's columns hold functions.
  */
 
 const CITIES = [ 'Boise', 'Reno', 'Austin', 'Denver' ];
@@ -145,4 +153,41 @@ const LayoutDemos = () => (
   </>
 );
 
-export { ButtonDemos, FormDemos, OverlayDemos, DataDemos, LayoutDemos };
+
+// The rest: every theme component shown here too (PRODUCT-LINE.md 3.6), each as a site would use it.
+const MoreComponentDemos = () => {
+  const [ code, setCode ] = useState({ html: '<p class="text-gradient">Hello</p>', css: 'p { font-size: 2rem; }', js: '' });
+  const [ drawer, setDrawer ] = useState(false);
+  return (
+    <>
+      <Demo name="Grid">The theme&apos;s .grid as a component: equal columns that wrap, or dense with a minimum row height (a collage)</Demo>
+      <Grid cols={4} min="7rem" dense row="5rem">
+        <div className="bg-gradient round pad span-2 row-span-2">Big</div>
+        {[ 1, 2, 3, 4 ].map((n) => <div key={n} className="bg border round pad">{n}</div>)}
+      </Grid>
+      <Demo name="Divider">A shape on a section&apos;s edge, in the band&apos;s color (Section&apos;s dividerTop and dividerBottom)</Demo>
+      {/* The shapes reach out of the band (into the sections around it on a page), so room for them here. */}
+      <div style={{ paddingBlock: '4.5rem' }}>
+        <Section surface="bg-primary" padY="pad-y" dividerTop={{ shape: 'wave', motion: 'roll' }} dividerBottom={{ shape: 'mountains', size: 'sm' }}>
+          <p className="text-center">A band with a rolling wave on top and mountains below</p>
+        </Section>
+      </div>
+      <Demo name="Dock">Icon links that swell as the pointer nears, their names as tooltips</Demo>
+      <Dock label="Demo dock" items={[ { icon: 'house', label: 'Home', href: '/' }, { icon: 'palette', label: 'Theme', href: '/theme' }, { icon: 'shapes', label: 'Shapes', href: '/shapes' }, { icon: 'fa-brands fa-github', label: 'GitHub', href: 'https://github.com/marcoscenteno89', external: true } ]} />
+      <Demo name="Drawer">A panel from the side of the screen; Esc, the close button or a click outside closes it</Demo>
+      <Button icon="filter" className="secondary" onClick={() => setDrawer(true)}>Open the drawer</Button>
+      <Drawer title="Filters" show={drawer} setShow={setDrawer} side="end"><p>Status, priority, owner…</p></Drawer>
+      <Demo name="CodeTabs">One editor per language under tabs; their code is one value</Demo>
+      <CodeTabs value={code} onChange={setCode} langs={[ 'html', 'css' ]} />
+      <Demo name="Blur">An SVG goo filter: shapes that touch merge (filter: url(#…) on their box)</Demo>
+      <div className="grid auto-cols gap-0" style={{ filter: 'url(#demo-goo)', justifyContent: 'center' }}>
+        <Blur id="demo-goo" />
+        {[ 0, 1, 2 ].map((i) => <div key={i} className="circle bg-gradient" style={{ width: '4rem', aspectRatio: 1, marginInline: '-.6rem' }} />)}
+      </div>
+      <Demo name="Map">Google&apos;s map in the theme&apos;s colors; without a key, Google&apos;s embed (here)</Demo>
+      <div style={{ height: '16rem' }}><MapView center={{ lat: 43.4917, lng: -112.0339 }} zoom={11} title="Idaho Falls" embed="https://www.google.com/maps?q=Idaho+Falls,+ID&output=embed" /></div>
+    </>
+  );
+};
+
+export { ButtonDemos, FormDemos, OverlayDemos, DataDemos, LayoutDemos, MoreComponentDemos };

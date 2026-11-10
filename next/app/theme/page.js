@@ -17,7 +17,7 @@ import { Price } from 'marccent-theme/components/ui/price';
 import { Typeset } from 'marccent-theme/components/ui/typeset';
 import { Menu } from '@/components/layout/menus';
 import { GalleryHeader, Section, Demo, Row } from '@/components/gallery';
-import { ButtonDemos, FormDemos, OverlayDemos, DataDemos, LayoutDemos } from './more-demos';
+import { ButtonDemos, FormDemos, OverlayDemos, DataDemos, LayoutDemos, MoreComponentDemos } from './more-demos';
 import { Countdown } from 'marccent-theme/components/visuals/effects';
 import { StatCard } from 'marccent-theme/components/widgets/layout';
 import { Grid } from 'marccent-theme/lib/grid_helper';
@@ -526,6 +526,7 @@ export default function ThemePage() {
           </div>
         </div>
         <LayoutDemos />
+        <MoreComponentDemos />
       </Section>
 
     </div>
