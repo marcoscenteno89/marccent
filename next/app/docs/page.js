@@ -334,7 +334,7 @@ export default function DocsPage() {
           ['ToggleButton', 'ui/toggle-button.js: two states, an icon for each; a disclosure with controls.'],
           ['StepForm, Step', 'ui/form.js: a form split into steps.'],
           ['Carousel, Collage', 'widgets/carousel.js, widgets/collage.js.'],
-          ['HexGrid, HexWall, Timeline, TicketCard, StatCard, ImageCard', 'widgets/layout.js (see the Widgets page).'],
+          ['HexGrid, HexWall, Timeline, StatCard, ImageCard', 'widgets/layout.js (see the Widgets page).'],
           ['RadialMenu, StepBar, TabBar', 'widgets/nav.js.'],
           ['Orbit, OrbitClock, SolarSystem', 'visuals/effects.js.'],
           ['PauseOffscreen, useInView', 'Run CSS animations and timers only while on screen.'],

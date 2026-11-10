@@ -1,7 +1,8 @@
 import { Icon } from 'marccent-theme/components/ui/icon';
 import { Orbit, Countdown } from 'marccent-theme/components/visuals/effects';
 import { Button } from 'marccent-theme/components/ui/button';
-import { HexGrid, TicketCard, StatCard } from 'marccent-theme/components/widgets/layout';
+import { HexGrid, StatCard } from 'marccent-theme/components/widgets/layout';
+import { Card } from 'marccent-theme/components/widgets/section';
 import { CARD_BUTTON } from 'marccent-theme/components/widgets/card-button';
 import { Carousel } from 'marccent-theme/components/widgets/carousel';
 import { RingGauge } from '@/components/widgets/data';
@@ -32,10 +33,17 @@ export const CardCarousel = ({ label = 'Cards' }) => (
         <Button icon="plus" className="gradient w-100">Log one</Button>
       </StatCard>
 
-      {/* 3. Event pass: a TicketCard with a ribbon. */}
-      <TicketCard className="h-100" label="Oct 30 · 9 PM" title="Synthwave" note="live" ribbon="Sold out"
-        items={[ { icon: 'location-dot', text: 'The Warehouse' }, { icon: 'headphones', text: 'Three DJs, one night' }, { icon: 'champagne-glasses', text: '21+' } ]}
-        action={<Button icon="ticket" className="outline-secondary w-100" disabled>Sold out</Button>} />
+      {/* 3. Event pass: a Card with the ticket variant (its stub torn off at the bottom). */}
+      <Card variant="ticket" surface="bg-primary-tint" center className="h-100">
+        <strong className="text-uppercase opacity-75">Oct 30 · 9 PM</strong>
+        <div><span className="display text-primary fw-bold">Synthwave</span><small className="opacity-75"> live</small></div>
+        <ul className="list-plain grid cols-1 gap-sm justify-center">
+          {[ [ 'location-dot', 'The Warehouse' ], [ 'headphones', 'Three DJs, one night' ], [ 'champagne-glasses', '21+' ] ].map(([ icon, text ]) => (
+            <li key={text} className="grid auto-cols gap-sm items-center"><Icon name={icon} className="text-secondary" />{text}</li>
+          ))}
+        </ul>
+        <Button icon="ticket" className="outline-secondary w-100" disabled>Sold out</Button>
+      </Card>
 
       {/* 4. Feature: a gradient hexagon that flips like a coin on hover. */}
       <div className="bg border round shadow pad grid cols-1 gap-sm justify-center text-center h-100" style={{ alignContent: 'center' }}>
