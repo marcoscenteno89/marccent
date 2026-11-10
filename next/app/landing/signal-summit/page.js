@@ -4,7 +4,7 @@ import '@fontsource-variable/caveat';
 import { Icon } from 'marccent-theme/components/ui/icon';
 import { Button } from 'marccent-theme/components/ui/button';
 import { Scenery } from 'marccent-theme/components/visuals/scenery';
-import { HexWall, ImageCard } from 'marccent-theme/components/widgets/layout';
+import { HexGrid, HexFlip, ImageCard } from 'marccent-theme/components/widgets/layout';
 import { FlipClock, Atom } from '@/components/widgets/fun';
 import { Map as ThemedMap } from 'marccent-theme/components/widgets/map';
 import { Page, Full, Box } from '../blocks';
@@ -155,13 +155,19 @@ export default function SignalSummit() {
       {/* SPEAKERS */}
       <Full id="speakers" style={{ background: VOID }}>
         <div className="grid gap-lg items-center" style={{ '--cols': 2, '--min': '18rem' }}>
-          <HexWall perRow={4} className="w-100" style={{ maxWidth: '28rem', justifySelf: 'center' }} people={[
+          <HexGrid data-name="hex-wall" perRow={4} className="w-100" style={{ maxWidth: '28rem', justifySelf: 'center' }}>
+          {[
             { name: 'Ines Duarte', role: 'Browser engines', initials: 'ID' }, { name: 'Kwame Asante', role: 'AI evals', initials: 'KA' },
             { name: 'Yuki Tanaka', role: 'CSS WG', initials: 'YT' }, { name: 'Sofia Novak', role: 'Red team', initials: 'SN' },
             { name: 'Ravi Menon', role: 'Postgres', initials: 'RM' }, { name: 'Lea Fischer', role: 'A11y lead', initials: 'LF' },
             { name: 'Diego Paz', role: 'Edge compute', initials: 'DP' }, { name: 'Amara Obi', role: 'Eng manager', initials: 'AO' },
             { name: 'Noah Berg', role: 'Rust', initials: 'NB' }, { name: 'Zara Ali', role: 'Design systems', initials: 'ZA' },
-          ]} />
+          ].map((p, i) => (
+            <HexFlip key={p.name} label={`${p.name}, ${p.role}`} frontClass={[ 'bg-gradient', 'bg-primary', 'bg-secondary', 'bg-gradient-darker' ][i % 4]}
+              front={p.icon ? <Icon name={p.icon} className="fs-lg" /> : <strong className="fs-lg">{p.initials}</strong>}
+              back={<><strong>{p.name}</strong><small>{p.role}</small></>} />
+          ))}
+          </HexGrid>
           <div className="grid cols-1 gap-lg">
             <Head tag="speakers" title="90 people who build what you use" c={NEON.lead} text="Engine developers, spec editors, researchers and the engineers on call when it breaks. Hover a hexagon to see who's who." />
             <div className="round pad grid cols-1 gap-sm text-center" style={glow(NEON.lead)}>

@@ -1,6 +1,6 @@
 import { Icon } from 'marccent-theme/components/ui/icon';
 import { Orbit, OrbitClock, SolarSystem } from 'marccent-theme/components/visuals/effects';
-import { HexWall, Timeline } from 'marccent-theme/components/widgets/layout';
+import { HexGrid, HexFlip, Timeline } from 'marccent-theme/components/widgets/layout';
 import { StepBar, TabBar } from 'marccent-theme/components/widgets/nav';
 import { RingGauge } from '@/components/widgets/data';
 import { Atom, AnalogClock, FlipClock, ShapeLoader, CardFan } from '@/components/widgets/fun';
@@ -56,14 +56,20 @@ export default function WidgetsPage() {
 
       <Section name="Layouts" intro="components/widgets/layout.js: honeycombs, a timeline and a carousel of cards.">
         <Collage>
-          <Tile name="HexWall" text="A team wall: hover or focus a hexagon to turn it over" size="big">
-            <HexWall perRow={4} className="w-100" style={{ maxWidth: '26rem', justifySelf: 'center' }} people={[
+          <Tile name="HexGrid and HexFlip" text="A team wall: hover or focus a hexagon to turn it over" size="big">
+            <HexGrid data-name="hex-wall" perRow={4} className="w-100" style={{ maxWidth: '26rem', justifySelf: 'center' }}>
+          {[
               { name: 'Ada', role: 'Engineer', icon: 'code' }, { name: 'Grace', role: 'Admiral', icon: 'anchor' },
               { name: 'Alan', role: 'Mathematician', icon: 'square-root-variable' }, { name: 'Hedy', role: 'Inventor', icon: 'wifi' },
               { name: 'Linus', role: 'Kernel', icon: 'terminal' }, { name: 'Margaret', role: 'Apollo', icon: 'rocket' },
               { name: 'Tim', role: 'The web', icon: 'globe' }, { name: 'Katherine', role: 'Orbits', icon: 'satellite' },
               { name: 'Dennis', role: 'C and Unix', icon: 'microchip' }, { name: 'Barbara', role: 'Languages', icon: 'language' },
-            ]} />
+            ].map((p, i) => (
+            <HexFlip key={p.name} label={`${p.name}, ${p.role}`} frontClass={[ 'bg-gradient', 'bg-primary', 'bg-secondary', 'bg-gradient-darker' ][i % 4]}
+              front={p.icon ? <Icon name={p.icon} className="fs-lg" /> : <strong className="fs-lg">{p.initials}</strong>}
+              back={<><strong>{p.name}</strong><small>{p.role}</small></>} />
+          ))}
+          </HexGrid>
           </Tile>
           <Tile name="Timeline" text="Hexagon markers on a gradient line, each card pointing at its marker" size="big">
             <Timeline events={[
